@@ -1,0 +1,3 @@
+String dbUrl = 'https://eyzvxrcrzdeggefobobs.supabase.co';
+String publicAnonKey =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV5enZ4cmNyemRlZ2dlZm9ib2JzIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODc1NzE2MTEsImV4cCI6MjAwMzE0NzYxMX0.smWQHaNr77m7fpFEu9RNmdPgy2ET97ChG2XMUL1PEe8';
