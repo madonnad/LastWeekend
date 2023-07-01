@@ -1,13 +1,9 @@
+import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
-import 'package:shared_photo/bloc/cubit/app_user_cubit.dart';
-import 'package:shared_photo/bloc/cubit/auth_cubit_app.dart';
 import 'package:shared_photo/repositories/authentication_repository.dart';
 import 'package:shared_photo/router/app_router.dart';
-import 'package:shared_photo/screens/create_account.dart';
-import 'package:shared_photo/screens/home_screen.dart';
-import 'package:shared_photo/screens/login.dart';
 import 'package:shared_photo/utils/api_key.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -35,19 +31,30 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppRouter appRouter = AppRouter();
-
     return RepositoryProvider.value(
       value: _authenticationRepository,
       child: BlocProvider(
         create: (_) =>
             AppBloc(authenticationRepository: _authenticationRepository),
-        child: LoginScreen(),
+        child: const MainAppView(),
       ),
     );
   }
 }
 
+class MainAppView extends StatelessWidget {
+  const MainAppView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: FlowBuilder<AppState>(
+        state: context.select((AppBloc bloc) => bloc.state),
+        onGeneratePages: onGenerateAppPages,
+      ),
+    );
+  }
+}
 
 /* return MultiBlocProvider(
       providers: [

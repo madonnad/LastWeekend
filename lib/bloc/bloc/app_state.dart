@@ -5,7 +5,7 @@ enum AppStatus {
   unauthenticated,
 }
 
-abstract class AppState extends Equatable {
+sealed class AppState extends Equatable {
   final AppStatus status;
   final User user;
 

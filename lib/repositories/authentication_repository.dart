@@ -1,4 +1,3 @@
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_photo/models/user.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supa;
 
@@ -6,12 +5,6 @@ class AuthenticationRepository {
   // When supabase is initalized, it creates a singleton instance so you may
   // access that instance anywhere in your app.
   final supabase = supa.Supabase.instance.client;
-
-  // Setup Local Secured Storage
-  AndroidOptions _getAndroidOptions() =>
-      const AndroidOptions(encryptedSharedPreferences: true);
-
-  final storage = const FlutterSecureStorage();
 
   AuthenticationRepository();
 
@@ -49,8 +42,11 @@ class AuthenticationRepository {
     }
   }
 
-  Future<Map<String, dynamic>> retrieveDatabaseInfo({required id}) async {
-    final data = await supabase.from('users').select().eq("user_id", id);
+  Future<Map<String, dynamic>> retrieveDatabaseInfo(
+      {required String id}) async {
+    final listData = await supabase.from('users').select().eq("user_id", id);
+
+    final data = listData[0];
 
     return data;
   }
