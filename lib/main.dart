@@ -16,12 +16,11 @@ void main() async {
   );
 
   final authenticationRepository = AuthenticationRepository();
-  await authenticationRepository.user.first;
 
   runApp(MainApp(authenticationRepository: authenticationRepository));
 }
 
-final supabase = Supabase.instance.client;
+//final supabase = Supabase.instance.client;
 
 class MainApp extends StatelessWidget {
   final AuthenticationRepository _authenticationRepository;

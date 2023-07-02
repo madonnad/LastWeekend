@@ -11,22 +11,25 @@ class AuthenticationRepository {
   Stream<User> get user {
     // We are essentially mapping this event to a user and we use the below logic to do so
     // The if statement returns essentially return to the return
-    return supabase.auth.onAuthStateChange.asyncMap((data) async {
-      final supa.Session? session = data.session;
+    return supabase.auth.onAuthStateChange.asyncMap(
+      (data) async {
+        final supa.Session? session = data.session;
 
-      if (session != null) {
-        supa.User supaUser = session.user;
+        if (session != null) {
+          supa.User supaUser = session.user;
 
-        //Retrieve DB info from uid
-        Map<String, dynamic> retrievedData =
-            await retrieveDatabaseInfo(id: supaUser.id);
+          //Retrieve DB info from uid
+          Map<String, dynamic> retrievedData =
+              await retrieveDatabaseInfo(id: supaUser.id);
 
-        //return the user from the map function
-        return mapDataToUser(supaUser: supaUser, retrievedData: retrievedData);
-      } else {
-        return User.empty;
-      }
-    });
+          //return the user from the map function
+          return mapDataToUser(
+              supaUser: supaUser, retrievedData: retrievedData);
+        } else {
+          return User.empty;
+        }
+      },
+    );
   }
 
   User get currentUser {
@@ -65,7 +68,7 @@ class AuthenticationRepository {
     );
   }
 
-  Future<void> emailSignUp({
+  Future<void> createAccountWithEmailAndPassword({
     required String email,
     required String password,
     required String username,
@@ -74,7 +77,7 @@ class AuthenticationRepository {
         .signUp(email: email, password: password, data: {'username': username});
   }
 
-  Future<void> emailLogin(
+  Future<void> logInWithEmailAndPassword(
       {required String email, required String password}) async {
     await supabase.auth.signInWithPassword(email: email, password: password);
   }
