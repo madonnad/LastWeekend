@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/cubit/login_cubit.dart';
-import 'package:shared_photo/components/auth_comp/login_form.dart';
+import 'package:shared_photo/components/auth_comp/auth_form.dart';
 import 'package:shared_photo/repositories/authentication_repository.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -16,7 +16,7 @@ class LoginScreen extends StatelessWidget {
           create: (context) => LoginCubit(
             context.read<AuthenticationRepository>(),
           ),
-          child: const LoginForm(),
+          child: AuthForm(),
         ),
       ),
     );

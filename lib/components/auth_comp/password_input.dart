@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/cubit/login_cubit.dart';
 
 class PasswordInput extends StatelessWidget {
-  const PasswordInput({super.key});
+  final TextEditingController passwordController;
+  const PasswordInput({required this.passwordController, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,13 +12,12 @@ class PasswordInput extends StatelessWidget {
       buildWhen: (previous, current) => previous.password != current.password,
       builder: (context, state) {
         return TextField(
-          onChanged: (email) =>
-              context.read<LoginCubit>().passwordChanged(email),
-          keyboardType: TextInputType.emailAddress,
-          decoration: InputDecoration(
-            labelText: 'Email',
-            errorText:
-                state.password.displayError != null ? 'Invalid Email' : null,
+          controller: passwordController,
+          onChanged: (password) =>
+              context.read<LoginCubit>().passwordChanged(password),
+          keyboardType: TextInputType.visiblePassword,
+          decoration: const InputDecoration(
+            labelText: 'Password',
           ),
         );
       },

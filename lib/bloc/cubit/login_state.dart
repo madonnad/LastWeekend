@@ -1,35 +1,18 @@
 part of 'login_cubit.dart';
 
 final class LoginState extends Equatable {
-  final Email email;
-  final Password password;
-  final FormzSubmissionStatus status;
-  final bool isValid;
+  final bool isLoading;
   final String? errorMessage;
+  final String? email;
+  final String? password;
 
   const LoginState({
-    this.email = const Email.pure(),
-    this.password = const Password.pure(),
-    this.status = FormzSubmissionStatus.initial,
-    this.isValid = false,
+    required this.isLoading,
+    this.email,
+    this.password,
     this.errorMessage,
   });
 
   @override
-  List<Object?> get props => [email, password, status, isValid, errorMessage];
-
-  LoginState copyWith({
-    Email? email,
-    Password? password,
-    FormzSubmissionStatus? status,
-    bool? isValid,
-    String? errorMessage,
-  }) {
-    return LoginState(
-        email: email ?? this.email,
-        password: this.password,
-        status: status ?? this.status,
-        isValid: isValid ?? this.isValid,
-        errorMessage: errorMessage ?? this.errorMessage);
-  }
+  List<Object?> get props => [isLoading, email, password, errorMessage];
 }
