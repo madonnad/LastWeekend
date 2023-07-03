@@ -59,8 +59,3 @@ class MainAppView extends StatelessWidget {
     );
   }
 }
-
-/* FlowBuilder<AppState>(
-        state: context.select((AppBloc bloc) => bloc.state),
-        onGeneratePages: onGenerateAppPages,
-      ), */
