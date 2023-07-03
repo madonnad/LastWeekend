@@ -1,12 +1,9 @@
-import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/repositories/authentication_repository.dart';
-import 'package:shared_photo/router/app_router.dart';
 import 'package:shared_photo/router/generate_route.dart';
 import 'package:shared_photo/screens/home.dart';
-import 'package:shared_photo/screens/landing.dart';
 import 'package:shared_photo/screens/login.dart';
 import 'package:shared_photo/utils/api_key.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -23,8 +20,6 @@ void main() async {
 
   runApp(MainApp(authenticationRepository: authenticationRepository));
 }
-
-//final supabase = Supabase.instance.client;
 
 class MainApp extends StatelessWidget {
   final AuthenticationRepository _authenticationRepository;
@@ -50,8 +45,16 @@ class MainAppView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: LandingPage(),
+    return MaterialApp(
+      home: BlocBuilder<AppBloc, AppState>(
+        builder: (context, state) {
+          if (state is AuthenticatedState) {
+            return const HomeScreen();
+          } else {
+            return const LoginScreen();
+          }
+        },
+      ),
       onGenerateRoute: onGenerateRoute,
     );
   }
