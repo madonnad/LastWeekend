@@ -11,6 +11,7 @@ class PasswordInput extends StatelessWidget {
     return TextFormField(
       controller: passwordController,
       autovalidateMode: AutovalidateMode.always,
+      // ignore: body_might_complete_normally_nullable
       validator: (value) {
         if (value == null) {
           context.read<LoginCubit>().setPasswordValid(false);

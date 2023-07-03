@@ -11,6 +11,7 @@ class EmailInput extends StatelessWidget {
     return TextFormField(
       controller: emailController,
       autovalidateMode: AutovalidateMode.always,
+      // ignore: body_might_complete_normally_nullable
       validator: (value) {
         if (value == null) {
           context.read<LoginCubit>().setEmailValid(false);

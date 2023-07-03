@@ -2,11 +2,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/cubit/login_cubit.dart';
-import 'package:shared_photo/components/auth_comp/confirm_password_input.dart';
-import 'package:shared_photo/components/auth_comp/create_account_button.dart';
-import 'package:shared_photo/components/auth_comp/login_button.dart';
-import 'package:shared_photo/components/auth_comp/password_input.dart';
-import 'email_input.dart';
+import 'package:shared_photo/components/auth_comp/input_fields/confirm_password_input.dart';
+import 'package:shared_photo/components/auth_comp/input_fields/password_input.dart';
+import '../buttons/create_account_button.dart';
+import '../input_fields/email_input.dart';
 
 class CreateAccountForm extends StatelessWidget {
   final TextEditingController emailController;

@@ -8,7 +8,6 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String? avatar = BlocProvider.of<AppBloc>(context).state.user.avatarUrl;
-    print(avatar);
     bool avatarPresent = avatar == null ? false : true;
 
     return Scaffold(
