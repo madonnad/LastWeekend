@@ -4,6 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/repositories/authentication_repository.dart';
 import 'package:shared_photo/router/app_router.dart';
+import 'package:shared_photo/router/generate_route.dart';
+import 'package:shared_photo/screens/home.dart';
+import 'package:shared_photo/screens/landing.dart';
+import 'package:shared_photo/screens/login.dart';
 import 'package:shared_photo/utils/api_key.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -46,40 +50,14 @@ class MainAppView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: FlowBuilder<AppState>(
-        state: context.select((AppBloc bloc) => bloc.state),
-        onGeneratePages: onGenerateAppPages,
-      ),
+    return const MaterialApp(
+      home: LandingPage(),
+      onGenerateRoute: onGenerateRoute,
     );
   }
 }
 
-/* return MultiBlocProvider(
-      providers: [
-        BlocProvider<AuthCubitApp>(
-          create: (context) => AuthCubitApp(),
-        ),
-        BlocProvider<UserCubitApp>(
-          create: (context) => UserCubitApp(),
-        )
-      ],
-      child: MaterialApp(
-          title: 'dvlpr',
-          onGenerateRoute: appRouter.onGenerateRoute,
-          home: BlocBuilder<AuthCubitApp, AuthStateApp>(
-            builder: (context, state) {
-              if (state is LoggedInState) {
-                return const HomeScreen();
-              } else if (state is CreateAccountState) {
-                return CreateAccountScreen();
-              } else if (state is AuthLoadingState) {
-                return const CircularProgressIndicator();
-              } else if (state is LogInScreenState) {
-                return LoginScreen();
-              } else {
-                return LoginScreen();
-              }
-            },
-          )),
-    ); */
+/* FlowBuilder<AppState>(
+        state: context.select((AppBloc bloc) => bloc.state),
+        onGeneratePages: onGenerateAppPages,
+      ), */

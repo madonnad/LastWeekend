@@ -15,3 +15,9 @@ final class AppUserChanged extends AppEvent {
 
   const AppUserChanged(this.user);
 }
+
+final class NewAccountCreated extends AppEvent {
+  final User user;
+
+  NewAccountCreated(this.user);
+}

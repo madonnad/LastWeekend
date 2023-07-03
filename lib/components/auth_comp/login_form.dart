@@ -6,8 +6,8 @@ import 'package:shared_photo/components/auth_comp/password_input.dart';
 
 import 'email_input.dart';
 
-class AuthForm extends StatelessWidget {
-  AuthForm({super.key});
+class LoginForm extends StatelessWidget {
+  LoginForm({super.key});
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -29,7 +29,6 @@ class AuthForm extends StatelessWidget {
       child: Center(
         child: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               EmailInput(emailController: _emailController),
               PasswordInput(passwordController: _passwordController),
