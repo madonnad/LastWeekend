@@ -47,11 +47,15 @@ class AuthenticationRepository {
 
   Future<Map<String, dynamic>> retrieveDatabaseInfo(
       {required String id}) async {
-    final listData = await supabase.from('users').select().eq("user_id", id);
+    try {
+      final listData = await supabase.from('users').select().eq("user_id", id);
 
-    final data = listData[0];
+      final data = listData[0];
 
-    return data;
+      return data;
+    } catch (e) {
+      return {};
+    }
   }
 
   User mapDataToUser({
@@ -71,10 +75,8 @@ class AuthenticationRepository {
   Future<void> createAccountWithEmailAndPassword({
     required String email,
     required String password,
-    required String username,
   }) async {
-    await supabase.auth
-        .signUp(email: email, password: password, data: {'username': username});
+    await supabase.auth.signUp(email: email, password: password);
   }
 
   Future<void> logInWithEmailAndPassword(

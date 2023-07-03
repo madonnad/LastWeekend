@@ -8,18 +8,30 @@ class PasswordInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginCubit, LoginState>(
-      builder: (context, state) {
-        return TextField(
-          controller: passwordController,
-          onChanged: (password) =>
-              context.read<LoginCubit>().passwordChanged(password),
-          keyboardType: TextInputType.visiblePassword,
-          decoration: const InputDecoration(
-            labelText: 'Password',
-          ),
-        );
+    return TextFormField(
+      controller: passwordController,
+      autovalidateMode: AutovalidateMode.always,
+      validator: (value) {
+        if (value == null) {
+          context.read<LoginCubit>().setPasswordValid(false);
+          return null;
+        } else if (value.isNotEmpty) {
+          RegExp exp = RegExp(r'^[a-zA-Z]\w{3,14}$');
+
+          exp.hasMatch(value)
+              ? context.read<LoginCubit>().setPasswordValid(true)
+              : null;
+
+          return exp.hasMatch(value) ? null : 'Invalid Password';
+        } else if (value.isEmpty) {
+          context.read<LoginCubit>().setPasswordValid(false);
+          return null;
+        }
       },
+      keyboardType: TextInputType.visiblePassword,
+      decoration: const InputDecoration(
+        labelText: 'Create Password',
+      ),
     );
   }
 }

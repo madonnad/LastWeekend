@@ -8,17 +8,31 @@ class EmailInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginCubit, LoginState>(
-      builder: (context, state) {
-        return TextField(
-          controller: emailController,
-          onChanged: (email) => context.read<LoginCubit>().emailChanged(email),
-          keyboardType: TextInputType.emailAddress,
-          decoration: const InputDecoration(
-            labelText: 'Email',
-          ),
-        );
+    return TextFormField(
+      controller: emailController,
+      autovalidateMode: AutovalidateMode.always,
+      validator: (value) {
+        if (value == null) {
+          context.read<LoginCubit>().setEmailValid(false);
+          return null;
+        } else if (value.isNotEmpty) {
+          RegExp exp = RegExp(
+              r'^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$');
+
+          exp.hasMatch(value)
+              ? context.read<LoginCubit>().setEmailValid(true)
+              : null;
+
+          return exp.hasMatch(value) ? null : 'Invalid Email';
+        } else if (value.isEmpty) {
+          context.read<LoginCubit>().setEmailValid(false);
+          return null;
+        }
       },
+      keyboardType: TextInputType.emailAddress,
+      decoration: const InputDecoration(
+        labelText: 'Email',
+      ),
     );
   }
 }

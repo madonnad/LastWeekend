@@ -8,28 +8,67 @@ class LoginCubit extends Cubit<LoginState> {
   final AuthenticationRepository _authenticationRepository;
 
   LoginCubit(this._authenticationRepository)
-      : super(const LoginState(isLoading: false));
+      : super(const LoginState(
+          isLoading: false,
+          accountCreateMode: false,
+        ));
 
-  void emailChanged(email) {
-    emit(LoginState(isLoading: false, email: email, password: state.password));
+  void setEmailValid(bool status) {
+    emit(
+      state.copyWith(
+        emailMatch: status,
+      ),
+    );
   }
 
-  void passwordChanged(password) {
-    emit(LoginState(isLoading: false, email: state.email, password: password));
+  void setPasswordValid(bool status) {
+    emit(
+      state.copyWith(
+        passwordMatch: status,
+      ),
+    );
+  }
+
+  void setConfirmPassValid(bool status) {
+    emit(
+      state.copyWith(
+        confirmPassMatch: status,
+      ),
+    );
+  }
+
+  void swapModes() {
+    bool mode = state.accountCreateMode;
+    emit(state.copyWith(accountCreateMode: !mode));
   }
 
   Future<void> loginWithCredentials(
       {required String email, required String password}) async {
-    emit(const LoginState(isLoading: true));
+    emit(state.copyWith(isLoading: true));
 
     try {
       await _authenticationRepository.logInWithEmailAndPassword(
           email: email, password: password);
 
-      emit(const LoginState(isLoading: false));
+      emit(state.copyWith(isLoading: false));
     } catch (e) {
-      emit(LoginState(isLoading: false, errorMessage: e.toString()));
-      emit(const LoginState(isLoading: false));
+      emit(state.copyWith(errorMessage: e.toString(), isLoading: false));
+      emit(state.copyWith(isLoading: false, errorMessage: ''));
+    }
+  }
+
+  Future<void> createAccountWithCredentials(
+      {required String email, required String password}) async {
+    emit(state.copyWith(isLoading: true));
+
+    try {
+      await _authenticationRepository.createAccountWithEmailAndPassword(
+          email: email, password: password);
+
+      emit(state.copyWith(isLoading: false));
+    } catch (e) {
+      emit(state.copyWith(errorMessage: e.toString(), isLoading: false));
+      emit(state.copyWith(isLoading: false, errorMessage: ''));
     }
   }
 }

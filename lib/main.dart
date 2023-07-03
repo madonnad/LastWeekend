@@ -4,7 +4,7 @@ import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/repositories/authentication_repository.dart';
 import 'package:shared_photo/router/generate_route.dart';
 import 'package:shared_photo/screens/home.dart';
-import 'package:shared_photo/screens/login.dart';
+import 'package:shared_photo/screens/auth.dart';
 import 'package:shared_photo/utils/api_key.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -51,7 +51,7 @@ class MainAppView extends StatelessWidget {
           if (state is AuthenticatedState) {
             return const HomeScreen();
           } else {
-            return const LoginScreen();
+            return AuthScreen();
           }
         },
       ),
