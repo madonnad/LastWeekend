@@ -10,6 +10,14 @@ class LoginCubit extends Cubit<LoginState> {
   LoginCubit(this._authenticationRepository)
       : super(const LoginState(isLoading: false));
 
+  void emailChanged(email) {
+    emit(LoginState(isLoading: false, email: email, password: state.password));
+  }
+
+  void passwordChanged(password) {
+    emit(LoginState(isLoading: false, email: state.email, password: password));
+  }
+
   Future<void> loginWithCredentials(
       {required String email, required String password}) async {
     emit(const LoginState(isLoading: true));

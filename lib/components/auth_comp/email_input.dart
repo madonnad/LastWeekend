@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_photo/bloc/cubit/login_cubit.dart';
 
 class EmailInput extends StatelessWidget {
   final TextEditingController emailController;
@@ -6,12 +8,17 @@ class EmailInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: emailController,
-      keyboardType: TextInputType.emailAddress,
-      decoration: const InputDecoration(
-        labelText: 'Email',
-      ),
+    return BlocBuilder<LoginCubit, LoginState>(
+      builder: (context, state) {
+        return TextField(
+          controller: emailController,
+          onChanged: (email) => context.read<LoginCubit>().emailChanged(email),
+          keyboardType: TextInputType.emailAddress,
+          decoration: const InputDecoration(
+            labelText: 'Email',
+          ),
+        );
+      },
     );
   }
 }
