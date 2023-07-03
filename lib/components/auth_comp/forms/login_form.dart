@@ -7,16 +7,11 @@ import '../buttons/login_button.dart';
 import '../input_fields/email_input.dart';
 
 class LoginForm extends StatelessWidget {
-  final TextEditingController emailController;
-  final TextEditingController passwordController;
-  const LoginForm(
-      {required this.emailController,
-      required this.passwordController,
-      super.key});
+  const LoginForm({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LoginCubit, LoginState>(
+    return BlocConsumer<LoginCubit, AuthState>(
       listener: (context, state) {
         if (state.errorMessage != '') {
           ScaffoldMessenger.of(context)
@@ -29,17 +24,14 @@ class LoginForm extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        return Center(
+        return const Center(
           child: SingleChildScrollView(
             child: Column(
               children: [
-                EmailInput(emailController: emailController),
-                PasswordInput(passwordController: passwordController),
-                LoginButton(
-                  email: emailController,
-                  password: passwordController,
-                ),
-                const JoinTextSpan()
+                EmailInput(),
+                PasswordInput(),
+                LoginButton(),
+                JoinTextSpan()
               ],
             ),
           ),

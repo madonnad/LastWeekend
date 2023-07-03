@@ -3,11 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/cubit/login_cubit.dart';
 
 class PasswordInput extends StatelessWidget {
-  final TextEditingController passwordController;
-  const PasswordInput({required this.passwordController, super.key});
+  const PasswordInput({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController? passwordController =
+        context.read<LoginCubit>().state.passwordController;
     return TextFormField(
       controller: passwordController,
       autovalidateMode: AutovalidateMode.always,

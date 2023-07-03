@@ -1,17 +1,23 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_photo/repositories/authentication_repository.dart';
 
 part 'login_state.dart';
 
-class LoginCubit extends Cubit<LoginState> {
+class LoginCubit extends Cubit<AuthState> {
   final AuthenticationRepository _authenticationRepository;
 
   LoginCubit(this._authenticationRepository)
-      : super(const LoginState(
-          isLoading: false,
-          accountCreateMode: false,
-        ));
+      : super(
+          AuthState(
+            isLoading: false,
+            accountCreateMode: false,
+            emailController: TextEditingController(),
+            passwordController: TextEditingController(),
+            confirmPassController: TextEditingController(),
+          ),
+        );
 
   void setEmailValid(bool status) {
     emit(

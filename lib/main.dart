@@ -51,7 +51,7 @@ class MainAppView extends StatelessWidget {
           if (state is AuthenticatedState) {
             return const HomeScreen();
           } else {
-            return AuthScreen();
+            return const AuthScreen();
           }
         },
       ),

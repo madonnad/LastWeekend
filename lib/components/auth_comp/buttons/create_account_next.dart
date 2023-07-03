@@ -2,19 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/cubit/login_cubit.dart';
 
-class LoginButton extends StatelessWidget {
-  const LoginButton({super.key});
+class CreateAccountNext extends StatelessWidget {
+  const CreateAccountNext({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController? email =
-        context.read<LoginCubit>().state.emailController;
-    final TextEditingController? password =
-        context.read<LoginCubit>().state.passwordController;
     return BlocBuilder<LoginCubit, AuthState>(
       buildWhen: (previous, current) =>
           (previous.emailMatch != current.emailMatch ||
-              previous.passwordMatch != current.passwordMatch),
+              previous.passwordMatch != current.passwordMatch ||
+              previous.confirmPassMatch != current.confirmPassMatch),
       builder: (context, state) {
         return state.isLoading == true
             ? const CircularProgressIndicator(
@@ -23,12 +20,11 @@ class LoginButton extends StatelessWidget {
             : ElevatedButton(
                 onPressed: (state.emailMatch == true &&
                         state.passwordMatch == true &&
-                        email != null &&
-                        password != null)
-                    ? () => context.read<LoginCubit>().loginWithCredentials(
-                        email: email.text, password: password.text)
+                        state.confirmPassMatch == true)
+                    ? () =>
+                        Navigator.of(context).pushNamed('/create-account-auth')
                     : null,
-                child: const Text('Login'),
+                child: const Text('Next'),
               );
       },
     );

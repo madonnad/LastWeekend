@@ -3,18 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/cubit/login_cubit.dart';
 
 class CreateAccountButton extends StatelessWidget {
-  final TextEditingController email;
-  final TextEditingController password;
-  final TextEditingController confirmPass;
-  const CreateAccountButton(
-      {required this.email,
-      required this.password,
-      required this.confirmPass,
-      super.key});
+  const CreateAccountButton({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginCubit, LoginState>(
+    final TextEditingController? email =
+        context.read<LoginCubit>().state.emailController;
+    final TextEditingController? password =
+        context.read<LoginCubit>().state.passwordController;
+    return BlocBuilder<LoginCubit, AuthState>(
       buildWhen: (previous, current) =>
           (previous.emailMatch != current.emailMatch ||
               previous.passwordMatch != current.passwordMatch ||
@@ -27,7 +24,9 @@ class CreateAccountButton extends StatelessWidget {
             : ElevatedButton(
                 onPressed: (state.emailMatch == true &&
                         state.passwordMatch == true &&
-                        state.confirmPassMatch == true)
+                        state.confirmPassMatch == true &&
+                        email != null &&
+                        password != null)
                     ? () => context
                         .read<LoginCubit>()
                         .createAccountWithCredentials(

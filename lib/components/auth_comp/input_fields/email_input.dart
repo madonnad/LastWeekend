@@ -3,11 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/cubit/login_cubit.dart';
 
 class EmailInput extends StatelessWidget {
-  final TextEditingController emailController;
-  const EmailInput({required this.emailController, super.key});
+  const EmailInput({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController? emailController =
+        context.read<LoginCubit>().state.emailController;
     return TextFormField(
       controller: emailController,
       autovalidateMode: AutovalidateMode.always,

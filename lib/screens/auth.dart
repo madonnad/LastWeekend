@@ -6,12 +6,7 @@ import 'package:shared_photo/components/auth_comp/forms/login_form.dart';
 import 'package:shared_photo/repositories/authentication_repository.dart';
 
 class AuthScreen extends StatelessWidget {
-  AuthScreen({super.key});
-
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
+  const AuthScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +15,7 @@ class AuthScreen extends StatelessWidget {
         create: (context) => LoginCubit(
           context.read<AuthenticationRepository>(),
         ),
-        child: BlocBuilder<LoginCubit, LoginState>(
+        child: BlocBuilder<LoginCubit, AuthState>(
           builder: (context, state) {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 50.0),
@@ -28,15 +23,8 @@ class AuthScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   (!state.accountCreateMode)
-                      ? LoginForm(
-                          emailController: _emailController,
-                          passwordController: _passwordController,
-                        )
-                      : CreateAccountForm(
-                          emailController: _emailController,
-                          passwordController: _passwordController,
-                          confirmPasswordController: _confirmPasswordController,
-                        ),
+                      ? const LoginForm()
+                      : const CreateAccountForm(),
                 ],
               ),
             );
