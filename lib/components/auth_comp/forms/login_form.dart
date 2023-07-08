@@ -1,17 +1,17 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_photo/bloc/cubit/login_cubit.dart';
-import 'package:shared_photo/components/auth_comp/input_fields/password_input.dart';
+import 'package:shared_photo/bloc/cubit/auth_cubit.dart';
+import 'package:shared_photo/components/auth_comp/input_fields/auth_input.dart';
+import '../../../utils/text_validators.dart';
+import '../buttons/join_textspan.dart';
 import '../buttons/login_button.dart';
-import '../input_fields/email_input.dart';
 
 class LoginForm extends StatelessWidget {
   const LoginForm({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LoginCubit, AuthState>(
+    return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state.errorMessage != '') {
           ScaffoldMessenger.of(context)
@@ -24,48 +24,29 @@ class LoginForm extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        return const Center(
+        return Center(
           child: SingleChildScrollView(
             child: Column(
               children: [
-                EmailInput(),
-                PasswordInput(),
-                LoginButton(),
-                JoinTextSpan()
+                AuthInput(
+                  label: 'Enter Email',
+                  nameController: state.emailController,
+                  validator: (value) =>
+                      checkEmailField(value, context: context),
+                ),
+                AuthInput(
+                  label: 'Create Password',
+                  nameController: state.passwordController,
+                  validator: (value) =>
+                      checkPasswordField(context: context, value),
+                ),
+                const LoginButton(),
+                const JoinTextSpan()
               ],
             ),
           ),
         );
       },
-    );
-  }
-}
-
-class JoinTextSpan extends StatelessWidget {
-  const JoinTextSpan({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return RichText(
-      text: TextSpan(
-        children: <TextSpan>[
-          const TextSpan(
-            text: 'No account? ',
-            style: TextStyle(
-              color: Colors.black,
-            ),
-          ),
-          TextSpan(
-            text: 'Join now',
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.blue,
-            ),
-            recognizer: TapGestureRecognizer()
-              ..onTap = () => context.read<LoginCubit>().swapModes(),
-          ),
-        ],
-      ),
     );
   }
 }

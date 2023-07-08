@@ -3,12 +3,12 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_photo/repositories/authentication_repository.dart';
 
-part 'login_state.dart';
+part 'auth_state.dart';
 
-class LoginCubit extends Cubit<AuthState> {
+class AuthCubit extends Cubit<AuthState> {
   final AuthenticationRepository _authenticationRepository;
 
-  LoginCubit(this._authenticationRepository)
+  AuthCubit(this._authenticationRepository)
       : super(
           AuthState(
             isLoading: false,
@@ -16,13 +16,15 @@ class LoginCubit extends Cubit<AuthState> {
             emailController: TextEditingController(),
             passwordController: TextEditingController(),
             confirmPassController: TextEditingController(),
+            firstNameController: TextEditingController(),
+            lastNameController: TextEditingController(),
           ),
         );
 
   void setEmailValid(bool status) {
     emit(
       state.copyWith(
-        emailMatch: status,
+        emailValid: status,
       ),
     );
   }
@@ -30,7 +32,7 @@ class LoginCubit extends Cubit<AuthState> {
   void setPasswordValid(bool status) {
     emit(
       state.copyWith(
-        passwordMatch: status,
+        passwordValid: status,
       ),
     );
   }
@@ -38,7 +40,23 @@ class LoginCubit extends Cubit<AuthState> {
   void setConfirmPassValid(bool status) {
     emit(
       state.copyWith(
-        confirmPassMatch: status,
+        confirmPassValid: status,
+      ),
+    );
+  }
+
+  void setFirstNameValid(bool status) {
+    emit(
+      state.copyWith(
+        firstNameValid: status,
+      ),
+    );
+  }
+
+  void setLastNameValid(bool status) {
+    emit(
+      state.copyWith(
+        lastNameValid: status,
       ),
     );
   }

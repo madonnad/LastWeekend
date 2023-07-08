@@ -1,36 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_photo/bloc/cubit/login_cubit.dart';
+import 'package:shared_photo/bloc/cubit/auth_cubit.dart';
 
 class CreateAccountButton extends StatelessWidget {
   const CreateAccountButton({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController? email =
-        context.read<LoginCubit>().state.emailController;
-    final TextEditingController? password =
-        context.read<LoginCubit>().state.passwordController;
-    return BlocBuilder<LoginCubit, AuthState>(
+    return BlocBuilder<AuthCubit, AuthState>(
       buildWhen: (previous, current) =>
-          (previous.emailMatch != current.emailMatch ||
-              previous.passwordMatch != current.passwordMatch ||
-              previous.confirmPassMatch != current.confirmPassMatch),
+          (previous.emailValid != current.emailValid ||
+              previous.passwordValid != current.passwordValid ||
+              previous.confirmPassValid != current.confirmPassValid ||
+              previous.firstNameValid != current.firstNameValid ||
+              previous.lastNameValid != current.lastNameValid),
       builder: (context, state) {
         return state.isLoading == true
             ? const CircularProgressIndicator(
                 backgroundColor: Color.fromARGB(35, 0, 0, 0),
               )
             : ElevatedButton(
-                onPressed: (state.emailMatch == true &&
-                        state.passwordMatch == true &&
-                        state.confirmPassMatch == true &&
-                        email != null &&
-                        password != null)
+                onPressed: (state.emailValid == true &&
+                        state.passwordValid == true &&
+                        state.confirmPassValid == true &&
+                        state.firstNameValid == true &&
+                        state.lastNameValid == true)
                     ? () => context
-                        .read<LoginCubit>()
+                        .read<AuthCubit>()
                         .createAccountWithCredentials(
-                            email: email.text, password: password.text)
+                            email: state.emailController!.text,
+                            password: state.emailController!.text)
                     : null,
                 child: const Text('Create Account'),
               );
