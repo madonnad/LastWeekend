@@ -29,7 +29,9 @@ class CreateAccountButton extends StatelessWidget {
                         .read<AuthCubit>()
                         .createAccountWithCredentials(
                             email: state.emailController!.text,
-                            password: state.emailController!.text)
+                            password: state.emailController!.text,
+                            firstName: state.firstNameController!.text,
+                            lastName: state.lastNameController!.text)
                     : null,
                 child: const Text('Create Account'),
               );

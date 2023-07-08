@@ -82,12 +82,18 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> createAccountWithCredentials(
-      {required String email, required String password}) async {
+      {required String email,
+      required String password,
+      required String firstName,
+      required String lastName}) async {
     emit(state.copyWith(isLoading: true));
 
     try {
       await _authenticationRepository.createAccountWithEmailAndPassword(
-          email: email, password: password);
+          email: email,
+          password: password,
+          firstName: firstName,
+          lastName: lastName);
 
       emit(state.copyWith(isLoading: false));
     } catch (e) {

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:shared_photo/models/user.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supa;
 
@@ -75,8 +77,22 @@ class AuthenticationRepository {
   Future<void> createAccountWithEmailAndPassword({
     required String email,
     required String password,
+    required String firstName,
+    required String lastName,
   }) async {
     await supabase.auth.signUp(email: email, password: password);
+
+    final supa.Session? session = supabase.auth.currentSession;
+
+    if (session != null) {
+      String uid = session.user.id;
+      try {
+        await supabase.from('users').insert(
+            {'user_id': uid, 'first_name': firstName, 'last_name': lastName});
+      } catch (e) {
+        log(e.toString());
+      }
+    }
   }
 
   Future<void> logInWithEmailAndPassword(
