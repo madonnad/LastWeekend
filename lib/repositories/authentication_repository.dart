@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:shared_photo/models/user.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supa;
 
