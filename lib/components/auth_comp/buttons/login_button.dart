@@ -7,10 +7,6 @@ class LoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController? email =
-        context.read<AuthCubit>().state.emailController;
-    final TextEditingController? password =
-        context.read<AuthCubit>().state.passwordController;
     return BlocBuilder<AuthCubit, AuthState>(
       buildWhen: (previous, current) =>
           (previous.emailValid != current.emailValid ||
@@ -21,13 +17,12 @@ class LoginButton extends StatelessWidget {
                 backgroundColor: Color.fromARGB(35, 0, 0, 0),
               )
             : ElevatedButton(
-                onPressed: (state.emailValid == true &&
-                        state.passwordValid == true &&
-                        email != null &&
-                        password != null)
-                    ? () => context.read<AuthCubit>().loginWithCredentials(
-                        email: email.text, password: password.text)
-                    : null,
+                onPressed:
+                    (state.emailValid == true && state.passwordValid == true)
+                        ? () => context.read<AuthCubit>().loginWithCredentials(
+                            email: state.emailController!.text,
+                            password: state.passwordController!.text)
+                        : null,
                 child: const Text('Login'),
               );
       },

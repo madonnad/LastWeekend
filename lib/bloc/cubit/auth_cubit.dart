@@ -63,7 +63,10 @@ class AuthCubit extends Cubit<AuthState> {
 
   void swapModes() {
     bool mode = state.accountCreateMode;
-    emit(state.copyWith(accountCreateMode: !mode));
+
+    emit(state.copyWith(
+        accountCreateMode: !mode,
+        confirmPassController: TextEditingController()));
   }
 
   Future<void> loginWithCredentials(

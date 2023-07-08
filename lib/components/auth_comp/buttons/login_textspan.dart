@@ -24,7 +24,9 @@ class LoginTextSpan extends StatelessWidget {
               color: Colors.blue,
             ),
             recognizer: TapGestureRecognizer()
-              ..onTap = () => context.read<AuthCubit>().swapModes(),
+              ..onTap = () {
+                context.read<AuthCubit>().swapModes();
+              },
           ),
         ],
       ),

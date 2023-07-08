@@ -67,7 +67,6 @@ class AuthenticationRepository {
     return User(
       id: supaUser.id,
       email: supaUser.email,
-      username: supaUser.userMetadata!['username'],
       firstName: retrievedData['first_name'],
       lastName: retrievedData['last_name'],
       avatarUrl: retrievedData['avatar'],
@@ -86,12 +85,11 @@ class AuthenticationRepository {
 
     if (session != null) {
       String uid = session.user.id;
-      try {
-        await supabase.from('users').insert(
-            {'user_id': uid, 'first_name': firstName, 'last_name': lastName});
-      } catch (e) {
-        log(e.toString());
-      }
+      await supabase.from('users').insert({
+        'user_id': uid,
+        'first_name': firstName,
+        'last_name': lastName,
+      });
     }
   }
 

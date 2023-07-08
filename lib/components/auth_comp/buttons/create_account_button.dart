@@ -29,7 +29,7 @@ class CreateAccountButton extends StatelessWidget {
                         .read<AuthCubit>()
                         .createAccountWithCredentials(
                             email: state.emailController!.text,
-                            password: state.emailController!.text,
+                            password: state.passwordController!.text,
                             firstName: state.firstNameController!.text,
                             lastName: state.lastNameController!.text)
                     : null,

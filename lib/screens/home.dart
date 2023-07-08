@@ -16,6 +16,7 @@ class HomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text('Home Screen'),
+            Text('Hello ${context.read<AppBloc>().state.user.firstName}'),
             avatarPresent
                 ? Image.network(avatar)
                 : SizedBox(
