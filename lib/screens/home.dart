@@ -111,11 +111,13 @@ class HomeScreen extends StatelessWidget {
                   shrinkWrap: true,
                   itemCount: 10,
                   itemBuilder: (context, position) {
-                    return const Card(
+                    return Card(
                       color: Colors.white60,
                       child: SizedBox(
                         height: 100,
                         width: 100,
+                        child: Image.network(
+                            'https://eyzvxrcrzdeggefobobs.supabase.co/storage/v1/object/sign/avatars/Madonna_Dom_2016.jpeg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJhdmF0YXJzL01hZG9ubmFfRG9tXzIwMTYuanBlZyIsImlhdCI6MTY4ODg0Mjc2NSwiZXhwIjoxNjkxNDM0NzY1fQ.CmPCp9KNHT4s3hcS2fa7sfDJPUYnVtBf68PR3Xx9eqU&t=2023-07-08T18%3A59%3A25.899Z'),
                       ),
                     );
                   }),

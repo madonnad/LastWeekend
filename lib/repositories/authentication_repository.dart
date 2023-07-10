@@ -1,4 +1,5 @@
 import 'package:shared_photo/models/user.dart';
+import 'package:shared_photo/repositories/data_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supa;
 
 class AuthenticationRepository {
@@ -21,6 +22,12 @@ class AuthenticationRepository {
           //Retrieve DB info from uid
           Map<String, dynamic> retrievedData =
               await retrieveDatabaseInfo(id: supaUser.id);
+
+          DataRepository _datarepo = DataRepository();
+
+          List<dynamic> data =
+              await _datarepo.retrieveAlbumIds(uid: supaUser.id);
+          print(data);
 
           //return the user from the map function
           return mapDataToUser(
