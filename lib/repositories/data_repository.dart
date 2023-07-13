@@ -5,7 +5,7 @@ import 'package:supabase_flutter/supabase_flutter.dart' as supa;
 class DataRepository {
   final supabase = supa.Supabase.instance.client;
 
-  Future<List<String>> retrieveAlbumIds({required String uid}) async {
+  Future<List<Album>> retrieveAlbumIds({required String uid}) async {
     final List<dynamic> albumMap =
         await supabase.from('albumuser').select('album_id').eq('user_id', uid);
 
@@ -16,7 +16,7 @@ class DataRepository {
 
     retrieveAllAlbumsInfo(albumIds: matchingAlbums);
 
-    return matchingAlbums;
+    return retrieveAllAlbumsInfo(albumIds: matchingAlbums);
   }
 
   Future<List<Album>> retrieveAllAlbumsInfo(

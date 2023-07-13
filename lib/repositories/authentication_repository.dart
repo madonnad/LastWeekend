@@ -23,12 +23,6 @@ class AuthenticationRepository {
           Map<String, dynamic> retrievedData =
               await retrieveDatabaseInfo(id: supaUser.id);
 
-          DataRepository _datarepo = DataRepository();
-
-          List<dynamic> data =
-              await _datarepo.retrieveAlbumIds(uid: supaUser.id);
-          print(data);
-
           //return the user from the map function
           return mapDataToUser(
               supaUser: supaUser, retrievedData: retrievedData);
