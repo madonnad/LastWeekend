@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/image.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supa;
@@ -18,6 +20,8 @@ class DataRepository {
 
     return retrieveAllAlbumsInfo(albumIds: matchingAlbums);
   }
+
+  Future<List<Album>> feedAlbumFetch({required int index}) {}
 
   Future<List<Album>> retrieveAllAlbumsInfo(
       {required List<String> albumIds}) async {

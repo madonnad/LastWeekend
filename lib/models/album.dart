@@ -5,8 +5,7 @@ class Album {
   String albumId;
   String albumName;
   String albumOwner;
-  List<Image>? images;
-  List<String>? imageIds;
+  List<Image> images;
   DateTime creationDateTime;
   DateTime lockDateTime;
 
@@ -16,12 +15,11 @@ class Album {
     required this.albumOwner,
     required this.creationDateTime,
     required this.lockDateTime,
-    this.imageIds,
-    this.images,
+    required this.images,
   });
 
   @override
   String toString() {
-    return 'Album(albumId: $albumId, albumName: $albumName, albumOwner: $albumOwner, images: $images, imageIds: $imageIds, creationDateTime: $creationDateTime, lockDateTime: $lockDateTime)';
+    return 'Album(albumId: $albumId, albumName: $albumName, albumOwner: $albumOwner, images: $images, creationDateTime: $creationDateTime, lockDateTime: $lockDateTime)';
   }
 }

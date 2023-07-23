@@ -72,7 +72,8 @@ class LwNavBar extends StatelessWidget {
                 foregroundImage: NetworkImage(
                     context.read<AppBloc>().state.user.avatarUrl ?? ''),
                 backgroundImage: const NetworkImage(
-                    'https://static.vecteezy.com/system/resources/previews/007/033/146/original/profile-icon-login-head-icon-vector.jpg'),
+                  'https://static.vecteezy.com/system/resources/previews/007/033/146/original/profile-icon-login-head-icon-vector.jpg',
+                ),
               ),
               label: '',
             ),

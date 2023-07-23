@@ -21,3 +21,7 @@ class AuthenticatedState extends AppState {
   const AuthenticatedState(User user)
       : super(status: AppStatus.authenticated, user: user);
 }
+
+class LoadingState extends AppState {
+  LoadingState() : super(status: AppStatus.authenticated, user: User.empty);
+}

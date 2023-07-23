@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
+import 'package:shared_photo/bloc/bloc/user_data_bloc.dart';
 import 'package:shared_photo/components/app_comp/lw_app_bar.dart';
 import 'package:shared_photo/components/app_comp/nav_bar.dart';
 
-class HomeScreen extends StatelessWidget {
+import '../components/view_comp/carousel_view.dart';
+
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     //String? avatar = BlocProvider.of<AppBloc>(context).state.user.avatarUrl;
@@ -18,42 +26,77 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: const LwAppBar(),
       bottomNavigationBar: const LwNavBar(),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  itemCount: 10,
-                  itemBuilder: (context, position) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 30, vertical: 40),
-                      child: Card(
-                        color: Colors.white60,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                              25,
-                            ),
+      body: BlocBuilder<UserDataBloc, UserDataState>(
+        builder: (context, state) {
+          return CustomScrollView(
+            shrinkWrap: true,
+            slivers: [
+              const SliverPadding(
+                padding: EdgeInsets.symmetric(vertical: 20),
+              ),
+              SliverList.builder(
+                itemCount: state.albumList.length,
+                itemBuilder: (context, position) {
+                  PageController instanceController =
+                      PageController(viewportFraction: .95, initialPage: 0);
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 75.0),
+                    child: Column(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(left: 25.0),
+                          child: Row(
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Album Name',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    'Users Name',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w200),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                          height: deviceHeight * .5,
-                          width: deviceWidth * .825,
-                          child: Image.network(
-                              'https://eyzvxrcrzdeggefobobs.supabase.co/storage/v1/object/sign/avatars/Madonna_Dom_2016.jpeg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJhdmF0YXJzL01hZG9ubmFfRG9tXzIwMTYuanBlZyIsImlhdCI6MTY4ODg0Mjc2NSwiZXhwIjoxNjkxNDM0NzY1fQ.CmPCp9KNHT4s3hcS2fa7sfDJPUYnVtBf68PR3Xx9eqU&t=2023-07-08T18%3A59%3A25.899Z'),
                         ),
-                      ),
-                    );
-                  }),
-            ),
-            ElevatedButton(
-                onPressed: () {
-                  context.read<AppBloc>().add(const AppLogoutRequested());
+                        SizedBox(
+                          height: deviceHeight * .55,
+                          child: PageView.builder(
+                            scrollDirection: Axis.horizontal,
+                            controller: instanceController,
+                            physics: const ClampingScrollPhysics(),
+                            itemCount: 3,
+                            itemBuilder: (context, count) {
+                              return CarouselView(
+                                sliverIndex: position,
+                                index: count,
+                                pageController: instanceController,
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
                 },
-                child: const Text('Logout'))
-          ],
-        ),
+              ),
+              SliverToBoxAdapter(
+                child: ElevatedButton(
+                  onPressed: () {
+                    context.read<AppBloc>().add(const AppLogoutRequested());
+                  },
+                  child: const Text('Logout'),
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
