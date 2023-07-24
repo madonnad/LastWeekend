@@ -18,9 +18,7 @@ class UserDataBloc extends Bloc<UserDataEvent, UserDataState> {
       (event, emit) async {
         if (event.uid.isNotEmpty) {
           emit(UserDataLoadingState());
-          List<Album> albums =
-              await dataRepository.retrieveAlbumIds(uid: event.uid);
-          albums = sortImagesByVotes(albums);
+          List<Album> albums = await dataRepository.feedAlbumFetch(index: 3);
           emit(UserDataCollectedState(albumList: albums));
           //print(albums);
         } else {

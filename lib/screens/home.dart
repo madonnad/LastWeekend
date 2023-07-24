@@ -4,6 +4,7 @@ import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/bloc/user_data_bloc.dart';
 import 'package:shared_photo/components/app_comp/lw_app_bar.dart';
 import 'package:shared_photo/components/app_comp/nav_bar.dart';
+import 'package:shared_photo/repositories/data_repository.dart';
 
 import '../components/view_comp/carousel_view.dart';
 
@@ -22,6 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     double deviceWidth = MediaQuery.of(context).size.width;
     double deviceHeight = MediaQuery.of(context).size.height;
+    int scrollPos = 0;
 
     return Scaffold(
       appBar: const LwAppBar(),
@@ -39,6 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemBuilder: (context, position) {
                   PageController instanceController =
                       PageController(viewportFraction: .95, initialPage: 0);
+                  scrollPos = position;
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 75.0),
                     child: Column(
@@ -92,6 +95,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     context.read<AppBloc>().add(const AppLogoutRequested());
                   },
                   child: const Text('Logout'),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: ElevatedButton(
+                  onPressed: () {
+                    DataRepository dataRepository = DataRepository();
+                    dataRepository.feedAlbumFetch(index: scrollPos);
+                  },
+                  child: const Text('Load Feed Data'),
                 ),
               ),
             ],
