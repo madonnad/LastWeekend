@@ -29,6 +29,7 @@ class FeedScreen extends StatelessWidget {
                 pinned: true,
                 elevation: 0,
                 backgroundColor: Colors.white,
+                surfaceTintColor: Colors.white,
                 title: RichText(
                   text: TextSpan(
                     children: <TextSpan>[
