@@ -14,7 +14,9 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
   AppBloc({required AuthenticationRepository authenticationRepository})
       : _authenticationRepository = authenticationRepository,
-        super(LoadingState()) {
+        super(authenticationRepository.currentUser.isNotEmpty
+            ? CachedAuthenticatedState(authenticationRepository.currentUser)
+            : const UnauthenticatedState()) {
     on<AppUserChanged>(
       (event, emit) {
         if (event.user != User.empty) {

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
-import 'package:shared_photo/bloc/bloc/user_data_bloc.dart';
 import 'package:shared_photo/repositories/authentication_repository.dart';
 import 'package:shared_photo/repositories/data_repository.dart';
 import 'package:shared_photo/router/generate_route.dart';
-import 'package:shared_photo/screens/home.dart';
+import 'package:shared_photo/screens/app_frame.dart';
 import 'package:shared_photo/screens/auth.dart';
 import 'package:shared_photo/screens/loading.dart';
 import 'package:shared_photo/utils/api_key.dart';
@@ -56,13 +55,6 @@ class MainApp extends StatelessWidget {
               authenticationRepository: _authenticationRepository,
             ),
           ),
-          BlocProvider(
-            lazy: false,
-            create: (context) => UserDataBloc(
-              appBloc: BlocProvider.of<AppBloc>(context),
-              dataRepository: _dataRepository,
-            ),
-          ),
         ],
         child: const MainAppView(),
       ),
@@ -79,8 +71,8 @@ class MainAppView extends StatelessWidget {
       home: BlocBuilder<AppBloc, AppState>(
         builder: (context, state) {
           if (state is AuthenticatedState) {
-            return const HomeScreen();
-          } else if (state is LoadingState) {
+            return const AppFrame();
+          } else if (state is CachedAuthenticatedState) {
             return const LoadingScreen();
           } else {
             return const AuthScreen();

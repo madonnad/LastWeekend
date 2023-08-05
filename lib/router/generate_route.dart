@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shared_photo/screens/album_create.dart';
 import 'package:shared_photo/screens/create_account_auth.dart';
-import 'package:shared_photo/screens/home.dart';
+import 'package:shared_photo/screens/feed.dart';
 import 'package:shared_photo/screens/auth.dart';
 
 Route onGenerateRoute(RouteSettings settings) {
@@ -10,7 +11,9 @@ Route onGenerateRoute(RouteSettings settings) {
     case '/create-account-auth':
       return MaterialPageRoute(builder: (context) => const NewUserOnboarding());
     case '/home':
-      return MaterialPageRoute(builder: (context) => const HomeScreen());
+      return MaterialPageRoute(builder: (context) => const FeedScreen());
+    case '/create-album':
+      return MaterialPageRoute(builder: (context) => const AlbumAppModal());
     default:
       return MaterialPageRoute(builder: (context) => const AuthScreen());
   }

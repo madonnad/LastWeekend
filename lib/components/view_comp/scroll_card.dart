@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_photo/bloc/bloc/user_data_bloc.dart';
+
+import '../../bloc/bloc/feed_bloc.dart';
 
 class ScrollCard extends StatelessWidget {
   final int sliverIndex;
@@ -13,7 +14,7 @@ class ScrollCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserDataBloc, UserDataState>(
+    return BlocBuilder<FeedBloc, FeedState>(
       builder: (context, state) {
         return Card(
           shape: RoundedRectangleBorder(
@@ -23,7 +24,7 @@ class ScrollCard extends StatelessWidget {
           ),
           clipBehavior: Clip.antiAlias,
           child: Image.network(
-            state.albumList[sliverIndex].images[index].imageUrl,
+            state.albums[sliverIndex].images[index].imageUrl ?? '',
             fit: BoxFit.cover,
           ),
         );

@@ -22,6 +22,12 @@ class AuthenticatedState extends AppState {
       : super(status: AppStatus.authenticated, user: user);
 }
 
+class CachedAuthenticatedState extends AppState {
+  const CachedAuthenticatedState(User user)
+      : super(status: AppStatus.authenticated, user: user);
+}
+
 class LoadingState extends AppState {
-  LoadingState() : super(status: AppStatus.authenticated, user: User.empty);
+  const LoadingState()
+      : super(status: AppStatus.authenticated, user: User.empty);
 }

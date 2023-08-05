@@ -14,11 +14,12 @@ class UserDataBloc extends Bloc<UserDataEvent, UserDataState> {
 
   UserDataBloc({required this.appBloc, required this.dataRepository})
       : super(UserDataEmptyState()) {
-    on<UserDataRequested>(
+    on<FeedDataRequested>(
       (event, emit) async {
         if (event.uid.isNotEmpty) {
           emit(UserDataLoadingState());
-          List<Album> albums = await dataRepository.feedAlbumFetch(index: 3);
+          List<Album> albums =
+              await dataRepository.feedAlbumFetch(from: 0, to: 50);
           emit(UserDataCollectedState(albumList: albums));
           //print(albums);
         } else {
@@ -30,7 +31,7 @@ class UserDataBloc extends Bloc<UserDataEvent, UserDataState> {
     appBloc.stream.listen(
       (event) {
         if (event is AuthenticatedState) {
-          add(UserDataRequested(uid: event.user.id));
+          add(FeedDataRequested(uid: event.user.id));
         } else {
           add(RemoveUserData());
         }

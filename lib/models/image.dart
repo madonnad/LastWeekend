@@ -4,7 +4,7 @@ import 'dart:convert';
 class Image {
   String imageId;
   String owner;
-  String imageUrl;
+  String? imageUrl;
   String? imageCaption;
   int upvotes;
   DateTime uploadDateTime;
@@ -14,7 +14,7 @@ class Image {
     required this.owner,
     required this.upvotes,
     required this.uploadDateTime,
-    required this.imageUrl,
+    this.imageUrl,
     this.imageCaption,
   });
 

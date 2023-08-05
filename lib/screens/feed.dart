@@ -1,67 +1,85 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
-import 'package:shared_photo/bloc/bloc/user_data_bloc.dart';
-import 'package:shared_photo/components/app_comp/lw_app_bar.dart';
-import 'package:shared_photo/components/app_comp/nav_bar.dart';
+import 'package:shared_photo/bloc/bloc/feed_bloc.dart';
 import 'package:shared_photo/repositories/data_repository.dart';
 
 import '../components/view_comp/carousel_view.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class FeedScreen extends StatelessWidget {
+  const FeedScreen({super.key});
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    //String? avatar = BlocProvider.of<AppBloc>(context).state.user.avatarUrl;
-    //bool avatarPresent = avatar == null ? false : true;
-
-    double deviceWidth = MediaQuery.of(context).size.width;
     double deviceHeight = MediaQuery.of(context).size.height;
-    int scrollPos = 0;
 
-    return Scaffold(
-      appBar: const LwAppBar(),
-      bottomNavigationBar: const LwNavBar(),
-      body: BlocBuilder<UserDataBloc, UserDataState>(
+    return BlocProvider(
+      lazy: false,
+      create: (context) => FeedBloc(
+        appBloc: BlocProvider.of<AppBloc>(context),
+        dataRepository: context.read<DataRepository>(),
+      ),
+      child: BlocBuilder<FeedBloc, FeedState>(
         builder: (context, state) {
           return CustomScrollView(
             shrinkWrap: true,
             slivers: [
+              SliverAppBar(
+                pinned: true,
+                elevation: 0,
+                backgroundColor: Colors.white,
+                title: RichText(
+                  text: TextSpan(
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: 'last',
+                        style: GoogleFonts.josefinSans(
+                            color: Colors.black,
+                            fontSize: 30,
+                            fontWeight: FontWeight.w100,
+                            letterSpacing: -1.5),
+                      ),
+                      TextSpan(
+                        text: 'weekend',
+                        style: GoogleFonts.dancingScript(
+                          color: Colors.black,
+                          fontSize: 30,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
               const SliverPadding(
                 padding: EdgeInsets.symmetric(vertical: 20),
               ),
               SliverList.builder(
-                itemCount: state.albumList.length,
+                itemCount: state.albums.length,
                 itemBuilder: (context, position) {
+                  // Todo - Create logic here for when to fetch new data based on position and values loaded
                   PageController instanceController =
                       PageController(viewportFraction: .95, initialPage: 0);
-                  scrollPos = position;
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 75.0),
                     child: Column(
                       children: [
-                        const Padding(
-                          padding: EdgeInsets.only(left: 25.0),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 25.0),
                           child: Row(
                             children: [
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Album Name',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
+                                    state.albums[position].albumName,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    'Users Name',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.w200),
+                                    state.albums[position].albumOwner,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.w200),
                                   ),
                                 ],
                               ),
@@ -71,6 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         SizedBox(
                           height: deviceHeight * .55,
                           child: PageView.builder(
+                            allowImplicitScrolling: true,
                             scrollDirection: Axis.horizontal,
                             controller: instanceController,
                             physics: const ClampingScrollPhysics(),
@@ -95,15 +114,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     context.read<AppBloc>().add(const AppLogoutRequested());
                   },
                   child: const Text('Logout'),
-                ),
-              ),
-              SliverToBoxAdapter(
-                child: ElevatedButton(
-                  onPressed: () {
-                    DataRepository dataRepository = DataRepository();
-                    dataRepository.feedAlbumFetch(index: scrollPos);
-                  },
-                  child: const Text('Load Feed Data'),
                 ),
               ),
             ],

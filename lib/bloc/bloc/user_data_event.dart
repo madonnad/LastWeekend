@@ -7,9 +7,9 @@ abstract class UserDataEvent extends Equatable {
   List<Object> get props => [];
 }
 
-final class UserDataRequested extends UserDataEvent {
+final class FeedDataRequested extends UserDataEvent {
   String uid;
-  UserDataRequested({required this.uid});
+  FeedDataRequested({required this.uid});
 }
 
 final class RemoveUserData extends UserDataEvent {}
