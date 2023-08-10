@@ -1,5 +1,4 @@
 import 'package:shared_photo/models/user.dart';
-import 'package:shared_photo/repositories/data_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supa;
 
 class AuthenticationRepository {
