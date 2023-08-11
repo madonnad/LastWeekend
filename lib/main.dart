@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/repositories/authentication_repository.dart';
@@ -39,6 +40,11 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.edgeToEdge,
+    );
+    SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(systemNavigationBarColor: Colors.white));
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider.value(

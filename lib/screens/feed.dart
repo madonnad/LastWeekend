@@ -30,25 +30,27 @@ class FeedScreen extends StatelessWidget {
                 elevation: 0,
                 backgroundColor: Colors.white,
                 surfaceTintColor: Colors.white,
-                title: RichText(
-                  text: TextSpan(
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: 'last',
-                        style: GoogleFonts.josefinSans(
+                title: Center(
+                  child: RichText(
+                    text: TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'last',
+                          style: GoogleFonts.josefinSans(
+                              color: Colors.black,
+                              fontSize: 30,
+                              fontWeight: FontWeight.w100,
+                              letterSpacing: -1.5),
+                        ),
+                        TextSpan(
+                          text: 'weekend',
+                          style: GoogleFonts.dancingScript(
                             color: Colors.black,
                             fontSize: 30,
-                            fontWeight: FontWeight.w100,
-                            letterSpacing: -1.5),
-                      ),
-                      TextSpan(
-                        text: 'weekend',
-                        style: GoogleFonts.dancingScript(
-                          color: Colors.black,
-                          fontSize: 30,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
