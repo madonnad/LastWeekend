@@ -1,0 +1,58 @@
+import 'package:flutter/material.dart';
+import 'package:shared_photo/components/album_create_comp/album_cover_select.dart';
+import 'package:shared_photo/components/album_create_comp/album_title_field.dart';
+import 'package:shared_photo/components/album_create_comp/date_time_section.dart';
+
+class AlbumCreateDetail extends StatelessWidget {
+  final PageController createAlbumController;
+  const AlbumCreateDetail({Key? key, required this.createAlbumController})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Center(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 60, left: 20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                    splashColor: Colors.purple,
+                    onPressed: () => Navigator.of(context).pop(),
+                    icon: const Icon(
+                      Icons.close,
+                      color: Colors.black45,
+                      size: 30,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Expanded(
+              flex: 2,
+              child: Column(
+                children: [
+                  AlbumTitleField(),
+                  AlbumCoverSelect(),
+                ],
+              ),
+            ),
+            const Expanded(
+              flex: 1,
+              child: DateTimeSection(),
+            ),
+            ElevatedButton(
+              onPressed: () => createAlbumController.nextPage(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.linear),
+              child: const Text('Next'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
