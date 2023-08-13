@@ -76,7 +76,6 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       await _authenticationRepository.logInWithEmailAndPassword(
           email: email, password: password);
-
       emit(state.copyWith(isLoading: false));
     } catch (e) {
       emit(state.copyWith(errorMessage: e.toString(), isLoading: false));

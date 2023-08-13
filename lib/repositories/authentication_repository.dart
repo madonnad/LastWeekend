@@ -49,11 +49,15 @@ class AuthenticationRepository {
       {required String id}) async {
     try {
       final listData = await supabase.from('users').select().eq("user_id", id);
+      final friends = await supabase.from('friends_list').select();
 
+      //listData[0][5] = friends;
       final data = listData[0];
+      data["friends"] = friends;
 
       return data;
     } catch (e) {
+      print(e);
       return {};
     }
   }
@@ -68,6 +72,7 @@ class AuthenticationRepository {
       firstName: retrievedData['first_name'],
       lastName: retrievedData['last_name'],
       avatarUrl: retrievedData['avatar'],
+      friendsList: retrievedData['friends'],
     );
   }
 
