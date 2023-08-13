@@ -59,6 +59,7 @@ class MainApp extends StatelessWidget {
           BlocProvider(
             create: (context) => AppBloc(
               authenticationRepository: _authenticationRepository,
+              dataRepository: _dataRepository,
             ),
           ),
         ],

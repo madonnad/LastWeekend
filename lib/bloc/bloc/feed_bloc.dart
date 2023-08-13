@@ -30,11 +30,11 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
       }
     });
 
-    appBloc.stream.listen((state) {
+    /* appBloc.stream.listen((state) {
       if (state is AuthenticatedState) {
         add(const FeedDataRequested(index: 0));
       }
-    });
+    });*/
 
     if (appBloc.state is AuthenticatedState) {
       add(const FeedDataRequested(index: 0));

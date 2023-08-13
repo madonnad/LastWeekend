@@ -8,6 +8,7 @@ class User extends Equatable {
   final String? firstName;
   final String? lastName;
   final String? avatarUrl;
+  final List<dynamic>? friendsList;
 
   // Constructors
   const User({
@@ -17,6 +18,7 @@ class User extends Equatable {
     this.firstName,
     this.lastName,
     this.avatarUrl,
+    this.friendsList,
   });
 
   static const empty = User(id: '');
@@ -29,5 +31,6 @@ class User extends Equatable {
 
   //Equatable overrides
   @override
-  List<Object?> get props => [email, id, firstName, lastName, avatarUrl];
+  List<Object?> get props =>
+      [email, id, firstName, lastName, avatarUrl, friendsList];
 }
