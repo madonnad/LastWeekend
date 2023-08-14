@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/cubit/create_album_cubit.dart';
 import 'package:shared_photo/screens/album_create/album_create_detail.dart';
+import 'package:shared_photo/screens/album_create/album_create_friends.dart';
 
 class AlbumCreateModal extends StatelessWidget {
   const AlbumCreateModal({super.key});
@@ -19,12 +20,7 @@ class AlbumCreateModal extends StatelessWidget {
           controller: createAlbumController,
           children: [
             AlbumCreateDetail(createAlbumController: createAlbumController),
-            Center(
-              child: ElevatedButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('Page 2'),
-              ),
-            ),
+            AlbumCreateFriends(createAlbumController: createAlbumController),
           ],
         ),
       ),

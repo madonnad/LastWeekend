@@ -27,6 +27,7 @@ class AppFrame extends StatelessWidget {
         ),
       ],
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: BlocBuilder<AppFrameCubit, AppFrameState>(
           builder: (context, state) {
             return PageView(
