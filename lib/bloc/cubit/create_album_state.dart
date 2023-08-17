@@ -2,6 +2,7 @@ part of 'create_album_cubit.dart';
 
 class CreateAlbumState extends Equatable {
   final TextEditingController? albumName;
+  final TextEditingController? friendSearch;
   final String? albumCoverImagePath;
   final List<String>? invitedFriends;
   // Unlock Date Variables
@@ -13,9 +14,13 @@ class CreateAlbumState extends Equatable {
   // Reveal Date Variables
   final DateTime? revealDateTime;
   final TimeOfDay? revealTimeOfDay;
+  // Friends List
+  final List<Friend>? friendsList;
+  final List<Friend>? searchResult;
 
   const CreateAlbumState({
     this.albumName,
+    this.friendSearch,
     this.albumCoverImagePath,
     this.invitedFriends,
     // Unlock Date Variables
@@ -27,10 +32,14 @@ class CreateAlbumState extends Equatable {
     // Reveal Date Variables
     this.revealDateTime,
     this.revealTimeOfDay,
+    //Friends
+    this.friendsList,
+    this.searchResult,
   });
 
   CreateAlbumState copyWith({
     TextEditingController? albumName,
+    TextEditingController? friendSearch,
     String? albumCoverImagePath,
     List<String>? invitedFriends,
     DateTime? unlockDateTime,
@@ -40,9 +49,12 @@ class CreateAlbumState extends Equatable {
     String? lockTimeString,
     DateTime? revealDateTime,
     TimeOfDay? revealTimeOfDay,
+    List<Friend>? friendsList,
+    List<Friend>? searchResult,
   }) {
     return CreateAlbumState(
       albumName: albumName ?? this.albumName,
+      friendSearch: friendSearch ?? this.friendSearch,
       albumCoverImagePath: albumCoverImagePath ?? this.albumCoverImagePath,
       invitedFriends: invitedFriends ?? this.invitedFriends,
       unlockDateTime: unlockDateTime ?? this.unlockDateTime,
@@ -51,6 +63,8 @@ class CreateAlbumState extends Equatable {
       lockTimeOfDay: lockTimeOfDay ?? this.lockTimeOfDay,
       revealDateTime: revealDateTime ?? this.revealDateTime,
       revealTimeOfDay: revealTimeOfDay ?? this.revealTimeOfDay,
+      friendsList: friendsList ?? this.friendsList,
+      searchResult: searchResult ?? this.searchResult,
     );
   }
 
@@ -59,6 +73,7 @@ class CreateAlbumState extends Equatable {
   CreateAlbumState copyWithNullLockDate() {
     return CreateAlbumState(
       albumName: albumName,
+      friendSearch: friendSearch,
       albumCoverImagePath: albumCoverImagePath,
       invitedFriends: invitedFriends,
       unlockDateTime: unlockDateTime,
@@ -67,12 +82,15 @@ class CreateAlbumState extends Equatable {
       lockTimeOfDay: null,
       revealDateTime: revealDateTime,
       revealTimeOfDay: revealTimeOfDay,
+      friendsList: friendsList,
+      searchResult: searchResult,
     );
   }
 
   CreateAlbumState copyWithNullRevealDate() {
     return CreateAlbumState(
       albumName: albumName,
+      friendSearch: friendSearch,
       albumCoverImagePath: albumCoverImagePath,
       invitedFriends: invitedFriends,
       unlockDateTime: unlockDateTime,
@@ -81,12 +99,15 @@ class CreateAlbumState extends Equatable {
       lockTimeOfDay: lockTimeOfDay,
       revealDateTime: null,
       revealTimeOfDay: null,
+      friendsList: friendsList,
+      searchResult: searchResult,
     );
   }
 
   @override
   List<Object?> get props => [
         albumName,
+        friendSearch,
         albumCoverImagePath,
         invitedFriends,
         unlockDateTime,
@@ -96,6 +117,8 @@ class CreateAlbumState extends Equatable {
         revealDateTime,
         revealTimeOfDay,
         revealTimeString,
+        friendsList,
+        searchResult,
       ];
 
   //? Date Getters and Formatter
