@@ -22,9 +22,14 @@ class AuthenticationRepository {
           Map<String, dynamic> retrievedData =
               await retrieveDatabaseInfo(id: supaUser.id);
 
-          //return the user from the map function
-          return mapDataToUser(
-              supaUser: supaUser, retrievedData: retrievedData);
+          User newUser = User.fromRepoData(
+              id: supaUser.id,
+              email: supaUser
+                      .email ?? // supabase warning us because it would possible to have an empty email
+                  '',
+              retrievedData: retrievedData);
+
+          return newUser;
         } else {
           return User.empty;
         }
@@ -39,7 +44,7 @@ class AuthenticationRepository {
       supa.User supaUser = session.user;
 
       //return the user from the map function
-      return User(id: supaUser.id);
+      return User(id: supaUser.id, firstName: '', lastName: '');
     } else {
       return User.empty;
     }
