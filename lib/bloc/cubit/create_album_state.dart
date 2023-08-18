@@ -1,6 +1,12 @@
 part of 'create_album_cubit.dart';
 
-class CreateAlbumState extends Equatable {
+enum FriendState {
+  empty,
+  searching,
+  added,
+}
+
+final class CreateAlbumState extends Equatable {
   final TextEditingController? albumName;
   final TextEditingController? friendSearch;
   final String? albumCoverImagePath;
@@ -16,7 +22,8 @@ class CreateAlbumState extends Equatable {
   final TimeOfDay? revealTimeOfDay;
   // Friends List
   final List<Friend>? friendsList;
-  final List<Friend>? searchResult;
+  final List<Friend> searchResult;
+  final FriendState friendState;
 
   const CreateAlbumState({
     this.albumName,
@@ -33,8 +40,9 @@ class CreateAlbumState extends Equatable {
     this.revealDateTime,
     this.revealTimeOfDay,
     //Friends
-    this.friendsList,
-    this.searchResult,
+    this.friendsList = const [],
+    this.searchResult = const [],
+    this.friendState = FriendState.empty,
   });
 
   CreateAlbumState copyWith({
@@ -51,6 +59,7 @@ class CreateAlbumState extends Equatable {
     TimeOfDay? revealTimeOfDay,
     List<Friend>? friendsList,
     List<Friend>? searchResult,
+    FriendState? friendState,
   }) {
     return CreateAlbumState(
       albumName: albumName ?? this.albumName,
@@ -65,6 +74,7 @@ class CreateAlbumState extends Equatable {
       revealTimeOfDay: revealTimeOfDay ?? this.revealTimeOfDay,
       friendsList: friendsList ?? this.friendsList,
       searchResult: searchResult ?? this.searchResult,
+      friendState: friendState ?? this.friendState,
     );
   }
 
@@ -84,6 +94,7 @@ class CreateAlbumState extends Equatable {
       revealTimeOfDay: revealTimeOfDay,
       friendsList: friendsList,
       searchResult: searchResult,
+      friendState: friendState,
     );
   }
 
@@ -101,6 +112,7 @@ class CreateAlbumState extends Equatable {
       revealTimeOfDay: null,
       friendsList: friendsList,
       searchResult: searchResult,
+      friendState: friendState,
     );
   }
 
@@ -119,6 +131,7 @@ class CreateAlbumState extends Equatable {
         revealTimeString,
         friendsList,
         searchResult,
+        friendState,
       ];
 
   //? Date Getters and Formatter
@@ -191,11 +204,11 @@ class CreateAlbumState extends Equatable {
   String timeFormatter(TimeOfDay time) {
     String hour = time.hour.toString();
     String minute = time.minute.toString();
-    String ampm = 'am';
+    String amPm = 'am';
     String timeString;
 
     if (time.hour % 12 != time.hour) {
-      ampm = 'pm';
+      amPm = 'pm';
       hour = (time.hour - 12).toString();
     }
 
@@ -203,7 +216,7 @@ class CreateAlbumState extends Equatable {
       minute = '0${time.minute.toString()}';
     }
 
-    timeString = '$hour:$minute $ampm';
+    timeString = '$hour:$minute $amPm';
     return timeString;
   }
 }

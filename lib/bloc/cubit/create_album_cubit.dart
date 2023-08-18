@@ -1,23 +1,42 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/models/friend.dart';
 
 part 'create_album_state.dart';
 
 class CreateAlbumCubit extends Cubit<CreateAlbumState> {
-  CreateAlbumCubit() : super(const CreateAlbumState());
+  AppBloc appBloc;
+  List<Friend> _appBlocFriendsList = [];
+  CreateAlbumCubit({required this.appBloc})
+      : super(
+          CreateAlbumState(
+            friendSearch: TextEditingController(),
+          ),
+        ) {
+    if (appBloc.state is AuthenticatedState) {
+      _appBlocFriendsList = appBloc.state.user.friendsList!;
+    }
+    appBloc.stream.listen(
+      (event) {
+        _appBlocFriendsList = appBloc.state.user.friendsList!;
+      },
+    );
+  }
 
-  void searchFriendByName(List<Friend> blocFriendList) async {
+  void searchFriendByName() async {
+    await Future.delayed(const Duration(milliseconds: 500));
     List<Friend> lookupResult = [];
 
-    await Future.delayed(const Duration(milliseconds: 250));
-
-    for (var friend in blocFriendList) {
+    for (var friend in _appBlocFriendsList) {
       if (state.friendSearch!.text.isNotEmpty) {
-        if (friend.firstName.contains(state.friendSearch!.text) ||
-            friend.lastName.contains(state.friendSearch!.text)) {
+        String catString =
+            '${friend.firstName.toLowerCase()} ${friend.lastName.toLowerCase()}';
+        if (catString.contains(state.friendSearch!.text.toLowerCase())) {
           lookupResult.add(friend);
         }
       }
@@ -25,7 +44,20 @@ class CreateAlbumCubit extends Cubit<CreateAlbumState> {
     lookupResult.sort((a, b) =>
         a.firstName.toLowerCase().compareTo(b.firstName.toLowerCase()));
 
-    emit(state.copyWith(searchResult: lookupResult));
+    emit(
+      state.copyWith(
+        searchResult: lookupResult,
+        friendState: FriendState.searching,
+      ),
+    );
+  }
+
+  void addFriendToAlbumFriendList(String uid) {}
+
+  void checkToShowEmptyState() {
+    if (state.friendSearch!.text.isEmpty && state.friendsList!.isEmpty) {
+      emit(state.copyWith(friendState: FriendState.empty));
+    }
   }
 
   void addImage(String? imagePath) {
@@ -78,3 +110,19 @@ class CreateAlbumCubit extends Cubit<CreateAlbumState> {
     emit(state.copyWith(revealTimeOfDay: time));
   }
 }
+
+/*CreateAlbumState(
+friendSearch: TextEditingController(),
+friendsList: [
+Friend(
+uid: "12345",
+firstName: 'Zoe',
+lastName: 'Madonna',
+),
+Friend(
+uid: "67890",
+firstName: 'Jamie',
+lastName: 'Kuppel',
+)
+],
+),*/

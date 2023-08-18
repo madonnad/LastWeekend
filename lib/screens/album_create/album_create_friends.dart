@@ -4,6 +4,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/create_album_cubit.dart';
 import 'package:shared_photo/components/album_create_comp/add_friends_list_item.dart';
+import 'package:shared_photo/components/album_create_comp/added_friends_header.dart';
+import 'package:shared_photo/components/album_create_comp/empty_friends_section.dart';
+import 'package:shared_photo/components/album_create_comp/friends_no_search_section.dart';
+import 'package:shared_photo/components/album_create_comp/friends_search_section.dart';
+import 'package:shared_photo/components/album_create_comp/modal_header.dart';
 
 class AlbumCreateFriends extends StatelessWidget {
   final PageController createAlbumController;
@@ -11,120 +16,64 @@ class AlbumCreateFriends extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double devHeight = MediaQuery.of(context).size.height;
-
     return SafeArea(
       child: Stack(
         children: [
           CustomScrollView(
+            physics: const ClampingScrollPhysics(),
             reverse: true,
             slivers: [
               SliverFillRemaining(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    BlocBuilder<CreateAlbumCubit, CreateAlbumState>(
-                      builder: (context, state) {
-                        return SizedBox(
-                          height: (state.friendsList != null)
-                              ? devHeight * .25
-                              : devHeight * .18,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 60, left: 20.0),
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    IconButton(
-                                      splashColor: Colors.purple,
-                                      onPressed: () =>
-                                          createAlbumController.previousPage(
-                                        duration:
-                                            const Duration(milliseconds: 300),
-                                        curve: Curves.linear,
-                                      ),
-                                      icon: const Icon(
-                                        Icons.arrow_back,
-                                        color: Colors.black45,
-                                        size: 30,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Padding(
-                                  padding: (state.friendsList != null)
-                                      ? const EdgeInsets.symmetric(vertical: 10)
-                                      : EdgeInsets.zero,
-                                ),
-                                (state.friendsList != null)
-                                    ? Expanded(
-                                        child: ListView.separated(
-                                          shrinkWrap: true,
-                                          scrollDirection: Axis.horizontal,
-                                          itemCount: state.friendsList!.length,
-                                          itemBuilder: (context, index) {
-                                            return Column(
-                                              children: [
-                                                const CircleAvatar(),
-                                                Text('First $index'),
-                                              ],
-                                            );
-                                          },
-                                          separatorBuilder:
-                                              (BuildContext context,
-                                                  int index) {
-                                            return const Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 10),
-                                            );
-                                          },
-                                        ),
-                                      )
-                                    : Text(
-                                        'add friends',
-                                        style: GoogleFonts.poppins(
-                                          color: Colors.black,
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
+                    Padding(
+                      padding: const EdgeInsets.only(top: 60),
+                      child: ModalHeader(
+                        iconFunction: () => createAlbumController.previousPage(
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.linear,
+                        ),
+                        title: 'add friends',
+                        icon: const Icon(
+                          Icons.arrow_back,
+                          color: Colors.black45,
+                          size: 30,
+                        ),
+                      ),
                     ),
+                    const AddedFriendsHeader(),
                     BlocBuilder<CreateAlbumCubit, CreateAlbumState>(
                       builder: (context, state) {
-                        return Expanded(
-                          child: ListView.builder(
-                            reverse: true,
-                            shrinkWrap: true,
-                            itemCount: (state.friendsList != null)
-                                ? state.friendsList!.length
-                                : context
-                                    .read<AppBloc>()
-                                    .state
-                                    .user
-                                    .friendsList!
-                                    .length,
-                            itemBuilder: (context, index) {
-                              return AddFriendsListItem(
-                                  name: 'Zoe ${index + 1}');
-                            },
-                          ),
-                        );
+                        switch (state.friendState) {
+                          case FriendState.empty:
+                            return const EmptyFriendsSection();
+                          case FriendState.added:
+                            return const FriendsNoSearchSection();
+                          case FriendState.searching:
+                            return const FriendSearchSection();
+                        }
                       },
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: TextField(
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                            hintText: 'search friends',
-                            hintStyle: GoogleFonts.poppins()),
+                      child: BlocBuilder<CreateAlbumCubit, CreateAlbumState>(
+                        builder: (context, state) {
+                          return TextField(
+                            controller: state.friendSearch,
+                            onTapOutside: (_) => context
+                                .read<CreateAlbumCubit>()
+                                .checkToShowEmptyState(),
+                            onChanged: (value) => context
+                                .read<CreateAlbumCubit>()
+                                .searchFriendByName(),
+                            textAlign: TextAlign.center,
+                            decoration: InputDecoration(
+                              hintText: 'search friends',
+                              hintStyle: GoogleFonts.poppins(),
+                            ),
+                          );
+                        },
                       ),
                     ),
                     Padding(

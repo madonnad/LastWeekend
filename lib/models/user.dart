@@ -9,7 +9,7 @@ class User extends Equatable {
   final String firstName;
   final String lastName;
   final String? avatarUrl;
-  final List<dynamic>? friendsList;
+  final List<Friend>? friendsList;
 
   // Constructors
   const User({
@@ -19,7 +19,7 @@ class User extends Equatable {
     required this.firstName,
     required this.lastName,
     this.avatarUrl,
-    this.friendsList,
+    this.friendsList = const [],
   });
 
   static const empty = User(id: '', firstName: '', lastName: '');
