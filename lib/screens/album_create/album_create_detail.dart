@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_photo/components/album_create_comp/album_cover_select.dart';
 import 'package:shared_photo/components/album_create_comp/album_title_field.dart';
 import 'package:shared_photo/components/album_create_comp/date_time_section.dart';
+import 'package:shared_photo/components/album_create_comp/modal_header.dart';
 
 class AlbumCreateDetail extends StatelessWidget {
   final PageController createAlbumController;
@@ -15,20 +16,15 @@ class AlbumCreateDetail extends StatelessWidget {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 60, left: 20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    splashColor: Colors.purple,
-                    onPressed: () => Navigator.of(context).pop(),
-                    icon: const Icon(
-                      Icons.close,
-                      color: Colors.black45,
-                      size: 30,
-                    ),
-                  ),
-                ],
+              padding: const EdgeInsets.only(top: 60),
+              child: ModalHeader(
+                iconFunction: () => Navigator.of(context).pop(),
+                title: "",
+                icon: const Icon(
+                  Icons.close,
+                  color: Colors.black45,
+                  size: 30,
+                ),
               ),
             ),
             const Expanded(
