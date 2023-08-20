@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -6,13 +7,15 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/models/friend.dart';
+import 'package:shared_photo/repositories/data_repository.dart';
 
 part 'create_album_state.dart';
 
 class CreateAlbumCubit extends Cubit<CreateAlbumState> {
   AppBloc appBloc;
+  DataRepository dataRepository;
   List<Friend> _appBlocFriendsList = [];
-  CreateAlbumCubit({required this.appBloc})
+  CreateAlbumCubit({required this.appBloc, required this.dataRepository})
       : super(
           CreateAlbumState(
             friendSearch: TextEditingController(),
@@ -101,6 +104,18 @@ class CreateAlbumCubit extends Cubit<CreateAlbumState> {
 
   void addImage(String? imagePath) {
     emit(state.copyWith(albumCoverImagePath: imagePath));
+  }
+
+  Future<void> createAlbum() async {
+    String imageUID =
+        await dataRepository.createNewImageRecord(uid: appBloc.state.user.id);
+
+    dataRepository.insertImageToBucket(
+      imageUID: imageUID,
+      filePath: File(
+        state.albumCoverImagePath!,
+      ),
+    );
   }
 
   void setUnlockDate(DateTime dateTime) {

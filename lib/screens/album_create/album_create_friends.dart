@@ -84,7 +84,15 @@ class AlbumCreateFriends extends StatelessWidget {
                       ),
                     ),
                     ElevatedButton(
-                      onPressed: () => Navigator.of(context).pop(),
+                      onPressed: () {
+                        context.read<CreateAlbumCubit>().createAlbum();
+                      },
+                      child: const Text('Create Album'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
                       child: const Text('Page 2'),
                     ),
                   ],
