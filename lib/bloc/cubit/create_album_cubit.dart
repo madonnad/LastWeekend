@@ -28,6 +28,40 @@ class CreateAlbumCubit extends Cubit<CreateAlbumState> {
     );
   }
 
+  void handleFriendAddRemoveFromAlbum(Friend friend) {
+    List<Friend> currentFriendList = List.from(state.friendsList);
+    bool friendIsInList = currentFriendList
+        .where((element) => element.uid == friend.uid)
+        .isNotEmpty;
+
+    if (friendIsInList) {
+      currentFriendList.removeWhere((element) => element.uid == friend.uid);
+      emit(state.copyWith(friendsList: currentFriendList));
+      createModalString();
+    } else {
+      currentFriendList.add(friend);
+      emit(state.copyWith(friendsList: currentFriendList));
+      createModalString();
+    }
+  }
+
+  void createModalString() {
+    int addedFriendsLength = state.friendsList.length;
+    if (addedFriendsLength == 1) {
+      String genString = state.friendsList[0].firstName;
+      emit(state.copyWith(modalTextString: genString));
+    } else if (addedFriendsLength == 2) {
+      String genString =
+          '${state.friendsList[0].firstName} & ${state.friendsList[1].firstName}';
+      emit(state.copyWith(modalTextString: genString));
+    } else if (addedFriendsLength > 2) {
+      int numMorePeople = state.friendsList.length - 2;
+      String genString =
+          '${state.friendsList[0].firstName}, ${state.friendsList[1].firstName} & $numMorePeople other friends';
+      emit(state.copyWith(modalTextString: genString));
+    }
+  }
+
   void searchFriendByName() async {
     await Future.delayed(const Duration(milliseconds: 500));
     List<Friend> lookupResult = [];
@@ -44,19 +78,24 @@ class CreateAlbumCubit extends Cubit<CreateAlbumState> {
     lookupResult.sort((a, b) =>
         a.firstName.toLowerCase().compareTo(b.firstName.toLowerCase()));
 
-    emit(
-      state.copyWith(
-        searchResult: lookupResult,
-        friendState: FriendState.searching,
-      ),
-    );
+    if (lookupResult.isNotEmpty) {
+      emit(
+        state.copyWith(
+          searchResult: lookupResult,
+          friendState: FriendState.searching,
+        ),
+      );
+    } else {
+      checkToShowState();
+    }
   }
 
-  void addFriendToAlbumFriendList(String uid) {}
-
-  void checkToShowEmptyState() {
-    if (state.friendSearch!.text.isEmpty && state.friendsList!.isEmpty) {
+  void checkToShowState() {
+    if (state.friendSearch!.text.isEmpty && state.friendsList.isEmpty) {
       emit(state.copyWith(friendState: FriendState.empty));
+    } else if (state.friendSearch!.text.isEmpty &&
+        state.friendsList.isNotEmpty) {
+      emit(state.copyWith(friendState: FriendState.added));
     }
   }
 

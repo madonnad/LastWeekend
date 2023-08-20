@@ -63,10 +63,12 @@ class AlbumCreateFriends extends StatelessWidget {
                             controller: state.friendSearch,
                             onTapOutside: (_) => context
                                 .read<CreateAlbumCubit>()
-                                .checkToShowEmptyState(),
-                            onChanged: (value) => context
-                                .read<CreateAlbumCubit>()
-                                .searchFriendByName(),
+                                .checkToShowState(),
+                            onChanged: (value) {
+                              context
+                                  .read<CreateAlbumCubit>()
+                                  .searchFriendByName();
+                            },
                             textAlign: TextAlign.center,
                             decoration: InputDecoration(
                               hintText: 'search friends',

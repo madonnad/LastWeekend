@@ -21,9 +21,10 @@ final class CreateAlbumState extends Equatable {
   final DateTime? revealDateTime;
   final TimeOfDay? revealTimeOfDay;
   // Friends List
-  final List<Friend>? friendsList;
+  final List<Friend> friendsList;
   final List<Friend> searchResult;
   final FriendState friendState;
+  final String modalTextString;
 
   const CreateAlbumState({
     this.albumName,
@@ -43,6 +44,7 @@ final class CreateAlbumState extends Equatable {
     this.friendsList = const [],
     this.searchResult = const [],
     this.friendState = FriendState.empty,
+    this.modalTextString = '',
   });
 
   CreateAlbumState copyWith({
@@ -60,6 +62,7 @@ final class CreateAlbumState extends Equatable {
     List<Friend>? friendsList,
     List<Friend>? searchResult,
     FriendState? friendState,
+    String? modalTextString,
   }) {
     return CreateAlbumState(
       albumName: albumName ?? this.albumName,
@@ -75,6 +78,7 @@ final class CreateAlbumState extends Equatable {
       friendsList: friendsList ?? this.friendsList,
       searchResult: searchResult ?? this.searchResult,
       friendState: friendState ?? this.friendState,
+      modalTextString: modalTextString ?? this.modalTextString,
     );
   }
 
@@ -95,6 +99,7 @@ final class CreateAlbumState extends Equatable {
       friendsList: friendsList,
       searchResult: searchResult,
       friendState: friendState,
+      modalTextString: modalTextString,
     );
   }
 
@@ -113,6 +118,7 @@ final class CreateAlbumState extends Equatable {
       friendsList: friendsList,
       searchResult: searchResult,
       friendState: friendState,
+      modalTextString: modalTextString,
     );
   }
 
@@ -132,6 +138,7 @@ final class CreateAlbumState extends Equatable {
         friendsList,
         searchResult,
         friendState,
+        modalTextString,
       ];
 
   //? Date Getters and Formatter

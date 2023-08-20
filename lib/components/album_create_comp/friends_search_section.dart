@@ -17,8 +17,7 @@ class FriendSearchSection extends StatelessWidget {
             itemCount: state.searchResult.length,
             itemBuilder: (context, index) {
               return AddFriendsListItem(
-                name:
-                    '${state.searchResult[index].firstName} ${state.searchResult[index].lastName}',
+                index: index,
               );
             },
           ),

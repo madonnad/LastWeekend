@@ -11,26 +11,33 @@ class FriendsNoSearchSection extends StatelessWidget {
     return BlocBuilder<CreateAlbumCubit, CreateAlbumState>(
       builder: (context, state) {
         return Expanded(
-          child: GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 4,
-            ),
-            itemCount: state.friendsList!.length,
-            itemBuilder: (context, index) {
-              return Column(
-                children: [
-                  const CircleAvatar(
-                    backgroundColor: Colors.cyanAccent,
-                  ),
-                  Text(
-                    state.friendsList![index].firstName,
-                    style: GoogleFonts.poppins(
-                      fontSize: 16,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 35.0),
+            child: GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 4,
+              ),
+              itemCount: state.friendsList!.length,
+              itemBuilder: (context, index) {
+                return Column(
+                  children: [
+                    const CircleAvatar(
+                      backgroundColor: Colors.deepPurple,
+                      radius: 25,
                     ),
-                  )
-                ],
-              );
-            },
+                    const Padding(
+                      padding: EdgeInsets.only(top: 6),
+                    ),
+                    Text(
+                      state.friendsList![index].firstName,
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                      ),
+                    )
+                  ],
+                );
+              },
+            ),
           ),
         );
       },
