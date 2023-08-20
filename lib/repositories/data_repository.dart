@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/image.dart';
@@ -68,6 +69,36 @@ class DataRepository {
       return imageUrl;
     } catch (e) {
       return imageUrl;
+    }
+  }
+
+  Future<String> createNewImageRecord({
+    required String uid,
+    int upvotes = 0,
+    String caption = '',
+  }) async {
+    String imageUID = '';
+    try {
+      dynamic response = await supabase.from('images').insert({
+        'image_owner': uid,
+        'caption': caption,
+        'upvotes': upvotes,
+      }).select();
+      imageUID = response[0]['image_id'];
+    } catch (e) {
+      print(e);
+    }
+
+    return imageUID;
+  }
+
+  Future<void> insertImageToBucket(
+      {required String imageUID, required File filePath}) async {
+    try {
+      final String path =
+          await supabase.storage.from('images').upload(imageUID, filePath);
+    } catch (e) {
+      print(e);
     }
   }
 }
