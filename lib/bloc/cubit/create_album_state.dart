@@ -7,9 +7,10 @@ enum FriendState {
 }
 
 final class CreateAlbumState extends Equatable {
-  final TextEditingController? albumName;
+  final TextEditingController albumName;
   final TextEditingController? friendSearch;
   final String? albumCoverImagePath;
+  final String? albumUID;
   final List<String>? invitedFriends;
   // Unlock Date Variables
   final DateTime? unlockDateTime;
@@ -27,9 +28,10 @@ final class CreateAlbumState extends Equatable {
   final String modalTextString;
 
   const CreateAlbumState({
-    this.albumName,
-    this.friendSearch,
+    required this.albumName,
+    required this.friendSearch,
     this.albumCoverImagePath,
+    this.albumUID,
     this.invitedFriends,
     // Unlock Date Variables
     this.unlockDateTime,
@@ -51,6 +53,7 @@ final class CreateAlbumState extends Equatable {
     TextEditingController? albumName,
     TextEditingController? friendSearch,
     String? albumCoverImagePath,
+    String? albumUID,
     List<String>? invitedFriends,
     DateTime? unlockDateTime,
     TimeOfDay? unlockTimeOfDay,
@@ -68,6 +71,7 @@ final class CreateAlbumState extends Equatable {
       albumName: albumName ?? this.albumName,
       friendSearch: friendSearch ?? this.friendSearch,
       albumCoverImagePath: albumCoverImagePath ?? this.albumCoverImagePath,
+      albumUID: albumUID ?? this.albumUID,
       invitedFriends: invitedFriends ?? this.invitedFriends,
       unlockDateTime: unlockDateTime ?? this.unlockDateTime,
       unlockTimeOfDay: unlockTimeOfDay ?? this.unlockTimeOfDay,
@@ -89,6 +93,7 @@ final class CreateAlbumState extends Equatable {
       albumName: albumName,
       friendSearch: friendSearch,
       albumCoverImagePath: albumCoverImagePath,
+      albumUID: albumUID,
       invitedFriends: invitedFriends,
       unlockDateTime: unlockDateTime,
       unlockTimeOfDay: unlockTimeOfDay,
@@ -108,6 +113,7 @@ final class CreateAlbumState extends Equatable {
       albumName: albumName,
       friendSearch: friendSearch,
       albumCoverImagePath: albumCoverImagePath,
+      albumUID: albumUID,
       invitedFriends: invitedFriends,
       unlockDateTime: unlockDateTime,
       unlockTimeOfDay: unlockTimeOfDay,
@@ -127,6 +133,7 @@ final class CreateAlbumState extends Equatable {
         albumName,
         friendSearch,
         albumCoverImagePath,
+        albumUID,
         invitedFriends,
         unlockDateTime,
         unlockTimeOfDay,
@@ -141,7 +148,73 @@ final class CreateAlbumState extends Equatable {
         modalTextString,
       ];
 
+  bool get canCreate {
+    if (friendsList.isNotEmpty &&
+        albumCoverImagePath!.isNotEmpty &&
+        unlockDateTime != null &&
+        unlockTimeOfDay != null &&
+        lockDateTime != null &&
+        lockTimeOfDay != null &&
+        revealDateTime != null &&
+        revealTimeOfDay != null &&
+        albumName.text.isNotEmpty) {
+      return true;
+    }
+    return false;
+  }
+
+  //? Friend Getters
+  List<String> get friendUIDList {
+    List<String> uidList = friendsList.map((e) => e.uid).toList();
+    return uidList;
+  }
+
   //? Date Getters and Formatter
+
+  DateTime get finalLockDateTime {
+    DateTime dateTime = DateTime(1900);
+    if (lockDateTime != null && lockTimeOfDay != null) {
+      dateTime = DateTime(
+        lockDateTime!.year,
+        lockDateTime!.month,
+        lockDateTime!.day,
+        lockTimeOfDay!.hour,
+        lockTimeOfDay!.minute,
+        0,
+      );
+    }
+    return dateTime;
+  }
+
+  DateTime get finalUnlockDateTime {
+    DateTime dateTime = DateTime(1900);
+    if (unlockDateTime != null && unlockTimeOfDay != null) {
+      dateTime = DateTime(
+        unlockDateTime!.year,
+        unlockDateTime!.month,
+        unlockDateTime!.day,
+        unlockTimeOfDay!.hour,
+        unlockTimeOfDay!.minute,
+        0,
+      );
+    }
+    return dateTime;
+  }
+
+  DateTime get finalRevealDateTime {
+    DateTime dateTime = DateTime(1900);
+    if (revealDateTime != null && revealTimeOfDay != null) {
+      dateTime = DateTime(
+        revealDateTime!.year,
+        revealDateTime!.month,
+        revealDateTime!.day,
+        revealTimeOfDay!.hour,
+        revealTimeOfDay!.minute,
+        0,
+      );
+    }
+    return dateTime;
+  }
 
   String? get unlockDateString {
     String? date;
@@ -217,6 +290,11 @@ final class CreateAlbumState extends Equatable {
     if (time.hour % 12 != time.hour) {
       amPm = 'pm';
       hour = (time.hour - 12).toString();
+    }
+
+    if (time.hour == 0) {
+      amPm = 'am';
+      hour = 12.toString();
     }
 
     if (time.minute < 10) {

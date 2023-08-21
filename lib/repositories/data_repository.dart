@@ -26,9 +26,14 @@ class DataRepository {
 
       // Calls the listOfImageFetch to gather the image information
       for (var item in response) {
+        print(item);
         Album album = Album.fromMap(item);
+        print(album);
         album.images =
             await listOfImageFetch(albumId: album.albumId, numToFetch: 3);
+        if (album.albumCoverId.isNotEmpty) {
+          album.albumCoverUrl = await fetchSignedUrl(album.albumCoverId);
+        }
         albums.add(album);
       }
     }
@@ -41,18 +46,26 @@ class DataRepository {
     final List<Image> images = [];
 
     if (session != null) {
-      List<dynamic> response = await supabase
-          .from('images')
-          .select('*, imagealbum!inner(album_id)')
-          .eq('imagealbum.album_id', albumId)
-          .order('upvotes', ascending: false);
-
-      for (var item in response) {
-        Image image = Image.fromMap(item);
-        image.imageUrl = await supabase.storage
+      try {
+        List<dynamic> response = await supabase
             .from('images')
-            .createSignedUrl(image.imageId, (60 * 100));
-        images.add(image);
+            .select('*, imagealbum!inner(album_id)')
+            .eq('imagealbum.album_id', albumId)
+            .order('upvotes', ascending: false);
+
+        if (response.isEmpty) {
+          return images;
+        }
+
+        for (var item in response) {
+          Image image = Image.fromMap(item);
+          image.imageUrl = await supabase.storage
+              .from('images')
+              .createSignedUrl(image.imageId, (60 * 100));
+          images.add(image);
+        }
+      } catch (e) {
+        print(e);
       }
     }
 
@@ -92,11 +105,48 @@ class DataRepository {
     return imageUID;
   }
 
-  Future<void> insertImageToBucket(
+  Future<bool> insertImageToBucket(
       {required String imageUID, required File filePath}) async {
+    String path = '';
     try {
-      final String path =
-          await supabase.storage.from('images').upload(imageUID, filePath);
+      path = await supabase.storage.from('images').upload(imageUID, filePath);
+      return true;
+    } catch (e) {
+      print(e);
+    }
+    return false;
+  }
+
+  Future<String> createAlbumRecord(Album album) async {
+    String albumId = '';
+    try {
+      Map<String, dynamic> mapped = album.toMap();
+      dynamic response = await supabase
+          .from('albums')
+          .insert([album.toMap()]).select('album_id');
+      return albumId = response[0]['album_id'];
+    } catch (e) {
+      print(e);
+    }
+    return albumId;
+  }
+
+  Future<void> addUsersToAlbum({
+    required String creatorUid,
+    required List<String> friendUids,
+    required String albumUid,
+  }) async {
+    try {
+      List<String> uidList = [creatorUid, ...friendUids];
+      dynamic uidMap = uidList
+          .map(
+            (e) => {
+              'album_id': albumUid,
+              'user_id': e,
+            },
+          )
+          .toList();
+      await supabase.from('albumuser').insert(uidMap);
     } catch (e) {
       print(e);
     }

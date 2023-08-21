@@ -83,11 +83,16 @@ class AlbumCreateFriends extends StatelessWidget {
                         bottom: MediaQuery.of(context).viewInsets.bottom,
                       ),
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        context.read<CreateAlbumCubit>().createAlbum();
+                    BlocBuilder<CreateAlbumCubit, CreateAlbumState>(
+                      builder: (context, state) {
+                        return ElevatedButton(
+                          onPressed: state.canCreate
+                              ? () =>
+                                  context.read<CreateAlbumCubit>().createAlbum()
+                              : null,
+                          child: const Text('Create Album'),
+                        );
                       },
-                      child: const Text('Create Album'),
                     ),
                     ElevatedButton(
                       onPressed: () {

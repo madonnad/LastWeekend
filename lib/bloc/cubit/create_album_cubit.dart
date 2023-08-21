@@ -6,6 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
+import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/friend.dart';
 import 'package:shared_photo/repositories/data_repository.dart';
 
@@ -18,6 +19,7 @@ class CreateAlbumCubit extends Cubit<CreateAlbumState> {
   CreateAlbumCubit({required this.appBloc, required this.dataRepository})
       : super(
           CreateAlbumState(
+            albumName: TextEditingController(),
             friendSearch: TextEditingController(),
           ),
         ) {
@@ -43,7 +45,11 @@ class CreateAlbumCubit extends Cubit<CreateAlbumState> {
       createModalString();
     } else {
       currentFriendList.add(friend);
-      emit(state.copyWith(friendsList: currentFriendList));
+      emit(state.copyWith(
+        friendsList: currentFriendList,
+        friendState: FriendState.added,
+        friendSearch: TextEditingController(),
+      ));
       createModalString();
     }
   }
@@ -107,15 +113,37 @@ class CreateAlbumCubit extends Cubit<CreateAlbumState> {
   }
 
   Future<void> createAlbum() async {
-    String imageUID =
-        await dataRepository.createNewImageRecord(uid: appBloc.state.user.id);
+    try {
+      String albumCoverId =
+          await dataRepository.createNewImageRecord(uid: appBloc.state.user.id);
 
-    dataRepository.insertImageToBucket(
-      imageUID: imageUID,
-      filePath: File(
-        state.albumCoverImagePath!,
-      ),
-    );
+      Album newAlbum = Album(
+        albumId: '',
+        albumCoverId: albumCoverId,
+        albumName: state.albumName.text,
+        albumOwner: appBloc.state.user.id,
+        lockDateTime: state.finalLockDateTime.toIso8601String(),
+        unlockDateTime: state.finalUnlockDateTime.toIso8601String(),
+        revealDateTime: state.finalRevealDateTime.toIso8601String(),
+      );
+
+      await dataRepository.insertImageToBucket(
+        imageUID: albumCoverId,
+        filePath: File(
+          state.albumCoverImagePath!,
+        ),
+      );
+
+      String albumUid = await dataRepository.createAlbumRecord(newAlbum);
+
+      dataRepository.addUsersToAlbum(
+        creatorUid: appBloc.state.user.id,
+        friendUids: state.friendUIDList,
+        albumUid: albumUid,
+      );
+    } catch (e) {
+      print(e);
+    }
   }
 
   void setUnlockDate(DateTime dateTime) {
@@ -148,7 +176,6 @@ class CreateAlbumCubit extends Cubit<CreateAlbumState> {
         emit(state.copyWithNullRevealDate());
       }
     }
-
     emit(state.copyWith(lockDateTime: dateTime));
   }
 
