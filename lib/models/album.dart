@@ -7,17 +7,25 @@ class Album {
   String albumId;
   String albumName;
   String albumOwner;
+  String albumCoverId;
   List<Image> images;
-  DateTime creationDateTime;
-  DateTime lockDateTime;
+  String? creationDateTime;
+  String lockDateTime;
+  String unlockDateTime;
+  String revealDateTime;
+  String? albumCoverUrl;
 
   Album({
     required this.albumId,
     required this.albumName,
     required this.albumOwner,
-    required this.creationDateTime,
+    this.creationDateTime,
     required this.lockDateTime,
-    required this.images,
+    required this.unlockDateTime,
+    required this.revealDateTime,
+    this.albumCoverId = '',
+    this.images = const [],
+    this.albumCoverUrl,
   });
 
   @override
@@ -27,23 +35,26 @@ class Album {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'album_id': albumId,
+      'album_cover_id': albumCoverId,
       'album_name': albumName,
       'album_owner': albumOwner,
-      'images': images.map((x) => x.toMap()).toList(),
-      'created_at': creationDateTime.millisecondsSinceEpoch,
-      'locked_at': lockDateTime.millisecondsSinceEpoch,
+      'unlocked_at': unlockDateTime,
+      'locked_at': lockDateTime,
+      'revealed_at': revealDateTime,
     };
   }
 
   factory Album.fromMap(Map<String, dynamic> map) {
     return Album(
       albumId: map['album_id'] as String,
+      albumCoverId: map['album_cover_id'] as String,
       albumName: map['album_name'] as String,
       albumOwner: map['album_owner'] as String,
+      creationDateTime: map['created_at'],
       images: [],
-      creationDateTime: DateTime.parse(map['created_at']),
-      lockDateTime: DateTime.parse(map['locked_at']),
+      lockDateTime: map['locked_at'],
+      unlockDateTime: map['unlocked_at'],
+      revealDateTime: map['revealed_at'],
     );
   }
 
@@ -52,9 +63,3 @@ class Album {
   factory Album.fromJson(String source) =>
       Album.fromMap(json.decode(source) as Map<String, dynamic>);
 }
-
-/* List<Image>.from(
-        (map['images'] as List<int>).map<Image>(
-          (x) => Image.fromMap(x as Map<String, dynamic>),
-        ),
-      ), */

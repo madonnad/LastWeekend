@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:shared_photo/bloc/bloc/feed_bloc.dart';
 import 'package:shared_photo/components/view_comp/carousel_view.dart';
+import 'package:shared_photo/components/view_comp/cover_card.dart';
 
 class AlbumListItem extends StatelessWidget {
   final int position;
@@ -20,6 +21,16 @@ class AlbumListItem extends StatelessWidget {
 
     return BlocBuilder<FeedBloc, FeedState>(
       builder: (context, state) {
+        int numPhotos;
+        bool useCover = false;
+        if (state.albums[position].images.isEmpty) {
+          numPhotos = 1;
+          useCover = true;
+        } else if (state.albums[position].images.length < 3) {
+          numPhotos = state.albums[position].images.length;
+        } else {
+          numPhotos = 3;
+        }
         return Padding(
           padding: const EdgeInsets.only(bottom: 75.0),
           child: Column(
@@ -46,20 +57,22 @@ class AlbumListItem extends StatelessWidget {
               ),
               SizedBox(
                 height: deviceHeight * .55,
-                child: PageView.builder(
-                  allowImplicitScrolling: true,
-                  scrollDirection: Axis.horizontal,
-                  controller: instanceController,
-                  physics: const ClampingScrollPhysics(),
-                  itemCount: 3,
-                  itemBuilder: (context, count) {
-                    return CarouselView(
-                      sliverIndex: position,
-                      index: count,
-                      pageController: instanceController,
-                    );
-                  },
-                ),
+                child: useCover
+                    ? CoverCard(sliverIndex: position)
+                    : PageView.builder(
+                        allowImplicitScrolling: true,
+                        scrollDirection: Axis.horizontal,
+                        controller: instanceController,
+                        physics: const ClampingScrollPhysics(),
+                        itemCount: numPhotos,
+                        itemBuilder: (context, count) {
+                          return CarouselView(
+                            sliverIndex: position,
+                            index: count,
+                            pageController: instanceController,
+                          );
+                        },
+                      ),
               ),
             ],
           ),

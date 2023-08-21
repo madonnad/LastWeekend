@@ -33,17 +33,6 @@ class FeedScreen extends StatelessWidget {
             ),
             SliverToBoxAdapter(
               child: ElevatedButton(
-                onPressed: () async {
-                  String uid = context.read<AppBloc>().state.user.id;
-                  await context
-                      .read<DataRepository>()
-                      .createNewImageRecord(uid: uid);
-                },
-                child: const Text('Add Random Image'),
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: ElevatedButton(
                 onPressed: () {
                   context.read<AppBloc>().add(const AppLogoutRequested());
                 },
