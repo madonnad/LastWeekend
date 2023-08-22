@@ -69,7 +69,7 @@ class DateTimeCard extends StatelessWidget {
                         if (pickedDate != null) {
                           dateCallback(pickedDate);
                         } else {
-                          dateCallback(DateTime.now());
+                          null;
                         }
                       },
                     ),
@@ -91,7 +91,7 @@ class DateTimeCard extends StatelessWidget {
                         if (timePicked != null) {
                           timeCallback(timePicked);
                         } else {
-                          timeCallback(TimeOfDay.now());
+                          null;
                         }
                       },
                     ),
