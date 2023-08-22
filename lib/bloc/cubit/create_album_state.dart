@@ -148,19 +148,27 @@ final class CreateAlbumState extends Equatable {
         modalTextString,
       ];
 
-  bool get canCreate {
-    if (friendsList.isNotEmpty &&
-        albumCoverImagePath!.isNotEmpty &&
+  bool get canContinue {
+    return (albumCoverImagePath != null &&
         unlockDateTime != null &&
         unlockTimeOfDay != null &&
         lockDateTime != null &&
         lockTimeOfDay != null &&
         revealDateTime != null &&
         revealTimeOfDay != null &&
-        albumName.text.isNotEmpty) {
-      return true;
-    }
-    return false;
+        albumName.text.isNotEmpty);
+  }
+
+  bool get canCreate {
+    return (friendsList.isNotEmpty &&
+        albumCoverImagePath != null &&
+        unlockDateTime != null &&
+        unlockTimeOfDay != null &&
+        lockDateTime != null &&
+        lockTimeOfDay != null &&
+        revealDateTime != null &&
+        revealTimeOfDay != null &&
+        albumName.text.isNotEmpty);
   }
 
   //? Friend Getters
