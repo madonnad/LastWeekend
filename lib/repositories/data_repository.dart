@@ -26,9 +26,7 @@ class DataRepository {
 
       // Calls the listOfImageFetch to gather the image information
       for (var item in response) {
-        print(item);
         Album album = Album.fromMap(item);
-        print(album);
         album.images =
             await listOfImageFetch(albumId: album.albumId, numToFetch: 3);
         if (album.albumCoverId.isNotEmpty) {

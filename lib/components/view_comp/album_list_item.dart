@@ -58,7 +58,13 @@ class AlbumListItem extends StatelessWidget {
               SizedBox(
                 height: deviceHeight * .55,
                 child: useCover
-                    ? CoverCard(sliverIndex: position)
+                    ? PageView.builder(
+                        controller: instanceController,
+                        itemCount: 1,
+                        itemBuilder: (context, count) {
+                          return CoverCard(sliverIndex: position);
+                        },
+                      )
                     : PageView.builder(
                         allowImplicitScrolling: true,
                         scrollDirection: Axis.horizontal,
