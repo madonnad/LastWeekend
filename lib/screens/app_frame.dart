@@ -33,9 +33,9 @@ class AppFrame extends StatelessWidget {
             return PageView(
               controller: state.appFrameController,
               physics: const NeverScrollableScrollPhysics(),
-              children: const [
-                FeedScreen(),
-                SearchScreen(),
+              children: [
+                const FeedScreen(),
+                const SearchScreen(),
                 ProfileScreen(),
               ],
             );
