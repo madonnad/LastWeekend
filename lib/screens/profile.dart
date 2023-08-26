@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_photo/components/profile_comp/profile_album_tab.dart';
 import 'package:shared_photo/components/profile_comp/profile_flexible_space.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
   @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen>
+    with TickerProviderStateMixin {
+  @override
   Widget build(BuildContext context) {
     PageController profileController = PageController();
+    TabController profileTabController = TabController(length: 3, vsync: this);
+
     double devHeight = MediaQuery.of(context).size.height;
     return NestedScrollView(
       headerSliverBuilder: (context, innerBoxIsScrolled) => [
@@ -20,24 +29,26 @@ class ProfileScreen extends StatelessWidget {
           flexibleSpace: const ProfileFlexibleSpace(),
         ),
         SliverPersistentHeader(
-          delegate: PinnedHeaderDelegate(devHeight: devHeight),
+          delegate: PinnedHeaderDelegate(
+            devHeight: devHeight,
+            tabController: profileTabController,
+          ),
           pinned: true,
         ),
       ],
       body: MediaQuery.removePadding(
         context: context,
         removeTop: true,
-        child: PageView(
+        child: TabBarView(
           physics: const NeverScrollableScrollPhysics(),
-          controller: profileController,
-          scrollDirection: Axis.horizontal,
+          controller: profileTabController,
           children: [
+            const ProfileAlbumTab(),
             ListView.builder(
               itemCount: 25,
               itemBuilder: (context, index) {
                 return Padding(
-                  padding:
-                      const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: Container(
                     width: 100,
                     height: 50,
@@ -68,8 +79,9 @@ class ProfileScreen extends StatelessWidget {
 
 class PinnedHeaderDelegate extends SliverPersistentHeaderDelegate {
   final double devHeight;
+  final TabController tabController;
 
-  PinnedHeaderDelegate({required this.devHeight});
+  PinnedHeaderDelegate({required this.devHeight, required this.tabController});
 
   @override
   Widget build(
@@ -78,7 +90,46 @@ class PinnedHeaderDelegate extends SliverPersistentHeaderDelegate {
     return Container(
       height: devHeight * .07,
       color: Colors.white,
-      child: Padding(
+      child: TabBar(
+        padding: const EdgeInsets.only(left: 20),
+        isScrollable: true,
+        indicatorColor: Colors.transparent,
+        controller: tabController,
+        labelColor: Colors.black,
+        labelPadding: const EdgeInsets.only(left: 18),
+        labelStyle: GoogleFonts.poppins(
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
+        ),
+        unselectedLabelColor: Colors.black54,
+        unselectedLabelStyle: GoogleFonts.poppins(
+          fontSize: 18,
+          fontWeight: FontWeight.w500,
+        ),
+        tabs: const [
+          Tab(text: 'Albums'),
+          Tab(text: 'Photos'),
+          Tab(text: 'Notifications'),
+        ],
+      ),
+    );
+  }
+
+  @override
+  double get maxExtent => devHeight * .07; // Height of the pinned widget
+
+  @override
+  double get minExtent => devHeight * .05; // Height of the pinned widget
+
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
+    return false;
+  }
+}
+
+/*
+
+Padding(
         padding: const EdgeInsets.fromLTRB(35, 0, 0, 0),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -120,22 +171,8 @@ class PinnedHeaderDelegate extends SliverPersistentHeaderDelegate {
           ],
         ),
       ),
-    );
-  }
 
-  @override
-  double get maxExtent => devHeight * .07; // Height of the pinned widget
-
-  @override
-  double get minExtent => devHeight * .05; // Height of the pinned widget
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
-    return false;
-  }
-}
-
-/*SliverList.builder(
+SliverList.builder(
 itemCount: 25,
 itemBuilder: (context, index) {
 return Padding(

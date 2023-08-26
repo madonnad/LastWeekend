@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 
 class ProfileFlexibleSpace extends StatelessWidget {
   const ProfileFlexibleSpace({super.key});
@@ -7,77 +9,82 @@ class ProfileFlexibleSpace extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double devHeight = MediaQuery.of(context).size.height;
-    return FlexibleSpaceBar(
-      collapseMode: CollapseMode.none,
-      background: Column(
-        children: [
-          Flexible(
-            flex: 8,
-            child: SizedBox(
-              height: devHeight * .15,
-            ),
-          ),
-          const Flexible(
-            flex: 10,
-            child: CircleAvatar(
-              backgroundColor: Colors.black,
-              radius: 200,
-            ),
-          ),
-          Flexible(
-            flex: 1,
-            child: SizedBox(
-              height: devHeight * .02,
-            ),
-          ),
-          Flexible(
-            flex: 2,
-            child: Text(
-              'Dom Madonna',
-              style: GoogleFonts.poppins(
-                color: Colors.black,
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-          Flexible(
-            flex: 1,
-            child: SizedBox(
-              height: devHeight * .02,
-            ),
-          ),
-          Flexible(
-            flex: 2,
-            child: GestureDetector(
-              onTap: () {},
-              child: Text(
-                '25 Friends',
-                style: GoogleFonts.poppins(
-                  color: Colors.black54,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w300,
+    return BlocBuilder<AppBloc, AppState>(
+      builder: (context, state) {
+        return FlexibleSpaceBar(
+          collapseMode: CollapseMode.none,
+          background: Column(
+            children: [
+              Flexible(
+                flex: 8,
+                child: SizedBox(
+                  height: devHeight * .15,
                 ),
               ),
-            ),
+              Flexible(
+                flex: 10,
+                child: CircleAvatar(
+                  foregroundImage: NetworkImage(state.user.avatarUrl!),
+                  backgroundColor: Colors.black,
+                  radius: 55,
+                ),
+              ),
+              Flexible(
+                flex: 1,
+                child: SizedBox(
+                  height: devHeight * .02,
+                ),
+              ),
+              Flexible(
+                flex: 2,
+                child: Text(
+                  'Dom Madonna',
+                  style: GoogleFonts.poppins(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              Flexible(
+                flex: 1,
+                child: SizedBox(
+                  height: devHeight * .02,
+                ),
+              ),
+              Flexible(
+                flex: 2,
+                child: GestureDetector(
+                  onTap: () {},
+                  child: Text(
+                    '25 Friends',
+                    style: GoogleFonts.poppins(
+                      color: Colors.black54,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w300,
+                    ),
+                  ),
+                ),
+              ),
+              Flexible(
+                flex: 1,
+                child: SizedBox(
+                  height: devHeight * .02,
+                ),
+              ),
+              const Flexible(
+                flex: 2,
+                child: Divider(
+                  thickness: 0.75,
+                  color: Colors.black12,
+                  endIndent: 35,
+                  indent: 35,
+                ),
+              ),
+            ],
           ),
-          Flexible(
-            flex: 1,
-            child: SizedBox(
-              height: devHeight * .02,
-            ),
-          ),
-          const Flexible(
-            flex: 2,
-            child: Divider(
-              thickness: 0.75,
-              color: Colors.black12,
-              endIndent: 35,
-              indent: 35,
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
