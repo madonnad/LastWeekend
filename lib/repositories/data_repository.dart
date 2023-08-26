@@ -24,6 +24,8 @@ class DataRepository {
           .order('created_at', ascending: false)
           .range(from, to);
 
+      print(response);
+
       // Calls the listOfImageFetch to gather the image information
       for (var item in response) {
         Album album = Album.fromMap(item);
