@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_photo/components/profile_comp/notification_comp/album_invite_notification.dart';
+import 'package:shared_photo/components/profile_comp/notification_comp/basic_notification.dart';
+import 'package:shared_photo/components/profile_comp/notification_comp/friend_request_notification.dart';
 import 'package:shared_photo/components/profile_comp/profile_album_tab.dart';
 import 'package:shared_photo/components/profile_comp/profile_flexible_space.dart';
 
@@ -12,6 +15,21 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen>
     with TickerProviderStateMixin {
+  late TabController _profileTabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _profileTabController =
+        TabController(vsync: this, length: 3, animationDuration: Duration.zero);
+  }
+
+  @override
+  void dispose() {
+    _profileTabController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     PageController profileController = PageController();
@@ -31,7 +49,7 @@ class _ProfileScreenState extends State<ProfileScreen>
         SliverPersistentHeader(
           delegate: PinnedHeaderDelegate(
             devHeight: devHeight,
-            tabController: profileTabController,
+            tabController: _profileTabController,
           ),
           pinned: true,
         ),
@@ -41,7 +59,7 @@ class _ProfileScreenState extends State<ProfileScreen>
         removeTop: true,
         child: TabBarView(
           physics: const NeverScrollableScrollPhysics(),
-          controller: profileTabController,
+          controller: _profileTabController,
           children: [
             const ProfileAlbumTab(),
             ListView.builder(
@@ -58,16 +76,28 @@ class _ProfileScreenState extends State<ProfileScreen>
               },
             ),
             ListView.builder(
-              itemCount: 25,
+              itemCount: 5,
               itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    width: 100,
-                    height: 50,
-                    color: Colors.blue,
-                  ),
-                );
+                if (index == 0) {
+                  return const Center(
+                    child: AlbumInviteNotification(),
+                  );
+                }
+                if (index == 2) {
+                  return const Center(
+                    child: BasicNotification(),
+                  );
+                }
+                if (index == 1) {
+                  return const Center(
+                    child: BasicNotification(),
+                  );
+                }
+                if (index == 3) {
+                  return const Center(
+                    child: FriendRequestNotification(),
+                  );
+                }
               },
             ),
           ],
@@ -109,7 +139,14 @@ class PinnedHeaderDelegate extends SliverPersistentHeaderDelegate {
         tabs: const [
           Tab(text: 'Albums'),
           Tab(text: 'Photos'),
-          Tab(text: 'Notifications'),
+          Badge(
+            offset: Offset(0, 0),
+            alignment: Alignment.topRight,
+            label: Text(
+              '1',
+            ),
+            child: Tab(text: 'Notifications'),
+          ),
         ],
       ),
     );
@@ -119,7 +156,7 @@ class PinnedHeaderDelegate extends SliverPersistentHeaderDelegate {
   double get maxExtent => devHeight * .07; // Height of the pinned widget
 
   @override
-  double get minExtent => devHeight * .05; // Height of the pinned widget
+  double get minExtent => devHeight * .07; // Height of the pinned widget
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
@@ -128,6 +165,51 @@ class PinnedHeaderDelegate extends SliverPersistentHeaderDelegate {
 }
 
 /*
+
+Row(
+                                          children: [
+                                            ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor:
+                                                    Colors.deepPurple,
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  vertical: 6,
+                                                  horizontal: 20,
+                                                ),
+                                                minimumSize: Size.zero,
+                                              ),
+                                              onPressed: () {},
+                                              child: Text(
+                                                'accept',
+                                                style: GoogleFonts.poppins(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Colors.white),
+                                              ),
+                                            ),
+                                            ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor:
+                                                    Colors.deepPurple,
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  vertical: 6,
+                                                  horizontal: 20,
+                                                ),
+                                                minimumSize: Size.zero,
+                                              ),
+                                              onPressed: () {},
+                                              child: Text(
+                                                'accept',
+                                                style: GoogleFonts.poppins(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Colors.white),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
 
 Padding(
         padding: const EdgeInsets.fromLTRB(35, 0, 0, 0),
