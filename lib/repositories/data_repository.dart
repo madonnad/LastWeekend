@@ -3,11 +3,54 @@ import 'dart:io';
 
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/image.dart';
+import 'package:shared_photo/models/notification.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as supa;
 
 class DataRepository {
   final supabase = supa.Supabase.instance.client;
 
+  Future<List<Album>> fetchMyAlbums() async {
+    supa.Session? session = supabase.auth.currentSession;
+    final List<Album> albums = [];
+
+    if (session != null) {
+      String uid = session.user.id;
+
+      dynamic response = await supabase
+          .from('albums')
+          .select('*, albumuser!inner(album_id)')
+          .eq('albumuser.user_id', uid)
+          .order('created_at', ascending: false);
+
+      for (var item in response) {
+        Album album = Album.fromMap(item);
+        albums.add(album);
+      }
+    }
+    return albums;
+  }
+
+  Future<List<Notification>> fetchMyNotifications() async {
+    supa.Session? session = supabase.auth.currentSession;
+    List<Notification> notificationList = [];
+    if (session != null) {
+      String uid = session.user.id;
+
+      try {
+        dynamic response = await supabase.from('album_requests_query').select();
+        for (var item in response) {
+          AlbumInviteNotification albumInviteNotification =
+              AlbumInviteNotification.fromMap(item);
+          notificationList.add(albumInviteNotification);
+        }
+      } catch (e) {
+        print(e);
+      }
+    }
+    return notificationList;
+  }
+
+  // Todo - Implement a feedAlbumFetch that does not fetch just the user's albums
   Future<List<Album>> feedAlbumFetch(
       {required int from, required int to}) async {
     supa.Session? session = supabase.auth.currentSession;
@@ -23,8 +66,6 @@ class DataRepository {
           .eq('albumuser.user_id', uid)
           .order('created_at', ascending: false)
           .range(from, to);
-
-      print(response);
 
       // Calls the listOfImageFetch to gather the image information
       for (var item in response) {
@@ -81,7 +122,7 @@ class DataRepository {
           .createSignedUrl(imageId, (60 * 100));
       return imageUrl;
     } catch (e) {
-      return imageUrl;
+      return e.toString();
     }
   }
 

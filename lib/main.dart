@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
+import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
 import 'package:shared_photo/repositories/authentication_repository.dart';
 import 'package:shared_photo/repositories/data_repository.dart';
 import 'package:shared_photo/router/generate_route.dart';
@@ -63,6 +64,12 @@ class MainApp extends StatelessWidget {
           BlocProvider(
             create: (context) => AppBloc(
               authenticationRepository: _authenticationRepository,
+              dataRepository: _dataRepository,
+            ),
+          ),
+          BlocProvider(
+            create: (context) => ProfileBloc(
+              appBloc: context.read<AppBloc>(),
               dataRepository: _dataRepository,
             ),
           ),
