@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
@@ -39,7 +37,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
       //Grab the URL of the media as it becomes available.
       if (event.location == LoadLocation.list &&
-          state.myNotifications[index].notificationMediaURL == '') {
+          state.myNotifications[index].notificationMediaURL == null) {
         emit(state.copyWith(isLoading: true));
         //Grab notifications from state emitted above;
         myNotifications = state.myNotifications;
