@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class AlbumInviteNotification extends StatelessWidget {
-  const AlbumInviteNotification({super.key});
+class FriendRequestNotificationComp extends StatelessWidget {
+  const FriendRequestNotificationComp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    double devHeight = MediaQuery.of(context).size.height;
     double devWidth = MediaQuery.of(context).size.width;
     return Card(
       elevation: 4,
@@ -14,7 +13,6 @@ class AlbumInviteNotification extends StatelessWidget {
       clipBehavior: Clip.hardEdge,
       child: Container(
         width: devWidth * .85,
-        //height: devHeight * .14, disabling this allows the container to grow to its desired height
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
@@ -30,14 +28,13 @@ class AlbumInviteNotification extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(
+                  const Expanded(
                     flex: 1,
-                    child: Container(
-                      width: devHeight * .08,
-                      height: devHeight * .08,
-                      decoration: BoxDecoration(
-                        color: Colors.grey,
-                        borderRadius: BorderRadius.circular(10),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: CircleAvatar(
+                        radius: 35,
+                        backgroundColor: Colors.grey,
                       ),
                     ),
                   ),
@@ -54,7 +51,7 @@ class AlbumInviteNotification extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  'album invite',
+                                  'friend request',
                                   style: GoogleFonts.poppins(
                                       fontSize: 10,
                                       color: Colors.white,
@@ -72,31 +69,11 @@ class AlbumInviteNotification extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.only(top: 5.0),
                               child: Text(
-                                "Madonna's in Mexico",
+                                "Jamie Kuppel",
                                 style: GoogleFonts.poppins(
                                     fontSize: 14,
                                     color: Colors.white,
                                     fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                            RichText(
-                              text: TextSpan(
-                                children: <TextSpan>[
-                                  TextSpan(
-                                    text: 'by ',
-                                    style: GoogleFonts.poppins(
-                                        fontSize: 12,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w200),
-                                  ),
-                                  TextSpan(
-                                    text: 'Zoë Madonna',
-                                    style: GoogleFonts.poppins(
-                                        fontSize: 12,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ],
                               ),
                             ),
                             Row(

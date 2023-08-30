@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_photo/bloc/bloc/feed_bloc.dart';
+import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
 
 class ProfileAlbumTab extends StatefulWidget {
   const ProfileAlbumTab({super.key});
@@ -16,7 +16,7 @@ class _ProfileAlbumTabState extends State<ProfileAlbumTab> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FeedBloc, FeedState>(
+    return BlocBuilder<ProfileBloc, ProfileState>(
       builder: (context, state) {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30.0),
@@ -26,7 +26,7 @@ class _ProfileAlbumTabState extends State<ProfileAlbumTab> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "${state.albums.length} Albums",
+                    "${state.myAlbums.length} Albums",
                     style: GoogleFonts.poppins(
                         fontSize: 12,
                         fontWeight: FontWeight.w300,
@@ -65,16 +65,30 @@ class _ProfileAlbumTabState extends State<ProfileAlbumTab> {
                       crossAxisSpacing: 14,
                       crossAxisCount: 2,
                       childAspectRatio: .85),
-                  itemCount: state.albums.length,
+                  itemCount: state.myAlbums.length,
                   itemBuilder: (context, index) {
+                    if (state.myAlbums[index].albumCoverUrl == null) {
+                      context.read<ProfileBloc>().add(
+                            FetchProfileAlbumCoverURL(
+                              index: index,
+                            ),
+                          );
+                    }
                     return Card(
                       clipBehavior: Clip.antiAlias,
                       child: SizedBox(
                         height: 177,
-                        child: Image.network(
-                          state.albums[index].albumCoverUrl!,
-                          fit: BoxFit.cover,
-                        ),
+                        child: (state.isLoading == false &&
+                                state.myAlbums[index].albumCoverUrl != null)
+                            ? Image.network(
+                                state.myAlbums[index].albumCoverUrl!,
+                                fit: BoxFit.cover,
+                              )
+                            : const Center(
+                                child: CircularProgressIndicator(
+                                  color: Colors.cyan,
+                                ),
+                              ),
                       ),
                     );
                   },
@@ -87,32 +101,3 @@ class _ProfileAlbumTabState extends State<ProfileAlbumTab> {
     );
   }
 }
-
-/*DropdownMenu(
-                    inputDecorationTheme: const InputDecorationTheme(
-                        isCollapsed: true,
-                        floatingLabelAlignment: FloatingLabelAlignment.center,
-                        fillColor: Colors.white,
-                        filled: true,
-                        border: InputBorder.none),
-                    textStyle: GoogleFonts.poppins(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                    ),
-                    menuStyle: const MenuStyle(
-                      backgroundColor:
-                          MaterialStatePropertyAll<Color>(Colors.white),
-                      surfaceTintColor:
-                          MaterialStatePropertyAll<Color>(Colors.white),
-                      shadowColor:
-                          MaterialStatePropertyAll<Color>(Colors.white),
-                    ),
-                    initialSelection: 1,
-                    dropdownMenuEntries: const [
-                      DropdownMenuEntry(
-                        value: 1,
-                        label: 'all',
-                      ),
-                      DropdownMenuEntry(value: 2, label: 'tagged'),
-                    ],
-                  ),*/

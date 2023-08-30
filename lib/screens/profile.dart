@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_photo/components/profile_comp/notification_comp/album_invite_notification.dart';
-import 'package:shared_photo/components/profile_comp/notification_comp/basic_notification.dart';
-import 'package:shared_photo/components/profile_comp/notification_comp/friend_request_notification.dart';
+import 'package:shared_photo/components/profile_comp/notification_comp/album_invite_notification_comp.dart';
+import 'package:shared_photo/components/profile_comp/notification_comp/basic_notification_comp.dart';
+import 'package:shared_photo/components/profile_comp/notification_comp/friend_request_notification_comp.dart';
 import 'package:shared_photo/components/profile_comp/profile_album_tab.dart';
 import 'package:shared_photo/components/profile_comp/profile_flexible_space.dart';
+import 'package:shared_photo/components/profile_comp/profile_notification_tab.dart';
+import 'package:shared_photo/repositories/data_repository.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -75,31 +78,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                 );
               },
             ),
-            ListView.builder(
-              itemCount: 5,
-              itemBuilder: (context, index) {
-                if (index == 0) {
-                  return const Center(
-                    child: AlbumInviteNotification(),
-                  );
-                }
-                if (index == 2) {
-                  return const Center(
-                    child: BasicNotification(),
-                  );
-                }
-                if (index == 1) {
-                  return const Center(
-                    child: BasicNotification(),
-                  );
-                }
-                if (index == 3) {
-                  return const Center(
-                    child: FriendRequestNotification(),
-                  );
-                }
-              },
-            ),
+            const ProfileNotificationTab(),
           ],
         ),
       ),
@@ -140,7 +119,6 @@ class PinnedHeaderDelegate extends SliverPersistentHeaderDelegate {
           Tab(text: 'Albums'),
           Tab(text: 'Photos'),
           Badge(
-            offset: Offset(0, 0),
             alignment: Alignment.topRight,
             label: Text(
               '1',
