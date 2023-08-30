@@ -7,7 +7,7 @@ abstract class Notification {
   final String notifierID;
   final String notifierName;
   final String notificationMediaID;
-  String notificationMediaURL;
+  String? notificationMediaURL;
   final bool notificationSeen;
 
   Notification({
@@ -16,7 +16,7 @@ abstract class Notification {
     required this.notifierName,
     required this.notificationMediaID,
     required this.notificationSeen,
-    required this.notificationMediaURL,
+    this.notificationMediaURL,
   });
 
   String get formattedDateTime {
@@ -55,7 +55,7 @@ class AlbumInviteNotification extends Notification {
     required super.notificationMediaID,
     required super.notificationSeen,
     required this.albumName,
-    required super.notificationMediaURL,
+    super.notificationMediaURL,
   });
 
   factory AlbumInviteNotification.fromMap(Map<String, dynamic> map) {
@@ -66,7 +66,6 @@ class AlbumInviteNotification extends Notification {
       notificationMediaID: map['album_cover_id'],
       notificationSeen: map['invite_seen'],
       albumName: map['album_name'],
-      notificationMediaURL: '',
     );
   }
 }
@@ -78,8 +77,18 @@ class FriendRequestNotification extends Notification {
     required super.notifierName,
     required super.notificationMediaID,
     required super.notificationSeen,
-    required super.notificationMediaURL,
+    super.notificationMediaURL,
   });
+
+  factory FriendRequestNotification.fromMap(Map<String, dynamic> map) {
+    return FriendRequestNotification(
+      receivedDateTime: DateTime.parse(map['requested_at']),
+      notifierID: map['sender_id'].toString(),
+      notifierName: '${map['first_name']} ${map['last_name']}',
+      notificationMediaID: map['avatar'] ?? '',
+      notificationSeen: map['invite_seen'],
+    );
+  }
 }
 
 class GenericNotification extends Notification {
@@ -92,6 +101,6 @@ class GenericNotification extends Notification {
     required super.notificationMediaID,
     required super.notificationSeen,
     required this.notificationType,
-    required super.notificationMediaURL,
+    super.notificationMediaURL,
   });
 }

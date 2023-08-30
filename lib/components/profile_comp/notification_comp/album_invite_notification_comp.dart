@@ -17,7 +17,7 @@ class AlbumInviteNotificationComp extends StatelessWidget {
         AlbumInviteNotification notification =
             state.myNotifications[index] as AlbumInviteNotification;
         String notificationUrl =
-            state.myNotifications[index].notificationMediaURL;
+            state.myNotifications[index].notificationMediaURL ?? '';
         return Card(
           elevation: 4,
           shadowColor: const Color.fromRGBO(0, 0, 41, .25),

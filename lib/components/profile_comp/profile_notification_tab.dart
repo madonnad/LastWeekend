@@ -35,8 +35,10 @@ class ProfileNotificationTab extends StatelessWidget {
               );
             }
             if (type is FriendRequestNotification) {
-              return const Center(
-                child: FriendRequestNotificationComp(),
+              return Center(
+                child: FriendRequestNotificationComp(
+                  index: index,
+                ),
               );
             }
             if (type is GenericNotification) {

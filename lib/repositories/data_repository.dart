@@ -43,6 +43,12 @@ class DataRepository {
               AlbumInviteNotification.fromMap(item);
           notificationList.add(albumInviteNotification);
         }
+        response = await supabase.from('friend_requests_query').select();
+        for (var item in response) {
+          FriendRequestNotification friendRequestNotification =
+              FriendRequestNotification.fromMap(item);
+          notificationList.add(friendRequestNotification);
+        }
       } catch (e) {
         print(e);
       }
@@ -115,6 +121,10 @@ class DataRepository {
 
   Future<String> fetchSignedUrl(String imageId) async {
     String imageUrl = '';
+
+    if (imageId == '') {
+      return imageUrl;
+    }
 
     try {
       imageUrl = await supabase.storage
