@@ -34,8 +34,6 @@ class DataRepository {
     supa.Session? session = supabase.auth.currentSession;
     List<Notification> notificationList = [];
     if (session != null) {
-      String uid = session.user.id;
-
       try {
         dynamic response = await supabase.from('album_requests_query').select();
         for (var item in response) {
@@ -48,6 +46,12 @@ class DataRepository {
           FriendRequestNotification friendRequestNotification =
               FriendRequestNotification.fromMap(item);
           notificationList.add(friendRequestNotification);
+        }
+        response = await supabase.from('notification_query').select();
+        for (var item in response) {
+          GenericNotification genericNotification =
+              GenericNotification.fromMap(item);
+          notificationList.add(genericNotification);
         }
       } catch (e) {
         print(e);

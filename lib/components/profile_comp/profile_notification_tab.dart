@@ -42,18 +42,27 @@ class ProfileNotificationTab extends StatelessWidget {
               );
             }
             if (type is GenericNotification) {
-              switch (type) {
+              switch (type.notificationType) {
                 case GenericNotificationType.likedPhoto:
-                  return const Center(
-                    child: BasicNotificationComp(),
+                  return Center(
+                    child: BasicNotificationComp(
+                      index: index,
+                      notificationDetailString: 'liked your photo',
+                    ),
                   );
                 case GenericNotificationType.upvotePhoto:
-                  return const Center(
-                    child: BasicNotificationComp(),
+                  return Center(
+                    child: BasicNotificationComp(
+                      index: index,
+                      notificationDetailString: 'upvoted your photo',
+                    ),
                   );
                 case GenericNotificationType.imageComment:
-                  return const Center(
-                    child: BasicNotificationComp(),
+                  return Center(
+                    child: BasicNotificationComp(
+                      index: index,
+                      notificationDetailString: 'commented',
+                    ),
                   );
               }
             }
