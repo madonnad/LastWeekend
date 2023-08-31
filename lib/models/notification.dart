@@ -1,5 +1,3 @@
-import 'package:shared_photo/components/profile_comp/notification_comp/album_invite_notification_comp.dart';
-
 enum GenericNotificationType { likedPhoto, upvotePhoto, imageComment }
 
 abstract class Notification {
@@ -92,7 +90,8 @@ class FriendRequestNotification extends Notification {
 }
 
 class GenericNotification extends Notification {
-  GenericNotificationType notificationType;
+  final GenericNotificationType notificationType;
+  final String albumName;
 
   GenericNotification({
     required super.receivedDateTime,
@@ -101,6 +100,28 @@ class GenericNotification extends Notification {
     required super.notificationMediaID,
     required super.notificationSeen,
     required this.notificationType,
+    required this.albumName,
     super.notificationMediaURL,
   });
+
+  factory GenericNotification.fromMap(Map<String, dynamic> map) {
+    late GenericNotificationType notificationType;
+
+    switch (map['notification_type']) {
+      case 'upvote':
+        notificationType = GenericNotificationType.upvotePhoto;
+      case 'liked':
+        notificationType = GenericNotificationType.likedPhoto;
+    }
+
+    return GenericNotification(
+      receivedDateTime: DateTime.parse(map['received_at']),
+      notifierID: map['sender_id'].toString(),
+      notifierName: '${map['first_name']} ${map['last_name']}',
+      albumName: map['album_name'],
+      notificationMediaID: map['media_id'],
+      notificationSeen: map['notification_seen'],
+      notificationType: notificationType,
+    );
+  }
 }

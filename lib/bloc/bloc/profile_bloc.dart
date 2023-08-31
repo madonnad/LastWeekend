@@ -52,7 +52,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         //Then set that equal to the index in the list
         notification.notificationMediaURL = notificationMediaURL;
         myNotifications[index] = notification;
-        print('hi');
+
         emit(
             state.copyWith(myNotifications: myNotifications, isLoading: false));
       }
