@@ -25,6 +25,18 @@ class LoadNotifications extends ProfileEvent {
   final LoadLocation location;
 
   const LoadNotifications({required this.index, required this.location});
+
+  @override
+  List<Object?> get props => [];
+}
+
+class ReceiveNotifcation extends ProfileEvent {
+  final String identifier;
+  final NotificationType notificationType;
+
+  const ReceiveNotifcation(
+      {required this.identifier, required this.notificationType});
+
   @override
   List<Object?> get props => [];
 }
