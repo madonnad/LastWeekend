@@ -22,6 +22,17 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(state.copyWith(myAlbums: myAlbums, isLoading: false));
     });
 
+    on<ReceiveNotifcation>((event, emit) async {
+      List<Notification> myNotifications = [];
+      myNotifications = state.myNotifications;
+
+      Notification notification = await dataRepository.getReceivedNotification(
+          event.notificationType, event.identifier);
+      myNotifications.insert(0, notification);
+
+      emit(state.copyWith(myNotifications: myNotifications));
+    });
+
     on<LoadNotifications>((event, emit) async {
       int index = event.index;
       List<Notification> myNotifications = [];
@@ -97,6 +108,18 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         }
       },
     );
+
+    Stream<(bool, String)> albumRequestStream =
+        dataRepository.receivedAlbumRequest();
+
+    albumRequestStream.listen((event) {
+      var (bool isRequest, String albumId) = event;
+      if (isRequest == true) {
+        add(ReceiveNotifcation(
+            identifier: albumId,
+            notificationType: NotificationType.albumInvite));
+      }
+    });
 
     if (appBloc.state is AuthenticatedState) {
       add(InitializeProfile());

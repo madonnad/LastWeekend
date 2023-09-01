@@ -30,6 +30,48 @@ class DataRepository {
     return albums;
   }
 
+  Stream<(bool, String)> receivedAlbumRequest() {
+    final controller = StreamController<(bool, String)>();
+    String uid = supabase.auth.currentSession != null
+        ? supabase.auth.currentUser!.id
+        : '';
+
+    supabase.channel('public:album_requests').on(
+      supa.RealtimeListenTypes.postgresChanges,
+      supa.ChannelFilter(
+          event: 'INSERT',
+          schema: 'public',
+          table: 'album_requests',
+          filter: 'invited_id=eq.$uid'),
+      (payload, [ref]) {
+        String albumId = payload['new']['album_id'];
+
+        controller.add((true, albumId));
+      },
+    ).subscribe();
+    return controller.stream;
+  }
+
+  Future<Notification> getReceivedNotification(
+      NotificationType type, String identifier) async {
+    switch (type) {
+      case NotificationType.albumInvite:
+        dynamic response = await supabase
+            .from('album_requests_query')
+            .select()
+            .eq('album_id', identifier);
+
+        AlbumInviteNotification albumInviteNotification =
+            AlbumInviteNotification.fromMap(response[0]);
+
+        return albumInviteNotification;
+      case NotificationType.friendRequest:
+        throw Exception('Not handled yet');
+      case NotificationType.generic:
+        throw Exception('Not handled yet');
+    }
+  }
+
   Future<List<Notification>> fetchMyNotifications() async {
     supa.Session? session = supabase.auth.currentSession;
     List<Notification> notificationList = [];

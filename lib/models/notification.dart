@@ -1,5 +1,7 @@
 enum GenericNotificationType { likedPhoto, upvotePhoto, imageComment }
 
+enum NotificationType { generic, friendRequest, albumInvite }
+
 abstract class Notification {
   final DateTime receivedDateTime;
   final String notifierID;
