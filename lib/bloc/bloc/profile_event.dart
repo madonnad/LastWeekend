@@ -17,7 +17,7 @@ class FetchProfileAlbumCoverURL extends ProfileEvent {
   const FetchProfileAlbumCoverURL({required this.index});
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [index];
 }
 
 class LoadNotifications extends ProfileEvent {
@@ -27,16 +27,16 @@ class LoadNotifications extends ProfileEvent {
   const LoadNotifications({required this.index, required this.location});
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [index, location];
 }
 
-class ReceiveNotifcation extends ProfileEvent {
+class ReceiveNotification extends ProfileEvent {
   final String identifier;
   final NotificationType notificationType;
 
-  const ReceiveNotifcation(
+  const ReceiveNotification(
       {required this.identifier, required this.notificationType});
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [identifier, notificationType];
 }
