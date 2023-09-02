@@ -30,8 +30,8 @@ class DataRepository {
     return albums;
   }
 
-  Stream<(bool, String)> receivedAlbumRequest() {
-    final controller = StreamController<(bool, String)>();
+  Stream<(bool, String, NotificationType)> receivedNotification() {
+    final controller = StreamController<(bool, String, NotificationType)>();
     String uid = supabase.auth.currentSession != null
         ? supabase.auth.currentUser!.id
         : '';
@@ -45,10 +45,40 @@ class DataRepository {
           filter: 'invited_id=eq.$uid'),
       (payload, [ref]) {
         String albumId = payload['new']['album_id'];
+        print(albumId);
 
-        controller.add((true, albumId));
+        controller.add((true, albumId, NotificationType.albumInvite));
       },
     ).subscribe();
+
+    supabase.channel('public:friend_requests').on(
+      supa.RealtimeListenTypes.postgresChanges,
+      supa.ChannelFilter(
+          event: 'INSERT',
+          schema: 'public',
+          table: 'friend_requests',
+          filter: 'receiver_id=eq.$uid'),
+      (payload, [ref]) {
+        String senderId = payload['new']['sender_id'];
+
+        controller.add((true, senderId, NotificationType.friendRequest));
+      },
+    ).subscribe();
+
+    supabase.channel('public:notifications').on(
+      supa.RealtimeListenTypes.postgresChanges,
+      supa.ChannelFilter(
+          event: 'INSERT',
+          schema: 'public',
+          table: 'notifications',
+          filter: 'receiver_id=eq.$uid'),
+      (payload, [ref]) {
+        String notificationId = payload['new']['notification_uid'];
+
+        controller.add((true, notificationId, NotificationType.generic));
+      },
+    ).subscribe();
+
     return controller.stream;
   }
 
@@ -66,9 +96,23 @@ class DataRepository {
 
         return albumInviteNotification;
       case NotificationType.friendRequest:
-        throw Exception('Not handled yet');
+        dynamic response = await supabase
+            .from('friend_requests_query')
+            .select()
+            .eq('sender_id', identifier);
+
+        FriendRequestNotification friendRequestNotification =
+            FriendRequestNotification.fromMap(response[0]);
+        return friendRequestNotification;
       case NotificationType.generic:
-        throw Exception('Not handled yet');
+        dynamic response = await supabase
+            .from('notification_query')
+            .select()
+            .eq('notification_uid', identifier);
+
+        GenericNotification genericNotification =
+            GenericNotification.fromMap(response[0]);
+        return genericNotification;
     }
   }
 
