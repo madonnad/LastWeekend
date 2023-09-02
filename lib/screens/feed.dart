@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/bloc/feed_bloc.dart';
-import 'package:shared_photo/bloc/cubit/create_album_cubit.dart';
 import 'package:shared_photo/components/app_comp/sliver_lw_app_bar.dart';
 import 'package:shared_photo/components/view_comp/album_list_item.dart';
-import 'package:shared_photo/repositories/data_repository.dart';
 
 class FeedScreen extends StatelessWidget {
   const FeedScreen({super.key});

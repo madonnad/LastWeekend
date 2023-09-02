@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_photo/repositories/data_repository.dart';
 
 import '../../bloc/bloc/feed_bloc.dart';
 
