@@ -27,6 +27,7 @@ class ProfileNotificationTab extends StatelessWidget {
                 );
 
             var type = state.myNotifications[index];
+
             if (type is AlbumInviteNotification) {
               return Center(
                 child: AlbumInviteNotificationComp(

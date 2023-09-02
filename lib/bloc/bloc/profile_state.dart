@@ -5,6 +5,7 @@ class ProfileState extends Equatable {
   final List<Image> myImages;
   final List<Friend> myFriends;
   final List<Notification> myNotifications;
+  final bool showNotification;
   final bool? isLoading;
   final String? error;
 
@@ -13,6 +14,7 @@ class ProfileState extends Equatable {
     required this.myImages,
     required this.myFriends,
     required this.myNotifications,
+    required this.showNotification,
     this.isLoading,
     this.error,
   });
@@ -22,6 +24,7 @@ class ProfileState extends Equatable {
     myImages: [],
     myFriends: [],
     myNotifications: [],
+    showNotification: false,
     isLoading: false,
     error: '',
   );
@@ -31,6 +34,7 @@ class ProfileState extends Equatable {
     List<Image>? myImages,
     List<Friend>? myFriends,
     List<Notification>? myNotifications,
+    bool? showNotification,
     bool? isLoading,
     String? error,
   }) {
@@ -39,12 +43,20 @@ class ProfileState extends Equatable {
       myImages: myImages ?? this.myImages,
       myFriends: myFriends ?? this.myFriends,
       myNotifications: myNotifications ?? this.myNotifications,
+      showNotification: showNotification ?? this.showNotification,
       error: error ?? this.error,
       isLoading: isLoading ?? this.isLoading,
     );
   }
 
   @override
-  List<Object?> get props =>
-      [myImages, myAlbums, myNotifications, myFriends, isLoading, error];
+  List<Object?> get props => [
+        myImages,
+        myAlbums,
+        myNotifications,
+        myFriends,
+        isLoading,
+        error,
+        showNotification
+      ];
 }

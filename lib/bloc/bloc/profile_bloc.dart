@@ -19,18 +19,28 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<InitializeProfile>((event, emit) async {
       emit(state.copyWith(isLoading: true));
       List<Album> myAlbums = await dataRepository.fetchMyAlbums();
-      emit(state.copyWith(myAlbums: myAlbums, isLoading: false));
+      List<Notification> myNotifications =
+          await dataRepository.fetchMyNotifications();
+      emit(
+        state.copyWith(
+            myAlbums: myAlbums,
+            myNotifications: myNotifications,
+            isLoading: false),
+      );
     });
 
     on<ReceiveNotification>((event, emit) async {
       List<Notification> myNotifications = [];
-      myNotifications = state.myNotifications;
+      myNotifications = List.from(state.myNotifications);
 
       Notification notification = await dataRepository.getReceivedNotification(
           event.notificationType, event.identifier);
       myNotifications.insert(0, notification);
 
-      emit(state.copyWith(myNotifications: myNotifications));
+      emit(state.copyWith(
+          myNotifications: myNotifications, showNotification: true));
+      await Future.delayed(const Duration(seconds: 4));
+      emit(state.copyWith(showNotification: false));
     });
 
     on<LoadNotifications>((event, emit) async {
