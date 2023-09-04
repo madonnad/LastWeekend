@@ -40,3 +40,14 @@ class ReceiveNotification extends ProfileEvent {
   @override
   List<Object?> get props => [identifier, notificationType];
 }
+
+class NotificationRemoved extends ProfileEvent {
+  final String identifier;
+  final NotificationType notificationType;
+
+  const NotificationRemoved(
+      {required this.identifier, required this.notificationType});
+
+  @override
+  List<Object?> get props => [identifier, notificationType];
+}
