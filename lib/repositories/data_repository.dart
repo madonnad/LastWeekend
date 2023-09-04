@@ -36,7 +36,7 @@ class DataRepository {
         ? supabase.auth.currentUser!.id
         : '';
 
-    supabase.channel('public:album_requests').on(
+    supabase.channel('public:album_requests_receive').on(
       supa.RealtimeListenTypes.postgresChanges,
       supa.ChannelFilter(
           event: 'INSERT',
@@ -44,6 +44,7 @@ class DataRepository {
           table: 'album_requests',
           filter: 'invited_id=eq.$uid'),
       (payload, [ref]) {
+        print(payload);
         String albumId = payload['new']['album_id'];
         print(albumId);
 
@@ -51,7 +52,7 @@ class DataRepository {
       },
     ).subscribe();
 
-    supabase.channel('public:friend_requests').on(
+    supabase.channel('public:friend_requests_receive').on(
       supa.RealtimeListenTypes.postgresChanges,
       supa.ChannelFilter(
           event: 'INSERT',
@@ -65,7 +66,7 @@ class DataRepository {
       },
     ).subscribe();
 
-    supabase.channel('public:notifications').on(
+    supabase.channel('public:notifications_receive').on(
       supa.RealtimeListenTypes.postgresChanges,
       supa.ChannelFilter(
           event: 'INSERT',
@@ -76,6 +77,43 @@ class DataRepository {
         String notificationId = payload['new']['notification_uid'];
 
         controller.add((true, notificationId, NotificationType.generic));
+      },
+    ).subscribe();
+
+    return controller.stream;
+  }
+
+  Stream<(bool, String, NotificationType)> notificationRemoved() {
+    final controller = StreamController<(bool, String, NotificationType)>();
+    String uid = supabase.auth.currentSession != null
+        ? supabase.auth.currentUser!.id
+        : '';
+
+    supabase.channel('public:album_requests_delete').on(
+      supa.RealtimeListenTypes.postgresChanges,
+      supa.ChannelFilter(
+          event: 'DELETE',
+          schema: 'public',
+          table: 'album_requests',
+          filter: 'invited_id=eq.$uid'),
+      (payload, [ref]) {
+        String albumId = payload['old']['album_id'];
+
+        controller.add((true, albumId, NotificationType.albumInvite));
+      },
+    ).subscribe();
+
+    supabase.channel('public:friend_requests_delete').on(
+      supa.RealtimeListenTypes.postgresChanges,
+      supa.ChannelFilter(
+          event: 'DELETE',
+          schema: 'public',
+          table: 'friend_requests',
+          filter: 'receiver_id=eq.$uid'),
+      (payload, [ref]) {
+        String senderId = payload['old']['sender_id'];
+
+        controller.add((true, senderId, NotificationType.friendRequest));
       },
     ).subscribe();
 

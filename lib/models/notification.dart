@@ -48,6 +48,7 @@ abstract class Notification {
 
 class AlbumInviteNotification extends Notification {
   final String albumName;
+  final String notificationID;
   AlbumInviteNotification({
     required super.receivedDateTime,
     required super.notifierID,
@@ -55,6 +56,7 @@ class AlbumInviteNotification extends Notification {
     required super.notificationMediaID,
     required super.notificationSeen,
     required this.albumName,
+    required this.notificationID,
     super.notificationMediaURL,
   });
 
@@ -66,6 +68,7 @@ class AlbumInviteNotification extends Notification {
       notificationMediaID: map['album_cover_id'],
       notificationSeen: map['invite_seen'],
       albumName: map['album_name'],
+      notificationID: map['album_id'].toString(),
     );
   }
 }

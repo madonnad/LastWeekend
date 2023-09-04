@@ -43,6 +43,37 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(state.copyWith(showNotification: false));
     });
 
+    on<NotificationRemoved>(
+      (event, emit) {
+        List<Notification> myNotifications = [];
+        myNotifications = List.from(state.myNotifications);
+
+        var type = event.notificationType;
+
+        myNotifications.removeWhere((element) {
+          switch (type) {
+            case NotificationType.albumInvite:
+              if (element is AlbumInviteNotification &&
+                  element.notificationID == event.identifier) {
+                return true;
+              }
+            case NotificationType.friendRequest:
+              if (element is FriendRequestNotification &&
+                  element.notifierID == event.identifier) {
+                return true;
+              }
+            case NotificationType.generic:
+          }
+
+          return false;
+        });
+
+        print(myNotifications);
+
+        emit(state.copyWith(myNotifications: myNotifications));
+      },
+    );
+
     on<LoadNotifications>((event, emit) async {
       int index = event.index;
       List<Notification> myNotifications = [];
@@ -122,6 +153,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     Stream<(bool, String, NotificationType)> notificationStream =
         dataRepository.receivedNotification();
 
+    Stream<(bool, String, NotificationType)> deletedStream =
+        dataRepository.notificationRemoved();
+
     notificationStream.listen((event) {
       var (
         bool isRequest,
@@ -130,6 +164,18 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       ) = event;
       if (isRequest == true) {
         add(ReceiveNotification(
+            identifier: identifier, notificationType: notificationType));
+      }
+    });
+
+    deletedStream.listen((event) {
+      var (
+        bool isRequest,
+        String identifier,
+        NotificationType notificationType
+      ) = event;
+      if (isRequest == true) {
+        add(NotificationRemoved(
             identifier: identifier, notificationType: notificationType));
       }
     });
