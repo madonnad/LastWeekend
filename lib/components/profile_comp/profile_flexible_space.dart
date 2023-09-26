@@ -24,7 +24,9 @@ class ProfileFlexibleSpace extends StatelessWidget {
               Flexible(
                 flex: 10,
                 child: CircleAvatar(
-                  foregroundImage: NetworkImage(state.user.avatarUrl!),
+                  foregroundImage: state.user.avatarUrl != null
+                      ? NetworkImage(state.user.avatarUrl!)
+                      : null,
                   backgroundColor: Colors.black,
                   radius: 55,
                 ),

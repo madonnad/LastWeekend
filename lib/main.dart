@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
+import 'package:shared_photo/repositories/auth0_repository.dart';
 import 'package:shared_photo/repositories/authentication_repository.dart';
 import 'package:shared_photo/repositories/data_repository.dart';
 import 'package:shared_photo/router/generate_route.dart';
@@ -24,23 +25,28 @@ void main() async {
     anonKey: publicAnonKey,
   );
 
+  final auth0Repository = Auth0Repository();
   final authenticationRepository = AuthenticationRepository();
   final dataRepository = DataRepository();
 
   runApp(MainApp(
     authenticationRepository: authenticationRepository,
     dataRepository: dataRepository,
+    auth0Repository: auth0Repository,
   ));
 }
 
 class MainApp extends StatelessWidget {
   final AuthenticationRepository _authenticationRepository;
   final DataRepository _dataRepository;
-  const MainApp(
-      {required AuthenticationRepository authenticationRepository,
-      required DataRepository dataRepository,
-      super.key})
-      : _authenticationRepository = authenticationRepository,
+  final Auth0Repository _auth0Repository;
+  const MainApp({
+    required AuthenticationRepository authenticationRepository,
+    required DataRepository dataRepository,
+    required Auth0Repository auth0Repository,
+    super.key,
+  })  : _authenticationRepository = authenticationRepository,
+        _auth0Repository = auth0Repository,
         _dataRepository = dataRepository;
 
   @override
@@ -53,6 +59,9 @@ class MainApp extends StatelessWidget {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider.value(
+          value: _auth0Repository,
+        ),
+        RepositoryProvider.value(
           value: _authenticationRepository,
         ),
         RepositoryProvider.value(
@@ -64,6 +73,7 @@ class MainApp extends StatelessWidget {
           BlocProvider(
             create: (context) => AppBloc(
               authenticationRepository: _authenticationRepository,
+              auth0repository: _auth0Repository,
               dataRepository: _dataRepository,
             ),
           ),
@@ -104,7 +114,7 @@ class MainAppView extends StatelessWidget {
         builder: (context, state) {
           if (state is AuthenticatedState) {
             return const AppFrame();
-          } else if (state is CachedAuthenticatedState) {
+          } else if (state is LoadingState) {
             return const LoadingScreen();
           } else {
             return const AuthScreen();

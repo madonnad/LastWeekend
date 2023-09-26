@@ -57,7 +57,9 @@ String? checkPasswordField(String? value, {required BuildContext context}) {
     context.read<AuthCubit>().setPasswordValid(false);
     return null;
   } else if (value.isNotEmpty) {
-    RegExp exp = RegExp(r'^[a-zA-Z]\w{3,14}$');
+    RegExp exp = RegExp(
+        r'^(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[!@#$%^&*a-zA-Z\d]{8,}$');
+    //RegExp exp = RegExp(r'^[a-zA-Z]\w{3,14}$');
 
     exp.hasMatch(value)
         ? context.read<AuthCubit>().setPasswordValid(true)

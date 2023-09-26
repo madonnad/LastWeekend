@@ -44,7 +44,7 @@ class AuthenticationRepository {
       supa.User supaUser = session.user;
 
       //return the user from the map function
-      return User(id: supaUser.id, firstName: '', lastName: '');
+      return User(id: supaUser.id, firstName: '', lastName: '', token: '');
     } else {
       return User.empty;
     }
@@ -78,6 +78,7 @@ class AuthenticationRepository {
       lastName: retrievedData['last_name'],
       avatarUrl: retrievedData['avatar'],
       friendsList: retrievedData['friends'],
+      token: '',
     );
   }
 
