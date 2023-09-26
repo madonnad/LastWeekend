@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/cubit/auth_cubit.dart';
 import 'package:shared_photo/components/auth_comp/forms/create_account_form.dart';
 import 'package:shared_photo/components/auth_comp/forms/login_form.dart';
+import 'package:shared_photo/repositories/auth0_repository.dart';
 import 'package:shared_photo/repositories/authentication_repository.dart';
 
 class AuthScreen extends StatelessWidget {
@@ -13,7 +14,7 @@ class AuthScreen extends StatelessWidget {
     return Scaffold(
       body: BlocProvider(
         create: (context) => AuthCubit(
-          context.read<AuthenticationRepository>(),
+          context.read<Auth0Repository>(),
         ),
         child: BlocBuilder<AuthCubit, AuthState>(
           builder: (context, state) {

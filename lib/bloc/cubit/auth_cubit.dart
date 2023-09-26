@@ -1,14 +1,16 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_photo/repositories/auth0_repository.dart';
 import 'package:shared_photo/repositories/authentication_repository.dart';
 
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  final AuthenticationRepository _authenticationRepository;
+  //final AuthenticationRepository _authenticationRepository;
+  final Auth0Repository _auth0repository;
 
-  AuthCubit(this._authenticationRepository)
+  AuthCubit(this._auth0repository)
       : super(
           AuthState(
             isLoading: false,
@@ -74,7 +76,7 @@ class AuthCubit extends Cubit<AuthState> {
     emit(state.copyWith(isLoading: true));
 
     try {
-      await _authenticationRepository.logInWithEmailAndPassword(
+      await _auth0repository.loginWithEmailAndPassword(
           email: email, password: password);
       emit(state.copyWith(isLoading: false));
     } catch (e) {
@@ -91,7 +93,7 @@ class AuthCubit extends Cubit<AuthState> {
     emit(state.copyWith(isLoading: true));
 
     try {
-      await _authenticationRepository.createAccountWithEmailAndPassword(
+      await _auth0repository.createAccountWithEmailAndPassword(
           email: email,
           password: password,
           firstName: firstName,

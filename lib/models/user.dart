@@ -10,19 +10,21 @@ class User extends Equatable {
   final String lastName;
   final String? avatarUrl;
   final List<Friend>? friendsList;
+  final String? token;
 
   // Constructors
   const User({
     required this.id,
-    this.email,
-    this.username,
     required this.firstName,
     required this.lastName,
+    required this.token,
+    this.email,
+    this.username,
     this.avatarUrl,
     this.friendsList = const [],
   });
 
-  static const empty = User(id: '', firstName: '', lastName: '');
+  static const empty = User(id: '', firstName: '', lastName: '', token: '');
 
   // Getters
   // Getter to check if the current user is empty
@@ -58,11 +60,12 @@ class User extends Equatable {
       lastName: lastName,
       avatarUrl: avatarUrl,
       friendsList: friendsList,
+      token: '',
     );
   }
 
   //Equatable overrides
   @override
   List<Object?> get props =>
-      [email, id, firstName, lastName, avatarUrl, friendsList];
+      [email, id, firstName, lastName, avatarUrl, friendsList, token];
 }

@@ -29,5 +29,5 @@ class CachedAuthenticatedState extends AppState {
 
 class LoadingState extends AppState {
   const LoadingState()
-      : super(status: AppStatus.authenticated, user: User.empty);
+      : super(status: AppStatus.unauthenticated, user: User.empty);
 }
