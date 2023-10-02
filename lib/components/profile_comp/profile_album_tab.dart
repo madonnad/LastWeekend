@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
 
 class ProfileAlbumTab extends StatefulWidget {
@@ -18,6 +19,8 @@ class _ProfileAlbumTabState extends State<ProfileAlbumTab> {
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileBloc, ProfileState>(
       builder: (context, state) {
+        String token = context.read<AppBloc>().state.user.token!;
+        Map<String, String> headers = {"Authorization": "Bearer $token"};
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30.0),
           child: Column(
@@ -78,10 +81,10 @@ class _ProfileAlbumTabState extends State<ProfileAlbumTab> {
                       clipBehavior: Clip.antiAlias,
                       child: SizedBox(
                         height: 177,
-                        child: (state.isLoading == false &&
-                                state.myAlbums[index].albumCoverUrl != null)
+                        child: (state.isLoading == false)
                             ? Image.network(
-                                state.myAlbums[index].albumCoverUrl!,
+                                state.myAlbums[index].coverReq,
+                                headers: headers,
                                 fit: BoxFit.cover,
                               )
                             : const Center(

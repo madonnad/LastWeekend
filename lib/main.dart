@@ -6,6 +6,7 @@ import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
 import 'package:shared_photo/repositories/auth0_repository.dart';
 import 'package:shared_photo/repositories/authentication_repository.dart';
 import 'package:shared_photo/repositories/data_repository.dart';
+import 'package:shared_photo/repositories/go_repository.dart';
 import 'package:shared_photo/router/generate_route.dart';
 import 'package:shared_photo/screens/app_frame.dart';
 import 'package:shared_photo/screens/auth.dart';
@@ -28,11 +29,13 @@ void main() async {
   final auth0Repository = Auth0Repository();
   final authenticationRepository = AuthenticationRepository();
   final dataRepository = DataRepository();
+  final goRepository = GoRepository();
 
   runApp(MainApp(
     authenticationRepository: authenticationRepository,
     dataRepository: dataRepository,
     auth0Repository: auth0Repository,
+    goRepository: goRepository,
   ));
 }
 
@@ -40,14 +43,17 @@ class MainApp extends StatelessWidget {
   final AuthenticationRepository _authenticationRepository;
   final DataRepository _dataRepository;
   final Auth0Repository _auth0Repository;
+  final GoRepository _goRepository;
   const MainApp({
     required AuthenticationRepository authenticationRepository,
     required DataRepository dataRepository,
     required Auth0Repository auth0Repository,
+    required GoRepository goRepository,
     super.key,
   })  : _authenticationRepository = authenticationRepository,
         _auth0Repository = auth0Repository,
-        _dataRepository = dataRepository;
+        _dataRepository = dataRepository,
+        _goRepository = goRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +64,9 @@ class MainApp extends StatelessWidget {
         const SystemUiOverlayStyle(systemNavigationBarColor: Colors.white));
     return MultiRepositoryProvider(
       providers: [
+        RepositoryProvider.value(
+          value: _auth0Repository,
+        ),
         RepositoryProvider.value(
           value: _auth0Repository,
         ),
@@ -81,6 +90,7 @@ class MainApp extends StatelessWidget {
             create: (context) => ProfileBloc(
               appBloc: context.read<AppBloc>(),
               dataRepository: _dataRepository,
+              goRepository: _goRepository,
             ),
           ),
         ],

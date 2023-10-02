@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:shared_photo/models/image.dart';
+import 'package:shared_photo/utils/api_variables.dart';
 
 class Album {
   String albumId;
@@ -45,17 +46,34 @@ class Album {
   }
 
   factory Album.fromMap(Map<String, dynamic> map) {
+    List<Image> images = [];
+    dynamic? jsonImages = map['images'];
+
+    if (jsonImages != null) {
+      for (var item in jsonImages[0]) {
+        Image image = Image.fromMap(item);
+
+        images.add(image);
+      }
+    }
+
     return Album(
       albumId: map['album_id'] as String,
       albumCoverId: map['album_cover_id'] as String,
       albumName: map['album_name'] as String,
       albumOwner: map['album_owner'] as String,
       creationDateTime: map['created_at'],
-      images: [],
+      images: images,
       lockDateTime: map['locked_at'],
       unlockDateTime: map['unlocked_at'],
       revealDateTime: map['revealed_at'],
     );
+  }
+
+  String get coverReq {
+    String requestUrl = "$goRepoDomain/image?id=$albumCoverId";
+
+    return requestUrl;
   }
 
   String toJson() => json.encode(toMap());

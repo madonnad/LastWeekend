@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
+import 'package:shared_photo/models/album.dart';
 
 class GoRepository {
-  Future<String> getUsersAlbums(String token) async {
+  Future<List<Album>> getUsersAlbums(String token) async {
+    final List<Album> albums = [];
     var url = Uri.http('0.0.0.0:2525', '/user/album');
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
@@ -9,11 +13,18 @@ class GoRepository {
 
     if (response.statusCode == 200) {
       final responseBody = response.body;
-      print(responseBody);
-      return responseBody;
+
+      final jsonData = jsonDecode(responseBody);
+
+      for (var item in jsonData) {
+        Album album = Album.fromMap(item);
+        albums.add(album);
+      }
+      print(albums);
+      return albums;
     }
     print('Request failed with status: ${response.statusCode}');
     print('Response body: #${response.body}');
-    return '';
+    return albums;
   }
 }

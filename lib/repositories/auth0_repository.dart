@@ -74,7 +74,7 @@ class Auth0Repository {
         throw Exception("Failed to store credentials");
       }
 
-      print("token ${credentials.accessToken}");
+      //print("token ${credentials.accessToken}");
     } catch (e) {
       print(e);
     }

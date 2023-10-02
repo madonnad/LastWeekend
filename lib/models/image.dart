@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:shared_photo/utils/api_variables.dart';
+
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class Image {
   String imageId;
@@ -41,6 +43,12 @@ class Image {
       upvotes: map['upvotes'] as int,
       uploadDateTime: DateTime.parse(map['created_at']),
     );
+  }
+
+  String get imageReq {
+    String requestUrl = "$goRepoDomain/image?id=$imageId";
+
+    return requestUrl;
   }
 
   String toJson() => json.encode(toMap());
