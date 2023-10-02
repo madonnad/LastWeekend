@@ -24,7 +24,7 @@ class ScrollCard extends StatelessWidget {
           ),
           clipBehavior: Clip.antiAlias,
           child: Image.network(
-            state.albums[sliverIndex].images[index].imageUrl ?? '',
+            state.albums[sliverIndex].images[index].imageId,
             fit: BoxFit.cover,
           ),
         );

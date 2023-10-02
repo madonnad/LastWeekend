@@ -6,6 +6,7 @@ import 'package:shared_photo/models/friend.dart';
 import 'package:shared_photo/models/image.dart';
 import 'package:shared_photo/models/notification.dart';
 import 'package:shared_photo/repositories/data_repository.dart';
+import 'package:shared_photo/repositories/go_repository.dart';
 
 part 'profile_event.dart';
 part 'profile_state.dart';
@@ -13,12 +14,18 @@ part 'profile_state.dart';
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final AppBloc appBloc;
   final DataRepository dataRepository;
+  final GoRepository goRepository;
 
-  ProfileBloc({required this.appBloc, required this.dataRepository})
+  ProfileBloc(
+      {required this.appBloc,
+      required this.dataRepository,
+      required this.goRepository})
       : super(ProfileState.empty) {
     on<InitializeProfile>((event, emit) async {
+      String token = appBloc.state.user.token!;
       emit(state.copyWith(isLoading: true));
-      List<Album> myAlbums = await dataRepository.fetchMyAlbums();
+      List<Album> myAlbums = await goRepository.getUsersAlbums(token);
+      print(myAlbums);
       List<Notification> myNotifications =
           await dataRepository.fetchMyNotifications();
       emit(
