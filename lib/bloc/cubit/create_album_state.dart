@@ -160,8 +160,7 @@ final class CreateAlbumState extends Equatable {
   }
 
   bool get canCreate {
-    return (friendsList.isNotEmpty &&
-        albumCoverImagePath != null &&
+    return (albumCoverImagePath != null &&
         unlockDateTime != null &&
         unlockTimeOfDay != null &&
         lockDateTime != null &&
@@ -311,5 +310,15 @@ final class CreateAlbumState extends Equatable {
 
     timeString = '$hour:$minute $amPm';
     return timeString;
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "album_name": albumName.text,
+      "invited_list": friendUIDList,
+      "unlocked_at": finalUnlockDateTime.toUtc().toIso8601String(),
+      "locked_at": finalLockDateTime.toUtc().toIso8601String(),
+      "revealed_at": finalRevealDateTime.toUtc().toIso8601String(),
+    };
   }
 }

@@ -45,7 +45,7 @@ class FeedScreen extends StatelessWidget {
             SliverToBoxAdapter(
               child: ElevatedButton(
                 onPressed: () {
-                  goRepository.getUsersAlbums(token);
+                  goRepository.getAuthenticatedUsersAlbums(token);
                 },
                 child: const Text('Test Request'),
               ),

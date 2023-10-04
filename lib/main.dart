@@ -68,7 +68,7 @@ class MainApp extends StatelessWidget {
           value: _auth0Repository,
         ),
         RepositoryProvider.value(
-          value: _auth0Repository,
+          value: _goRepository,
         ),
         RepositoryProvider.value(
           value: _authenticationRepository,
