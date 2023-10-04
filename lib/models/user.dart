@@ -10,7 +10,7 @@ class User extends Equatable {
   final String lastName;
   final String? avatarUrl;
   final List<Friend>? friendsList;
-  final String? token;
+  final String token;
 
   // Constructors
   const User({

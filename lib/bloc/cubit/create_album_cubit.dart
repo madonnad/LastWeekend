@@ -1,22 +1,26 @@
 import 'dart:async';
-import 'dart:io';
+import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
-import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/friend.dart';
 import 'package:shared_photo/repositories/data_repository.dart';
+import 'package:shared_photo/repositories/go_repository.dart';
 
 part 'create_album_state.dart';
 
 class CreateAlbumCubit extends Cubit<CreateAlbumState> {
   AppBloc appBloc;
   DataRepository dataRepository;
+  GoRepository goRepository;
   List<Friend> _appBlocFriendsList = [];
-  CreateAlbumCubit({required this.appBloc, required this.dataRepository})
+  CreateAlbumCubit(
+      {required this.appBloc,
+      required this.dataRepository,
+      required this.goRepository})
       : super(
           CreateAlbumState(
             albumName: TextEditingController(),
@@ -114,7 +118,10 @@ class CreateAlbumCubit extends Cubit<CreateAlbumState> {
 
   Future<void> createAlbum() async {
     try {
-      String albumCoverId =
+      String token = appBloc.state.user.token;
+      goRepository.postNewAlbum(token, state);
+
+      /*String albumCoverId =
           await dataRepository.createNewImageRecord(uid: appBloc.state.user.id);
 
       Album newAlbum = Album(
@@ -125,22 +132,22 @@ class CreateAlbumCubit extends Cubit<CreateAlbumState> {
         lockDateTime: state.finalLockDateTime.toIso8601String(),
         unlockDateTime: state.finalUnlockDateTime.toIso8601String(),
         revealDateTime: state.finalRevealDateTime.toIso8601String(),
-      );
+      );*/
 
-      await dataRepository.insertImageToBucket(
+      /*await dataRepository.insertImageToBucket(
         imageUID: albumCoverId,
         filePath: File(
           state.albumCoverImagePath!,
         ),
       );
 
-      String albumUid = await dataRepository.createAlbumRecord(newAlbum);
+    String albumUid = await dataRepository.createAlbumRecord(newAlbum);
 
       dataRepository.addUsersToAlbum(
         creatorUid: appBloc.state.user.id,
         friendUids: state.friendUIDList,
         albumUid: albumUid,
-      );
+      );*/
     } catch (e) {
       print(e);
     }
