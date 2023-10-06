@@ -118,8 +118,21 @@ class CreateAlbumCubit extends Cubit<CreateAlbumState> {
 
   Future<void> createAlbum() async {
     try {
-      String token = appBloc.state.user.token;
-      goRepository.postNewAlbum(token, state);
+      final String token = appBloc.state.user.token;
+      final String? imageId = await goRepository.postNewAlbum(token, state);
+      if (imageId == null) {
+        throw const FormatException("Failed creating new image");
+      }
+      final String? imagePath =
+          state.albumCoverImagePath != null ? state.albumCoverImagePath! : null;
+      if (imagePath == null) {
+        throw const FormatException("No image path was provided to upload");
+      }
+      bool success =
+          await goRepository.uploadNewImage(token, imagePath, imageId);
+      if (success == false) {
+        throw const FormatException("Image upload failed");
+      }
 
       /*String albumCoverId =
           await dataRepository.createNewImageRecord(uid: appBloc.state.user.id);
