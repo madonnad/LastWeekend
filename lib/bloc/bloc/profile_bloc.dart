@@ -23,11 +23,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       : super(ProfileState.empty) {
     on<InitializeProfile>((event, emit) async {
       String token = appBloc.state.user.token;
-      print(token);
       emit(state.copyWith(isLoading: true));
       List<Album> myAlbums =
           await goRepository.getAuthenticatedUsersAlbums(token);
-      print(myAlbums);
+      //print(myAlbums);
       List<Notification> myNotifications =
           await dataRepository.fetchMyNotifications();
       emit(
