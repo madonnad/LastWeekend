@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -83,9 +84,9 @@ class _ProfileAlbumTabState extends State<ProfileAlbumTab> {
                         height: 177,
                         child: (state.isLoading == false &&
                                 state.myAlbums.isNotEmpty)
-                            ? Image.network(
-                                state.myAlbums[index].coverReq,
-                                headers: headers,
+                            ? CachedNetworkImage(
+                                imageUrl: state.myAlbums[index].coverReq,
+                                httpHeaders: headers,
                                 fit: BoxFit.cover,
                               )
                             : const Center(

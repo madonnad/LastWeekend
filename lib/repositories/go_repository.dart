@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
@@ -5,8 +6,20 @@ import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import 'package:shared_photo/bloc/cubit/create_album_cubit.dart';
 import 'package:shared_photo/models/album.dart';
+import 'package:web_socket_channel/io.dart';
 
 class GoRepository {
+  Stream<String> webSocketConnection(String token) async* {
+    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
+    final wsURL = Uri.parse('ws://0.0.0.0:2525/ws');
+    var connection = IOWebSocketChannel.connect(wsURL, headers: headers);
+
+    await for (final message in connection.stream) {
+      String text = message.toString();
+      yield text;
+    }
+  }
+
   Future<List<Album>> getAuthenticatedUsersAlbums(String token) async {
     final List<Album> albums = [];
     var url = Uri.http('0.0.0.0:2525', '/user/album');
