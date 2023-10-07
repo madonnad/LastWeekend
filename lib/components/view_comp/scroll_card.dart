@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 
 import '../../bloc/bloc/feed_bloc.dart';
 
@@ -16,6 +17,9 @@ class ScrollCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<FeedBloc, FeedState>(
       builder: (context, state) {
+        String token = context.read<AppBloc>().state.user.token;
+        Map<String, String> headers = {"Authorization": "Bearer $token"};
+
         return Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(
@@ -23,10 +27,17 @@ class ScrollCard extends StatelessWidget {
             ),
           ),
           clipBehavior: Clip.antiAlias,
-          child: Image.network(
-            state.albums[sliverIndex].images[index].imageId,
-            fit: BoxFit.cover,
-          ),
+          child: (state.loading == false)
+              ? Image.network(
+                  state.albums[sliverIndex].images[index].imageReq,
+                  headers: headers,
+                  fit: BoxFit.cover,
+                )
+              : const Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.cyan,
+                  ),
+                ),
         );
       },
     );

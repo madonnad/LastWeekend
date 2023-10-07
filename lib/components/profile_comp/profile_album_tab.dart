@@ -19,7 +19,7 @@ class _ProfileAlbumTabState extends State<ProfileAlbumTab> {
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileBloc, ProfileState>(
       builder: (context, state) {
-        String token = context.read<AppBloc>().state.user.token!;
+        String token = context.read<AppBloc>().state.user.token;
         Map<String, String> headers = {"Authorization": "Bearer $token"};
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30.0),
@@ -81,7 +81,8 @@ class _ProfileAlbumTabState extends State<ProfileAlbumTab> {
                       clipBehavior: Clip.antiAlias,
                       child: SizedBox(
                         height: 177,
-                        child: (state.isLoading == false)
+                        child: (state.isLoading == false &&
+                                state.myAlbums.isNotEmpty)
                             ? Image.network(
                                 state.myAlbums[index].coverReq,
                                 headers: headers,

@@ -14,9 +14,7 @@ class FeedScreen extends StatelessWidget {
     return BlocBuilder<FeedBloc, FeedState>(
       builder: (context, state) {
         GoRepository goRepository = GoRepository();
-        String token = context.read<AppBloc>().state.user.token != null
-            ? context.read<AppBloc>().state.user.token!
-            : '';
+        String token = context.read<AppBloc>().state.user.token;
         return CustomScrollView(
           shrinkWrap: true,
           slivers: [
@@ -45,7 +43,7 @@ class FeedScreen extends StatelessWidget {
             SliverToBoxAdapter(
               child: ElevatedButton(
                 onPressed: () {
-                  goRepository.getAuthenticatedUsersAlbums(token);
+                  goRepository.getFeedAlbums(token);
                 },
                 child: const Text('Test Request'),
               ),

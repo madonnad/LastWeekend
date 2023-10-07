@@ -31,6 +31,29 @@ class GoRepository {
     return albums;
   }
 
+  Future<List<Album>> getFeedAlbums(String token) async {
+    final List<Album> albums = [];
+    var url = Uri.http('0.0.0.0:2525', '/feed');
+    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
+
+    final response = await http.get(url, headers: headers);
+    if (response.statusCode == 200) {
+      final responseBody = response.body;
+
+      final jsonData = json.decode(responseBody);
+
+      for (var item in jsonData) {
+        Album album = Album.fromMap(item);
+        albums.add(album);
+      }
+      //print(albums);
+      return albums;
+    }
+    print('Request failed with status: ${response.statusCode}');
+    print('Response body: #${response.body}');
+    return albums;
+  }
+
   Future<String?> postNewAlbum(String token, CreateAlbumState state) async {
     Map<String, dynamic> albumInformation = state.toJson();
     String encodedBody = json.encode(albumInformation);
