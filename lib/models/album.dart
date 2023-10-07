@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:shared_photo/models/image.dart';
 import 'package:shared_photo/utils/api_variables.dart';
 
+enum Visibility { private, public, friends }
+
 class Album {
   String albumId;
   String albumName;
@@ -15,6 +17,7 @@ class Album {
   String unlockDateTime;
   String revealDateTime;
   String? albumCoverUrl;
+  Visibility visibility;
 
   Album({
     required this.albumId,
@@ -24,6 +27,7 @@ class Album {
     required this.lockDateTime,
     required this.unlockDateTime,
     required this.revealDateTime,
+    required this.visibility,
     this.albumCoverId = '',
     this.images = const [],
     this.albumCoverUrl,
@@ -31,7 +35,7 @@ class Album {
 
   @override
   String toString() {
-    return 'Album(albumId: $albumId, albumName: $albumName, albumOwner: $albumOwner, images: $images, creationDateTime: $creationDateTime, lockDateTime: $lockDateTime)';
+    return 'Album(albumId: $albumId, albumName: $albumName, albumOwner: $albumOwner,visibility: $visibility, images: $images, creationDateTime: $creationDateTime, lockDateTime: $lockDateTime)';
   }
 
   Map<String, dynamic> toMap() {
@@ -47,14 +51,26 @@ class Album {
 
   factory Album.fromMap(Map<String, dynamic> map) {
     List<Image> images = [];
-    dynamic? jsonImages = map['images'];
+    Visibility visibility;
+    dynamic jsonImages = map['images'];
 
     if (jsonImages != null) {
-      for (var item in jsonImages[0]) {
+      for (var item in jsonImages) {
         Image image = Image.fromMap(item);
 
         images.add(image);
       }
+    }
+
+    switch (map['visibility']) {
+      case 'private':
+        visibility = Visibility.private;
+      case 'friends':
+        visibility = Visibility.friends;
+      case 'public':
+        visibility = Visibility.public;
+      default:
+        visibility = Visibility.private;
     }
 
     return Album(
@@ -67,6 +83,7 @@ class Album {
       lockDateTime: map['locked_at'],
       unlockDateTime: map['unlocked_at'],
       revealDateTime: map['revealed_at'],
+      visibility: visibility,
     );
   }
 
