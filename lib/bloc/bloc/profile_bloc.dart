@@ -28,7 +28,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           await goRepository.getAuthenticatedUsersAlbums(token);
       //print(myAlbums);
       List<Notification> myNotifications =
-          await dataRepository.fetchMyNotifications();
+          await goRepository.getNotifications(token);
+
       emit(
         state.copyWith(
             myAlbums: myAlbums,
@@ -58,7 +59,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
         var type = event.notificationType;
 
-        myNotifications.removeWhere((element) {
+        /*myNotifications.removeWhere((element) {
           switch (type) {
             case NotificationType.albumInvite:
               if (element is AlbumInviteNotification &&
@@ -74,7 +75,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           }
 
           return false;
-        });
+        });*/
 
         print(myNotifications);
 
@@ -96,7 +97,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       }
 
       //Grab the URL of the media as it becomes available.
-      if (event.location == LoadLocation.list &&
+      /*if (event.location == LoadLocation.list &&
           state.myNotifications[index].notificationMediaURL == null) {
         emit(state.copyWith(isLoading: true));
         //Grab notifications from state emitted above;
@@ -115,7 +116,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
         emit(
             state.copyWith(myNotifications: myNotifications, isLoading: false));
-      }
+      }*/
       emit(state.copyWith(isLoading: false));
     });
 

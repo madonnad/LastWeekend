@@ -1,7 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
+import 'package:shared_photo/models/notification.dart';
 
 class FriendRequestNotificationComp extends StatelessWidget {
   final int index;
@@ -12,10 +15,12 @@ class FriendRequestNotificationComp extends StatelessWidget {
     double devWidth = MediaQuery.of(context).size.width;
     return BlocBuilder<ProfileBloc, ProfileState>(
       builder: (context, state) {
-        String? notificationMediaURL =
-            state.myNotifications[index].notificationMediaURL;
-        bool isPresent =
-            (notificationMediaURL != '' && notificationMediaURL != null);
+        Map<String, String> headers =
+            context.read<AppBloc>().state.user.headers;
+
+        FriendRequestNotification notification =
+            state.myNotifications[index] as FriendRequestNotification;
+
         return Card(
           elevation: 4,
           shadowColor: const Color.fromRGBO(0, 0, 41, .25),
@@ -43,9 +48,10 @@ class FriendRequestNotificationComp extends StatelessWidget {
                           alignment: Alignment.center,
                           child: CircleAvatar(
                             radius: 35,
-                            backgroundImage: isPresent
-                                ? NetworkImage(notificationMediaURL)
-                                : null,
+                            backgroundImage: CachedNetworkImageProvider(
+                              state.myNotifications[index].imageReq,
+                              headers: headers,
+                            ),
                             backgroundColor: Colors.white70,
                             child: state.isLoading == true
                                 ? const Center(
@@ -69,7 +75,7 @@ class FriendRequestNotificationComp extends StatelessWidget {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      'friend request',
+                                      'friend notification',
                                       style: GoogleFonts.poppins(
                                           fontSize: 10,
                                           color: Colors.white,
@@ -88,7 +94,7 @@ class FriendRequestNotificationComp extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 5.0),
                                   child: Text(
-                                    state.myNotifications[index].notifierName,
+                                    notification.requesterName,
                                     style: GoogleFonts.poppins(
                                         fontSize: 14,
                                         color: Colors.white,
