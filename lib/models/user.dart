@@ -32,6 +32,8 @@ class User extends Equatable {
   // Getter to check if the current user is not empty
   bool get isNotEmpty => this != User.empty;
 
+  Map<String, String> get headers => {"Authorization": "Bearer $token"};
+
   factory User.fromRepoData(
       {required String id,
       required String email,

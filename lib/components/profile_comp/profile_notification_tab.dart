@@ -4,6 +4,7 @@ import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
 import 'package:shared_photo/components/profile_comp/notification_comp/album_invite_notification_comp.dart';
 import 'package:shared_photo/components/profile_comp/notification_comp/basic_notification_comp.dart';
 import 'package:shared_photo/components/profile_comp/notification_comp/friend_request_notification_comp.dart';
+import 'package:shared_photo/components/profile_comp/notification_comp/summary_notification_comp.dart';
 import 'package:shared_photo/models/notification.dart';
 
 class ProfileNotificationTab extends StatelessWidget {
@@ -26,6 +27,8 @@ class ProfileNotificationTab extends StatelessWidget {
                   ),
                 );
 
+            //print(state.myNotifications.length);
+
             var type = state.myNotifications[index];
 
             if (type is AlbumInviteNotification) {
@@ -39,6 +42,14 @@ class ProfileNotificationTab extends StatelessWidget {
               return Center(
                 child: FriendRequestNotificationComp(
                   index: index,
+                ),
+              );
+            }
+            if (type is SummaryNotification) {
+              return Center(
+                child: SummaryNotificationComp(
+                  index: index,
+                  notificationDetailString: 'summary',
                 ),
               );
             }

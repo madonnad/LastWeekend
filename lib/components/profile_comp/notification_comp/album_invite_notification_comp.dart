@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
 import 'package:shared_photo/models/notification.dart';
 
@@ -14,10 +16,12 @@ class AlbumInviteNotificationComp extends StatelessWidget {
     double devWidth = MediaQuery.of(context).size.width;
     return BlocBuilder<ProfileBloc, ProfileState>(
       builder: (context, state) {
+        Map<String, String> headers =
+            context.read<AppBloc>().state.user.headers;
+
         AlbumInviteNotification notification =
             state.myNotifications[index] as AlbumInviteNotification;
-        String notificationUrl =
-            state.myNotifications[index].notificationMediaURL ?? '';
+
         return Card(
           elevation: 4,
           shadowColor: const Color.fromRGBO(0, 0, 41, .25),
@@ -51,15 +55,11 @@ class AlbumInviteNotificationComp extends StatelessWidget {
                               color: Colors.grey,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: (state.isLoading == false &&
-                                    notificationUrl != '')
-                                ? Image.network(
-                                    notificationUrl,
-                                    fit: BoxFit.cover,
-                                  )
-                                : const Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
+                            child: CachedNetworkImage(
+                              imageUrl: state.myNotifications[index].imageReq,
+                              httpHeaders: headers,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       ),
@@ -114,7 +114,7 @@ class AlbumInviteNotificationComp extends StatelessWidget {
                                             fontWeight: FontWeight.w200),
                                       ),
                                       TextSpan(
-                                        text: notification.notifierName,
+                                        text: notification.ownerName,
                                         style: GoogleFonts.poppins(
                                             fontSize: 12,
                                             color: Colors.white,

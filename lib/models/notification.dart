@@ -1,23 +1,25 @@
+import 'package:shared_photo/utils/api_variables.dart';
+
 enum GenericNotificationType { likedPhoto, upvotePhoto, imageComment }
 
 enum NotificationType { generic, friendRequest, albumInvite }
 
 abstract class Notification {
   final DateTime receivedDateTime;
-  final String notifierID;
-  final String notifierName;
   final String notificationMediaID;
-  String? notificationMediaURL;
-  final bool notificationSeen;
+  final bool? notificationSeen;
 
   Notification({
     required this.receivedDateTime,
-    required this.notifierID,
-    required this.notifierName,
     required this.notificationMediaID,
-    required this.notificationSeen,
-    this.notificationMediaURL,
+    this.notificationSeen,
   });
+
+  String get imageReq {
+    String requestUrl = "$goRepoDomain/image?id=$notificationMediaID";
+
+    return requestUrl;
+  }
 
   String get formattedDateTime {
     String formattedDateTime;
@@ -47,66 +49,100 @@ abstract class Notification {
 }
 
 class AlbumInviteNotification extends Notification {
+  final String albumID;
   final String albumName;
-  final String notificationID;
+  final String albumOwner;
+  final String ownerName;
   AlbumInviteNotification({
     required super.receivedDateTime,
-    required super.notifierID,
-    required super.notifierName,
     required super.notificationMediaID,
-    required super.notificationSeen,
+    required this.albumID,
     required this.albumName,
-    required this.notificationID,
-    super.notificationMediaURL,
+    required this.albumOwner,
+    required this.ownerName,
   });
 
   factory AlbumInviteNotification.fromMap(Map<String, dynamic> map) {
     return AlbumInviteNotification(
-      receivedDateTime: DateTime.parse(map['invited_at']),
-      notifierID: map['album_owner'].toString(),
-      notifierName: '${map['first_name']} ${map['last_name']}',
+      receivedDateTime: DateTime.parse(map['received_at']),
       notificationMediaID: map['album_cover_id'],
-      notificationSeen: map['invite_seen'],
+      albumID: map['album_id'],
       albumName: map['album_name'],
-      notificationID: map['album_id'].toString(),
+      albumOwner: map['album_owner'],
+      ownerName: '${map['owner_first']} ${map['owner_last']}',
     );
   }
 }
 
 class FriendRequestNotification extends Notification {
+  final String userID;
+  final String requesterName;
   FriendRequestNotification({
     required super.receivedDateTime,
-    required super.notifierID,
-    required super.notifierName,
     required super.notificationMediaID,
-    required super.notificationSeen,
-    super.notificationMediaURL,
+    required this.userID,
+    required this.requesterName,
   });
 
   factory FriendRequestNotification.fromMap(Map<String, dynamic> map) {
     return FriendRequestNotification(
-      receivedDateTime: DateTime.parse(map['requested_at']),
-      notifierID: map['sender_id'].toString(),
-      notifierName: '${map['first_name']} ${map['last_name']}',
-      notificationMediaID: map['avatar'] ?? '',
-      notificationSeen: map['invite_seen'],
+      receivedDateTime: DateTime.parse(map['received_at']),
+      userID: map['user_id'],
+      requesterName: '${map['first_name']} ${map['last_name']}',
+      notificationMediaID: map['user_id'],
+    );
+  }
+}
+
+class SummaryNotification extends Notification {
+  final String notificationType;
+  final String nameOne;
+  final String? nameTwo;
+  final String albumName;
+  final String albumID;
+  final int typeTotal;
+
+  SummaryNotification({
+    required super.notificationMediaID,
+    required super.receivedDateTime,
+    required this.notificationType,
+    required this.nameOne,
+    required this.nameTwo,
+    required this.albumName,
+    required this.albumID,
+    required this.typeTotal,
+  });
+
+  factory SummaryNotification.fromMap(Map<String, dynamic> map) {
+    return SummaryNotification(
+      notificationMediaID: map['album_cover_id'],
+      receivedDateTime: DateTime.parse(map['received_at']),
+      notificationType: map['notification_type'],
+      nameOne: map['name_one'],
+      nameTwo: map['name_two'] ?? '',
+      albumID: map['album_id'],
+      albumName: map['album_name'],
+      typeTotal: map['album_type_total'],
     );
   }
 }
 
 class GenericNotification extends Notification {
-  final GenericNotificationType notificationType;
+  final String notifierID;
+  final String notifierName;
+  final String albumID;
   final String albumName;
+  final GenericNotificationType notificationType;
 
   GenericNotification({
     required super.receivedDateTime,
-    required super.notifierID,
-    required super.notifierName,
     required super.notificationMediaID,
-    required super.notificationSeen,
-    required this.notificationType,
+    super.notificationSeen,
+    required this.notifierID,
+    required this.notifierName,
+    required this.albumID,
     required this.albumName,
-    super.notificationMediaURL,
+    required this.notificationType,
   });
 
   factory GenericNotification.fromMap(Map<String, dynamic> map) {
@@ -121,10 +157,11 @@ class GenericNotification extends Notification {
 
     return GenericNotification(
       receivedDateTime: DateTime.parse(map['received_at']),
-      notifierID: map['sender_id'].toString(),
-      notifierName: '${map['first_name']} ${map['last_name']}',
-      albumName: map['album_name'],
       notificationMediaID: map['media_id'],
+      notifierID: map['notifier_id'],
+      notifierName: map['notifier_name'],
+      albumID: map['album_id'],
+      albumName: map['album_name'],
       notificationSeen: map['notification_seen'],
       notificationType: notificationType,
     );

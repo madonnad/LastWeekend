@@ -92,7 +92,7 @@ class _AnimatedNotificationState extends State<AnimatedNotification>
   }
 }
 
-class AlbumCover extends StatelessWidget {
+/*class AlbumCover extends StatelessWidget {
   const AlbumCover({super.key});
 
   @override
@@ -128,4 +128,4 @@ class AlbumCover extends StatelessWidget {
       },
     );
   }
-}
+}*/

@@ -6,10 +6,10 @@ import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
 import 'package:shared_photo/models/notification.dart';
 
-class BasicNotificationComp extends StatelessWidget {
+class SummaryNotificationComp extends StatelessWidget {
   final int index;
   final String notificationDetailString;
-  const BasicNotificationComp(
+  const SummaryNotificationComp(
       {super.key, required this.index, required this.notificationDetailString});
 
   @override
@@ -21,8 +21,8 @@ class BasicNotificationComp extends StatelessWidget {
         Map<String, String> headers =
             context.read<AppBloc>().state.user.headers;
 
-        GenericNotification genericNotification =
-            state.myNotifications[index] as GenericNotification;
+        SummaryNotification summaryNotification =
+            state.myNotifications[index] as SummaryNotification;
         return Card(
           elevation: 0,
           clipBehavior: Clip.hardEdge,
@@ -31,11 +31,11 @@ class BasicNotificationComp extends StatelessWidget {
             color: Colors.white,
             child: Padding(
               padding: const EdgeInsets.only(
-                  left: 20.0, right: 20, top: 12, bottom: 8),
+                  left: 20, right: 20, top: 12, bottom: 8),
               child: Column(
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
@@ -72,7 +72,7 @@ class BasicNotificationComp extends StatelessWidget {
                                 children: [
                                   Expanded(
                                     child: Text(
-                                      genericNotification.albumName,
+                                      summaryNotification.albumName,
                                       style: GoogleFonts.poppins(
                                           fontSize: 10,
                                           color: Colors.black,
@@ -101,7 +101,7 @@ class BasicNotificationComp extends StatelessWidget {
                                     children: <TextSpan>[
                                       TextSpan(
                                         text:
-                                            '${genericNotification.notifierName}\n',
+                                            '${summaryNotification.nameOne}\n',
                                         style: GoogleFonts.poppins(
                                             fontSize: 12,
                                             color: Colors.black,

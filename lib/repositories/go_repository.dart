@@ -6,6 +6,7 @@ import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import 'package:shared_photo/bloc/cubit/create_album_cubit.dart';
 import 'package:shared_photo/models/album.dart';
+import 'package:shared_photo/models/notification.dart';
 import 'package:web_socket_channel/io.dart';
 
 class GoRepository {
@@ -65,6 +66,44 @@ class GoRepository {
     print('Request failed with status: ${response.statusCode}');
     print('Response body: #${response.body}');
     return albums;
+  }
+
+  Future<List<Notification>> getNotifications(String token) async {
+    final List<Notification> notificationList = [];
+
+    var url = Uri.http('0.0.0.0:2525', '/notifications');
+    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
+
+    final response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      final responseBody = response.body;
+
+      final jsonData = json.decode(responseBody);
+
+      List<dynamic> summaryNotificationList = jsonData['summary_notifications'];
+      List<dynamic> albumInviteList = jsonData['album_invites'];
+      List<dynamic> friendRequestList = jsonData['friend_requests'];
+
+      for (var item in friendRequestList) {
+        notificationList.add(FriendRequestNotification.fromMap(item));
+      }
+      for (var item in albumInviteList) {
+        AlbumInviteNotification albumInviteNotification =
+            AlbumInviteNotification.fromMap(item);
+        notificationList.add(AlbumInviteNotification.fromMap(item));
+      }
+      for (var item in summaryNotificationList) {
+        notificationList.add(SummaryNotification.fromMap(item));
+      }
+
+      return notificationList;
+    }
+
+    print('Request failed with status: ${response.statusCode}');
+    print('Response body: #${response.body}');
+
+    return notificationList;
   }
 
   Future<String?> postNewAlbum(String token, CreateAlbumState state) async {
