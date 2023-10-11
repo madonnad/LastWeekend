@@ -21,22 +21,28 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       required this.dataRepository,
       required this.goRepository})
       : super(ProfileState.empty) {
-    on<InitializeProfile>((event, emit) async {
-      String token = appBloc.state.user.token;
-      emit(state.copyWith(isLoading: true));
-      List<Album> myAlbums =
-          await goRepository.getAuthenticatedUsersAlbums(token);
-      //print(myAlbums);
-      List<Notification> myNotifications =
-          await goRepository.getNotifications(token);
+    on<InitializeProfile>(
+      (event, emit) async {
+        String token = appBloc.state.user.token;
+        emit(state.copyWith(isLoading: true));
 
-      emit(
-        state.copyWith(
-            myAlbums: myAlbums,
-            myNotifications: myNotifications,
-            isLoading: false),
-      );
-    });
+        List<Album> myAlbums =
+            await goRepository.getAuthenticatedUsersAlbums(token);
+
+        List<Notification> myNotifications =
+            await goRepository.getNotifications(token);
+
+        List<Image> myImages = await goRepository.getUserImages(token);
+
+        emit(
+          state.copyWith(
+              myAlbums: myAlbums,
+              myImages: myImages,
+              myNotifications: myNotifications,
+              isLoading: false),
+        );
+      },
+    );
 
     on<ReceiveNotification>((event, emit) async {
       List<Notification> myNotifications = [];

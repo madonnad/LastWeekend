@@ -7,6 +7,7 @@ import 'package:shared_photo/components/profile_comp/notification_comp/friend_re
 import 'package:shared_photo/components/profile_comp/profile_album_tab.dart';
 import 'package:shared_photo/components/profile_comp/profile_flexible_space.dart';
 import 'package:shared_photo/components/profile_comp/profile_notification_tab.dart';
+import 'package:shared_photo/components/profile_comp/profile_photos_tab.dart';
 import 'package:shared_photo/repositories/data_repository.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -63,22 +64,10 @@ class _ProfileScreenState extends State<ProfileScreen>
         child: TabBarView(
           physics: const NeverScrollableScrollPhysics(),
           controller: _profileTabController,
-          children: [
-            const ProfileAlbumTab(),
-            ListView.builder(
-              itemCount: 25,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    width: 100,
-                    height: 50,
-                    color: Colors.blue,
-                  ),
-                );
-              },
-            ),
-            const ProfileNotificationTab(),
+          children: const [
+            ProfileAlbumTab(),
+            ProfilePhotosTab(),
+            ProfileNotificationTab(),
           ],
         ),
       ),
