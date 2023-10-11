@@ -17,68 +17,71 @@ class ProfileNotificationTab extends StatelessWidget {
         );
     return BlocBuilder<ProfileBloc, ProfileState>(
       builder: (context, state) {
-        return ListView.builder(
-          itemCount: state.myNotifications.length,
-          itemBuilder: (context, index) {
-            context.read<ProfileBloc>().add(
-                  LoadNotifications(
+        return Padding(
+          padding: const EdgeInsets.only(top: 15.5),
+          child: ListView.builder(
+            itemCount: state.myNotifications.length,
+            itemBuilder: (context, index) {
+              context.read<ProfileBloc>().add(
+                    LoadNotifications(
+                      index: index,
+                      location: LoadLocation.list,
+                    ),
+                  );
+
+              //print(state.myNotifications.length);
+
+              var type = state.myNotifications[index];
+
+              if (type is AlbumInviteNotification) {
+                return Center(
+                  child: AlbumInviteNotificationComp(
                     index: index,
-                    location: LoadLocation.list,
                   ),
                 );
-
-            //print(state.myNotifications.length);
-
-            var type = state.myNotifications[index];
-
-            if (type is AlbumInviteNotification) {
-              return Center(
-                child: AlbumInviteNotificationComp(
-                  index: index,
-                ),
-              );
-            }
-            if (type is FriendRequestNotification) {
-              return Center(
-                child: FriendRequestNotificationComp(
-                  index: index,
-                ),
-              );
-            }
-            if (type is SummaryNotification) {
-              return Center(
-                child: SummaryNotificationComp(
-                  index: index,
-                  notificationDetailString: 'summary',
-                ),
-              );
-            }
-            if (type is GenericNotification) {
-              switch (type.notificationType) {
-                case GenericNotificationType.likedPhoto:
-                  return Center(
-                    child: BasicNotificationComp(
-                      index: index,
-                      notificationDetailString: 'liked your photo',
-                    ),
-                  );
-                case GenericNotificationType.upvotePhoto:
-                  return Center(
-                    child: BasicNotificationComp(
-                      index: index,
-                      notificationDetailString: 'upvoted your photo',
-                    ),
-                  );
-                case GenericNotificationType.imageComment:
-                  return Center(
-                    child: BasicNotificationComp(
-                      index: index,
-                      notificationDetailString: 'commented',
-                    ),
-                  );
               }
-            }
-          },
+              if (type is FriendRequestNotification) {
+                return Center(
+                  child: FriendRequestNotificationComp(
+                    index: index,
+                  ),
+                );
+              }
+              if (type is SummaryNotification) {
+                return Center(
+                  child: SummaryNotificationComp(
+                    index: index,
+                    notificationDetailString: 'summary',
+                  ),
+                );
+              }
+              if (type is GenericNotification) {
+                switch (type.notificationType) {
+                  case GenericNotificationType.likedPhoto:
+                    return Center(
+                      child: BasicNotificationComp(
+                        index: index,
+                        notificationDetailString: 'liked your photo',
+                      ),
+                    );
+                  case GenericNotificationType.upvotePhoto:
+                    return Center(
+                      child: BasicNotificationComp(
+                        index: index,
+                        notificationDetailString: 'upvoted your photo',
+                      ),
+                    );
+                  case GenericNotificationType.imageComment:
+                    return Center(
+                      child: BasicNotificationComp(
+                        index: index,
+                        notificationDetailString: 'commented',
+                      ),
+                    );
+                }
+              }
+            },
+          ),
         );
       },
     );
