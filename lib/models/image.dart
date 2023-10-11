@@ -6,8 +6,7 @@ import 'package:shared_photo/utils/api_variables.dart';
 class Image {
   String imageId;
   String owner;
-  String? imageUrl;
-  String? imageCaption;
+  String imageCaption;
   int upvotes;
   DateTime uploadDateTime;
 
@@ -16,13 +15,12 @@ class Image {
     required this.owner,
     required this.upvotes,
     required this.uploadDateTime,
-    this.imageUrl,
-    this.imageCaption,
+    required this.imageCaption,
   });
 
   @override
   String toString() {
-    return 'Image(imageId: $imageId, owner: $owner, imageUrl: $imageUrl, imageCaption: $imageCaption, upvotes: $upvotes, uploadDateTime: $uploadDateTime)';
+    return 'Image(imageId: $imageId, owner: $owner, imageCaption: $imageCaption, upvotes: $upvotes, uploadDateTime: $uploadDateTime)';
   }
 
   Map<String, dynamic> toMap() {
@@ -38,8 +36,7 @@ class Image {
     return Image(
       imageId: map['image_id'] as String,
       owner: map['image_owner'] as String,
-      imageUrl: '',
-      imageCaption: map['caption'] != null ? map['caption'] as String : null,
+      imageCaption: map['caption'] != null ? map['caption'] as String : '',
       upvotes: map['upvotes'] as int,
       uploadDateTime: DateTime.parse(map['created_at']),
     );

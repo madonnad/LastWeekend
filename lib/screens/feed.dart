@@ -27,7 +27,7 @@ class FeedScreen extends StatelessWidget {
               itemBuilder: (context, position) {
                 // Todo - Create logic here for when to fetch new data based on position and values loaded
                 PageController instanceController =
-                    PageController(viewportFraction: .95, initialPage: 0);
+                    PageController(viewportFraction: .75, initialPage: 0);
                 return AlbumListItem(
                     position: position, instanceController: instanceController);
               },
@@ -43,7 +43,7 @@ class FeedScreen extends StatelessWidget {
             SliverToBoxAdapter(
               child: ElevatedButton(
                 onPressed: () {
-                  goRepository.getNotifications(token);
+                  goRepository.getUserImages(token);
                 },
                 child: const Text('Test Request'),
               ),
