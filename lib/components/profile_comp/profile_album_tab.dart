@@ -82,18 +82,11 @@ class _ProfileAlbumTabState extends State<ProfileAlbumTab> {
                       clipBehavior: Clip.antiAlias,
                       child: SizedBox(
                         height: 177,
-                        child: (state.isLoading == false &&
-                                state.myAlbums.isNotEmpty)
-                            ? CachedNetworkImage(
-                                imageUrl: state.myAlbums[index].coverReq,
-                                httpHeaders: headers,
-                                fit: BoxFit.cover,
-                              )
-                            : const Center(
-                                child: CircularProgressIndicator(
-                                  color: Colors.cyan,
-                                ),
-                              ),
+                        child: CachedNetworkImage(
+                          imageUrl: state.myAlbums[index].coverReq,
+                          httpHeaders: headers,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     );
                   },

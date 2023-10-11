@@ -131,7 +131,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
         emit(state.copyWith(isLoading: true));
 
-        if (state.myAlbums[index].images.isEmpty ||
+        /*if (state.myAlbums[index].images.isEmpty ||
             revealDT.isBefore(DateTime.now())) {
           try {
             album.albumCoverUrl =
@@ -155,7 +155,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           }
         } else if (album.images[0].imageUrl == null) {
           emit(state.copyWith(isLoading: false));
-        }
+        }*/
       },
     );
 
