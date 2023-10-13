@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
+import 'package:shared_photo/components/profile_comp/friends_comp/friend_gesture_text.dart';
+import 'package:shared_photo/components/profile_comp/friends_comp/friends_bottom_modal_sheet.dart';
 
 class ProfileFlexibleSpace extends StatelessWidget {
   const ProfileFlexibleSpace({super.key});
@@ -54,19 +56,9 @@ class ProfileFlexibleSpace extends StatelessWidget {
                   height: devHeight * .02,
                 ),
               ),
-              Flexible(
+              const Flexible(
                 flex: 2,
-                child: GestureDetector(
-                  onTap: () {},
-                  child: Text(
-                    '25 Friends',
-                    style: GoogleFonts.poppins(
-                      color: Colors.black54,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w300,
-                    ),
-                  ),
-                ),
+                child: FriendGestureText(),
               ),
               Flexible(
                 flex: 1,
@@ -91,7 +83,21 @@ class ProfileFlexibleSpace extends StatelessWidget {
   }
 }
 
-/*Padding(
+/*
+
+showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      return SizedBox(
+                        height: MediaQuery.of(context).size.height * .75,
+                        child: const Center(),
+                      );
+                    },
+                    isScrollControlled: true,
+                  ),
+
+
+Padding(
             padding: EdgeInsets.only(top: (devHeight * .10)),
           ),
           const CircleAvatar(
