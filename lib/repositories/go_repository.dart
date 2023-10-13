@@ -114,8 +114,6 @@ class GoRepository {
         notificationList.add(FriendRequestNotification.fromMap(item));
       }
       for (var item in albumInviteList) {
-        AlbumInviteNotification albumInviteNotification =
-            AlbumInviteNotification.fromMap(item);
         notificationList.add(AlbumInviteNotification.fromMap(item));
       }
       for (var item in summaryNotificationList) {
