@@ -6,6 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
+import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
 import 'package:shared_photo/models/friend.dart';
 import 'package:shared_photo/repositories/data_repository.dart';
 import 'package:shared_photo/repositories/go_repository.dart';
@@ -14,11 +15,13 @@ part 'create_album_state.dart';
 
 class CreateAlbumCubit extends Cubit<CreateAlbumState> {
   AppBloc appBloc;
+  ProfileBloc profileBloc;
   DataRepository dataRepository;
   GoRepository goRepository;
-  List<Friend> _appBlocFriendsList = [];
+  List<Friend> _friendsList = [];
   CreateAlbumCubit(
-      {required this.appBloc,
+      {required this.profileBloc,
+      required this.appBloc,
       required this.dataRepository,
       required this.goRepository})
       : super(
@@ -27,14 +30,7 @@ class CreateAlbumCubit extends Cubit<CreateAlbumState> {
             friendSearch: TextEditingController(),
           ),
         ) {
-    if (appBloc.state is AuthenticatedState) {
-      _appBlocFriendsList = appBloc.state.user.friendsList!;
-    }
-    appBloc.stream.listen(
-      (event) {
-        _appBlocFriendsList = appBloc.state.user.friendsList!;
-      },
-    );
+    _friendsList = profileBloc.state.myFriends;
   }
 
   void handleFriendAddRemoveFromAlbum(Friend friend) {
@@ -79,7 +75,7 @@ class CreateAlbumCubit extends Cubit<CreateAlbumState> {
     await Future.delayed(const Duration(milliseconds: 500));
     List<Friend> lookupResult = [];
 
-    for (var friend in _appBlocFriendsList) {
+    for (var friend in _friendsList) {
       if (state.friendSearch!.text.isNotEmpty) {
         String catString =
             '${friend.firstName.toLowerCase()} ${friend.lastName.toLowerCase()}';

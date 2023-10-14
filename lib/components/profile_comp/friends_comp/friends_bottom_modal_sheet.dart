@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
 
 class FriendsBottomModalSheet extends StatelessWidget {
@@ -10,6 +12,9 @@ class FriendsBottomModalSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileBloc, ProfileState>(
       builder: (context, state) {
+        String token = context.read<AppBloc>().state.user.token;
+        Map<String, String> headers = {"Authorization": "Bearer $token"};
+
         return DraggableScrollableSheet(
           expand: false,
           snap: true,
@@ -21,15 +26,19 @@ class FriendsBottomModalSheet extends StatelessWidget {
             return ListView.separated(
               padding: const EdgeInsets.only(top: 30.0, left: 30, right: 30),
               controller: scrollController,
-              itemCount: state.myFriends.length + 25,
+              itemCount: state.myFriends.length,
               itemBuilder: (context, index) {
                 return Row(
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Expanded(
+                    Expanded(
                       flex: 1,
                       child: CircleAvatar(
+                        foregroundImage: CachedNetworkImageProvider(
+                          state.myFriends[index].imageReq,
+                          headers: headers,
+                        ),
                         minRadius: 14,
                         maxRadius: 24,
                         backgroundColor: Colors.black,
@@ -45,14 +54,14 @@ class FriendsBottomModalSheet extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Dominick Madonna",
+                              "${state.myFriends[index].firstName} ${state.myFriends[index].lastName}",
                               //overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.poppins(
                                 fontSize: 14,
                               ),
                             ),
                             Text(
-                              "5 Mutual Albums",
+                              "0 Mutual Albums",
                               //overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.poppins(
                                   fontSize: 11, color: Colors.black54),
