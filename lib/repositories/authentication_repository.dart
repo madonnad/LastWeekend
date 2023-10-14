@@ -77,7 +77,6 @@ class AuthenticationRepository {
       firstName: retrievedData['first_name'],
       lastName: retrievedData['last_name'],
       avatarUrl: retrievedData['avatar'],
-      friendsList: retrievedData['friends'],
       token: '',
     );
   }

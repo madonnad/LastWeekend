@@ -26,20 +26,23 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         String token = appBloc.state.user.token;
         emit(state.copyWith(isLoading: true));
 
-        List<Album> myAlbums =
-            await goRepository.getAuthenticatedUsersAlbums(token);
+        List<Album> myAlbums = await goRepository.getUsersAlbums(token);
 
         List<Notification> myNotifications =
             await goRepository.getNotifications(token);
 
         List<Image> myImages = await goRepository.getUserImages(token);
 
+        List<Friend> myFriends = await goRepository.getFriendsList(token);
+
         emit(
           state.copyWith(
-              myAlbums: myAlbums,
-              myImages: myImages,
-              myNotifications: myNotifications,
-              isLoading: false),
+            myAlbums: myAlbums,
+            myImages: myImages,
+            myNotifications: myNotifications,
+            myFriends: myFriends,
+            isLoading: false,
+          ),
         );
       },
     );
