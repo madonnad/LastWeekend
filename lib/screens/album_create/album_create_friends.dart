@@ -80,7 +80,7 @@ class AlbumCreateFriends extends StatelessWidget {
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewInsets.bottom,
+                        bottom: MediaQuery.of(context).viewInsets.bottom * .75,
                       ),
                     ),
                     BlocBuilder<CreateAlbumCubit, CreateAlbumState>(
