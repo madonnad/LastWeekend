@@ -134,8 +134,13 @@ class AlbumInviteNotificationComp extends StatelessWidget {
                                         ),
                                         minimumSize: Size.zero,
                                       ),
-                                      onLongPress: () {},
-                                      onPressed: () => print('accept'),
+                                      onPressed: () =>
+                                          context.read<ProfileBloc>().add(
+                                                AlbumRequestEvent(
+                                                  action: RequestAction.accept,
+                                                  albumID: notification.albumID,
+                                                ),
+                                              ),
                                       child: Text(
                                         'accept',
                                         style: GoogleFonts.poppins(
@@ -158,7 +163,13 @@ class AlbumInviteNotificationComp extends StatelessWidget {
                                         minimumSize: Size.zero,
                                       ),
                                       onLongPress: () {},
-                                      onPressed: () => print('deny'),
+                                      onPressed: () =>
+                                          context.read<ProfileBloc>().add(
+                                                AlbumRequestEvent(
+                                                  action: RequestAction.deny,
+                                                  albumID: notification.albumID,
+                                                ),
+                                              ),
                                       child: Text(
                                         'deny',
                                         style: GoogleFonts.poppins(
