@@ -21,6 +21,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       required this.dataRepository,
       required this.goRepository})
       : super(ProfileState.empty) {
+    final String token = appBloc.state.user.token;
+
     on<InitializeProfile>(
       (event, emit) async {
         String token = appBloc.state.user.token;
@@ -46,6 +48,49 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         );
       },
     );
+
+    on<FriendRequestEvent>((event, emit) async {
+      List<Notification> myNotifications = [];
+      myNotifications = List.from(state.myNotifications);
+
+      if (event.action == RequestAction.accept) {
+        // Accept Friend Request
+        emit(state.copyWith(isLoading: true));
+
+        try {
+          List<Friend> myFriends = [];
+
+          await goRepository.acceptFriendRequest(token, event.friendID);
+
+          myNotifications.removeWhere(
+              (element) => element.notificationID == event.friendID);
+
+          myFriends = await goRepository.getFriendsList(token);
+
+          emit(state.copyWith(
+              isLoading: false,
+              myNotifications: myNotifications,
+              myFriends: myFriends));
+        } catch (e) {
+          print(e.toString());
+          emit(state.copyWith(isLoading: false, error: e.toString()));
+        }
+      } else if (event.action == RequestAction.deny) {
+        // Deny Friend Request
+        emit(state.copyWith(isLoading: true));
+        try {
+          await goRepository.denyFriendRequest(token, event.friendID);
+          myNotifications.removeWhere(
+              (element) => element.notificationID == event.friendID);
+
+          emit(state.copyWith(
+              myNotifications: myNotifications, isLoading: false));
+        } catch (e) {
+          print(e.toString());
+          emit(state.copyWith(isLoading: false, error: e.toString()));
+        }
+      }
+    });
 
     on<ReceiveNotification>((event, emit) async {
       List<Notification> myNotifications = [];

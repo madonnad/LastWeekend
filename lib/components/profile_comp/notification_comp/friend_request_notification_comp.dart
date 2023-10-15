@@ -13,6 +13,7 @@ class FriendRequestNotificationComp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double devWidth = MediaQuery.of(context).size.width;
+
     return BlocBuilder<ProfileBloc, ProfileState>(
       builder: (context, state) {
         Map<String, String> headers =
@@ -112,8 +113,13 @@ class FriendRequestNotificationComp extends StatelessWidget {
                                         ),
                                         minimumSize: Size.zero,
                                       ),
-                                      onLongPress: () {},
-                                      onPressed: () => print('accept'),
+                                      onPressed: () =>
+                                          context.read<ProfileBloc>().add(
+                                                FriendRequestEvent(
+                                                  action: RequestAction.accept,
+                                                  friendID: notification.userID,
+                                                ),
+                                              ),
                                       child: Text(
                                         'accept',
                                         style: GoogleFonts.poppins(
@@ -135,8 +141,13 @@ class FriendRequestNotificationComp extends StatelessWidget {
                                         ),
                                         minimumSize: Size.zero,
                                       ),
-                                      onLongPress: () {},
-                                      onPressed: () => print('deny'),
+                                      onPressed: () =>
+                                          context.read<ProfileBloc>().add(
+                                                FriendRequestEvent(
+                                                  action: RequestAction.deny,
+                                                  friendID: notification.userID,
+                                                ),
+                                              ),
                                       child: Text(
                                         'deny',
                                         style: GoogleFonts.poppins(

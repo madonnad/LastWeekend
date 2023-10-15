@@ -82,8 +82,9 @@ class GoRepository {
       final responseBody = response.body;
 
       final jsonData = json.decode(responseBody);
-
-      print(jsonData);
+      if (jsonData == null) {
+        return friends;
+      }
 
       for (var item in jsonData) {
         friends.add(Friend.fromJson(item));
@@ -219,5 +220,33 @@ class GoRepository {
       print(e);
       return false;
     }
+  }
+
+  Future<void> acceptFriendRequest(String token, String friendID) async {
+    var url = Uri.http(
+        '0.0.0.0:2525', '/notifications/friend', {"friend_id": friendID});
+    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
+
+    final response = await http.post(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      return;
+    }
+    throw HttpException(
+        "Failed to accept the friend request with status: ${response.statusCode}");
+  }
+
+  Future<void> denyFriendRequest(String token, String friendID) async {
+    var url = Uri.http(
+        '0.0.0.0:2525', '/notifications/friend', {"friend_id": friendID});
+    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
+
+    final response = await http.delete(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      return;
+    }
+    throw HttpException(
+        "Failed to delete the friend request with status: ${response.statusCode}");
   }
 }
