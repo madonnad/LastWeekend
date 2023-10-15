@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -207,19 +206,3 @@ class CreateAlbumCubit extends Cubit<CreateAlbumState> {
     emit(state.copyWith(revealTimeOfDay: time));
   }
 }
-
-/*CreateAlbumState(
-friendSearch: TextEditingController(),
-friendsList: [
-Friend(
-uid: "12345",
-firstName: 'Zoe',
-lastName: 'Madonna',
-),
-Friend(
-uid: "67890",
-firstName: 'Jamie',
-lastName: 'Kuppel',
-)
-],
-),*/

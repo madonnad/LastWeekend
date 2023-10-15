@@ -29,7 +29,7 @@ class FriendsNoSearchSection extends StatelessWidget {
                       padding: EdgeInsets.only(top: 6),
                     ),
                     Text(
-                      state.friendsList![index].firstName,
+                      state.friendsList[index].firstName,
                       style: GoogleFonts.poppins(
                         fontSize: 16,
                       ),
