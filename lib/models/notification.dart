@@ -5,11 +5,13 @@ enum GenericNotificationType { likedPhoto, upvotePhoto, imageComment }
 enum NotificationType { generic, friendRequest, albumInvite }
 
 abstract class Notification {
+  final String notificationID;
   final DateTime receivedDateTime;
   final String notificationMediaID;
   final bool? notificationSeen;
 
   Notification({
+    required this.notificationID,
     required this.receivedDateTime,
     required this.notificationMediaID,
     this.notificationSeen,
@@ -54,6 +56,7 @@ class AlbumInviteNotification extends Notification {
   final String albumOwner;
   final String ownerName;
   AlbumInviteNotification({
+    required super.notificationID,
     required super.receivedDateTime,
     required super.notificationMediaID,
     required this.albumID,
@@ -64,6 +67,7 @@ class AlbumInviteNotification extends Notification {
 
   factory AlbumInviteNotification.fromMap(Map<String, dynamic> map) {
     return AlbumInviteNotification(
+      notificationID: map['album_id'],
       receivedDateTime: DateTime.parse(map['received_at']),
       notificationMediaID: map['album_cover_id'],
       albumID: map['album_id'],
@@ -78,6 +82,7 @@ class FriendRequestNotification extends Notification {
   final String userID;
   final String requesterName;
   FriendRequestNotification({
+    required super.notificationID,
     required super.receivedDateTime,
     required super.notificationMediaID,
     required this.userID,
@@ -86,6 +91,7 @@ class FriendRequestNotification extends Notification {
 
   factory FriendRequestNotification.fromMap(Map<String, dynamic> map) {
     return FriendRequestNotification(
+      notificationID: map['user_id'],
       receivedDateTime: DateTime.parse(map['received_at']),
       userID: map['user_id'],
       requesterName: '${map['first_name']} ${map['last_name']}',
@@ -103,6 +109,7 @@ class SummaryNotification extends Notification {
   final int typeTotal;
 
   SummaryNotification({
+    required super.notificationID,
     required super.notificationMediaID,
     required super.receivedDateTime,
     required this.notificationType,
@@ -115,6 +122,7 @@ class SummaryNotification extends Notification {
 
   factory SummaryNotification.fromMap(Map<String, dynamic> map) {
     return SummaryNotification(
+      notificationID: map['album_id'],
       notificationMediaID: map['album_cover_id'],
       receivedDateTime: DateTime.parse(map['received_at']),
       notificationType: map['notification_type'],
@@ -135,6 +143,7 @@ class GenericNotification extends Notification {
   final GenericNotificationType notificationType;
 
   GenericNotification({
+    required super.notificationID,
     required super.receivedDateTime,
     required super.notificationMediaID,
     super.notificationSeen,
@@ -156,6 +165,7 @@ class GenericNotification extends Notification {
     }
 
     return GenericNotification(
+      notificationID: '',
       receivedDateTime: DateTime.parse(map['received_at']),
       notificationMediaID: map['media_id'],
       notifierID: map['notifier_id'],

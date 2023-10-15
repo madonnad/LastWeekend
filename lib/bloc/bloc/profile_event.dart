@@ -2,6 +2,8 @@ part of 'profile_bloc.dart';
 
 enum LoadLocation { init, list }
 
+enum RequestAction { accept, deny }
+
 abstract class ProfileEvent extends Equatable {
   const ProfileEvent();
 }
@@ -39,6 +41,37 @@ class ReceiveNotification extends ProfileEvent {
 
   @override
   List<Object?> get props => [identifier, notificationType];
+}
+
+class FriendRequestEvent extends ProfileEvent {
+  final RequestAction action;
+  final String friendID;
+
+  const FriendRequestEvent({required this.action, required this.friendID});
+
+  @override
+  List<Object?> get props => [action, friendID];
+}
+
+class AlbumRequestEvent extends ProfileEvent {
+  final RequestAction action;
+  final String albumID;
+
+  const AlbumRequestEvent({required this.action, required this.albumID});
+
+  @override
+  List<Object?> get props => [action, albumID];
+}
+
+class UpdateStateEvent extends ProfileEvent {
+  final NotificationType notificationType;
+  final ProfileState updatedStateClass;
+
+  const UpdateStateEvent(
+      {required this.notificationType, required this.updatedStateClass});
+
+  @override
+  List<Object?> get props => [updatedStateClass];
 }
 
 class NotificationRemoved extends ProfileEvent {
