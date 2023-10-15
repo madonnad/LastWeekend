@@ -109,9 +109,7 @@ class PinnedHeaderDelegate extends SliverPersistentHeaderDelegate {
           Tab(text: 'Photos'),
           Badge(
             alignment: Alignment.topRight,
-            label: Text(
-              '1',
-            ),
+            smallSize: 10,
             child: Tab(text: 'Notifications'),
           ),
         ],

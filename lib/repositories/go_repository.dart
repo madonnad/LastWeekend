@@ -132,10 +132,14 @@ class GoRepository {
       final responseBody = response.body;
 
       final jsonData = json.decode(responseBody);
+      if (jsonData == null) {
+        return notificationList;
+      }
 
-      List<dynamic> summaryNotificationList = jsonData['summary_notifications'];
-      List<dynamic> albumInviteList = jsonData['album_invites'];
-      List<dynamic> friendRequestList = jsonData['friend_requests'];
+      List<dynamic> summaryNotificationList =
+          jsonData['summary_notifications'] ?? [];
+      List<dynamic> albumInviteList = jsonData['album_invites'] ?? [];
+      List<dynamic> friendRequestList = jsonData['friend_requests'] ?? [];
 
       for (var item in friendRequestList) {
         notificationList.add(FriendRequestNotification.fromMap(item));
@@ -248,5 +252,33 @@ class GoRepository {
     }
     throw HttpException(
         "Failed to delete the friend request with status: ${response.statusCode}");
+  }
+
+  Future<void> acceptAlbumInvite(String token, String albumID) async {
+    var url =
+        Uri.http('0.0.0.0:2525', '/notifications/album', {"album_id": albumID});
+    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
+
+    final response = await http.post(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      return;
+    }
+    throw HttpException(
+        "Failed to accept the friend request with status: ${response.statusCode}");
+  }
+
+  Future<void> denyAlbumInvite(String token, String albumID) async {
+    var url =
+        Uri.http('0.0.0.0:2525', '/notifications/album', {"album_id": albumID});
+    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
+
+    final response = await http.delete(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      return;
+    }
+    throw HttpException(
+        "Failed to accept the friend request with status: ${response.statusCode}");
   }
 }

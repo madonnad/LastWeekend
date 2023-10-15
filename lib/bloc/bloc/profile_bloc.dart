@@ -64,7 +64,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
           myNotifications.removeWhere(
               (element) => element.notificationID == event.friendID);
-
           myFriends = await goRepository.getFriendsList(token);
 
           emit(state.copyWith(
@@ -82,6 +81,51 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           await goRepository.denyFriendRequest(token, event.friendID);
           myNotifications.removeWhere(
               (element) => element.notificationID == event.friendID);
+
+          emit(state.copyWith(
+              myNotifications: myNotifications, isLoading: false));
+        } catch (e) {
+          print(e.toString());
+          emit(state.copyWith(isLoading: false, error: e.toString()));
+        }
+      }
+    });
+
+    on<AlbumRequestEvent>((event, emit) async {
+      List<Notification> myNotifications = [];
+      myNotifications = List.from(state.myNotifications);
+
+      if (event.action == RequestAction.accept) {
+        // Accept Album Invite
+        emit(state.copyWith(isLoading: true));
+
+        try {
+          List<Album> myAlbums = [];
+
+          await goRepository.acceptAlbumInvite(token, event.albumID);
+
+          myNotifications.removeWhere(
+              (element) => element.notificationID == event.albumID);
+          myAlbums = await goRepository.getUsersAlbums(token);
+
+          emit(
+            state.copyWith(
+              isLoading: false,
+              myNotifications: myNotifications,
+              myAlbums: myAlbums,
+            ),
+          );
+        } catch (e) {
+          print(e.toString());
+          emit(state.copyWith(isLoading: false, error: e.toString()));
+        }
+      } else if (event.action == RequestAction.deny) {
+        // Deny Album Invite
+        emit(state.copyWith(isLoading: true));
+        try {
+          await goRepository.denyAlbumInvite(token, event.albumID);
+          myNotifications.removeWhere(
+              (element) => element.notificationID == event.albumID);
 
           emit(state.copyWith(
               myNotifications: myNotifications, isLoading: false));
