@@ -13,8 +13,11 @@ class SearchBarComponent extends StatelessWidget {
         return TextField(
           controller: state.searchController,
           onChanged: (_) {
-            Future.delayed(const Duration(seconds: 2));
-            context.read<SearchCubit>().querySearch();
+            if (state.isLoading == false) {
+              context
+                  .read<SearchCubit>()
+                  .querySearch(state.searchController.text);
+            }
           },
           cursorColor: Colors.black,
           style: const TextStyle(fontSize: 13),

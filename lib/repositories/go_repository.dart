@@ -9,6 +9,7 @@ import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/friend.dart';
 import 'package:shared_photo/models/image.dart';
 import 'package:shared_photo/models/notification.dart';
+import 'package:shared_photo/models/search_result.dart';
 import 'package:web_socket_channel/io.dart';
 
 class GoRepository {
@@ -23,6 +24,41 @@ class GoRepository {
     }
   }
 
+  Future<List<SearchResult>> searchLookup(
+      {required String token, required String lookup}) async {
+    List<SearchResult> searchResults = [];
+
+    var url = Uri.http('0.0.0.0:2525', '/search', {"lookup": lookup});
+    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
+
+    final response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      final responseBody = response.body;
+
+      final jsonData = json.decode(responseBody);
+      if (jsonData == null) {
+        return searchResults;
+      }
+
+      for (var item in jsonData) {
+        String resultType = item['result_type'];
+
+        switch (resultType) {
+          case 'album':
+            searchResults.add(AlbumSearch.fromMap(item, headers));
+          case 'user':
+            searchResults.add(UserSearch.fromMap(item, headers));
+          default:
+            continue;
+        }
+      }
+      return searchResults;
+    }
+    throw HttpException(
+        "Failed to full text search with status: ${response.statusCode}");
+  }
+
   Future<List<Album>> getUsersAlbums(String token) async {
     final List<Album> albums = [];
     var url = Uri.http('0.0.0.0:2525', '/user/album');
@@ -34,6 +70,9 @@ class GoRepository {
       final responseBody = response.body;
 
       final jsonData = json.decode(responseBody);
+      if (jsonData == null) {
+        return albums;
+      }
 
       for (var item in jsonData) {
         Album album = Album.fromMap(item);
@@ -42,9 +81,8 @@ class GoRepository {
       //print(albums);
       return albums;
     }
-    print('Request failed with status: ${response.statusCode}');
-    print('Response body: #${response.body}');
-    return albums;
+    throw HttpException(
+        "Failed to get users albums with status: ${response.statusCode}");
   }
 
   Future<List<Image>> getUserImages(String token) async {
@@ -57,6 +95,9 @@ class GoRepository {
       final responseBody = response.body;
 
       final jsonData = json.decode(responseBody);
+      if (jsonData == null) {
+        return images;
+      }
 
       for (var item in jsonData) {
         Image image = Image.fromMap(item);
