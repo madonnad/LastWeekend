@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/search_cubit.dart';
 import 'package:shared_photo/models/search_result.dart';
 
@@ -14,6 +16,9 @@ class SearchAlbumComponent extends StatelessWidget {
 
     return BlocBuilder<SearchCubit, SearchState>(
       builder: (context, state) {
+        Map<String, String> headers =
+            context.read<AppBloc>().state.user.headers;
+
         AlbumSearch albumSearch = state.searchResult[index] as AlbumSearch;
 
         return Card(
@@ -31,6 +36,10 @@ class SearchAlbumComponent extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Colors.grey,
                     borderRadius: BorderRadius.circular(10),
+                    image: DecorationImage(
+                      image: state.searchResult[index].image.image,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
                 Padding(
