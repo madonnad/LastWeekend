@@ -42,7 +42,7 @@ class GoRepository {
       }
 
       for (var item in jsonData) {
-        String resultType = item['result_type'];
+        String resultType = item['type'];
 
         switch (resultType) {
           case 'album':

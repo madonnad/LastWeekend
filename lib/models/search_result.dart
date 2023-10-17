@@ -49,8 +49,8 @@ class AlbumSearch extends SearchResult {
       id: map["id"],
       firstName: map["first_name"],
       lastName: map["last_name"],
-      rank: map["rank"],
-      albumName: map["lookup"],
+      rank: map["score"].toDouble(),
+      albumName: map["name"],
       image: Image.network(
         requestUrl,
         headers: headers,
@@ -76,7 +76,7 @@ class UserSearch extends SearchResult {
       id: map["id"],
       firstName: map["first_name"],
       lastName: map["last_name"],
-      rank: map["rank"],
+      rank: map["score"].toDouble(),
       image: Image.network(
         requestUrl,
         headers: headers,
