@@ -93,8 +93,12 @@ class Album {
     return requestUrl;
   }
 
-  String toJson() => json.encode(toMap());
-
-  factory Album.fromJson(String source) =>
-      Album.fromMap(json.decode(source) as Map<String, dynamic>);
+  static final empty = Album(
+      albumId: "",
+      albumName: "",
+      albumOwner: "",
+      lockDateTime: "",
+      unlockDateTime: "",
+      revealDateTime: "",
+      visibility: Visibility.public);
 }
