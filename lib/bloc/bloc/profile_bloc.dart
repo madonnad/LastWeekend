@@ -71,7 +71,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
               myNotifications: myNotifications,
               myFriends: myFriends));
         } catch (e) {
-          print(e.toString());
+          //print(e.toString());
           emit(state.copyWith(isLoading: false, error: e.toString()));
         }
       } else if (event.action == RequestAction.deny) {
