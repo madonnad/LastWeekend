@@ -4,6 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/cubit/app_frame_cubit.dart';
 import 'package:shared_photo/screens/album_create/album_create_modal.dart';
 
+//Not currently in use
+
 class LwNavBar extends StatelessWidget {
   const LwNavBar({super.key});
 

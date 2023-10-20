@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/cubit/app_frame_cubit.dart';
 
-class LwBottomAppBar extends StatelessWidget {
-  const LwBottomAppBar({super.key});
+class LwGlobalBottomAppBar extends StatelessWidget {
+  const LwGlobalBottomAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
