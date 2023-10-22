@@ -16,4 +16,14 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
       ),
     );
   }
+
+  void changeMode(bool mode) {
+    if (mode == true) {
+      state.albumFrameController.jumpToPage(1);
+    }
+    if (mode == false) {
+      state.albumFrameController.jumpToPage(0);
+    }
+    emit(state.copyWith(viewMode: mode));
+  }
 }

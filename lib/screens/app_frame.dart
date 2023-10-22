@@ -49,20 +49,22 @@ class AppFrame extends StatelessWidget {
         floatingActionButton: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            gradient: const LinearGradient(
+            color: Colors.indigoAccent,
+            /*gradient: const LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
                 Colors.deepPurple,
                 Colors.cyan,
               ],
-            ),
+            ),*/
           ),
           child: FloatingActionButton(
             elevation: 2,
             backgroundColor: Colors.transparent,
             child: const Icon(
               Icons.add,
+              color: Colors.white,
               size: 30,
             ),
             onPressed: () => showModalBottomSheet(

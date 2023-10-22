@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
 import 'package:shared_photo/utils/api_variables.dart';
 
 // ignore_for_file: public_member_api_docs, sort_constructors_first
@@ -46,6 +47,18 @@ class Image {
     String requestUrl = "$goRepoDomain/image?id=$imageId";
 
     return requestUrl;
+  }
+
+  String get dateString {
+    var newFormat = DateFormat("MMMd");
+    String updatedDt = newFormat.format(uploadDateTime);
+    return updatedDt; // 20-04-03
+  }
+
+  String get timeString {
+    var newFormat = DateFormat("jm");
+    String updatedDt = newFormat.format(uploadDateTime);
+    return updatedDt; // 20-04-03
   }
 
   String toJson() => json.encode(toMap());

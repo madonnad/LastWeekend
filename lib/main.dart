@@ -108,7 +108,7 @@ class MainAppView extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.grey),
         scaffoldBackgroundColor: Colors.white,
         splashFactory: NoSplash.splashFactory,
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(

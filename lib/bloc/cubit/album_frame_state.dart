@@ -4,19 +4,24 @@ part of 'album_frame_cubit.dart';
 class AlbumFrameState extends Equatable {
   final PageController albumFrameController;
   final int pageNumber;
-  const AlbumFrameState(
-      {required this.albumFrameController, this.pageNumber = 0});
+  final bool viewMode;
+  const AlbumFrameState({
+    required this.albumFrameController,
+    this.pageNumber = 0,
+    this.viewMode = true,
+  });
 
   AlbumFrameState copyWith({
     PageController? albumFrameController,
     int? pageNumber,
+    bool? viewMode,
   }) {
     return AlbumFrameState(
-      albumFrameController: albumFrameController ?? this.albumFrameController,
-      pageNumber: pageNumber ?? this.pageNumber,
-    );
+        albumFrameController: albumFrameController ?? this.albumFrameController,
+        pageNumber: pageNumber ?? this.pageNumber,
+        viewMode: viewMode ?? this.viewMode);
   }
 
   @override
-  List<Object> get props => [albumFrameController, pageNumber];
+  List<Object> get props => [albumFrameController, pageNumber, viewMode];
 }

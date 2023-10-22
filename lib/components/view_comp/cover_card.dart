@@ -20,9 +20,11 @@ class CoverCard extends StatelessWidget {
         Map<String, String> headers = {"Authorization": "Bearer $token"};
 
         RouteArguments arguments = RouteArguments(
-            url: state.albums[sliverIndex].coverReq,
-            headers: headers,
-            tag: "feed_$sliverIndex");
+          url: state.albums[sliverIndex].coverReq,
+          headers: headers,
+          tag: "feed_$sliverIndex",
+          album: state.albums[sliverIndex],
+        );
 
         return GestureDetector(
           onTap: () =>
@@ -30,7 +32,7 @@ class CoverCard extends StatelessWidget {
           child: Card(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(
-                12.5,
+                5,
               ),
             ),
             clipBehavior: Clip.antiAlias,
