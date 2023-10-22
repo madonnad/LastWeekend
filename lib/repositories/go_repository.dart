@@ -13,6 +13,8 @@ import 'package:shared_photo/models/search_result.dart';
 import 'package:web_socket_channel/io.dart';
 
 class GoRepository {
+  String domain = "192.168.1.164:2525";
+
   Stream<String> webSocketConnection(String token) async* {
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
     final wsURL = Uri.parse('ws://0.0.0.0:2525/ws');
@@ -28,7 +30,7 @@ class GoRepository {
       {required String token, required String lookup}) async {
     List<SearchResult> searchResults = [];
 
-    var url = Uri.http('0.0.0.0:2525', '/search', {"lookup": lookup});
+    var url = Uri.http(domain, '/search', {"lookup": lookup});
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     final response = await http.get(url, headers: headers);
@@ -61,7 +63,7 @@ class GoRepository {
 
   Future<List<Album>> getUsersAlbums(String token) async {
     final List<Album> albums = [];
-    var url = Uri.http('0.0.0.0:2525', '/user/album');
+    var url = Uri.http(domain, '/user/album');
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     final response = await http.get(url, headers: headers);
@@ -87,7 +89,7 @@ class GoRepository {
 
   Future<List<Image>> getUserImages(String token) async {
     final List<Image> images = [];
-    var url = Uri.http('0.0.0.0:2525', '/user/image');
+    var url = Uri.http(domain, '/user/image');
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
     final response = await http.get(url, headers: headers);
 
@@ -115,7 +117,7 @@ class GoRepository {
   Future<List<Friend>> getFriendsList(String token) async {
     final List<Friend> friends = [];
 
-    var url = Uri.http('0.0.0.0:2525', '/user/friend');
+    var url = Uri.http(domain, '/user/friend');
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
     final response = await http.get(url, headers: headers);
 
@@ -140,7 +142,7 @@ class GoRepository {
 
   Future<List<Album>> getFeedAlbums(String token) async {
     final List<Album> albums = [];
-    var url = Uri.http('0.0.0.0:2525', '/feed');
+    var url = Uri.http(domain, '/feed');
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     final response = await http.get(url, headers: headers);
@@ -164,7 +166,7 @@ class GoRepository {
   Future<List<Notification>> getNotifications(String token) async {
     final List<Notification> notificationList = [];
 
-    var url = Uri.http('0.0.0.0:2525', '/notifications');
+    var url = Uri.http(domain, '/notifications');
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     final response = await http.get(url, headers: headers);
@@ -205,7 +207,7 @@ class GoRepository {
     Map<String, dynamic> albumInformation = state.toJson();
     String encodedBody = json.encode(albumInformation);
 
-    var url = Uri.http('0.0.0.0:2525', '/user/album');
+    var url = Uri.http(domain, '/user/album');
     final Map<String, String> headers = {
       "Content-Type": "application/json",
       'Authorization': 'Bearer $token'
@@ -230,7 +232,7 @@ class GoRepository {
 
   Future<bool> uploadNewImage(
       String token, String imagePath, String imageId) async {
-    var url = Uri.http('0.0.0.0:2525', '/upload', {'id': imageId});
+    var url = Uri.http(domain, '/upload', {'id': imageId});
     final Map<String, String> headers = {
       "Content-Type": "application/json",
       'Authorization': 'Bearer $token'
@@ -268,8 +270,8 @@ class GoRepository {
   }
 
   Future<void> acceptFriendRequest(String token, String friendID) async {
-    var url = Uri.http(
-        '0.0.0.0:2525', '/notifications/friend', {"friend_id": friendID});
+    var url =
+        Uri.http(domain, '/notifications/friend', {"friend_id": friendID});
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     final response = await http.post(url, headers: headers);
@@ -282,8 +284,8 @@ class GoRepository {
   }
 
   Future<void> denyFriendRequest(String token, String friendID) async {
-    var url = Uri.http(
-        '0.0.0.0:2525', '/notifications/friend', {"friend_id": friendID});
+    var url =
+        Uri.http(domain, '/notifications/friend', {"friend_id": friendID});
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     final response = await http.delete(url, headers: headers);
@@ -296,8 +298,7 @@ class GoRepository {
   }
 
   Future<void> acceptAlbumInvite(String token, String albumID) async {
-    var url =
-        Uri.http('0.0.0.0:2525', '/notifications/album', {"album_id": albumID});
+    var url = Uri.http(domain, '/notifications/album', {"album_id": albumID});
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     final response = await http.post(url, headers: headers);
@@ -310,8 +311,7 @@ class GoRepository {
   }
 
   Future<void> denyAlbumInvite(String token, String albumID) async {
-    var url =
-        Uri.http('0.0.0.0:2525', '/notifications/album', {"album_id": albumID});
+    var url = Uri.http(domain, '/notifications/album', {"album_id": albumID});
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     final response = await http.delete(url, headers: headers);

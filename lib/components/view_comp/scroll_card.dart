@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
@@ -22,24 +23,28 @@ class ScrollCard extends StatelessWidget {
         Map<String, String> headers = {"Authorization": "Bearer $token"};
 
         RouteArguments arguments = RouteArguments(
-            url: state.albums[sliverIndex].images[index].imageReq,
-            headers: headers,
-            tag: "feed_$sliverIndex _$index");
+          url: state.albums[sliverIndex].images[index].imageReq,
+          headers: headers,
+          tag: "feed_$sliverIndex _$index",
+          album: state.albums[sliverIndex],
+        );
 
         return GestureDetector(
           child: Card(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(
-                12.5,
+                5,
               ),
             ),
             clipBehavior: Clip.antiAlias,
             child: (state.loading == false)
                 ? Hero(
+                    transitionOnUserGestures: true,
                     tag: arguments.tag,
-                    child: Image.network(
-                      state.albums[sliverIndex].images[index].imageReq,
-                      headers: headers,
+                    child: CachedNetworkImage(
+                      imageUrl:
+                          state.albums[sliverIndex].images[index].imageReq,
+                      httpHeaders: headers,
                       fit: BoxFit.cover,
                     ),
                   )

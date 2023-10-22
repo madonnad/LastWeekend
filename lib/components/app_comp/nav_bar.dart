@@ -85,14 +85,14 @@ class CustomBottomNavBarItem {
       icon: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          gradient: const LinearGradient(
+          color: Colors.indigoAccent,
+          /*gradient: const LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
               Colors.deepPurple,
               Colors.cyan,
-            ],
-          ),
+            ],*/
         ),
         height: 50,
         width: 50,

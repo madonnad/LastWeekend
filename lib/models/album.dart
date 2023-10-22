@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:shared_photo/models/guest.dart';
 import 'package:shared_photo/models/image.dart';
 import 'package:shared_photo/utils/api_variables.dart';
 
@@ -12,6 +13,7 @@ class Album {
   String albumOwner;
   String albumCoverId;
   List<Image> images;
+  List<Guest> guests;
   String? creationDateTime;
   String lockDateTime;
   String unlockDateTime;
@@ -30,6 +32,7 @@ class Album {
     required this.visibility,
     this.albumCoverId = '',
     this.images = const [],
+    this.guests = const [],
     this.albumCoverUrl,
   });
 
@@ -51,14 +54,24 @@ class Album {
 
   factory Album.fromMap(Map<String, dynamic> map) {
     List<Image> images = [];
+    List<Guest> guests = [];
     Visibility visibility;
     dynamic jsonImages = map['images'];
+    dynamic jsonGuests = map['invite_list'];
 
     if (jsonImages != null) {
       for (var item in jsonImages) {
         Image image = Image.fromMap(item);
 
         images.add(image);
+      }
+    }
+
+    if (jsonGuests != null) {
+      for (var item in jsonGuests) {
+        Guest guest = Guest.fromMap(item);
+
+        guests.add(guest);
       }
     }
 
@@ -79,6 +92,7 @@ class Album {
       albumName: map['album_name'] as String,
       albumOwner: map['album_owner'] as String,
       creationDateTime: map['created_at'],
+      guests: guests,
       images: images,
       lockDateTime: map['locked_at'],
       unlockDateTime: map['unlocked_at'],
@@ -89,6 +103,12 @@ class Album {
 
   String get coverReq {
     String requestUrl = "$goRepoDomain/image?id=$albumCoverId";
+
+    return requestUrl;
+  }
+
+  String get ownerImageURl {
+    String requestUrl = "$goRepoDomain/image?id=$albumOwner";
 
     return requestUrl;
   }

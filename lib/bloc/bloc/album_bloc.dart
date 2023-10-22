@@ -7,7 +7,8 @@ part 'album_event.dart';
 part 'album_state.dart';
 
 class AlbumBloc extends Bloc<AlbumEvent, AlbumState> {
-  AlbumBloc() : super(AlbumState.empty) {
+  final Album album;
+  AlbumBloc({required this.album}) : super(AlbumState(album: album)) {
     on<AlbumEvent>((event, emit) {
       // TODO: implement event handler
     });
