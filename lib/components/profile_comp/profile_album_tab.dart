@@ -23,7 +23,7 @@ class _ProfileAlbumTabState extends State<ProfileAlbumTab> {
         String token = context.read<AppBloc>().state.user.token;
         Map<String, String> headers = {"Authorization": "Bearer $token"};
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
             children: [
               Row(

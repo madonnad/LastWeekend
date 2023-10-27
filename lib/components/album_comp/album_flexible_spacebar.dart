@@ -6,8 +6,8 @@ import 'package:shared_photo/bloc/bloc/album_bloc.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/models/album.dart';
 
-class ProfileFlexibleSpacebar extends StatelessWidget {
-  const ProfileFlexibleSpacebar({super.key});
+class AlbumFlexibleSpacebar extends StatelessWidget {
+  const AlbumFlexibleSpacebar({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -7,10 +7,14 @@ import 'package:shared_photo/utils/api_variables.dart';
 
 enum Visibility { private, public, friends }
 
+enum AlbumPhases { invite, unlock, lock, reveal }
+
 class Album {
   String albumId;
   String albumName;
   String albumOwner;
+  String ownerFirst;
+  String ownerLast;
   String albumCoverId;
   List<Image> images;
   List<Guest> guests;
@@ -20,16 +24,20 @@ class Album {
   String revealDateTime;
   String? albumCoverUrl;
   Visibility visibility;
+  AlbumPhases phase;
 
   Album({
     required this.albumId,
     required this.albumName,
     required this.albumOwner,
+    required this.ownerFirst,
+    required this.ownerLast,
     this.creationDateTime,
     required this.lockDateTime,
     required this.unlockDateTime,
     required this.revealDateTime,
     required this.visibility,
+    required this.phase,
     this.albumCoverId = '',
     this.images = const [],
     this.guests = const [],
@@ -56,6 +64,7 @@ class Album {
     List<Image> images = [];
     List<Guest> guests = [];
     Visibility visibility;
+    AlbumPhases phase;
     dynamic jsonImages = map['images'];
     dynamic jsonGuests = map['invite_list'];
 
@@ -75,6 +84,19 @@ class Album {
       }
     }
 
+    switch (map['phase']) {
+      case 'invite':
+        phase = AlbumPhases.invite;
+      case 'unlock':
+        phase = AlbumPhases.unlock;
+      case 'lock':
+        phase = AlbumPhases.lock;
+      case 'reveal':
+        phase = AlbumPhases.reveal;
+      default:
+        phase = AlbumPhases.invite;
+    }
+
     switch (map['visibility']) {
       case 'private':
         visibility = Visibility.private;
@@ -91,6 +113,8 @@ class Album {
       albumCoverId: map['album_cover_id'] as String,
       albumName: map['album_name'] as String,
       albumOwner: map['album_owner'] as String,
+      ownerFirst: map['owner_first'],
+      ownerLast: map['owner_last'],
       creationDateTime: map['created_at'],
       guests: guests,
       images: images,
@@ -98,6 +122,7 @@ class Album {
       unlockDateTime: map['unlocked_at'],
       revealDateTime: map['revealed_at'],
       visibility: visibility,
+      phase: phase,
     );
   }
 
@@ -114,11 +139,15 @@ class Album {
   }
 
   static final empty = Album(
-      albumId: "",
-      albumName: "",
-      albumOwner: "",
-      lockDateTime: "",
-      unlockDateTime: "",
-      revealDateTime: "",
-      visibility: Visibility.public);
+    albumId: "",
+    albumName: "",
+    albumOwner: "",
+    ownerFirst: "",
+    ownerLast: "",
+    lockDateTime: "",
+    unlockDateTime: "",
+    revealDateTime: "",
+    visibility: Visibility.public,
+    phase: AlbumPhases.invite,
+  );
 }

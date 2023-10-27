@@ -9,6 +9,7 @@ class User extends Equatable {
   final String lastName;
   final String? avatarUrl;
   final String token;
+  final DateTime? createdDateTime;
 
   // Constructors
   const User({
@@ -16,12 +17,18 @@ class User extends Equatable {
     required this.firstName,
     required this.lastName,
     required this.token,
+    this.createdDateTime,
     this.email,
     this.username,
     this.avatarUrl,
   });
 
-  static const empty = User(id: '', firstName: '', lastName: '', token: '');
+  static const empty = User(
+    id: '',
+    firstName: '',
+    lastName: '',
+    token: '',
+  );
 
   // Getters
   // Getter to check if the current user is empty
@@ -30,25 +37,6 @@ class User extends Equatable {
   bool get isNotEmpty => this != User.empty;
 
   Map<String, String> get headers => {"Authorization": "Bearer $token"};
-
-  factory User.fromRepoData(
-      {required String id,
-      required String email,
-      required Map<String, dynamic> retrievedData}) {
-    String firstName = retrievedData['first_name'];
-    String lastName = retrievedData['last_name'];
-    String avatarUrl = retrievedData['avatar'];
-
-    // Return the User item with the logic worked out
-    return User(
-      id: id,
-      email: email,
-      firstName: firstName,
-      lastName: lastName,
-      avatarUrl: avatarUrl,
-      token: '',
-    );
-  }
 
   //Equatable overrides
   @override

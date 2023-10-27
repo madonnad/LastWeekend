@@ -64,7 +64,8 @@ class SearchScreen extends StatelessWidget {
                   padding: EdgeInsets.only(
                     left: 25.0,
                     right: 25.0,
-                    bottom: (MediaQuery.of(context).viewInsets.bottom * .70),
+                    bottom:
+                        (MediaQuery.of(context).viewInsets.bottom * .70) + 8,
                     top: 10,
                   ),
                   child: const SearchBarComponent(),

@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/models/album.dart';
-import 'package:shared_photo/repositories/data_repository.dart';
 import 'package:shared_photo/repositories/go_repository.dart';
 
 part 'feed_event.dart';
@@ -10,13 +9,9 @@ part 'feed_state.dart';
 
 class FeedBloc extends Bloc<FeedEvent, FeedState> {
   final AppBloc appBloc;
-  final DataRepository dataRepository;
   final GoRepository goRepository;
 
-  FeedBloc(
-      {required this.appBloc,
-      required this.dataRepository,
-      required this.goRepository})
+  FeedBloc({required this.appBloc, required this.goRepository})
       : super(FeedState.empty) {
     on<FeedDataRequested>((event, emit) async {
       emit(state.copyWith(loading: true));
@@ -37,12 +32,6 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
         emit(state.copyWith(error: '', loading: false));
       }
     });
-
-    /* appBloc.stream.listen((state) {
-      if (state is AuthenticatedState) {
-        add(const FeedDataRequested(index: 0));
-      }
-    });*/
 
     if (appBloc.state is AuthenticatedState) {
       add(const FeedDataRequested(index: 0));

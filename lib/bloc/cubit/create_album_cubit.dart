@@ -7,7 +7,6 @@ import 'package:intl/intl.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
 import 'package:shared_photo/models/friend.dart';
-import 'package:shared_photo/repositories/data_repository.dart';
 import 'package:shared_photo/repositories/go_repository.dart';
 
 part 'create_album_state.dart';
@@ -15,13 +14,11 @@ part 'create_album_state.dart';
 class CreateAlbumCubit extends Cubit<CreateAlbumState> {
   AppBloc appBloc;
   ProfileBloc profileBloc;
-  DataRepository dataRepository;
   GoRepository goRepository;
   List<Friend> _friendsList = [];
   CreateAlbumCubit(
       {required this.profileBloc,
       required this.appBloc,
-      required this.dataRepository,
       required this.goRepository})
       : super(
           CreateAlbumState(

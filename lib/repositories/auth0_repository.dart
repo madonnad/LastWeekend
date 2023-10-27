@@ -1,8 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 
+import 'package:http/http.dart' as http;
 import 'package:auth0_flutter/auth0_flutter.dart';
 import 'package:shared_photo/models/user.dart';
 import 'package:shared_photo/utils/api_key.dart';
+import 'package:shared_photo/utils/api_variables.dart';
 
 class Auth0Repository {
   final auth0 = Auth0(auth0_domain, auth0_id);
@@ -19,19 +23,11 @@ class Auth0Repository {
       Credentials creds = await auth0.credentialsManager.credentials();
       UserProfile userProfile = creds.user;
 
-      String firstName =
-          userProfile.givenName != null ? userProfile.givenName! : 'first';
-      String lastName =
-          userProfile.familyName != null ? userProfile.familyName! : 'last';
       String email = userProfile.email != null ? userProfile.email! : 'email';
 
-      _userController.sink.add(User(
-        id: userProfile.sub,
-        email: email,
-        firstName: firstName,
-        lastName: lastName,
-        token: creds.accessToken,
-      ));
+      User user = await getInternalUserInformation(creds.accessToken, email);
+
+      _userController.sink.add(user);
       return;
     }
     _userController.sink.add(User.empty);
@@ -84,4 +80,36 @@ class Auth0Repository {
     await auth0.credentialsManager.clearCredentials();
     userStream();
   }
+}
+
+Future<User> getInternalUserInformation(String token, String email) async {
+  var url = Uri.http(domain, '/user');
+  final Map<String, String> headers = {'Authorization': 'Bearer $token'};
+
+  final response = await http.get(url, headers: headers);
+
+  if (response.statusCode == 200) {
+    final responseBody = response.body;
+
+    final jsonData = json.decode(responseBody);
+    if (jsonData == null) {
+      throw const HttpException("No user exists with the provided token");
+    }
+
+    String userId = jsonData["user_id"];
+    String first = jsonData["first_name"];
+    String last = jsonData["last_name"];
+    DateTime createdDateTime = DateTime.parse(jsonData["created_at"]);
+
+    return User(
+      id: userId,
+      email: email,
+      firstName: first,
+      lastName: last,
+      token: token,
+      createdDateTime: createdDateTime,
+    );
+  }
+  throw HttpException(
+      "Failed to get users information with status: ${response.statusCode}");
 }

@@ -4,15 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
 import 'package:shared_photo/repositories/auth0_repository.dart';
-import 'package:shared_photo/repositories/authentication_repository.dart';
-import 'package:shared_photo/repositories/data_repository.dart';
 import 'package:shared_photo/repositories/go_repository.dart';
 import 'package:shared_photo/router/generate_route.dart';
 import 'package:shared_photo/screens/app_frame.dart';
 import 'package:shared_photo/screens/auth.dart';
 import 'package:shared_photo/screens/loading.dart';
 import 'package:shared_photo/utils/api_key.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,38 +18,23 @@ void main() async {
     DeviceOrientation.portraitUp,
   ]);
 
-  await Supabase.initialize(
-    url: dbUrl,
-    anonKey: publicAnonKey,
-  );
-
   final auth0Repository = Auth0Repository();
-  final authenticationRepository = AuthenticationRepository();
-  final dataRepository = DataRepository();
   final goRepository = GoRepository();
 
   runApp(MainApp(
-    authenticationRepository: authenticationRepository,
-    dataRepository: dataRepository,
     auth0Repository: auth0Repository,
     goRepository: goRepository,
   ));
 }
 
 class MainApp extends StatelessWidget {
-  final AuthenticationRepository _authenticationRepository;
-  final DataRepository _dataRepository;
   final Auth0Repository _auth0Repository;
   final GoRepository _goRepository;
   const MainApp({
-    required AuthenticationRepository authenticationRepository,
-    required DataRepository dataRepository,
     required Auth0Repository auth0Repository,
     required GoRepository goRepository,
     super.key,
-  })  : _authenticationRepository = authenticationRepository,
-        _auth0Repository = auth0Repository,
-        _dataRepository = dataRepository,
+  })  : _auth0Repository = auth0Repository,
         _goRepository = goRepository;
 
   @override
@@ -70,26 +52,17 @@ class MainApp extends StatelessWidget {
         RepositoryProvider.value(
           value: _goRepository,
         ),
-        RepositoryProvider.value(
-          value: _authenticationRepository,
-        ),
-        RepositoryProvider.value(
-          value: _dataRepository,
-        ),
       ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
             create: (context) => AppBloc(
-              authenticationRepository: _authenticationRepository,
               auth0repository: _auth0Repository,
-              dataRepository: _dataRepository,
             ),
           ),
           BlocProvider(
             create: (context) => ProfileBloc(
               appBloc: context.read<AppBloc>(),
-              dataRepository: _dataRepository,
               goRepository: _goRepository,
             ),
           ),

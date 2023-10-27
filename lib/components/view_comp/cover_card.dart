@@ -32,7 +32,7 @@ class CoverCard extends StatelessWidget {
           child: Card(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(
-                5,
+                15,
               ),
             ),
             clipBehavior: Clip.antiAlias,

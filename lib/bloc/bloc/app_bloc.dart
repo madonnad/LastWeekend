@@ -4,29 +4,21 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:shared_photo/models/user.dart';
 import 'package:shared_photo/repositories/auth0_repository.dart';
-import 'package:shared_photo/repositories/authentication_repository.dart';
-import 'package:shared_photo/repositories/data_repository.dart';
 
 part 'app_event.dart';
 part 'app_state.dart';
 
 class AppBloc extends Bloc<AppEvent, AppState> {
-  final AuthenticationRepository _authenticationRepository;
   final Auth0Repository _auth0repository;
-  final DataRepository _dataRepository;
 
   AppBloc({
-    required AuthenticationRepository authenticationRepository,
-    required DataRepository dataRepository,
     required Auth0Repository auth0repository,
-  })  : _authenticationRepository = authenticationRepository,
-        _auth0repository = auth0repository,
-        _dataRepository = dataRepository,
+  })  : _auth0repository = auth0repository,
         super(const LoadingState()) {
     on<AppUserChanged>(
       (event, emit) {
         if (event.user != User.empty) {
-          print(event.user.token);
+          //print(event.user.token);
           emit(AuthenticatedState(event.user));
         } else {
           emit(const UnauthenticatedState());
@@ -50,7 +42,3 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     return super.close();
   }
 }
-
-/*authenticationRepository.currentUser.isNotEmpty
-? CachedAuthenticatedState(authenticationRepository.currentUser)
-: */
