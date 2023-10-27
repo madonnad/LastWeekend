@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
 import 'package:shared_photo/bloc/cubit/create_album_cubit.dart';
-import 'package:shared_photo/repositories/data_repository.dart';
 import 'package:shared_photo/repositories/go_repository.dart';
 import 'package:shared_photo/screens/album_create/album_create_detail.dart';
 import 'package:shared_photo/screens/album_create/album_create_friends.dart';
@@ -20,7 +19,6 @@ class AlbumCreateModal extends StatelessWidget {
       create: (context) => CreateAlbumCubit(
         appBloc: context.read<AppBloc>(),
         profileBloc: context.read<ProfileBloc>(),
-        dataRepository: context.read<DataRepository>(),
         goRepository: context.read<GoRepository>(),
       ),
       child: SizedBox(

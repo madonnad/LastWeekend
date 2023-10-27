@@ -6,7 +6,6 @@ import 'package:shared_photo/bloc/bloc/feed_bloc.dart';
 import 'package:shared_photo/bloc/cubit/app_frame_cubit.dart';
 import 'package:shared_photo/components/app_comp/lw_global_bottom_app_bar.dart';
 import 'package:shared_photo/components/app_comp/nav_bar.dart';
-import 'package:shared_photo/repositories/data_repository.dart';
 import 'package:shared_photo/repositories/go_repository.dart';
 import 'package:shared_photo/screens/album_create/album_create_modal.dart';
 import 'package:shared_photo/screens/feed.dart';
@@ -26,7 +25,6 @@ class AppFrame extends StatelessWidget {
         BlocProvider(
           create: (context) => FeedBloc(
             appBloc: BlocProvider.of<AppBloc>(context),
-            dataRepository: context.read<DataRepository>(),
             goRepository: context.read<GoRepository>(),
           ),
         ),

@@ -16,7 +16,7 @@ class ProfilePhotosTab extends StatelessWidget {
         Map<String, String> headers = {"Authorization": "Bearer $token"};
 
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
             children: [
               Padding(
@@ -38,7 +38,7 @@ class ProfilePhotosTab extends StatelessWidget {
                   itemCount: state.myImages.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     mainAxisSpacing: 5,
-                    crossAxisSpacing: 15,
+                    crossAxisSpacing: 5,
                     crossAxisCount: 3,
                     childAspectRatio: .85,
                   ),

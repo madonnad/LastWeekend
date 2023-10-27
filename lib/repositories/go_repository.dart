@@ -10,11 +10,10 @@ import 'package:shared_photo/models/friend.dart';
 import 'package:shared_photo/models/image.dart';
 import 'package:shared_photo/models/notification.dart';
 import 'package:shared_photo/models/search_result.dart';
+import 'package:shared_photo/utils/api_variables.dart';
 import 'package:web_socket_channel/io.dart';
 
 class GoRepository {
-  String domain = "192.168.1.164:2525";
-
   Stream<String> webSocketConnection(String token) async* {
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
     final wsURL = Uri.parse('ws://0.0.0.0:2525/ws');

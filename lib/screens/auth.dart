@@ -4,7 +4,6 @@ import 'package:shared_photo/bloc/cubit/auth_cubit.dart';
 import 'package:shared_photo/components/auth_comp/forms/create_account_form.dart';
 import 'package:shared_photo/components/auth_comp/forms/login_form.dart';
 import 'package:shared_photo/repositories/auth0_repository.dart';
-import 'package:shared_photo/repositories/authentication_repository.dart';
 
 class AuthScreen extends StatelessWidget {
   const AuthScreen({super.key});

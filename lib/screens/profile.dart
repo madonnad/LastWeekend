@@ -8,7 +8,6 @@ import 'package:shared_photo/components/profile_comp/profile_album_tab.dart';
 import 'package:shared_photo/components/profile_comp/profile_flexible_space.dart';
 import 'package:shared_photo/components/profile_comp/profile_notification_tab.dart';
 import 'package:shared_photo/components/profile_comp/profile_photos_tab.dart';
-import 'package:shared_photo/repositories/data_repository.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -89,12 +88,12 @@ class PinnedHeaderDelegate extends SliverPersistentHeaderDelegate {
       height: devHeight * .07,
       color: Colors.white,
       child: TabBar(
-        padding: const EdgeInsets.only(left: 20),
+        //padding: const EdgeInsets.only(left: 16),
         isScrollable: true,
         indicatorColor: Colors.transparent,
         controller: tabController,
         labelColor: Colors.black,
-        labelPadding: const EdgeInsets.only(left: 18),
+        labelPadding: const EdgeInsets.only(left: 16),
         labelStyle: GoogleFonts.poppins(
           fontSize: 18,
           fontWeight: FontWeight.w600,
@@ -128,113 +127,3 @@ class PinnedHeaderDelegate extends SliverPersistentHeaderDelegate {
     return false;
   }
 }
-
-/*
-
-Row(
-                                          children: [
-                                            ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor:
-                                                    Colors.deepPurple,
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                  vertical: 6,
-                                                  horizontal: 20,
-                                                ),
-                                                minimumSize: Size.zero,
-                                              ),
-                                              onPressed: () {},
-                                              child: Text(
-                                                'accept',
-                                                style: GoogleFonts.poppins(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Colors.white),
-                                              ),
-                                            ),
-                                            ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor:
-                                                    Colors.deepPurple,
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                  vertical: 6,
-                                                  horizontal: 20,
-                                                ),
-                                                minimumSize: Size.zero,
-                                              ),
-                                              onPressed: () {},
-                                              child: Text(
-                                                'accept',
-                                                style: GoogleFonts.poppins(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Colors.white),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-
-Padding(
-        padding: const EdgeInsets.fromLTRB(35, 0, 0, 0),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              'Albums',
-              style: GoogleFonts.poppins(
-                color: Colors.black,
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(
-                left: 18,
-              ),
-            ),
-            Text(
-              'Photos',
-              style: GoogleFonts.poppins(
-                color: Colors.black54,
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(
-                left: 18,
-              ),
-            ),
-            Text(
-              "Notifications",
-              style: GoogleFonts.poppins(
-                color: Colors.black54,
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
-      ),
-
-SliverList.builder(
-itemCount: 25,
-itemBuilder: (context, index) {
-return Padding(
-padding: const EdgeInsets.all(8.0),
-child: Container(
-width: 100,
-height: 50,
-color: Colors.blue,
-),
-);
-},
-),
-
-
-SliverPersistentHeader(
-          delegate: PinnedHeaderDelegate(devHeight: devHeight),
-          pinned: true,
-        ),*/

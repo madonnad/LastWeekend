@@ -20,11 +20,19 @@ class SearchBarComponent extends StatelessWidget {
             }
           },
           cursorColor: Colors.black,
-          style: const TextStyle(fontSize: 13),
+          style: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w500,
+            color: Colors.black,
+          ),
           textAlign: TextAlign.center,
           decoration: InputDecoration(
             hintText: 'search albums and friends',
-            hintStyle: GoogleFonts.poppins(),
+            hintStyle: GoogleFonts.poppins(
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+              color: Colors.black38,
+            ),
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 15, vertical: 1),
             enabledBorder: OutlineInputBorder(

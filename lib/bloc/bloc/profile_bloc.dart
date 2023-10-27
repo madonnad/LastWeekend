@@ -5,7 +5,6 @@ import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/friend.dart';
 import 'package:shared_photo/models/image.dart';
 import 'package:shared_photo/models/notification.dart';
-import 'package:shared_photo/repositories/data_repository.dart';
 import 'package:shared_photo/repositories/go_repository.dart';
 
 part 'profile_event.dart';
@@ -13,13 +12,9 @@ part 'profile_state.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final AppBloc appBloc;
-  final DataRepository dataRepository;
   final GoRepository goRepository;
 
-  ProfileBloc(
-      {required this.appBloc,
-      required this.dataRepository,
-      required this.goRepository})
+  ProfileBloc({required this.appBloc, required this.goRepository})
       : super(ProfileState.empty) {
     final String token = appBloc.state.user.token;
 
@@ -136,7 +131,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       }
     });
 
-    on<ReceiveNotification>((event, emit) async {
+    /*on<ReceiveNotification>((event, emit) async {
       List<Notification> myNotifications = [];
       myNotifications = List.from(state.myNotifications);
 
@@ -157,7 +152,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
         var type = event.notificationType;
 
-        /*myNotifications.removeWhere((element) {
+        myNotifications.removeWhere((element) {
           switch (type) {
             case NotificationType.albumInvite:
               if (element is AlbumInviteNotification &&
@@ -173,13 +168,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           }
 
           return false;
-        });*/
+        });
 
         print(myNotifications);
 
         emit(state.copyWith(myNotifications: myNotifications));
       },
-    );
+    );*/
 
     on<LoadNotifications>((event, emit) async {
       int index = event.index;
@@ -189,14 +184,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
       //Fill the list if it is empty - eventually will add the realtime update here
       if (state.myNotifications.isEmpty) {
-        myNotifications = await dataRepository.fetchMyNotifications();
         emit(
             state.copyWith(myNotifications: myNotifications, isLoading: false));
       }
 
       //Grab the URL of the media as it becomes available.
-      /*if (event.location == LoadLocation.list &&
-          state.myNotifications[index].notificationMediaURL == null) {
+      if (event.location == LoadLocation.list) {
         emit(state.copyWith(isLoading: true));
         //Grab notifications from state emitted above;
         myNotifications = state.myNotifications;
@@ -204,17 +197,14 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
         //Get the ID to pass to the fetchSignURL function
         String imageId = notification.notificationMediaID;
-        String notificationMediaURL =
-            await dataRepository.fetchSignedUrl(imageId);
 
         //Assign the notification to MediaURL in notification
         //Then set that equal to the index in the list
-        notification.notificationMediaURL = notificationMediaURL;
         myNotifications[index] = notification;
 
         emit(
             state.copyWith(myNotifications: myNotifications, isLoading: false));
-      }*/
+      }
       emit(state.copyWith(isLoading: false));
     });
 
@@ -257,13 +247,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       },
     );
 
-    Stream<(bool, String, NotificationType)> notificationStream =
+    /*Stream<(bool, String, NotificationType)> notificationStream =
         dataRepository.receivedNotification();
 
     Stream<(bool, String, NotificationType)> deletedStream =
-        dataRepository.notificationRemoved();
+        dataRepository.notificationRemoved();*/
 
-    notificationStream.listen((event) {
+    /*notificationStream.listen((event) {
       var (
         bool isRequest,
         String identifier,
@@ -285,7 +275,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         add(NotificationRemoved(
             identifier: identifier, notificationType: notificationType));
       }
-    });
+    });*/
 
     if (appBloc.state is AuthenticatedState) {
       add(InitializeProfile());

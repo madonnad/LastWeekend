@@ -7,7 +7,7 @@ import 'package:shared_photo/components/album_comp/add_photo_fab.dart';
 import 'package:shared_photo/components/album_comp/album_bottom_app_bar.dart';
 import 'package:shared_photo/components/album_comp/album_everyone_tab.dart';
 import 'package:shared_photo/components/album_comp/album_timeline_tab.dart';
-import 'package:shared_photo/components/album_comp/profile_flexible_spacebar.dart';
+import 'package:shared_photo/components/album_comp/album_flexible_spacebar.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/route_arguments.dart';
 
@@ -28,7 +28,7 @@ class _AlbumFrameState extends State<AlbumFrame>
   void initState() {
     super.initState();
     _profileTabController =
-        TabController(vsync: this, length: 4, animationDuration: Duration.zero);
+        TabController(vsync: this, length: 2, animationDuration: Duration.zero);
   }
 
   @override
@@ -80,7 +80,7 @@ class _AlbumFrameState extends State<AlbumFrame>
                       ),
                       expandedHeight: MediaQuery.of(context).size.height * .23,
                       toolbarHeight: 30,
-                      flexibleSpace: const ProfileFlexibleSpacebar(),
+                      flexibleSpace: const AlbumFlexibleSpacebar(),
                     ),
                     SliverPersistentHeader(
                       delegate: PinnedHeaderDelegate(
@@ -98,9 +98,7 @@ class _AlbumFrameState extends State<AlbumFrame>
                       controller: _profileTabController,
                       children: [
                         const AlbumEveryoneTab(),
-                        Container(),
                         const AlbumTimelineTab(),
-                        Center(),
                       ],
                     ),
                   ),
@@ -154,9 +152,7 @@ class PinnedHeaderDelegate extends SliverPersistentHeaderDelegate {
         ),
         tabs: const [
           Tab(text: 'Everyone'),
-          Tab(text: 'Just Me'),
           Tab(text: 'Timeline'),
-          Tab(text: 'Album Info'),
         ],
       ),
     );

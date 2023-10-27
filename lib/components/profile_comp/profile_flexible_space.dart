@@ -71,8 +71,8 @@ class ProfileFlexibleSpace extends StatelessWidget {
                 child: Divider(
                   thickness: 0.75,
                   color: Colors.black12,
-                  endIndent: 35,
-                  indent: 35,
+                  endIndent: 16,
+                  indent: 16,
                 ),
               ),
             ],

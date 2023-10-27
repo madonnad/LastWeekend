@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 
 import 'package:shared_photo/bloc/bloc/feed_bloc.dart';
 import 'package:shared_photo/components/view_comp/carousel_view.dart';
@@ -18,6 +20,7 @@ class AlbumListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double deviceHeight = MediaQuery.of(context).size.height;
+    Map<String, String> header = context.read<AppBloc>().state.user.headers;
 
     return BlocBuilder<FeedBloc, FeedState>(
       builder: (context, state) {
@@ -44,11 +47,13 @@ class AlbumListItem extends StatelessWidget {
                       children: [
                         Text(
                           state.albums[position].albumName,
-                          style: const TextStyle(fontWeight: FontWeight.bold),
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
                         ),
                         Text(
-                          state.albums[position].albumOwner,
-                          style: const TextStyle(fontWeight: FontWeight.w200),
+                          "${state.albums[position].ownerFirst} ${state.albums[position].ownerLast}",
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w200, fontSize: 15),
                         ),
                       ],
                     ),
