@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AddPhotoFab extends StatelessWidget {
-  const AddPhotoFab({super.key});
+  final PageController albumPageController;
+  const AddPhotoFab({super.key, required this.albumPageController});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +40,11 @@ class AddPhotoFab extends StatelessWidget {
             ),
           ),
         ),
-        onPressed: () {},
+        onPressed: () => albumPageController.animateToPage(
+          1,
+          curve: Curves.linear,
+          duration: const Duration(milliseconds: 250),
+        ),
       ),
     );
   }

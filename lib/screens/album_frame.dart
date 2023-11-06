@@ -1,7 +1,9 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/album_bloc.dart';
+import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
 import 'package:shared_photo/components/album_comp/add_photo_fab.dart';
 import 'package:shared_photo/components/album_comp/album_bottom_app_bar.dart';
@@ -10,6 +12,7 @@ import 'package:shared_photo/components/album_comp/album_timeline_tab.dart';
 import 'package:shared_photo/components/album_comp/album_flexible_spacebar.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/route_arguments.dart';
+import 'package:shared_photo/screens/camera.dart';
 
 class AlbumFrame extends StatefulWidget {
   final RouteArguments arguments;
@@ -23,6 +26,7 @@ class AlbumFrame extends StatefulWidget {
 class _AlbumFrameState extends State<AlbumFrame>
     with SingleTickerProviderStateMixin {
   late TabController _profileTabController;
+  final PageController albumFrameController = PageController(initialPage: 0);
 
   @override
   void initState() {
@@ -45,6 +49,10 @@ class _AlbumFrameState extends State<AlbumFrame>
       return a.uploadDateTime.compareTo(b.uploadDateTime);
     });
 
+    AuthenticatedState appBlocState =
+        context.read<AppBloc>().state as AuthenticatedState;
+    List<CameraDescription> cameras = appBlocState.cameras;
+
     double devHeight = MediaQuery.of(context).size.height;
 
     return MultiBlocProvider(
@@ -59,13 +67,13 @@ class _AlbumFrameState extends State<AlbumFrame>
       ],
       child: BlocBuilder<AlbumFrameCubit, AlbumFrameState>(
         builder: (context, state) {
-          return Scaffold(
-            resizeToAvoidBottomInset: false,
-            body: PageView(
-              controller: state.albumFrameController,
-              physics: const NeverScrollableScrollPhysics(),
-              children: [
-                NestedScrollView(
+          return PageView(
+            controller: albumFrameController,
+            physics: const NeverScrollableScrollPhysics(),
+            children: [
+              Scaffold(
+                resizeToAvoidBottomInset: false,
+                body: NestedScrollView(
                   headerSliverBuilder: (context, didScroll) => [
                     SliverAppBar(
                       pinned: true,
@@ -96,21 +104,27 @@ class _AlbumFrameState extends State<AlbumFrame>
                     child: TabBarView(
                       physics: const NeverScrollableScrollPhysics(),
                       controller: _profileTabController,
-                      children: [
-                        const AlbumEveryoneTab(),
-                        const AlbumTimelineTab(),
+                      children: const [
+                        AlbumEveryoneTab(),
+                        AlbumTimelineTab(),
                       ],
                     ),
                   ),
                 ),
-                Scaffold(),
-              ],
-            ),
-            bottomNavigationBar: const AlbumBottomAppBar(),
-            floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
-            floatingActionButton: const AddPhotoFab(),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.endContained,
+                bottomNavigationBar: const AlbumBottomAppBar(),
+                floatingActionButtonAnimator:
+                    FloatingActionButtonAnimator.scaling,
+                floatingActionButton: AddPhotoFab(
+                  albumPageController: albumFrameController,
+                ),
+                floatingActionButtonLocation:
+                    FloatingActionButtonLocation.endContained,
+              ),
+              CameraScreen(
+                cameras: cameras,
+                albumFrameController: albumFrameController,
+              ),
+            ],
           );
         },
       ),
