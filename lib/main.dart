@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,19 +21,24 @@ void main() async {
 
   final auth0Repository = Auth0Repository();
   final goRepository = GoRepository();
+  final cameras = await availableCameras();
+  print(cameras);
 
   runApp(MainApp(
     auth0Repository: auth0Repository,
     goRepository: goRepository,
+    cameras: cameras,
   ));
 }
 
 class MainApp extends StatelessWidget {
   final Auth0Repository _auth0Repository;
   final GoRepository _goRepository;
+  final List<CameraDescription> cameras;
   const MainApp({
     required Auth0Repository auth0Repository,
     required GoRepository goRepository,
+    required this.cameras,
     super.key,
   })  : _auth0Repository = auth0Repository,
         _goRepository = goRepository;
@@ -58,6 +64,7 @@ class MainApp extends StatelessWidget {
           BlocProvider(
             create: (context) => AppBloc(
               auth0repository: _auth0Repository,
+              cameras: cameras,
             ),
           ),
           BlocProvider(

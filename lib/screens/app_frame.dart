@@ -30,6 +30,7 @@ class AppFrame extends StatelessWidget {
         ),
       ],
       child: Scaffold(
+        extendBody: true,
         resizeToAvoidBottomInset: false,
         body: BlocBuilder<AppFrameCubit, AppFrameState>(
           builder: (context, state) {

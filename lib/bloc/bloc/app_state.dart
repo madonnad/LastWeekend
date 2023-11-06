@@ -18,7 +18,8 @@ class UnauthenticatedState extends AppState {
 }
 
 class AuthenticatedState extends AppState {
-  const AuthenticatedState(User user)
+  final List<CameraDescription> cameras;
+  const AuthenticatedState(User user, {required this.cameras})
       : super(status: AppStatus.authenticated, user: user);
 }
 

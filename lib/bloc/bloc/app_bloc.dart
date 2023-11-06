@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:camera/camera.dart';
 import 'package:equatable/equatable.dart';
 import 'package:shared_photo/models/user.dart';
 import 'package:shared_photo/repositories/auth0_repository.dart';
@@ -10,16 +11,16 @@ part 'app_state.dart';
 
 class AppBloc extends Bloc<AppEvent, AppState> {
   final Auth0Repository _auth0repository;
+  final List<CameraDescription> cameras;
 
-  AppBloc({
-    required Auth0Repository auth0repository,
-  })  : _auth0repository = auth0repository,
+  AppBloc({required Auth0Repository auth0repository, required this.cameras})
+      : _auth0repository = auth0repository,
         super(const LoadingState()) {
     on<AppUserChanged>(
       (event, emit) {
         if (event.user != User.empty) {
           //print(event.user.token);
-          emit(AuthenticatedState(event.user));
+          emit(AuthenticatedState(event.user, cameras: cameras));
         } else {
           emit(const UnauthenticatedState());
         }
