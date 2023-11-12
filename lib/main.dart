@@ -10,6 +10,7 @@ import 'package:shared_photo/router/generate_route.dart';
 import 'package:shared_photo/screens/app_frame.dart';
 import 'package:shared_photo/screens/auth.dart';
 import 'package:shared_photo/screens/loading.dart';
+import 'package:shared_photo/screens/new_app_frame.dart';
 import 'package:shared_photo/utils/api_key.dart';
 
 void main() async {
@@ -103,7 +104,7 @@ class MainAppView extends StatelessWidget {
       home: BlocBuilder<AppBloc, AppState>(
         builder: (context, state) {
           if (state is AuthenticatedState) {
-            return const AppFrame();
+            return const NewAppFrame();
           } else if (state is LoadingState) {
             return const LoadingScreen();
           } else {
