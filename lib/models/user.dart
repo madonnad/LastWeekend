@@ -38,6 +38,8 @@ class User extends Equatable {
 
   Map<String, String> get headers => {"Authorization": "Bearer $token"};
 
+  String get fullName => '$firstName $lastName';
+
   //Equatable overrides
   @override
   List<Object?> get props => [email, id, firstName, lastName, avatarUrl, token];

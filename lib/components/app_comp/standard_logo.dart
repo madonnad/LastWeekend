@@ -12,7 +12,7 @@ class StandardLogo extends StatelessWidget {
           TextSpan(
             text: 'last',
             style: GoogleFonts.josefinSans(
-                color: Colors.black,
+                color: Colors.white,
                 fontSize: 30,
                 fontWeight: FontWeight.w100,
                 letterSpacing: -1.5),
@@ -20,7 +20,7 @@ class StandardLogo extends StatelessWidget {
           TextSpan(
             text: 'weekend',
             style: GoogleFonts.dancingScript(
-              color: Colors.black,
+              color: Colors.white,
               fontSize: 30,
             ),
           ),
