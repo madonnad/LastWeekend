@@ -49,6 +49,16 @@ class ProfileState extends Equatable {
     );
   }
 
+  List<Album> get activeAlbums {
+    List<Album> albumList = [];
+    for (final album in myAlbums) {
+      if (album.phase != AlbumPhases.reveal) {
+        albumList.add(album);
+      }
+    }
+    return albumList;
+  }
+
   @override
   List<Object?> get props => [
         myImages,
