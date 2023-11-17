@@ -118,7 +118,7 @@ class FeedSlideshowInset extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "Dom Madonna",
+                          state.imageOwnerName,
                           style: GoogleFonts.montserrat(
                             color: Colors.white70,
                             fontWeight: FontWeight.w500,
