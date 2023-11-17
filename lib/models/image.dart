@@ -49,6 +49,12 @@ class Image {
     return requestUrl;
   }
 
+  String get avatarReq {
+    String requestUrl = "$goRepoDomain/image?id=$owner";
+
+    return requestUrl;
+  }
+
   String get dateString {
     var newFormat = DateFormat("MMMd");
     String updatedDt = newFormat.format(uploadDateTime);

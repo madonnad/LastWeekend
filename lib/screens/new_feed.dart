@@ -1,6 +1,15 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_photo/bloc/bloc/app_bloc.dart';
+import 'package:shared_photo/bloc/bloc/feed_bloc.dart';
+import 'package:shared_photo/bloc/cubit/feed_slideshow_cubit.dart';
 import 'package:shared_photo/components/app_comp/standard_logo.dart';
-import 'package:shared_photo/components/feed_comp/dashboard.dart';
+import 'package:shared_photo/components/feed_comp/dashboard/dashboard.dart';
+import 'package:shared_photo/components/feed_comp/feed/feed_list_item.dart';
+import 'package:shared_photo/components/feed_comp/feed/feed_slideshow_inset.dart';
+import 'package:shared_photo/models/album.dart';
 
 class NewFeed extends StatelessWidget {
   const NewFeed({super.key});
@@ -8,6 +17,7 @@ class NewFeed extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double devHeight = MediaQuery.of(context).size.height;
+
     return CustomScrollView(
       slivers: [
         SliverAppBar(
@@ -35,16 +45,20 @@ class NewFeed extends StatelessWidget {
             ),
           ),
         ),
-        SliverList.builder(
-          itemCount: 25,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Container(
-                height: 100,
-                width: 100,
-                color: Colors.blue,
-              ),
+        BlocBuilder<FeedBloc, FeedState>(
+          builder: (context, state) {
+            return SliverList.separated(
+              itemCount: state.albums.length,
+              itemBuilder: (context, index) {
+                if (state.albums[index].phase == AlbumPhases.reveal) {
+                  return FeedListItem(
+                    album: state.albums[index],
+                  );
+                }
+              },
+              separatorBuilder: (context, index) {
+                return const SizedBox(height: 35);
+              },
             );
           },
         ),
