@@ -41,7 +41,7 @@ class IconNavElement extends StatelessWidget {
             child: Icon(
               unselectedIcon,
               size: 30,
-              color: const Color.fromRGBO(44, 44, 44, 1),
+              color: const Color.fromRGBO(78, 78, 78, 1),
             ),
           );
         }

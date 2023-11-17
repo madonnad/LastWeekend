@@ -21,8 +21,8 @@ class ProfileNavElement extends StatelessWidget {
         if (state.index == index) {
           return GestureDetector(
             child: Container(
-              height: 32,
-              width: 32,
+              height: 30,
+              width: 30,
               padding: const EdgeInsets.all(2),
               decoration: const BoxDecoration(
                 shape: BoxShape.circle,

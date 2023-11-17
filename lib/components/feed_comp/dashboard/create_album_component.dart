@@ -21,6 +21,7 @@ class CreateAlbumComponent extends StatelessWidget {
                 child: Icon(
                   Icons.add_circle_outline,
                   size: 35,
+                  color: Color.fromRGBO(213, 213, 213, 1),
                 ),
               ),
             ),
