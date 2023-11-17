@@ -7,6 +7,8 @@ import 'package:shared_photo/utils/api_variables.dart';
 class Image {
   String imageId;
   String owner;
+  String firstName;
+  String lastName;
   String imageCaption;
   int upvotes;
   DateTime uploadDateTime;
@@ -14,6 +16,8 @@ class Image {
   Image({
     required this.imageId,
     required this.owner,
+    required this.firstName,
+    required this.lastName,
     required this.upvotes,
     required this.uploadDateTime,
     required this.imageCaption,
@@ -37,6 +41,8 @@ class Image {
     return Image(
       imageId: map['image_id'] as String,
       owner: map['image_owner'] as String,
+      firstName: map['first_name'],
+      lastName: map['last_name'],
       imageCaption: map['caption'] != null ? map['caption'] as String : '',
       upvotes: map['upvotes'] as int,
       uploadDateTime: DateTime.parse(map['created_at']),
@@ -53,6 +59,12 @@ class Image {
     String requestUrl = "$goRepoDomain/image?id=$owner";
 
     return requestUrl;
+  }
+
+  String get fullName {
+    String fullName = "$firstName $lastName";
+
+    return fullName;
   }
 
   String get dateString {

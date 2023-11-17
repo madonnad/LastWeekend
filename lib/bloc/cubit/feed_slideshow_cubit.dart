@@ -14,6 +14,7 @@ class FeedSlideshowCubit extends Cubit<FeedSlideshowState> {
             pageController: PageController(),
             album: album,
             avatarUrl: album.rankedImages[0].avatarReq,
+            imageOwnerName: album.rankedImages[0].fullName,
           ),
         );
 
@@ -21,6 +22,7 @@ class FeedSlideshowCubit extends Cubit<FeedSlideshowState> {
     emit(state.copyWith(
       currentPage: index,
       avatarUrl: album.rankedImages[index].avatarReq,
+      imageOwnerName: album.rankedImages[index].fullName,
     ));
   }
 }

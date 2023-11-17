@@ -6,11 +6,13 @@ class FeedSlideshowState extends Equatable {
   final int currentPage;
   final Album album;
   final String avatarUrl;
+  final String imageOwnerName;
 
   const FeedSlideshowState({
     required this.pageController,
     required this.album,
     required this.avatarUrl,
+    required this.imageOwnerName,
     this.currentPage = 0,
   });
 
@@ -19,15 +21,18 @@ class FeedSlideshowState extends Equatable {
     Album? album,
     int? currentPage,
     String? avatarUrl,
+    String? imageOwnerName,
   }) {
     return FeedSlideshowState(
       pageController: pageController ?? this.pageController,
       album: album ?? this.album,
       avatarUrl: avatarUrl ?? this.avatarUrl,
       currentPage: currentPage ?? this.currentPage,
+      imageOwnerName: imageOwnerName ?? this.imageOwnerName,
     );
   }
 
   @override
-  List<Object?> get props => [pageController, currentPage, album, avatarUrl];
+  List<Object?> get props =>
+      [pageController, currentPage, album, avatarUrl, imageOwnerName];
 }
