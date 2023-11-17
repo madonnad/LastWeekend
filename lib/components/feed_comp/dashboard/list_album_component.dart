@@ -19,9 +19,9 @@ class ListAlbumComponent extends StatelessWidget {
           aspectRatio: 8 / 11,
           child: Column(
             children: [
-              Expanded(
-                child: AspectRatio(
-                  aspectRatio: 8 / 8,
+              AspectRatio(
+                aspectRatio: 8 / 10,
+                child: SizedBox(
                   child: Card(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -36,17 +36,17 @@ class ListAlbumComponent extends StatelessWidget {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 5.0, left: 10, right: 10),
-                child: Expanded(
-                  flex: 100,
-                  child: FittedBox(
+              Expanded(
+                flex: 1,
+                child: FittedBox(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Text(
                       state.activeAlbums[index].albumName.toUpperCase(),
                       style: GoogleFonts.josefinSans(
                         color: Colors.white,
                         fontWeight: FontWeight.w500,
-                        fontSize: 13,
+                        fontSize: 12,
                       ),
                     ),
                   ),

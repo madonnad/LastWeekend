@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
-import 'package:shared_photo/components/feed_comp/create_album_component.dart';
-import 'package:shared_photo/components/feed_comp/list_album_component.dart';
+import 'package:shared_photo/components/feed_comp/dashboard/create_album_component.dart';
+import 'package:shared_photo/components/feed_comp/dashboard/list_album_component.dart';
 
 class DashActiveAlbums extends StatelessWidget {
   const DashActiveAlbums({super.key});

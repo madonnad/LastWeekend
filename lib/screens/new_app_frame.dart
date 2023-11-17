@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_photo/bloc/bloc/app_bloc.dart';
+import 'package:shared_photo/bloc/bloc/feed_bloc.dart';
 import 'package:shared_photo/bloc/cubit/new_app_frame_cubit.dart';
 import 'package:shared_photo/components/new_app_frame/camera_nav_element.dart';
 import 'package:shared_photo/components/new_app_frame/icon_nav_element.dart';
 import 'package:shared_photo/components/new_app_frame/new_bottom_app_bar.dart';
+import 'package:shared_photo/repositories/go_repository.dart';
 import 'package:shared_photo/screens/new_feed.dart';
 
 class NewAppFrame extends StatelessWidget {
@@ -11,8 +14,18 @@ class NewAppFrame extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => NewAppFrameCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => NewAppFrameCubit(),
+        ),
+        BlocProvider(
+          create: (context) => FeedBloc(
+            appBloc: BlocProvider.of<AppBloc>(context),
+            goRepository: context.read<GoRepository>(),
+          ),
+        ),
+      ],
       child: BlocBuilder<NewAppFrameCubit, NewAppFrameState>(
         builder: (context, state) {
           return SafeArea(

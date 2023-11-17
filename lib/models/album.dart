@@ -138,6 +138,19 @@ class Album {
     return requestUrl;
   }
 
+  String get fullName {
+    String fullName = "$ownerFirst $ownerLast";
+
+    return fullName;
+  }
+
+  List<Image> get rankedImages {
+    List<Image> rankedImages = List.from(images);
+    rankedImages.sort((a, b) => b.upvotes.compareTo(a.upvotes));
+
+    return rankedImages;
+  }
+
   static final empty = Album(
     albumId: "",
     albumName: "",
