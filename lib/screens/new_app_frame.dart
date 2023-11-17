@@ -28,6 +28,7 @@ class NewAppFrame extends StatelessWidget {
       ],
       child: BlocBuilder<NewAppFrameCubit, NewAppFrameState>(
         builder: (context, state) {
+          final double devHeight = MediaQuery.of(context).size.height;
           return SafeArea(
             top: false,
             bottom: false,
@@ -43,7 +44,7 @@ class NewAppFrame extends StatelessWidget {
                       color: Colors.black,
                     ),
                   ),
-                  const NewFeed(),
+                  NewFeed(devHeight: devHeight),
                   Center(
                     child: Container(
                       color: Colors.red,
