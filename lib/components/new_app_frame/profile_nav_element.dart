@@ -39,7 +39,10 @@ class ProfileNavElement extends StatelessWidget {
                 ),
               ),
               child: CircleAvatar(
-                foregroundImage: url != null ? NetworkImage(url) : null,
+                foregroundImage: CachedNetworkImageProvider(
+                  url,
+                  headers: headers,
+                ),
                 backgroundColor: Colors.black,
                 radius: 16,
               ),
@@ -49,7 +52,10 @@ class ProfileNavElement extends StatelessWidget {
           return GestureDetector(
             onTap: () => context.read<NewAppFrameCubit>().changePage(index),
             child: CircleAvatar(
-              foregroundImage: url != null ? NetworkImage(url!) : null,
+              foregroundImage: CachedNetworkImageProvider(
+                url,
+                headers: headers,
+              ),
               backgroundColor: Colors.black,
               radius: 15,
             ),

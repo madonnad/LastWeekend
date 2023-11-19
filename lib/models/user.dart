@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
+import 'package:shared_photo/utils/api_variables.dart';
 
 class User extends Equatable {
   final String id;
@@ -7,7 +8,6 @@ class User extends Equatable {
   final String? username;
   final String firstName;
   final String lastName;
-  final String? avatarUrl;
   final String token;
   final DateTime? createdDateTime;
 
@@ -20,7 +20,6 @@ class User extends Equatable {
     this.createdDateTime,
     this.email,
     this.username,
-    this.avatarUrl,
   });
 
   static const empty = User(
@@ -37,10 +36,11 @@ class User extends Equatable {
   bool get isNotEmpty => this != User.empty;
 
   Map<String, String> get headers => {"Authorization": "Bearer $token"};
+  String get avatarUrl => "$goRepoDomain/image?id=$id";
 
   String get fullName => '$firstName $lastName';
 
   //Equatable overrides
   @override
-  List<Object?> get props => [email, id, firstName, lastName, avatarUrl, token];
+  List<Object?> get props => [email, id, firstName, lastName, token];
 }

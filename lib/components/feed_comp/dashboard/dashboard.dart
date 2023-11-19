@@ -16,7 +16,10 @@ class Dashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        StandardLogo(),
+        const Padding(
+          padding: EdgeInsets.only(top: 15.0),
+          child: StandardLogo(),
+        ),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(15, 45, 15, 15),
