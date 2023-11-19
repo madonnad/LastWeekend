@@ -16,70 +16,71 @@ class CustomProfilePicture extends StatelessWidget {
     return SizedBox(
       width: devWidth * .6,
       height: devWidth * .6,
-      child: Stack(
-        children: [
-          ImageFiltered(
-            imageFilter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: CachedNetworkImageProvider(
-                    url,
-                    headers: headers,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Center(
-            child: Container(
-              height: circleDiameter,
-              width: circleDiameter,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: CachedNetworkImageProvider(
-                    url,
-                    headers: headers,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          ColorFiltered(
-            colorFilter: ColorFilter.mode(
-              Colors.black.withOpacity(0.25),
-              BlendMode.srcOut,
-            ), // This one will create the magic
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.black,
-                    backgroundBlendMode: BlendMode.dstOut,
-                  ), // This one will handle background + difference out
-                ),
-                Align(
-                  alignment: Alignment.center,
-                  child: Container(
-                    height: circleDiameter,
-                    width: circleDiameter,
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(
-                        circleDiameter / 2,
-                      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: Stack(
+          children: [
+            ImageFiltered(
+              imageFilter: ImageFilter.blur(sigmaX: 15.0, sigmaY: 15.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: CachedNetworkImageProvider(
+                      url,
+                      headers: headers,
                     ),
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
-        ],
+            Center(
+              child: Container(
+                height: circleDiameter,
+                width: circleDiameter,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: CachedNetworkImageProvider(
+                      url,
+                      headers: headers,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            ColorFiltered(
+              colorFilter: ColorFilter.mode(
+                Colors.black.withOpacity(0.25),
+                BlendMode.srcOut,
+              ), // This one will create the magic
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  Container(
+                    decoration: const BoxDecoration(
+                      color: Colors.black,
+                      backgroundBlendMode: BlendMode.dstOut,
+                    ), // This one will handle background + difference out
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Container(
+                      height: circleDiameter,
+                      width: circleDiameter,
+                      decoration: const BoxDecoration(
+                        color: Colors.red,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

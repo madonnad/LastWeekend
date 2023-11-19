@@ -82,7 +82,7 @@ class _NewFeedState extends State<NewFeed> {
           ),
           flexibleSpace: FlexibleSpaceBar(
             expandedTitleScale: 1,
-            collapseMode: CollapseMode.parallax,
+            collapseMode: CollapseMode.pin,
             background: Container(
               decoration: const BoxDecoration(
                 gradient: LinearGradient(

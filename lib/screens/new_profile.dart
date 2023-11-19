@@ -5,6 +5,8 @@ import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
 import 'package:shared_photo/components/new_profile_comp/profile_header_comps/custom_profile_picture.dart';
 import 'package:shared_photo/components/new_profile_comp/profile_header_comps/profile_detail_element.dart';
+import 'package:shared_photo/components/new_profile_comp/profile_header_comps/profile_header.dart';
+import 'package:shared_photo/components/new_profile_comp/profile_topfriend_comps/top_friends_component.dart';
 
 class NewProfileScreen extends StatelessWidget {
   const NewProfileScreen({super.key});
@@ -13,58 +15,15 @@ class NewProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AppBloc, AppState>(
       builder: (context, state) {
-        String numOfFriends =
-            context.read<ProfileBloc>().state.myFriends.length.toString();
-        String numOfAlbums =
-            context.read<ProfileBloc>().state.myAlbums.length.toString();
-        return SingleChildScrollView(
+        return const SingleChildScrollView(
           child: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.only(top: 15.0),
+              padding: EdgeInsets.only(top: 15.0, left: 16, right: 16),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Column(
-                    children: [
-                      CustomProfilePicture(
-                        url: state.user.avatarUrl,
-                        headers: state.user.headers,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            top: 20.0, right: 35, left: 35, bottom: 5),
-                        child: FittedBox(
-                          child: Text(
-                            state.user.fullName,
-                            style: GoogleFonts.josefinSans(
-                              fontSize: 32,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          const Spacer(flex: 3),
-                          Expanded(
-                            flex: 2,
-                            child: ProfileDetailElement(
-                              title: "friends",
-                              value: numOfFriends,
-                            ),
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: ProfileDetailElement(
-                              title: "albums",
-                              value: numOfAlbums,
-                            ),
-                          ),
-                          const Spacer(flex: 3),
-                        ],
-                      )
-                    ],
-                  ),
+                  ProfileHeader(),
+                  TopFriendsComponent(),
                 ],
               ),
             ),
