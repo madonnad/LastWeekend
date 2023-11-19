@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
+import 'package:shared_photo/components/app_comp/section_header_small.dart';
 
 import '../../../bloc/bloc/app_bloc.dart';
 
@@ -18,14 +19,7 @@ class TopFriendsComponent extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "TOP FRIENDS",
-              style: GoogleFonts.josefinSans(
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-                color: const Color(0xFFD5D5D5),
-              ),
-            ),
+            const SectionHeaderSmall("top friends"),
             const SizedBox(height: 10),
             Container(
               height: 100,
