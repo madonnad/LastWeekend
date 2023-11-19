@@ -38,11 +38,14 @@ class TopFriendsComponent extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: List.generate(
                     state.myFriends.length,
-                    (index) => CircleAvatar(
-                      radius: 30,
-                      backgroundImage: CachedNetworkImageProvider(
-                        state.myFriends[index].imageReq,
-                        headers: headers,
+                    (index) => Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20.0),
+                      child: CircleAvatar(
+                        radius: 30,
+                        backgroundImage: CachedNetworkImageProvider(
+                          state.myFriends[index].imageReq,
+                          headers: headers,
+                        ),
                       ),
                     ),
                   ),
