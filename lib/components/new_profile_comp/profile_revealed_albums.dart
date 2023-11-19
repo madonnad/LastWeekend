@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
 import 'package:shared_photo/components/app_comp/section_header_small.dart';
-import 'package:shared_photo/components/feed_comp/dashboard/create_album_component.dart';
 import 'package:shared_photo/components/feed_comp/dashboard/horizontal_album_list.dart';
-import 'package:shared_photo/components/feed_comp/dashboard/list_album_component.dart';
 
-class AlbumHorizontalListView extends StatelessWidget {
-  const AlbumHorizontalListView({super.key});
+class ProfileRevealedAlbums extends StatelessWidget {
+  const ProfileRevealedAlbums({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,10 +16,13 @@ class AlbumHorizontalListView extends StatelessWidget {
           children: [
             const Padding(
               padding: EdgeInsets.only(top: 25.0, bottom: 5),
-              child: SectionHeaderSmall("active albums"),
+              child: SectionHeaderSmall("albums"),
             ),
-            HorizontalAlbumList(
-              albumList: state.activeAlbums,
+            SizedBox(
+              height: 300,
+              child: HorizontalAlbumList(
+                albumList: state.revealedAlbums,
+              ),
             ),
           ],
         );
