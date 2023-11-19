@@ -8,6 +8,7 @@ import 'package:shared_photo/components/new_app_frame/icon_nav_element.dart';
 import 'package:shared_photo/components/new_app_frame/new_bottom_app_bar.dart';
 import 'package:shared_photo/repositories/go_repository.dart';
 import 'package:shared_photo/screens/new_feed.dart';
+import 'package:shared_photo/screens/new_profile.dart';
 
 class NewAppFrame extends StatelessWidget {
   const NewAppFrame({super.key});
@@ -55,11 +56,7 @@ class NewAppFrame extends StatelessWidget {
                       color: Colors.black,
                     ),
                   ),
-                  Center(
-                    child: Container(
-                      color: Colors.black,
-                    ),
-                  )
+                  const NewProfileScreen()
                 ],
               ),
               bottomNavigationBar: const NewBottomAppBar(),
