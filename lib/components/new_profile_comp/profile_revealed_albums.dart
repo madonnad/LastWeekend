@@ -11,20 +11,20 @@ class ProfileRevealedAlbums extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileBloc, ProfileState>(
       builder: (context, state) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Padding(
-              padding: EdgeInsets.only(top: 25.0, bottom: 5),
-              child: SectionHeaderSmall("albums"),
-            ),
-            SizedBox(
-              height: 300,
-              child: HorizontalAlbumList(
+        return SizedBox(
+          height: 300,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(top: 25.0, bottom: 5),
+                child: SectionHeaderSmall("albums"),
+              ),
+              HorizontalAlbumList(
                 albumList: state.revealedAlbums,
               ),
-            ),
-          ],
+            ],
+          ),
         );
       },
     );

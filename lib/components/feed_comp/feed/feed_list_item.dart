@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/cubit/feed_slideshow_cubit.dart';
 import 'package:shared_photo/components/feed_comp/feed/feed_slideshow_inset.dart';
 import 'package:shared_photo/models/album.dart';
+import 'package:shared_photo/models/arguments.dart';
 
 class FeedListItem extends StatelessWidget {
   final Album album;
@@ -12,6 +13,7 @@ class FeedListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double devHeight = MediaQuery.of(context).size.height;
+    Arguments arguments = Arguments(album: album);
 
     return Padding(
       padding: const EdgeInsets.only(top: 30, left: 12, right: 12),
@@ -34,12 +36,16 @@ class FeedListItem extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        album.albumName,
-                        style: GoogleFonts.montserrat(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
+                      InkWell(
+                        onTap: () => Navigator.of(context)
+                            .pushNamed('/album', arguments: arguments),
+                        child: Text(
+                          album.albumName,
+                          style: GoogleFonts.montserrat(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                       Row(

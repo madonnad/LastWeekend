@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/feed_slideshow_cubit.dart';
+import 'package:shared_photo/models/arguments.dart';
 
 class FeedSlideshowInset extends StatelessWidget {
   const FeedSlideshowInset({super.key});
@@ -16,74 +17,84 @@ class FeedSlideshowInset extends StatelessWidget {
       builder: (context, state) {
         Map<String, String> headers =
             context.read<AppBloc>().state.user.headers;
+        Arguments arguments = Arguments(album: state.album);
+
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: const Color.fromRGBO(44, 44, 44, .75),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                clipBehavior: Clip.hardEdge,
-                child: Stack(
-                  children: [
-                    PageView.builder(
-                      onPageChanged: (index) =>
-                          context.read<FeedSlideshowCubit>().updatePage(index),
-                      controller: state.pageController,
-                      itemCount: 3,
-                      allowImplicitScrolling: true,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: CachedNetworkImageProvider(
-                                state.album.rankedImages[index].imageReq,
-                                headers: headers,
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context)
+                      .pushNamed('/album', arguments: arguments);
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: const Color.fromRGBO(44, 44, 44, .75),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  clipBehavior: Clip.hardEdge,
+                  child: Stack(
+                    children: [
+                      PageView.builder(
+                        onPageChanged: (index) => context
+                            .read<FeedSlideshowCubit>()
+                            .updatePage(index),
+                        controller: state.pageController,
+                        itemCount: 3,
+                        allowImplicitScrolling: true,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: CachedNetworkImageProvider(
+                                  state.album.rankedImages[index].imageReq,
+                                  headers: headers,
+                                ),
+                                fit: BoxFit.cover,
                               ),
-                              fit: BoxFit.cover,
                             ),
-                          ),
-                        );
-                      },
-                    ),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 12.0),
-                        child: Container(
-                          width: 60,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: BackdropFilter(
-                              filter: ImageFilter.blur(
-                                sigmaX: 10.0,
-                                sigmaY: 10.0,
-                                tileMode: TileMode.clamp,
-                              ),
-                              child: Container(
-                                color: Colors.black45,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: List.generate(
-                                    3,
-                                    (index) {
-                                      return Text(
-                                        (index + 1).toString(),
-                                        style: GoogleFonts.lato(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w700,
-                                          color: state.currentPage == index
-                                              ? Colors.white
-                                              : Colors.white.withOpacity(0.25),
-                                        ),
-                                      );
-                                    },
+                          );
+                        },
+                      ),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 12.0),
+                          child: Container(
+                            width: 60,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: BackdropFilter(
+                                filter: ImageFilter.blur(
+                                  sigmaX: 10.0,
+                                  sigmaY: 10.0,
+                                  tileMode: TileMode.clamp,
+                                ),
+                                child: Container(
+                                  color: Colors.black45,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: List.generate(
+                                      3,
+                                      (index) {
+                                        return Text(
+                                          (index + 1).toString(),
+                                          style: GoogleFonts.lato(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w700,
+                                            color: state.currentPage == index
+                                                ? Colors.white
+                                                : Colors.white
+                                                    .withOpacity(0.25),
+                                          ),
+                                        );
+                                      },
+                                    ),
                                   ),
                                 ),
                               ),
@@ -91,8 +102,8 @@ class FeedSlideshowInset extends StatelessWidget {
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
