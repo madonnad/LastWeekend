@@ -22,18 +22,16 @@ class ListAlbumComponent extends StatelessWidget {
         children: [
           AspectRatio(
             aspectRatio: 8 / 10,
-            child: SizedBox(
-              child: Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                clipBehavior: Clip.hardEdge,
-                color: const Color.fromRGBO(19, 19, 19, 1),
-                child: CachedNetworkImage(
-                  imageUrl: album.coverReq,
-                  httpHeaders: headers,
-                  fit: BoxFit.cover,
-                ),
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              clipBehavior: Clip.hardEdge,
+              color: const Color.fromRGBO(19, 19, 19, 1),
+              child: CachedNetworkImage(
+                imageUrl: album.coverReq,
+                httpHeaders: headers,
+                fit: BoxFit.cover,
               ),
             ),
           ),

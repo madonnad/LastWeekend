@@ -11,7 +11,6 @@ class HorizontalAlbumList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: ListView.separated(
-        shrinkWrap: true,
         itemCount: albumList.length + 1,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {

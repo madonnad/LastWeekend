@@ -38,7 +38,7 @@ class _NewFeedState extends State<NewFeed> {
         _collapsed = true;
         _changeOpacity();
       }
-      if (_scrollController.offset < (widget.devHeight * (.80))) {
+      if (_scrollController.offset < (widget.devHeight * (.75))) {
         _collapsed = false;
         _changeOpacity();
       }
@@ -100,6 +100,15 @@ class _NewFeedState extends State<NewFeed> {
             return SliverList.separated(
               itemCount: state.albums.length,
               itemBuilder: (context, index) {
+                if (state.albums[index].phase == AlbumPhases.reveal &&
+                    index == 0) {
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 50.0),
+                    child: FeedListItem(
+                      album: state.albums[index],
+                    ),
+                  );
+                }
                 if (state.albums[index].phase == AlbumPhases.reveal) {
                   return FeedListItem(
                     album: state.albums[index],

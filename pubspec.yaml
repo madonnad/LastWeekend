@@ -22,6 +22,7 @@ dependencies:
   web_socket_channel: ^2.4.0
   carousel_slider: ^4.2.1
   camera: ^0.10.5+5
+  buttons_tabbar: ^1.3.8
 
 dev_dependencies:
   flutter_lints: ^2.0.0
