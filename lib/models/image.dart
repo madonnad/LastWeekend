@@ -68,7 +68,7 @@ class Image {
   }
 
   String get dateString {
-    var newFormat = DateFormat("MMMd");
+    var newFormat = DateFormat.yMMMMd('en_US');
     String updatedDt = newFormat.format(uploadDateTime);
     return updatedDt; // 20-04-03
   }

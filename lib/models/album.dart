@@ -49,6 +49,19 @@ class Album {
     return 'Album(albumId: $albumId, albumName: $albumName, albumOwner: $albumOwner,visibility: $visibility, images: $images, creationDateTime: $creationDateTime, lockDateTime: $lockDateTime)';
   }
 
+  static final empty = Album(
+    albumId: "",
+    albumName: "",
+    albumOwner: "",
+    ownerFirst: "",
+    ownerLast: "",
+    lockDateTime: "",
+    unlockDateTime: "",
+    revealDateTime: "",
+    visibility: Visibility.public,
+    phase: AlbumPhases.invite,
+  );
+
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'album_cover_id': albumCoverId,
@@ -175,16 +188,27 @@ class Album {
     return listImages;
   }
 
-  static final empty = Album(
-    albumId: "",
-    albumName: "",
-    albumOwner: "",
-    ownerFirst: "",
-    ownerLast: "",
-    lockDateTime: "",
-    unlockDateTime: "",
-    revealDateTime: "",
-    visibility: Visibility.public,
-    phase: AlbumPhases.invite,
-  );
+  List<List<Image>> get imagesGroupedSortedByDate {
+    Map<String, List<Image>> mapImages = {};
+    List<List<Image>> listImages = [];
+
+    for (var item in images) {
+      if (!mapImages.containsKey(item.dateString)) {
+        mapImages[item.dateString] = [];
+      }
+      if (mapImages[item.dateString] != null) {
+        mapImages[item.dateString]!.add(item);
+      }
+    }
+
+    mapImages.forEach((key, value) {
+      value.sort((a, b) => a.uploadDateTime.compareTo(b.uploadDateTime));
+    });
+
+    mapImages.forEach((key, value) {
+      listImages.add(value);
+    });
+
+    return listImages;
+  }
 }

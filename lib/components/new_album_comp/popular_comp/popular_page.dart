@@ -96,7 +96,7 @@ class PopularPage extends StatelessWidget {
             ),
           ),
           const SliverPadding(
-            padding: EdgeInsets.symmetric(vertical: 45, horizontal: 15),
+            padding: EdgeInsets.symmetric(vertical: 25, horizontal: 15),
             sliver: SliverToBoxAdapter(
               child: Divider(
                 color: Color.fromRGBO(44, 44, 44, 1),
