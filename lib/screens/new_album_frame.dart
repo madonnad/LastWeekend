@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/cubit/new_album_frame_cubit.dart';
+import 'package:shared_photo/components/new_album_comp/popular_comp/popular_page.dart';
 import 'package:shared_photo/models/arguments.dart';
 
 class NewAlbumFrame extends StatelessWidget {
@@ -162,47 +163,50 @@ class NewAlbumFrame extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                ButtonsTabBar(
-                  duration: 1,
-                  buttonMargin:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 25),
-                  radius: 20,
-                  unselectedDecoration: const BoxDecoration(
-                    color: Color.fromRGBO(44, 44, 44, 1),
-                  ),
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Color.fromRGBO(255, 205, 178, 1),
-                        Color.fromRGBO(255, 180, 162, 1),
-                        Color.fromRGBO(229, 152, 155, 1),
-                        Color.fromRGBO(181, 131, 141, 1),
-                        Color.fromRGBO(109, 104, 117, 1),
-                      ],
+                Padding(
+                  padding: const EdgeInsets.only(left: 16),
+                  child: ButtonsTabBar(
+                    duration: 1,
+                    buttonMargin:
+                        const EdgeInsets.only(top: 9, bottom: 9, right: 16),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+                    radius: 20,
+                    unselectedDecoration: const BoxDecoration(
+                      color: Color.fromRGBO(44, 44, 44, 1),
                     ),
-                  ),
-                  unselectedLabelStyle: const TextStyle(
-                    color: Colors.white54,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                  ),
-                  labelStyle: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                  ),
-                  tabs: const [
-                    Tab(
-                      text: "POPULAR",
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Color.fromRGBO(255, 205, 178, 1),
+                          Color.fromRGBO(255, 180, 162, 1),
+                          Color.fromRGBO(229, 152, 155, 1),
+                          Color.fromRGBO(181, 131, 141, 1),
+                          Color.fromRGBO(109, 104, 117, 1),
+                        ],
+                      ),
                     ),
-                    Tab(
-                      text: "GUESTS",
+                    unselectedLabelStyle: const TextStyle(
+                      color: Colors.white54,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
                     ),
-                    Tab(
-                      text: "TIMELINE",
+                    labelStyle: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
                     ),
-                  ],
+                    tabs: const [
+                      Tab(
+                        text: "POPULAR",
+                      ),
+                      Tab(
+                        text: "GUESTS",
+                      ),
+                      Tab(
+                        text: "TIMELINE",
+                      ),
+                    ],
+                  ),
                 ),
                 Expanded(
                   child: GestureDetector(
@@ -214,18 +218,8 @@ class NewAlbumFrame extends StatelessWidget {
                     child: TabBarView(
                       physics: const NeverScrollableScrollPhysics(),
                       children: <Widget>[
-                        SingleChildScrollView(
-                          child: Container(
-                            width: 600,
-                            height: 800,
-                            color: Colors.pink,
-                            child: const Center(
-                              child: Icon(
-                                Icons.directions_car,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
+                        PopularPage(
+                          album: arguments.album,
                         ),
                         Container(
                           width: 600,
