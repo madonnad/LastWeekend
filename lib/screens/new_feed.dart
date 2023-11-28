@@ -64,12 +64,12 @@ class _NewFeedState extends State<NewFeed> {
           surfaceTintColor: Colors.transparent,
           expandedHeight: devHeight * .75,
           title: AnimatedOpacity(
-            duration: const Duration(milliseconds: 300),
+            duration: const Duration(milliseconds: 250),
             opacity: opacityLevel,
             child: GestureDetector(
               onTap: () => _scrollController.animateTo(
                 0,
-                duration: const Duration(milliseconds: 500),
+                duration: const Duration(milliseconds: 300),
                 curve: Curves.linear,
               ),
               child: const StandardLogo(),
@@ -103,7 +103,7 @@ class _NewFeedState extends State<NewFeed> {
                 if (state.albums[index].phase == AlbumPhases.reveal &&
                     index == 0) {
                   return Padding(
-                    padding: const EdgeInsets.only(top: 50.0),
+                    padding: const EdgeInsets.only(top: 30.0),
                     child: FeedListItem(
                       album: state.albums[index],
                     ),
@@ -116,7 +116,7 @@ class _NewFeedState extends State<NewFeed> {
                 }
               },
               separatorBuilder: (context, index) {
-                return const SizedBox(height: 35);
+                return const SizedBox(height: 20);
               },
             );
           },
