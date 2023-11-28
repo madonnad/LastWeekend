@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/cubit/new_album_frame_cubit.dart';
+import 'package:shared_photo/components/new_album_comp/guests_comp/guests_page.dart';
 import 'package:shared_photo/components/new_album_comp/popular_comp/popular_page.dart';
 import 'package:shared_photo/models/arguments.dart';
 
@@ -218,20 +219,8 @@ class NewAlbumFrame extends StatelessWidget {
                     child: TabBarView(
                       physics: const NeverScrollableScrollPhysics(),
                       children: <Widget>[
-                        PopularPage(
-                          album: arguments.album,
-                        ),
-                        Container(
-                          width: 600,
-                          height: 800,
-                          color: Colors.green,
-                          child: const Center(
-                            child: Icon(
-                              Icons.directions_car,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
+                        PopularPage(album: arguments.album),
+                        GuestsPage(album: arguments.album),
                         SingleChildScrollView(
                           child: Container(
                             width: 600,

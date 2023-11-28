@@ -11,7 +11,6 @@ class TopItemComponent extends StatelessWidget {
     return AspectRatio(
       aspectRatio: 4 / 5,
       child: Container(
-        width: 300,
         decoration: BoxDecoration(
           color: const Color.fromRGBO(44, 44, 44, .75),
           borderRadius: BorderRadius.circular(10),

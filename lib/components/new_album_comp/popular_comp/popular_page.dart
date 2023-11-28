@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/components/app_comp/section_header_small.dart';
 import 'package:shared_photo/components/new_album_comp/popular_comp/top_item_component.dart';
@@ -18,7 +19,6 @@ class PopularPage extends StatelessWidget {
       ..removeRange(0, 3);
 
     return SafeArea(
-      top: false,
       child: CustomScrollView(
         slivers: [
           const SliverPadding(
@@ -38,16 +38,53 @@ class PopularPage extends StatelessWidget {
                   if (index == 0) {
                     return Padding(
                       padding: const EdgeInsets.only(left: 16.0),
-                      child: TopItemComponent(
-                        url: album.rankedImages[index].imageReq,
-                        headers: headers,
+                      child: Stack(
+                        children: [
+                          TopItemComponent(
+                            url: album.rankedImages[index].imageReq,
+                            headers: headers,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Material(
+                              borderRadius: BorderRadius.circular(18),
+                              elevation: 2,
+                              child: CircleAvatar(
+                                foregroundImage: CachedNetworkImageProvider(
+                                  album.rankedImages[index].avatarReq,
+                                  headers: headers,
+                                ),
+                                radius: 18,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     );
                   }
                   if (index < 3) {
-                    return TopItemComponent(
-                        url: album.rankedImages[index].imageReq,
-                        headers: headers);
+                    return Stack(
+                      children: [
+                        TopItemComponent(
+                          url: album.rankedImages[index].imageReq,
+                          headers: headers,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Material(
+                            borderRadius: BorderRadius.circular(18),
+                            elevation: 2,
+                            child: CircleAvatar(
+                              foregroundImage: CachedNetworkImageProvider(
+                                album.rankedImages[index].avatarReq,
+                                headers: headers,
+                              ),
+                              radius: 18,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
                   }
                 },
                 separatorBuilder: (context, index) {

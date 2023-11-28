@@ -151,6 +151,30 @@ class Album {
     return rankedImages;
   }
 
+  List<List<Image>> get imagesGroupedByGuest {
+    Map<String, List<Image>> mapImages = {};
+    List<List<Image>> listImages = [];
+
+    for (var item in images) {
+      if (!mapImages.containsKey(item.owner)) {
+        mapImages[item.owner] = [];
+      }
+      if (mapImages[item.owner] != null) {
+        mapImages[item.owner]!.add(item);
+      }
+    }
+
+    mapImages.forEach((key, value) {
+      value.sort((a, b) => b.upvotes.compareTo(a.upvotes));
+    });
+
+    mapImages.forEach((key, value) {
+      listImages.add(value);
+    });
+
+    return listImages;
+  }
+
   static final empty = Album(
     albumId: "",
     albumName: "",
