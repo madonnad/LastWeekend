@@ -41,7 +41,7 @@ class ListAlbumComponent extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text(
-                  album.albumName.toUpperCase(),
+                  album.albumName,
                   style: GoogleFonts.josefinSans(
                     color: Colors.white,
                     fontWeight: FontWeight.w500,
