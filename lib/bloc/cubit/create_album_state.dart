@@ -167,7 +167,8 @@ final class CreateAlbumState extends Equatable {
         lockTimeOfDay != null &&
         revealDateTime != null &&
         revealTimeOfDay != null &&
-        albumName.text.isNotEmpty);
+        albumName.text.isNotEmpty &&
+        friendsList.isNotEmpty);
   }
 
   //? Friend Getters
