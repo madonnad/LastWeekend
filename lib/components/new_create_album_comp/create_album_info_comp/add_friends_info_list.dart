@@ -1,53 +1,85 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_photo/bloc/cubit/create_album_cubit.dart';
 
 class AddFriendsInfoList extends StatelessWidget {
   final PageController pageController;
+
   const AddFriendsInfoList({super.key, required this.pageController});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        GestureDetector(
-          onTap: () => pageController.animateToPage(
-            1,
-            duration: const Duration(milliseconds: 250),
-            curve: Curves.linear,
-          ),
-          child: const Icon(
-            Icons.add_circle_outline,
-            color: Color.fromRGBO(44, 44, 44, 1),
-            size: 35,
-          ),
-        ),
-        Expanded(
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            itemCount: 5 + 1,
-            itemBuilder: (context, index) {
-              return Chip(
-                label: const Text("Dominick"),
-                labelStyle: GoogleFonts.josefinSans(
-                  color: Colors.white,
-                  fontSize: 18,
+    return BlocBuilder<CreateAlbumCubit, CreateAlbumState>(
+      builder: (context, state) {
+        return Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 5.0),
+              child: GestureDetector(
+                onTap: () => pageController.animateToPage(
+                  1,
+                  duration: const Duration(milliseconds: 250),
+                  curve: Curves.linear,
                 ),
-                labelPadding: const EdgeInsets.symmetric(
-                  vertical: 0,
-                  horizontal: 10,
+                child: const Icon(
+                  Icons.add_circle_outline,
+                  color: Colors.white54,
+                  size: 35,
                 ),
-                backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25),
-                ),
-              );
-            },
-            separatorBuilder: (context, index) => const SizedBox(
-              width: 5,
+              ),
             ),
-          ),
-        ),
-      ],
+            Expanded(
+              child: SizedBox(
+                height: 35,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: state.friendsList.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: const Color.fromRGBO(44, 44, 44, 1),
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          right: 12.0,
+                          left: 20,
+                          top: 8,
+                          bottom: 8,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              state.friendsList[index].firstName,
+                              style: GoogleFonts.josefinSans(
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.only(left: 8.0),
+                              child: Icon(
+                                Icons.cancel,
+                                size: 16,
+                                color: Colors.white,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                  separatorBuilder: (context, index) => const SizedBox(
+                    width: 5,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

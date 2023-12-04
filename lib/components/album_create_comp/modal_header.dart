@@ -17,7 +17,7 @@ class ModalHeader extends StatelessWidget {
     return Stack(
       children: [
         Positioned(
-          left: 20,
+          left: 15,
           child: IconButton(
             splashColor: Colors.purple,
             onPressed: iconFunction,

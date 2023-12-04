@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_photo/screens/album_create/album_create_modal.dart';
 import 'package:shared_photo/screens/new_create_album_frame.dart';
 
 class CreateAlbumComponent extends StatelessWidget {
@@ -17,7 +18,7 @@ class CreateAlbumComponent extends StatelessWidget {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             isScrollControlled: true,
             context: context,
-            builder: (context) => NewCreateAlbumFrame());
+            builder: (context) => const AlbumCreateModal());
       },
       child: Column(
         children: [

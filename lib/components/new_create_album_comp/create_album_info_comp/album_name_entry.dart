@@ -19,7 +19,10 @@ class AlbumNameEntry extends StatelessWidget {
         border: InputBorder.none,
         hintText: "ALBUM NAME",
         hintStyle: GoogleFonts.poppins(
-            fontWeight: FontWeight.w500, fontSize: 24, color: Colors.white54),
+          fontWeight: FontWeight.w500,
+          fontSize: 24,
+          color: Colors.white54,
+        ),
       ),
     );
   }

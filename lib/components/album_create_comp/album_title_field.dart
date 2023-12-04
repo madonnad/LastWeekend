@@ -17,17 +17,18 @@ class AlbumTitleField extends StatelessWidget {
           controller: state.albumName,
           textAlign: TextAlign.center,
           style: GoogleFonts.poppins(
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.w500,
             fontSize: 24,
-            color: Colors.black,
+            color: Colors.white,
           ),
           decoration: InputDecoration(
             border: InputBorder.none,
             hintText: "enter album name",
             hintStyle: GoogleFonts.poppins(
-                fontWeight: FontWeight.w600,
-                fontSize: 24,
-                color: Colors.black45),
+              fontWeight: FontWeight.w500,
+              fontSize: 24,
+              color: Colors.white54,
+            ),
           ),
         );
       },
