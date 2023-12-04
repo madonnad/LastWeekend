@@ -16,7 +16,7 @@ class AlbumCoverSelect extends StatelessWidget {
     return BlocBuilder<CreateAlbumCubit, CreateAlbumState>(
       builder: (context, state) {
         return AspectRatio(
-          aspectRatio: 4 / 5,
+          aspectRatio: 5 / 7,
           child: Card(
             clipBehavior: Clip.antiAlias,
             shape: RoundedRectangleBorder(

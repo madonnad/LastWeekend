@@ -8,7 +8,6 @@ import 'package:shared_photo/components/album_create_comp/added_friends_header.d
 import 'package:shared_photo/components/album_create_comp/empty_friends_section.dart';
 import 'package:shared_photo/components/album_create_comp/friends_no_search_section.dart';
 import 'package:shared_photo/components/album_create_comp/friends_search_section.dart';
-import 'package:shared_photo/components/album_create_comp/modal_header.dart';
 
 class AlbumCreateFriends extends StatelessWidget {
   final PageController createAlbumController;
@@ -28,20 +27,8 @@ class AlbumCreateFriends extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(top: 60),
-                      child: ModalHeader(
-                        iconFunction: () => createAlbumController.previousPage(
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.linear,
-                        ),
-                        title: 'add friends',
-                        icon: const Icon(
-                          Icons.arrow_back,
-                          color: Colors.black45,
-                          size: 30,
-                        ),
-                      ),
-                    ),
+                        padding: const EdgeInsets.only(top: 60),
+                        child: Center()),
                     const AddedFriendsHeader(),
                     BlocBuilder<CreateAlbumCubit, CreateAlbumState>(
                       builder: (context, state) {
