@@ -34,7 +34,7 @@ class AddFriendsInfoList extends StatelessWidget {
                 height: 35,
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
-                  itemCount: state.friendsList.length,
+                  itemCount: state.invitedFriends.length,
                   itemBuilder: (context, index) {
                     return Container(
                       decoration: BoxDecoration(
@@ -52,18 +52,24 @@ class AddFriendsInfoList extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              state.friendsList[index].firstName,
+                              state.invitedFriends[index].firstName,
                               style: GoogleFonts.josefinSans(
                                 color: Colors.white,
                                 fontSize: 16,
                               ),
                             ),
-                            const Padding(
-                              padding: EdgeInsets.only(left: 8.0),
-                              child: Icon(
-                                Icons.cancel,
-                                size: 16,
-                                color: Colors.white,
+                            GestureDetector(
+                              onTap: () => context
+                                  .read<CreateAlbumCubit>()
+                                  .handleFriendAddRemoveFromAlbum(
+                                      state.invitedFriends[index]),
+                              child: const Padding(
+                                padding: EdgeInsets.only(left: 8.0),
+                                child: Icon(
+                                  Icons.cancel,
+                                  size: 16,
+                                  color: Colors.white,
+                                ),
                               ),
                             )
                           ],
