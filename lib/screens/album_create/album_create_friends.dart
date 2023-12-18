@@ -26,17 +26,16 @@ class AlbumCreateFriends extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Padding(
-                        padding: const EdgeInsets.only(top: 60),
-                        child: Center()),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 60),
+                      child: Center(),
+                    ),
                     const AddedFriendsHeader(),
                     BlocBuilder<CreateAlbumCubit, CreateAlbumState>(
                       builder: (context, state) {
                         switch (state.friendState) {
                           case FriendState.empty:
                             return const EmptyFriendsSection();
-                          case FriendState.added:
-                            return const FriendsNoSearchSection();
                           case FriendState.searching:
                             return const FriendSearchSection();
                         }

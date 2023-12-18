@@ -15,7 +15,7 @@ class CreateAlbumCubit extends Cubit<CreateAlbumState> {
   AppBloc appBloc;
   ProfileBloc profileBloc;
   GoRepository goRepository;
-  List<Friend> _friendsList = [];
+
   CreateAlbumCubit(
       {required this.profileBloc,
       required this.appBloc,
@@ -24,29 +24,26 @@ class CreateAlbumCubit extends Cubit<CreateAlbumState> {
           CreateAlbumState(
             albumName: TextEditingController(),
             friendSearch: TextEditingController(),
+            friendsList: profileBloc.state.myFriends,
           ),
-        ) {
-    _friendsList = profileBloc.state.myFriends;
-  }
+        );
 
   void handleFriendAddRemoveFromAlbum(Friend friend) {
-    List<Friend> currentFriendList = List.from(state.friendsList);
-    bool friendIsInList = currentFriendList
-        .where((element) => element.uid == friend.uid)
-        .isNotEmpty;
+    List<Friend> currentInvited = List.from(state.invitedFriends);
+    bool friendIsInList = state.invitedUIDList.contains(friend.uid);
 
     if (friendIsInList) {
-      currentFriendList.removeWhere((element) => element.uid == friend.uid);
-      emit(state.copyWith(friendsList: currentFriendList));
-      createModalString();
+      currentInvited.removeWhere((element) => element.uid == friend.uid);
+      emit(
+        state.copyWith(invitedFriends: currentInvited),
+      );
+      //createModalString();
     } else {
-      currentFriendList.add(friend);
-      emit(state.copyWith(
-        friendsList: currentFriendList,
-        friendState: FriendState.added,
-        friendSearch: TextEditingController(),
-      ));
-      createModalString();
+      currentInvited.add(friend);
+      emit(
+        state.copyWith(invitedFriends: currentInvited),
+      );
+      //createModalString();
     }
   }
 
@@ -71,7 +68,7 @@ class CreateAlbumCubit extends Cubit<CreateAlbumState> {
     await Future.delayed(const Duration(milliseconds: 500));
     List<Friend> lookupResult = [];
 
-    for (var friend in _friendsList) {
+    for (var friend in state.friendsList) {
       if (state.friendSearch!.text.isNotEmpty) {
         String catString =
             '${friend.firstName.toLowerCase()} ${friend.lastName.toLowerCase()}';
@@ -91,16 +88,13 @@ class CreateAlbumCubit extends Cubit<CreateAlbumState> {
         ),
       );
     } else {
-      checkToShowState();
+      emit(state.copyWith(friendState: FriendState.empty));
     }
   }
 
   void checkToShowState() {
-    if (state.friendSearch!.text.isEmpty && state.friendsList.isEmpty) {
+    if (state.friendSearch!.text.isEmpty) {
       emit(state.copyWith(friendState: FriendState.empty));
-    } else if (state.friendSearch!.text.isEmpty &&
-        state.friendsList.isNotEmpty) {
-      emit(state.copyWith(friendState: FriendState.added));
     }
   }
 
@@ -125,34 +119,6 @@ class CreateAlbumCubit extends Cubit<CreateAlbumState> {
       if (success == false) {
         throw const FormatException("Image upload failed");
       }
-
-      /*String albumCoverId =
-          await dataRepository.createNewImageRecord(uid: appBloc.state.user.id);
-
-      Album newAlbum = Album(
-        albumId: '',
-        albumCoverId: albumCoverId,
-        albumName: state.albumName.text,
-        albumOwner: appBloc.state.user.id,
-        lockDateTime: state.finalLockDateTime.toIso8601String(),
-        unlockDateTime: state.finalUnlockDateTime.toIso8601String(),
-        revealDateTime: state.finalRevealDateTime.toIso8601String(),
-      );*/
-
-      /*await dataRepository.insertImageToBucket(
-        imageUID: albumCoverId,
-        filePath: File(
-          state.albumCoverImagePath!,
-        ),
-      );
-
-    String albumUid = await dataRepository.createAlbumRecord(newAlbum);
-
-      dataRepository.addUsersToAlbum(
-        creatorUid: appBloc.state.user.id,
-        friendUids: state.friendUIDList,
-        albumUid: albumUid,
-      );*/
     } catch (e) {
       print(e);
     }

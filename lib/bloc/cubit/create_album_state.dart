@@ -3,7 +3,6 @@ part of 'create_album_cubit.dart';
 enum FriendState {
   empty,
   searching,
-  added,
 }
 
 final class CreateAlbumState extends Equatable {
@@ -11,7 +10,6 @@ final class CreateAlbumState extends Equatable {
   final TextEditingController? friendSearch;
   final String? albumCoverImagePath;
   final String? albumUID;
-  final List<String>? invitedFriends;
   // Unlock Date Variables
   final DateTime? unlockDateTime;
   final TimeOfDay? unlockTimeOfDay;
@@ -23,6 +21,7 @@ final class CreateAlbumState extends Equatable {
   final TimeOfDay? revealTimeOfDay;
   // Friends List
   final List<Friend> friendsList;
+  final List<Friend> invitedFriends;
   final List<Friend> searchResult;
   final FriendState friendState;
   final String modalTextString;
@@ -32,7 +31,6 @@ final class CreateAlbumState extends Equatable {
     required this.friendSearch,
     this.albumCoverImagePath,
     this.albumUID,
-    this.invitedFriends,
     // Unlock Date Variables
     this.unlockDateTime,
     this.unlockTimeOfDay,
@@ -43,7 +41,8 @@ final class CreateAlbumState extends Equatable {
     this.revealDateTime,
     this.revealTimeOfDay,
     //Friends
-    this.friendsList = const [],
+    required this.friendsList,
+    this.invitedFriends = const [],
     this.searchResult = const [],
     this.friendState = FriendState.empty,
     this.modalTextString = '',
@@ -54,7 +53,7 @@ final class CreateAlbumState extends Equatable {
     TextEditingController? friendSearch,
     String? albumCoverImagePath,
     String? albumUID,
-    List<String>? invitedFriends,
+    List<Friend>? invitedFriends,
     DateTime? unlockDateTime,
     TimeOfDay? unlockTimeOfDay,
     DateTime? lockDateTime,
@@ -174,6 +173,11 @@ final class CreateAlbumState extends Equatable {
   //? Friend Getters
   List<String> get friendUIDList {
     List<String> uidList = friendsList.map((e) => e.uid).toList();
+    return uidList;
+  }
+
+  List<String> get invitedUIDList {
+    List<String> uidList = invitedFriends.map((e) => e.uid).toList();
     return uidList;
   }
 
