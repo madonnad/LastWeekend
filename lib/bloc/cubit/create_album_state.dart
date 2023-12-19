@@ -320,7 +320,7 @@ final class CreateAlbumState extends Equatable {
   Map<String, dynamic> toJson() {
     return {
       "album_name": albumName.text,
-      "invited_list": friendUIDList,
+      "invited_list": invitedUIDList,
       "unlocked_at": finalUnlockDateTime.toUtc().toIso8601String(),
       "locked_at": finalLockDateTime.toUtc().toIso8601String(),
       "revealed_at": finalRevealDateTime.toUtc().toIso8601String(),
