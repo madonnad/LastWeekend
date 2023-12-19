@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/cubit/create_album_cubit.dart';
 import 'package:shared_photo/components/new_create_album_comp/create_album_friend_comp/empty_friends_listview.dart';
 import 'package:shared_photo/components/new_create_album_comp/create_album_friend_comp/search_results_listview.dart';
+import 'package:shared_photo/components/new_create_album_comp/create_album_info_comp/added_friends_listview.dart';
 
 class CreateFriendAddPage extends StatelessWidget {
   final PageController pageController;
@@ -73,6 +74,18 @@ class CreateFriendAddPage extends StatelessWidget {
                   ),
                 ),
               );
+            },
+          ),
+          BlocBuilder<CreateAlbumCubit, CreateAlbumState>(
+            builder: (context, state) {
+              if (state.invitedFriends.isNotEmpty) {
+                return const Padding(
+                  padding: EdgeInsets.only(top: 20.0),
+                  child: AddedFriendsListView(),
+                );
+              } else {
+                return SizedBox(height: 0);
+              }
             },
           ),
           Expanded(
