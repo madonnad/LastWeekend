@@ -7,6 +7,7 @@ import 'package:shared_photo/components/new_app_frame/camera_nav_element.dart';
 import 'package:shared_photo/components/new_app_frame/icon_nav_element.dart';
 import 'package:shared_photo/components/new_app_frame/new_bottom_app_bar.dart';
 import 'package:shared_photo/repositories/go_repository.dart';
+import 'package:shared_photo/screens/camera.dart';
 import 'package:shared_photo/screens/new_feed.dart';
 import 'package:shared_photo/screens/new_profile.dart';
 
@@ -47,10 +48,11 @@ class NewAppFrame extends StatelessWidget {
                     ),
                   ),
                   NewFeed(devHeight: devHeight),
-                  Center(
-                    child: Container(
-                      color: Colors.red,
-                    ),
+                  BlocBuilder<AppBloc, AppState>(
+                    builder: (context, state) {
+                      AuthenticatedState appState = state as AuthenticatedState;
+                      return CameraScreen(cameras: appState.cameras);
+                    },
                   ),
                   Center(
                     child: Container(
