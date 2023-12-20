@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/bloc/feed_bloc.dart';
+import 'package:shared_photo/bloc/cubit/camera_cubit.dart';
 import 'package:shared_photo/bloc/cubit/new_app_frame_cubit.dart';
-import 'package:shared_photo/components/new_app_frame/camera_nav_element.dart';
-import 'package:shared_photo/components/new_app_frame/icon_nav_element.dart';
 import 'package:shared_photo/components/new_app_frame/new_bottom_app_bar.dart';
 import 'package:shared_photo/repositories/go_repository.dart';
 import 'package:shared_photo/screens/camera.dart';
@@ -26,6 +25,9 @@ class NewAppFrame extends StatelessWidget {
             appBloc: BlocProvider.of<AppBloc>(context),
             goRepository: context.read<GoRepository>(),
           ),
+        ),
+        BlocProvider(
+          create: (context) => CameraCubit(),
         ),
       ],
       child: BlocBuilder<NewAppFrameCubit, NewAppFrameState>(
