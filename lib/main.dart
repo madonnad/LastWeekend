@@ -50,7 +50,7 @@ class MainApp extends StatelessWidget {
       SystemUiMode.edgeToEdge,
     );
     SystemChrome.setSystemUIOverlayStyle(
-        const SystemUiOverlayStyle(systemNavigationBarColor: Colors.white));
+        const SystemUiOverlayStyle(systemNavigationBarColor: Colors.black));
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider.value(
@@ -90,15 +90,15 @@ class MainAppView extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.grey),
-        scaffoldBackgroundColor: Colors.white,
+        scaffoldBackgroundColor: Colors.black,
         splashFactory: NoSplash.splashFactory,
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.black,
         ),
         bottomSheetTheme: const BottomSheetThemeData(
-            backgroundColor: Colors.white, surfaceTintColor: Colors.white),
+            backgroundColor: Colors.black, surfaceTintColor: Colors.black),
         appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.black,
         ),
       ),
       home: BlocBuilder<AppBloc, AppState>(

@@ -72,7 +72,9 @@ class _NewFeedState extends State<NewFeed> {
                 duration: const Duration(milliseconds: 300),
                 curve: Curves.linear,
               ),
-              child: const StandardLogo(),
+              child: const Center(
+                child: StandardLogo(),
+              ),
             ),
           ),
           flexibleSpace: FlexibleSpaceBar(
