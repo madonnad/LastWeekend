@@ -6,7 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
 import 'package:shared_photo/bloc/cubit/camera_cubit.dart';
+import 'package:shared_photo/components/camera_comp/active_album_dropdown.dart';
+import 'package:shared_photo/components/camera_comp/captured_preview_listview.dart';
 
 class CameraScreen extends StatefulWidget {
   final List<CameraDescription> cameras;
@@ -73,7 +76,7 @@ class _CameraScreenState extends State<CameraScreen> {
 
     controller = CameraController(
       widget.cameras[cameraSelect],
-      ResolutionPreset.max,
+      ResolutionPreset.high,
       imageFormatGroup: ImageFormatGroup.yuv420,
     );
 
@@ -113,37 +116,22 @@ class _CameraScreenState extends State<CameraScreen> {
                   child: CircularProgressIndicator(),
                 ),
               ),
-        BlocBuilder<CameraCubit, CameraState>(
-          builder: (context, state) {
-            return Positioned(
-              top: 50, // Adjust as needed
-              left: MediaQuery.of(context).size.width * .75, // Adjust as needed
-              right: 0, // Adjust as needed
-              bottom: 50, // Adjust as needed
-              child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                itemCount: state.photosTaken.length,
-                itemBuilder: (context, index) {
-                  File file = File(state.photosTaken[index].path);
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: 100,
-                      width: 100,
-                      clipBehavior: Clip.hardEdge,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: FileImage(file),
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            );
-          },
+        Positioned(
+          top: 125, // Adjust as needed
+          left: MediaQuery.of(context).size.width * .75, // Adjust as needed
+          right: 0, // Adjust as needed
+          bottom: 50, // Adjust as needed
+          child: const CapturedPreviewListView(),
+        ),
+        const Positioned(
+          top: 100, // Adjust as needed
+          left: 0, // Adjust as needed
+          right: 0, // Adjust as needed
+          child: Center(
+            child: ActiveAlbumDropdown(
+              opacity: .25,
+            ),
+          ),
         ),
         Positioned(
           top: MediaQuery.of(context).size.height * .75,
@@ -175,17 +163,10 @@ class _CameraScreenState extends State<CameraScreen> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(85),
                       border: Border.all(
-                        color: Colors.black54,
-                        width: 4,
+                        color: Colors.black87,
+                        width: 8,
                       ),
-                    ),
-                    child: ClipOval(
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                        child: Container(
-                          color: Colors.white.withOpacity(0.25),
-                        ),
-                      ),
+                      color: Colors.white.withOpacity(.25),
                     ),
                   ),
                 ),
@@ -206,7 +187,18 @@ class _CameraScreenState extends State<CameraScreen> {
   }
 }
 
-/*(!controller.value.isInitialized)
+/*
+
+ child: ClipOval(
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                        child: Container(
+                          color: Colors.white.withOpacity(0.25),
+                        ),
+                      ),
+                    ),
+
+(!controller.value.isInitialized)
 ? Container(color: Colors.black)
     : Stack(
 alignment: Alignment.center,

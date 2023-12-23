@@ -7,11 +7,9 @@ import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
 import 'package:shared_photo/repositories/auth0_repository.dart';
 import 'package:shared_photo/repositories/go_repository.dart';
 import 'package:shared_photo/router/generate_route.dart';
-import 'package:shared_photo/screens/app_frame.dart';
 import 'package:shared_photo/screens/auth.dart';
 import 'package:shared_photo/screens/loading.dart';
 import 'package:shared_photo/screens/new_app_frame.dart';
-import 'package:shared_photo/utils/api_key.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +21,7 @@ void main() async {
   final auth0Repository = Auth0Repository();
   final goRepository = GoRepository();
   final cameras = await availableCameras();
-  print(cameras);
+  //print(cameras);
 
   runApp(MainApp(
     auth0Repository: auth0Repository,
