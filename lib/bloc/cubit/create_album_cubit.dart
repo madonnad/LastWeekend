@@ -115,7 +115,7 @@ class CreateAlbumCubit extends Cubit<CreateAlbumState> {
         throw const FormatException("No image path was provided to upload");
       }
       bool success =
-          await goRepository.uploadNewImage(token, imagePath, imageId);
+          await goRepository.uploadImageWithID(token, imagePath, imageId);
       if (success == false) {
         throw const FormatException("Image upload failed");
       }

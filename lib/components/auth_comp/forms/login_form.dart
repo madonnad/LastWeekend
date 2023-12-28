@@ -35,7 +35,7 @@ class LoginForm extends StatelessWidget {
                       checkEmailField(value, context: context),
                 ),
                 AuthInput(
-                  label: 'Create Password',
+                  label: 'Enter Password',
                   nameController: state.passwordController,
                   validator: (value) =>
                       checkPasswordField(context: context, value),

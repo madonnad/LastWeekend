@@ -14,14 +14,17 @@ class CapturedPreviewListView extends StatelessWidget {
       builder: (context, state) {
         return ListView.builder(
           scrollDirection: Axis.vertical,
-          itemCount: state.photosTaken.length,
+          itemCount: state.selectedAlbumImageList.length,
           itemBuilder: (context, index) {
-            File file = File(state.photosTaken[index].path);
+            File file =
+                File(state.selectedAlbumImageList[index].imageXFile.path);
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: GestureDetector(
                 onTap: () {
-                  context.read<CameraCubit>().updateSelectedIndex(index);
+                  context
+                      .read<CameraCubit>()
+                      .updateSelectedImage(state.selectedAlbumImageList[index]);
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (ctx) => BlocProvider<CameraCubit>.value(
@@ -31,17 +34,38 @@ class CapturedPreviewListView extends StatelessWidget {
                     ),
                   );
                 },
-                child: Container(
-                  height: 100,
-                  width: 100,
-                  clipBehavior: Clip.hardEdge,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: FileImage(file),
+                child: Stack(
+                  children: [
+                    Container(
+                      height: 100,
+                      width: 100,
+                      clipBehavior: Clip.hardEdge,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: FileImage(file),
+                        ),
+                      ),
                     ),
-                  ),
+                    state.loading == true
+                        ? Container(
+                            height: 100,
+                            width: 100,
+                            clipBehavior: Clip.hardEdge,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Colors.black45,
+                            ),
+                            child: const SafeArea(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [CircularProgressIndicator()],
+                              ),
+                            ),
+                          )
+                        : const SizedBox.shrink(),
+                  ],
                 ),
               ),
             );
