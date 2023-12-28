@@ -59,6 +59,16 @@ class ProfileState extends Equatable {
     return albumList;
   }
 
+  List<Album> get unlockedAlbums {
+    List<Album> albumList = [];
+    for (final album in myAlbums) {
+      if (album.phase == AlbumPhases.unlock) {
+        albumList.add(album);
+      }
+    }
+    return albumList;
+  }
+
   List<Album> get revealedAlbums {
     List<Album> albumList = [];
     for (final album in myAlbums) {

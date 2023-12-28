@@ -7,9 +7,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/cubit/camera_cubit.dart';
 import 'package:shared_photo/models/album.dart';
 
-class ActiveAlbumDropdown extends StatelessWidget {
+class EditAlbumDropdown extends StatelessWidget {
   final double opacity;
-  const ActiveAlbumDropdown({super.key, required this.opacity});
+  const EditAlbumDropdown({super.key, required this.opacity});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,8 @@ class ActiveAlbumDropdown extends StatelessWidget {
                   color: Colors.black,
                 ),
                 iconStyleData: const IconStyleData(iconSize: 0),
-                items: state.activeAlbums
+                items: state.mapOfAlbumImages.keys
+                    .toList()
                     .map(
                       (e) => DropdownMenuItem<Album>(
                         value: e,
@@ -43,7 +44,7 @@ class ActiveAlbumDropdown extends StatelessWidget {
                     )
                     .toList(),
                 onChanged: (album) =>
-                    context.read<CameraCubit>().changeSelectedAlbum(album),
+                    context.read<CameraCubit>().changeEditAlbum(album),
               ),
             ),
           ),

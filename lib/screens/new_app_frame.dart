@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/bloc/feed_bloc.dart';
+import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
 import 'package:shared_photo/bloc/cubit/camera_cubit.dart';
 import 'package:shared_photo/bloc/cubit/new_app_frame_cubit.dart';
 import 'package:shared_photo/components/new_app_frame/new_bottom_app_bar.dart';
+import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/repositories/go_repository.dart';
 import 'package:shared_photo/screens/camera.dart';
+import 'package:shared_photo/screens/camera_locked_screen.dart';
+import 'package:shared_photo/screens/loading.dart';
 import 'package:shared_photo/screens/new_feed.dart';
 import 'package:shared_photo/screens/new_profile.dart';
 
@@ -27,7 +31,10 @@ class NewAppFrame extends StatelessWidget {
           ),
         ),
         BlocProvider(
-          create: (context) => CameraCubit(),
+          create: (context) => CameraCubit(
+            profileBloc: BlocProvider.of<ProfileBloc>(context),
+            goRepository: context.read<GoRepository>(),
+          ),
         ),
       ],
       child: BlocBuilder<NewAppFrameCubit, NewAppFrameState>(
@@ -53,6 +60,8 @@ class NewAppFrame extends StatelessWidget {
                   BlocBuilder<AppBloc, AppState>(
                     builder: (context, state) {
                       AuthenticatedState appState = state as AuthenticatedState;
+                      List<Album> revealedAlbums =
+                          context.read<ProfileBloc>().state.unlockedAlbums;
                       return CameraScreen(cameras: appState.cameras);
                     },
                   ),

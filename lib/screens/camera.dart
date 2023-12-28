@@ -6,10 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
 import 'package:shared_photo/bloc/cubit/camera_cubit.dart';
 import 'package:shared_photo/components/camera_comp/active_album_dropdown.dart';
 import 'package:shared_photo/components/camera_comp/captured_preview_listview.dart';
+import 'package:shared_photo/models/album.dart';
+import 'package:shared_photo/models/captured_image.dart';
 
 class CameraScreen extends StatefulWidget {
   final List<CameraDescription> cameras;
@@ -91,8 +94,15 @@ class _CameraScreenState extends State<CameraScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Album? selectedAlbum = context.read<CameraCubit>().state.selectedAlbum;
     Future<void> addPhotoToCubit(XFile picture) async {
-      context.read<CameraCubit>().addPhotoToList(picture);
+      CapturedImage capImage;
+      if (selectedAlbum != null) {
+        capImage = CapturedImage(imageXFile: picture, album: selectedAlbum);
+      } else {
+        capImage = CapturedImage(imageXFile: picture, addToRecap: true);
+      }
+      context.read<CameraCubit>().addPhotoToList(capImage);
     }
 
     final size = MediaQuery.of(context).size;
@@ -150,12 +160,14 @@ class _CameraScreenState extends State<CameraScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15.0),
                 child: InkWell(
-                  onTap: () async {
-                    HapticFeedback.heavyImpact();
-                    XFile picture = await controller.takePicture();
+                  onTap: selectedAlbum != null
+                      ? () async {
+                          HapticFeedback.heavyImpact();
+                          XFile picture = await controller.takePicture();
 
-                    addPhotoToCubit(picture);
-                  },
+                          addPhotoToCubit(picture);
+                        }
+                      : null,
                   child: Container(
                     height: 85,
                     width: 85,
@@ -182,6 +194,47 @@ class _CameraScreenState extends State<CameraScreen> {
             ],
           ),
         ),
+        selectedAlbum == null
+            ? Container(
+                width: size.width,
+                height: size.height,
+                color: Colors.black87,
+                child: SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "😔",
+                          style: TextStyle(fontSize: 50),
+                        ),
+                        const SizedBox(height: 25),
+                        Text(
+                          "No Albums Currently Unlocked!",
+                          style: GoogleFonts.josefinSans(
+                            fontSize: 26,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 25),
+                        Text(
+                          "Once an album reaches the unlock state - then the camera will be available",
+                          style: GoogleFonts.josefinSans(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              )
+            : const SizedBox.shrink(),
       ],
     );
   }
