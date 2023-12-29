@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
-import 'package:shared_photo/components/new_album_comp/popular_comp/top_item_component.dart';
+import 'package:shared_photo/components/album2_comp/image_components/guest_item_component.dart';
 import 'package:shared_photo/models/album.dart';
 
 class GuestsPage extends StatelessWidget {
@@ -77,14 +77,14 @@ class GuestsPage extends StatelessWidget {
                           if (item == 0) {
                             return Padding(
                               padding: const EdgeInsets.only(left: 16.0),
-                              child: TopItemComponent(
+                              child: GuestItemComponent(
                                 url: album
                                     .imagesGroupedByGuest[index][item].imageReq,
                                 headers: headers,
                               ),
                             );
                           }
-                          return TopItemComponent(
+                          return GuestItemComponent(
                             url: album
                                 .imagesGroupedByGuest[index][item].imageReq,
                             headers: headers,

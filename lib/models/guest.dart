@@ -1,4 +1,5 @@
 import 'package:shared_photo/models/friend.dart';
+import 'package:shared_photo/utils/api_variables.dart';
 
 enum InviteStatus { accept, decline, pending }
 
@@ -30,5 +31,15 @@ class Guest {
       lastName: map["last_name"],
       status: status,
     );
+  }
+
+  String get avatarReq {
+    String requestUrl = "$goRepoDomain/image?id=$uid";
+
+    return requestUrl;
+  }
+
+  String get fullName {
+    return "$firstName $lastName";
   }
 }

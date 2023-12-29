@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
+import 'package:shared_photo/components/album2_comp/image_components/top_item_component.dart';
 import 'package:shared_photo/components/app_comp/section_header_small.dart';
-import 'package:shared_photo/components/new_album_comp/popular_comp/top_item_component.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/image.dart' as img;
 
@@ -15,8 +15,6 @@ class PopularPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Map<String, String> headers = context.read<AppBloc>().state.user.headers;
-    List<img.Image> newRanked = List.from(album.rankedImages)
-      ..removeRange(0, 3);
 
     return SafeArea(
       child: CustomScrollView(
@@ -33,32 +31,16 @@ class PopularPage extends StatelessWidget {
               child: ListView.separated(
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
-                itemCount: album.rankedImages.length,
+                itemCount: album.topThreeImages.length,
                 itemBuilder: (context, index) {
                   if (index == 0) {
                     return Padding(
                       padding: const EdgeInsets.only(left: 16.0),
-                      child: Stack(
-                        children: [
-                          TopItemComponent(
-                            url: album.rankedImages[index].imageReq,
-                            headers: headers,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Material(
-                              borderRadius: BorderRadius.circular(18),
-                              elevation: 2,
-                              child: CircleAvatar(
-                                foregroundImage: CachedNetworkImageProvider(
-                                  album.rankedImages[index].avatarReq,
-                                  headers: headers,
-                                ),
-                                radius: 18,
-                              ),
-                            ),
-                          ),
-                        ],
+                      child: TopItemComponent(
+                        url: album.rankedImages[index].imageReq,
+                        avatarUrl: album.rankedImages[index].avatarReq,
+                        radius: 18,
+                        headers: headers,
                       ),
                     );
                   }
@@ -67,21 +49,9 @@ class PopularPage extends StatelessWidget {
                       children: [
                         TopItemComponent(
                           url: album.rankedImages[index].imageReq,
+                          avatarUrl: album.rankedImages[index].avatarReq,
+                          radius: 18,
                           headers: headers,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Material(
-                            borderRadius: BorderRadius.circular(18),
-                            elevation: 2,
-                            child: CircleAvatar(
-                              foregroundImage: CachedNetworkImageProvider(
-                                album.rankedImages[index].avatarReq,
-                                headers: headers,
-                              ),
-                              radius: 18,
-                            ),
-                          ),
                         ),
                       ],
                     );
@@ -111,20 +81,13 @@ class PopularPage extends StatelessWidget {
                 mainAxisSpacing: 8,
                 crossAxisSpacing: 8,
               ),
-              itemCount: newRanked.length,
+              itemCount: album.remainingRankedImages.length,
               itemBuilder: (context, index) {
-                return Container(
-                  decoration: BoxDecoration(
-                    color: const Color.fromRGBO(44, 44, 44, .75),
-                    borderRadius: BorderRadius.circular(10),
-                    image: DecorationImage(
-                      image: CachedNetworkImageProvider(
-                        newRanked[index].imageReq,
-                        headers: headers,
-                      ),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+                return TopItemComponent(
+                  url: album.remainingRankedImages[index].imageReq,
+                  avatarUrl: album.remainingRankedImages[index].avatarReq,
+                  radius: 14,
+                  headers: headers,
                 );
               },
             ),

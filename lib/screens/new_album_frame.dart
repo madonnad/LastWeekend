@@ -1,11 +1,13 @@
-import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/cubit/new_album_frame_cubit.dart';
-import 'package:shared_photo/components/new_album_comp/guests_comp/guests_page.dart';
-import 'package:shared_photo/components/new_album_comp/popular_comp/popular_page.dart';
-import 'package:shared_photo/components/new_album_comp/timeline_comp/timeline_page.dart';
+import 'package:shared_photo/components/album2_comp/invite_comps/invite_page.dart';
+import 'package:shared_photo/components/album2_comp/lock_comps/album_lock_tab_view.dart';
+import 'package:shared_photo/components/album2_comp/util_comps/album_appbar_title.dart';
+import 'package:shared_photo/components/album2_comp/reveal_comps/album_reveal_tab_view.dart';
+import 'package:shared_photo/components/album2_comp/unlock_comps/album_unlock_tab_view.dart';
+import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/arguments.dart';
 
 class NewAlbumFrame extends StatelessWidget {
@@ -17,141 +19,16 @@ class NewAlbumFrame extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => NewAlbumFrameCubit(),
+      create: (context) => NewAlbumFrameCubit(album: arguments.album),
       child: Scaffold(
         backgroundColor: Colors.black,
         appBar: AppBar(
           centerTitle: true,
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            textBaseline: TextBaseline.alphabetic,
-            children: [
-              Expanded(
-                child: GestureDetector(
-                  onTap: () => Navigator.of(context).pop(),
-                  child: const Icon(
-                    Icons.arrow_back_ios_new_rounded,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              const Spacer(),
-              Expanded(
-                flex: 11,
-                child: FittedBox(
-                  fit: BoxFit.fitHeight,
-                  child: Text(
-                    arguments.album.albumName,
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.josefinSans(
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-              const Spacer(),
-              Expanded(
-                child: GestureDetector(
-                  onTap: () => showDialog(
-                    context: context,
-                    builder: (context) {
-                      return SimpleDialog(
-                        backgroundColor: Colors.black,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        titleTextStyle: GoogleFonts.josefinSans(
-                          fontWeight: FontWeight.w800,
-                          fontSize: 18,
-                          color: Colors.white70,
-                        ),
-                        title: const Center(
-                          child: Text(
-                            "Album Information",
-                          ),
-                        ),
-                        children: [
-                          SimpleDialogOption(
-                            child: RichText(
-                              text: TextSpan(
-                                children: [
-                                  const WidgetSpan(
-                                    alignment: PlaceholderAlignment.middle,
-                                    child: Icon(
-                                      Icons.person,
-                                      size: 20,
-                                      color: Colors.white54,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: "  ",
-                                    style: GoogleFonts.josefinSans(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 16,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: arguments.album.fullName,
-                                    style: GoogleFonts.josefinSans(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          SimpleDialogOption(
-                            child: RichText(
-                              text: TextSpan(
-                                children: [
-                                  const WidgetSpan(
-                                    alignment: PlaceholderAlignment.middle,
-                                    child: Icon(
-                                      Icons.groups,
-                                      size: 20,
-                                      color: Colors.white54,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: "  ",
-                                    style: GoogleFonts.josefinSans(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 16,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: arguments.album.guests.length
-                                        .toString(),
-                                    style: GoogleFonts.josefinSans(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                  child: const Icon(
-                    Icons.info_outline,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ],
-          ),
           backgroundColor: Colors.black,
           automaticallyImplyLeading: false,
+          title: AlbumAppBarTitle(
+            arguments: arguments,
+          ),
         ),
         body: GestureDetector(
           onHorizontalDragUpdate: (details) {
@@ -159,76 +36,69 @@ class NewAlbumFrame extends StatelessWidget {
               Navigator.of(context).pop();
             }
           },
-          child: DefaultTabController(
-            length: 3,
-            animationDuration: const Duration(milliseconds: 1),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(left: 16),
-                  child: ButtonsTabBar(
-                    duration: 1,
-                    buttonMargin:
-                        const EdgeInsets.only(top: 9, bottom: 9, right: 16),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 20),
-                    radius: 20,
-                    unselectedDecoration: const BoxDecoration(
-                      color: Color.fromRGBO(44, 44, 44, 1),
-                    ),
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Color.fromRGBO(255, 205, 178, 1),
-                          Color.fromRGBO(255, 180, 162, 1),
-                          Color.fromRGBO(229, 152, 155, 1),
-                          Color.fromRGBO(181, 131, 141, 1),
-                          Color.fromRGBO(109, 104, 117, 1),
-                        ],
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      "Invite",
+                      style: GoogleFonts.josefinSans(
+                        color: arguments.album.phase == AlbumPhases.invite
+                            ? Colors.white
+                            : const Color.fromRGBO(125, 125, 125, 1),
+                        fontSize: 16,
                       ),
                     ),
-                    unselectedLabelStyle: const TextStyle(
-                      color: Colors.white54,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12,
+                    Text(
+                      "Unlock",
+                      style: GoogleFonts.josefinSans(
+                        color: arguments.album.phase == AlbumPhases.unlock
+                            ? Colors.white
+                            : const Color.fromRGBO(125, 125, 125, 1),
+                        fontSize: 16,
+                      ),
                     ),
-                    labelStyle: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w800,
-                      fontSize: 12,
+                    Text(
+                      "Lock",
+                      style: GoogleFonts.josefinSans(
+                        color: arguments.album.phase == AlbumPhases.lock
+                            ? Colors.white
+                            : const Color.fromRGBO(125, 125, 125, 1),
+                        fontSize: 16,
+                      ),
                     ),
-                    tabs: const [
-                      Tab(
-                        text: "POPULAR",
+                    Text(
+                      "Reveal",
+                      style: GoogleFonts.josefinSans(
+                        color: arguments.album.phase == AlbumPhases.reveal
+                            ? Colors.white
+                            : const Color.fromRGBO(125, 125, 125, 1),
+                        fontSize: 16,
                       ),
-                      Tab(
-                        text: "GUESTS",
-                      ),
-                      Tab(
-                        text: "TIMELINE",
-                      ),
-                    ],
-                  ),
+                    )
+                  ],
                 ),
-                Expanded(
-                  child: GestureDetector(
-                    onHorizontalDragUpdate: (details) {
-                      if (details.delta.dx > 7) {
-                        Navigator.of(context).pop();
-                      }
-                    },
-                    child: TabBarView(
-                      physics: const NeverScrollableScrollPhysics(),
-                      children: <Widget>[
-                        PopularPage(album: arguments.album),
-                        GuestsPage(album: arguments.album),
-                        TimelinePage(album: arguments.album),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              ),
+              BlocBuilder<NewAlbumFrameCubit, NewAlbumFrameState>(
+                builder: (context, state) {
+                  switch (state.album.phase) {
+                    case AlbumPhases.reveal:
+                      return AlbumRevealTabView(arguments: arguments);
+                    case AlbumPhases.invite:
+                      return InvitePage(arguments: arguments);
+                    case AlbumPhases.unlock:
+                      return AlbumUnlockTabView(arguments: arguments);
+                    case AlbumPhases.lock:
+                      return AlbumLockTabView(arguments: arguments);
+                    default:
+                      return const Placeholder();
+                  }
+                },
+              ),
+            ],
           ),
         ),
       ),

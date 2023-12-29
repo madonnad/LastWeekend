@@ -1,10 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-class TopItemComponent extends StatelessWidget {
+class GuestItemComponent extends StatelessWidget {
   final String url;
   final Map<String, String> headers;
-  const TopItemComponent({super.key, required this.url, required this.headers});
+  const GuestItemComponent(
+      {super.key, required this.url, required this.headers});
 
   @override
   Widget build(BuildContext context) {
