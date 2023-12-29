@@ -164,6 +164,27 @@ class Album {
     return rankedImages;
   }
 
+  List<Image> get topThreeImages {
+    List<Image> images = List.from(rankedImages);
+    if (rankedImages.length > 3) {
+      return images.getRange(0, 3).toList();
+    } else if (rankedImages.isNotEmpty) {
+      return rankedImages.getRange(0, images.length - 1).toList();
+    } else {
+      return [];
+    }
+  }
+
+  List<Image> get remainingRankedImages {
+    List<Image> images = List.from(rankedImages);
+    if (rankedImages.length > 3) {
+      images.removeRange(0, 3);
+      return images;
+    } else {
+      return [];
+    }
+  }
+
   List<List<Image>> get imagesGroupedByGuest {
     Map<String, List<Image>> mapImages = {};
     List<List<Image>> listImages = [];
@@ -210,5 +231,20 @@ class Album {
     });
 
     return listImages;
+  }
+
+  List<Guest> get sortedGuestsByInvite {
+    List<Guest> unsortedGuests = List.from(guests);
+    List<Guest> acceptedGuests = unsortedGuests
+        .where((element) => element.status == InviteStatus.accept)
+        .toList();
+    List<Guest> pendingGuests = unsortedGuests
+        .where((element) => element.status == InviteStatus.pending)
+        .toList();
+
+    List<Guest> sortedGuests = [];
+    sortedGuests.addAll(acceptedGuests);
+    sortedGuests.addAll(pendingGuests);
+    return sortedGuests;
   }
 }

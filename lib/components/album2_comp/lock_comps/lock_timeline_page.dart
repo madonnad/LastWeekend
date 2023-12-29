@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
+import 'package:shared_photo/components/album2_comp/image_components/blank_item_component.dart';
+import 'package:shared_photo/components/album2_comp/image_components/top_item_component.dart';
 import 'package:shared_photo/components/app_comp/section_header_small.dart';
-import 'package:shared_photo/components/new_album_comp/popular_comp/top_item_component.dart';
 import 'package:shared_photo/models/album.dart';
 
-class TimelinePage extends StatelessWidget {
+class LockTimelinePage extends StatelessWidget {
   final Album album;
-  const TimelinePage({super.key, required this.album});
+  const LockTimelinePage({super.key, required this.album});
 
   @override
   Widget build(BuildContext context) {
     Map<String, String> header = context.read<AppBloc>().state.user.headers;
+    String userID = context.read<AppBloc>().state.user.id;
     return SafeArea(
       child: CustomScrollView(
         slivers: [
@@ -39,11 +41,25 @@ class TimelinePage extends StatelessWidget {
                         crossAxisSpacing: 8,
                       ),
                       itemBuilder: (context, item) {
-                        return TopItemComponent(
-                          url: album
-                              .imagesGroupedSortedByDate[index][item].imageReq,
-                          headers: header,
-                        );
+                        if (album
+                                .imagesGroupedSortedByDate[index][item].owner ==
+                            userID) {
+                          return TopItemComponent(
+                            url: album.imagesGroupedSortedByDate[index][item]
+                                .imageReq,
+                            avatarUrl: album
+                                .imagesGroupedSortedByDate[index][item]
+                                .avatarReq,
+                            radius: 12,
+                            headers: header,
+                          );
+                        } else {
+                          return BlankItemComponent(
+                            url: album.imagesGroupedSortedByDate[index][item]
+                                .avatarReq,
+                            headers: header,
+                          );
+                        }
                       },
                     ),
                   ],
