@@ -11,7 +11,7 @@ import 'package:shared_photo/components/new_create_album_comp/create_album_info_
 
 class CreateInfoPage extends StatelessWidget {
   final PageController pageController;
-  CreateInfoPage({super.key, required this.pageController});
+  const CreateInfoPage({super.key, required this.pageController});
 
   @override
   Widget build(BuildContext context) {

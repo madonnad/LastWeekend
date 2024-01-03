@@ -37,8 +37,7 @@ class PopularPage extends StatelessWidget {
                     return Padding(
                       padding: const EdgeInsets.only(left: 16.0),
                       child: TopItemComponent(
-                        url: album.rankedImages[index].imageReq,
-                        avatarUrl: album.rankedImages[index].avatarReq,
+                        image: album.rankedImages[index],
                         radius: 18,
                         headers: headers,
                       ),
@@ -48,8 +47,7 @@ class PopularPage extends StatelessWidget {
                     return Stack(
                       children: [
                         TopItemComponent(
-                          url: album.rankedImages[index].imageReq,
-                          avatarUrl: album.rankedImages[index].avatarReq,
+                          image: album.rankedImages[index],
                           radius: 18,
                           headers: headers,
                         ),
@@ -80,12 +78,12 @@ class PopularPage extends StatelessWidget {
                 crossAxisCount: 2,
                 mainAxisSpacing: 8,
                 crossAxisSpacing: 8,
+                childAspectRatio: 4 / 5,
               ),
               itemCount: album.remainingRankedImages.length,
               itemBuilder: (context, index) {
                 return TopItemComponent(
-                  url: album.remainingRankedImages[index].imageReq,
-                  avatarUrl: album.remainingRankedImages[index].avatarReq,
+                  image: album.remainingRankedImages[index],
                   radius: 14,
                   headers: headers,
                 );

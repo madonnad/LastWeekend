@@ -3,7 +3,6 @@ import 'package:shared_photo/components/album2_comp/reveal_comps/album_reveal_ta
 import 'package:shared_photo/components/album2_comp/reveal_comps/reveal_timeline_page.dart';
 import 'package:shared_photo/components/album2_comp/guests_page.dart';
 import 'package:shared_photo/components/album2_comp/popular_page.dart';
-import 'package:shared_photo/components/album2_comp/timeline_page.dart';
 import 'package:shared_photo/models/arguments.dart';
 
 class AlbumRevealTabView extends StatelessWidget {
