@@ -28,7 +28,6 @@ class ImageFrameCubit extends Cubit<ImageFrameState> {
         ));
 
   void changeViewMode(String? selection) {
-    print(selection);
     switch (selection) {
       case "Popular":
         int newIndex = state.rankedImageList.indexOf(state.selectedImage);
