@@ -45,11 +45,7 @@ class LockTimelinePage extends StatelessWidget {
                                 .imagesGroupedSortedByDate[index][item].owner ==
                             userID) {
                           return TopItemComponent(
-                            url: album.imagesGroupedSortedByDate[index][item]
-                                .imageReq,
-                            avatarUrl: album
-                                .imagesGroupedSortedByDate[index][item]
-                                .avatarReq,
+                            image: album.imagesGroupedSortedByDate[index][item],
                             radius: 12,
                             headers: header,
                           );

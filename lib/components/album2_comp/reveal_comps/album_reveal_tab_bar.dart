@@ -1,5 +1,7 @@
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_photo/bloc/cubit/new_album_frame_cubit.dart';
 
 class AlbumRevealTabBar extends StatelessWidget {
   const AlbumRevealTabBar({super.key});
@@ -7,6 +9,7 @@ class AlbumRevealTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ButtonsTabBar(
+      onTap: (index) => context.read<NewAlbumFrameCubit>().changePage(index),
       duration: 1,
       buttonMargin: const EdgeInsets.only(top: 9, bottom: 9, right: 16),
       contentPadding: const EdgeInsets.symmetric(horizontal: 20),

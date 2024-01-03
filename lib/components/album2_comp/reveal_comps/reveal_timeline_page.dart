@@ -37,13 +37,11 @@ class RevealTimelinePage extends StatelessWidget {
                         crossAxisCount: 3,
                         mainAxisSpacing: 8,
                         crossAxisSpacing: 8,
+                        childAspectRatio: 4 / 5,
                       ),
                       itemBuilder: (context, item) {
                         return TopItemComponent(
-                          url: album
-                              .imagesGroupedSortedByDate[index][item].imageReq,
-                          avatarUrl: album
-                              .imagesGroupedSortedByDate[index][item].avatarReq,
+                          image: album.imagesGroupedSortedByDate[index][item],
                           radius: 12,
                           headers: header,
                         );

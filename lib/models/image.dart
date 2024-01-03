@@ -38,13 +38,14 @@ class Image {
   }
 
   factory Image.fromMap(Map<String, dynamic> map) {
+    int upvotes = map['upvotes'] ?? 0;
     return Image(
       imageId: map['image_id'] as String,
       owner: map['image_owner'] as String,
       firstName: map['first_name'],
       lastName: map['last_name'],
       imageCaption: map['caption'] != null ? map['caption'] as String : '',
-      upvotes: map['upvotes'] as int,
+      upvotes: upvotes,
       uploadDateTime: DateTime.parse(map['created_at']),
     );
   }
