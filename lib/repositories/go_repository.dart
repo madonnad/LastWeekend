@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_photo/bloc/cubit/create_album_cubit.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/captured_image.dart';
+import 'package:shared_photo/models/comment.dart';
 import 'package:shared_photo/models/friend.dart';
 import 'package:shared_photo/models/image.dart';
 import 'package:shared_photo/models/notification.dart';
@@ -297,6 +298,34 @@ class GoRepository {
       print(e);
       return false;
     }
+  }
+
+  Future<List<Comment>> getImageComments(String token, String imageId) async {
+    List<Comment> commentList = [];
+
+    var url = Uri.http(domain, '/image/comment', {'image_id': imageId});
+    final Map<String, String> headers = {
+      "Content-Type": "application/json",
+      'Authorization': 'Bearer $token'
+    };
+
+    try {
+      var response = await http.get(url, headers: headers);
+
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body);
+
+        for (var item in jsonData) {
+          commentList.add(Comment.fromJson(item));
+        }
+      } else {
+        print('Request failed with status: ${response.statusCode}');
+        print('Response body: #${response.body}');
+      }
+    } catch (e) {
+      print(e);
+    }
+    return commentList;
   }
 
   // This function only uploads the image with a given ID
