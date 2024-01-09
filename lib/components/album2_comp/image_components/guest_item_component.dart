@@ -36,6 +36,7 @@ class GuestItemComponent extends StatelessWidget {
           context: context,
           isScrollControlled: true,
           useRootNavigator: true,
+          useSafeArea: true,
           builder: (ctx) => BlocProvider(
             create: (context) => ImageFrameCubit(
               image: image,

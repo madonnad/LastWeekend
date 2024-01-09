@@ -23,6 +23,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         String token = appBloc.state.user.token;
         emit(state.copyWith(isLoading: true));
 
+        goRepository.getImageComments(
+            token, "c629661f-575b-4dd8-87f5-dde913ab764d");
+
         List<Album> myAlbums = await goRepository.getUsersAlbums(token);
 
         List<Notification> myNotifications =
