@@ -1,3 +1,6 @@
+import 'package:shared_photo/utils/api_variables.dart';
+import 'package:timeago/timeago.dart' as timeago;
+
 class Comment {
   String id;
   String imageID;
@@ -31,5 +34,17 @@ class Comment {
       updatedAt:
           map['updated_at'] != null ? DateTime.parse(map['updated_at']) : null,
     );
+  }
+
+  String get shortTime => timeago.format(createdAt, locale: 'en_short');
+
+  String get avatarReq {
+    String requestUrl = "$goRepoDomain/image?id=$userID";
+
+    return requestUrl;
+  }
+
+  String get fullName {
+    return '$firstName $lastName';
   }
 }
