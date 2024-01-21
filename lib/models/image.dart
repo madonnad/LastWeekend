@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:intl/intl.dart';
+import 'package:shared_photo/models/comment.dart';
 import 'package:shared_photo/utils/api_variables.dart';
 
 // ignore_for_file: public_member_api_docs, sort_constructors_first
@@ -12,6 +13,7 @@ class Image {
   String imageCaption;
   int upvotes;
   DateTime uploadDateTime;
+  List<Comment> comments;
 
   Image({
     required this.imageId,
@@ -21,6 +23,7 @@ class Image {
     required this.upvotes,
     required this.uploadDateTime,
     required this.imageCaption,
+    required this.comments,
   });
 
   @override
@@ -47,6 +50,7 @@ class Image {
       imageCaption: map['caption'] != null ? map['caption'] as String : '',
       upvotes: upvotes,
       uploadDateTime: DateTime.parse(map['created_at']),
+      comments: [],
     );
   }
 

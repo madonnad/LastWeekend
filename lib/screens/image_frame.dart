@@ -23,20 +23,19 @@ class ImageFrame extends StatelessWidget {
           children: [
             SizedBox(
               height: double.infinity,
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).padding.top,
-                    left: 10,
-                    right: 10,
-                    bottom: MediaQuery.of(context).padding.bottom,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const ImageFrameAppBar(),
-                      const ImageFrameImageContainer(),
-                      Padding(
+              child: Padding(
+                padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).padding.top,
+                  left: 10,
+                  right: 10,
+                  bottom: MediaQuery.of(context).padding.bottom,
+                ),
+                child: CustomScrollView(
+                  slivers: [
+                    const SliverToBoxAdapter(child: ImageFrameAppBar()),
+                    const SliverToBoxAdapter(child: ImageFrameImageContainer()),
+                    SliverToBoxAdapter(
+                      child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 20.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -81,26 +80,176 @@ class ImageFrame extends StatelessWidget {
                           ],
                         ),
                       ),
-                      Container(
-                        color: Colors.black,
-                        height: 400,
+                    ),
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          left: 15.0,
+                          right: 15.0,
+                          bottom: 10.0,
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CircleAvatar(
+                              backgroundColor:
+                                  const Color.fromRGBO(25, 25, 25, 1),
+                              foregroundImage: CachedNetworkImageProvider(
+                                state.selectedImage.avatarReq,
+                                headers: headers,
+                              ),
+                              radius: 20,
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    state.selectedImage.fullName,
+                                    style: GoogleFonts.josefinSans(
+                                      color: Colors.white54,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          state.selectedImage.imageCaption,
+                                          style: GoogleFonts.josefinSans(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      SizedBox(
-                        height: MediaQuery.of(context).padding.bottom + 110,
+                    ),
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, item) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 15.0,
+                              vertical: 5,
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CircleAvatar(
+                                  backgroundColor:
+                                      const Color.fromRGBO(25, 25, 25, 1),
+                                  foregroundImage: CachedNetworkImageProvider(
+                                    state
+                                        .selectedImage.comments[item].avatarReq,
+                                    headers: headers,
+                                  ),
+                                  radius: 20,
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            state.selectedImage.comments[item]
+                                                .fullName,
+                                            style: GoogleFonts.josefinSans(
+                                              color: Colors.white54,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                          Text(
+                                            state.selectedImage.comments[item]
+                                                .shortTime,
+                                            style: GoogleFonts.josefinSans(
+                                              color: Colors.white54,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              state.selectedImage.comments[item]
+                                                  .comment,
+                                              style: GoogleFonts.josefinSans(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                        childCount: state.selectedImage.comments.length,
                       ),
-                    ],
-                  ),
+                    ),
+                    SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: MediaQuery.of(context).padding.bottom + 100,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
             Positioned(
               left: 15,
               right: 15,
-              bottom: MediaQuery.of(context).padding.bottom + 10,
+              bottom: MediaQuery.of(context).padding.bottom,
               child: Container(
                 decoration: BoxDecoration(
-                    color: const Color.fromRGBO(44, 44, 44, 1),
-                    borderRadius: BorderRadius.circular(15)),
+                  color: const Color.fromRGBO(44, 44, 44, 1),
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black87,
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, -3), // changes position of shadow
+                    )
+                  ],
+                ),
                 height: 100,
               ),
             ),

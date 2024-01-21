@@ -7,12 +7,14 @@ class ImageFrameState extends Equatable {
   final AlbumViewMode viewMode;
   final List<String> filterList = ["Popular", "Guests", "Timeline"];
   final int selectedIndex;
+  final bool loading;
   ImageFrameState({
     required this.pageController,
     required this.selectedImage,
     required this.album,
     required this.viewMode,
     required this.selectedIndex,
+    this.loading = false,
   });
 
   ImageFrameState copyWith({
@@ -21,6 +23,7 @@ class ImageFrameState extends Equatable {
     Album? album,
     AlbumViewMode? viewMode,
     int? selectedIndex,
+    bool? loading,
   }) {
     return ImageFrameState(
       pageController: pageController ?? this.pageController,
@@ -28,6 +31,7 @@ class ImageFrameState extends Equatable {
       album: album ?? this.album,
       viewMode: viewMode ?? this.viewMode,
       selectedIndex: selectedIndex ?? this.selectedIndex,
+      loading: loading ?? this.loading,
     );
   }
 
@@ -90,6 +94,12 @@ class ImageFrameState extends Equatable {
   }
 
   @override
-  List<Object?> get props =>
-      [pageController, selectedImage, album, viewMode, selectedIndex];
+  List<Object?> get props => [
+        pageController,
+        selectedImage,
+        album,
+        viewMode,
+        selectedIndex,
+        loading,
+      ];
 }

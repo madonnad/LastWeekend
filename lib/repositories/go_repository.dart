@@ -315,8 +315,10 @@ class GoRepository {
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
 
-        for (var item in jsonData) {
-          commentList.add(Comment.fromJson(item));
+        if (jsonData != null) {
+          for (var item in jsonData) {
+            commentList.add(Comment.fromJson(item));
+          }
         }
       } else {
         print('Request failed with status: ${response.statusCode}');
