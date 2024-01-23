@@ -49,6 +49,36 @@ class ProfileState extends Equatable {
     );
   }
 
+  List<Album> get activeAlbums {
+    List<Album> albumList = [];
+    for (final album in myAlbums) {
+      if (album.phase != AlbumPhases.reveal) {
+        albumList.add(album);
+      }
+    }
+    return albumList;
+  }
+
+  List<Album> get unlockedAlbums {
+    List<Album> albumList = [];
+    for (final album in myAlbums) {
+      if (album.phase == AlbumPhases.unlock) {
+        albumList.add(album);
+      }
+    }
+    return albumList;
+  }
+
+  List<Album> get revealedAlbums {
+    List<Album> albumList = [];
+    for (final album in myAlbums) {
+      if (album.phase == AlbumPhases.reveal) {
+        albumList.add(album);
+      }
+    }
+    return albumList;
+  }
+
   @override
   List<Object?> get props => [
         myImages,

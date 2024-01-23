@@ -7,10 +7,9 @@ import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
 import 'package:shared_photo/repositories/auth0_repository.dart';
 import 'package:shared_photo/repositories/go_repository.dart';
 import 'package:shared_photo/router/generate_route.dart';
-import 'package:shared_photo/screens/app_frame.dart';
 import 'package:shared_photo/screens/auth.dart';
 import 'package:shared_photo/screens/loading.dart';
-import 'package:shared_photo/utils/api_key.dart';
+import 'package:shared_photo/screens/new_app_frame.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +21,7 @@ void main() async {
   final auth0Repository = Auth0Repository();
   final goRepository = GoRepository();
   final cameras = await availableCameras();
-  print(cameras);
+  //print(cameras);
 
   runApp(MainApp(
     auth0Repository: auth0Repository,
@@ -49,7 +48,7 @@ class MainApp extends StatelessWidget {
       SystemUiMode.edgeToEdge,
     );
     SystemChrome.setSystemUIOverlayStyle(
-        const SystemUiOverlayStyle(systemNavigationBarColor: Colors.white));
+        const SystemUiOverlayStyle(systemNavigationBarColor: Colors.black));
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider.value(
@@ -92,18 +91,18 @@ class MainAppView extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white,
         splashFactory: NoSplash.splashFactory,
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.black,
         ),
         bottomSheetTheme: const BottomSheetThemeData(
-            backgroundColor: Colors.white, surfaceTintColor: Colors.white),
+            backgroundColor: Colors.black, surfaceTintColor: Colors.black),
         appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.black,
         ),
       ),
       home: BlocBuilder<AppBloc, AppState>(
         builder: (context, state) {
           if (state is AuthenticatedState) {
-            return const AppFrame();
+            return const NewAppFrame();
           } else if (state is LoadingState) {
             return const LoadingScreen();
           } else {

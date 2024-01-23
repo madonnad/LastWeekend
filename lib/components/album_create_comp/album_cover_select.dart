@@ -15,53 +15,41 @@ class AlbumCoverSelect extends StatelessWidget {
     ImagePicker picker = ImagePicker();
     return BlocBuilder<CreateAlbumCubit, CreateAlbumState>(
       builder: (context, state) {
-        return Card(
-          clipBehavior: Clip.antiAlias,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25),
-          ),
-          elevation: 1,
-          child: InkWell(
-            onTap: () {
-              picker.pickImage(source: ImageSource.gallery).then(
-                (value) {
-                  if (value != null) {
-                    context.read<CreateAlbumCubit>().addImage(value.path);
-                  }
-                },
-              ).catchError(
-                (error) {},
-              );
-            },
-            child: Container(
-              height: MediaQuery.of(context).size.height * .40,
-              width: MediaQuery.of(context).size.width * .65,
-              decoration: const BoxDecoration(
-                color: Color.fromRGBO(243, 240, 240, 100),
+        return AspectRatio(
+          aspectRatio: 5 / 7,
+          child: Card(
+            clipBehavior: Clip.antiAlias,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(25),
+            ),
+            elevation: 1,
+            child: InkWell(
+              onTap: () {
+                picker.pickImage(source: ImageSource.gallery).then(
+                  (value) {
+                    if (value != null) {
+                      context.read<CreateAlbumCubit>().addImage(value.path);
+                    }
+                  },
+                ).catchError(
+                  (error) {},
+                );
+              },
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Color.fromRGBO(19, 19, 19, 1),
+                ),
+                child: state.albumCoverImagePath == null
+                    ? const Icon(
+                        Icons.add_circle_outline,
+                        size: 35,
+                        color: Colors.white,
+                      )
+                    : Image.file(
+                        File(state.albumCoverImagePath!),
+                        fit: BoxFit.cover,
+                      ),
               ),
-              child: state.albumCoverImagePath == null
-                  ? Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'album cover',
-                          style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w200,
-                            color: Colors.black45,
-                          ),
-                        ),
-                        const Icon(
-                          Icons.add,
-                          size: 25,
-                          color: Colors.black45,
-                        )
-                      ],
-                    )
-                  : Image.file(
-                      File(state.albumCoverImagePath!),
-                      fit: BoxFit.cover,
-                    ),
             ),
           ),
         );
