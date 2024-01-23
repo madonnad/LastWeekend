@@ -9,6 +9,7 @@ import 'package:shared_photo/bloc/cubit/image_frame_cubit.dart';
 import 'package:shared_photo/bloc/cubit/new_album_frame_cubit.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/image.dart' as img;
+import 'package:shared_photo/repositories/go_repository.dart';
 import 'package:shared_photo/screens/image_frame.dart';
 
 class GuestItemComponent extends StatelessWidget {
@@ -44,6 +45,7 @@ class GuestItemComponent extends StatelessWidget {
               album: album,
               viewMode: viewMode,
               initialIndex: selectedIndex,
+              goRepository: context.read<GoRepository>(),
               token: context.read<AppBloc>().state.user.token,
             ),
             child: ImageFrame(
