@@ -370,6 +370,44 @@ class GoRepository {
     }
   }
 
+  Future<bool> likePhoto(String token, String imageID) async {
+    var url = Uri.http(domain, '/image/like', {"image_id": imageID});
+    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
+
+    final response = await http.post(url, headers: headers);
+
+    try {
+      if (response.statusCode == 200) {
+        return true;
+      }
+      print('Request failed with status: ${response.statusCode}');
+      print('Response body: #${response.body}');
+      return false;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  Future<bool> unlikePhoto(String token, String imageID) async {
+    var url = Uri.http(domain, '/image/like', {"image_id": imageID});
+    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
+
+    final response = await http.delete(url, headers: headers);
+
+    try {
+      if (response.statusCode == 200) {
+        return true;
+      }
+      print('Request failed with status: ${response.statusCode}');
+      print('Response body: #${response.body}');
+      return false;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
   Future<void> acceptFriendRequest(String token, String friendID) async {
     var url =
         Uri.http(domain, '/notifications/friend', {"friend_id": friendID});

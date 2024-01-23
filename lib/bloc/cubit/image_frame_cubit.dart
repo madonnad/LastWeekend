@@ -16,12 +16,14 @@ class ImageFrameCubit extends Cubit<ImageFrameState> {
   Album album;
   AlbumViewMode viewMode;
   int initialIndex;
+  GoRepository goRepository;
   String token;
   ImageFrameCubit({
     required this.image,
     required this.album,
     required this.viewMode,
     required this.initialIndex,
+    required this.goRepository,
     required this.token,
   }) : super(
           ImageFrameState(
@@ -37,7 +39,6 @@ class ImageFrameCubit extends Cubit<ImageFrameState> {
 
   Future<void> initializeComments() async {
     img.Image _image = state.selectedImage;
-    GoRepository goRepository = GoRepository();
 
     emit(state.copyWith(loading: true));
     _image.comments =
