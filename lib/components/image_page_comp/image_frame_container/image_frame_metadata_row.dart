@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/cubit/image_frame_cubit.dart';
+import 'dart:math' as math;
 
 class ImageFrameMetadataRow extends StatelessWidget {
   const ImageFrameMetadataRow({super.key});
@@ -17,21 +18,51 @@ class ImageFrameMetadataRow extends StatelessWidget {
           children: [
             Row(
               children: [
-                const Icon(
-                  Icons.favorite,
-                  color: Colors.white,
-                  size: 18,
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.favorite,
+                      color: Colors.white,
+                      size: 18,
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      state.selectedImage.likes.toString(),
+                      style: GoogleFonts.josefinSans(
+                        fontSize: 18,
+                        color: Colors.white,
+                        textBaseline: TextBaseline.alphabetic,
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(
-                  width: 5,
+                  width: 10,
                 ),
-                Text(
-                  state.selectedImage.upvotes.toString(),
-                  style: GoogleFonts.josefinSans(
-                    fontSize: 18,
-                    color: Colors.white,
-                    textBaseline: TextBaseline.alphabetic,
-                  ),
+                Row(
+                  children: [
+                    Transform.rotate(
+                      angle: (270 * math.pi) / 180,
+                      child: const Icon(
+                        Icons.label_important,
+                        color: Colors.white,
+                        size: 18,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      state.selectedImage.upvotes.toString(),
+                      style: GoogleFonts.josefinSans(
+                        fontSize: 18,
+                        color: Colors.white,
+                        textBaseline: TextBaseline.alphabetic,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
