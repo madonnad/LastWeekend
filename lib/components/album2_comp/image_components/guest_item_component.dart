@@ -41,12 +41,12 @@ class GuestItemComponent extends StatelessWidget {
           useSafeArea: true,
           builder: (ctx) => BlocProvider(
             create: (context) => ImageFrameCubit(
+              appBloc: context.read<AppBloc>(),
               image: image,
               album: album,
               viewMode: viewMode,
               initialIndex: selectedIndex,
               goRepository: context.read<GoRepository>(),
-              token: context.read<AppBloc>().state.user.token,
             ),
             child: ImageFrame(
               image: image,

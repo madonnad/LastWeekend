@@ -13,6 +13,10 @@ class Image {
   String lastName;
   String imageCaption;
   DateTime uploadDateTime;
+  int likes;
+  int upvotes;
+  bool userLiked;
+  bool userUpvoted;
   List<Comment> comments;
   List<Engager> likesUID;
   List<Engager> upvotesUID;
@@ -24,6 +28,10 @@ class Image {
     required this.lastName,
     required this.uploadDateTime,
     required this.imageCaption,
+    required this.likes,
+    required this.upvotes,
+    required this.userLiked,
+    required this.userUpvoted,
     required this.comments,
     required this.likesUID,
     required this.upvotesUID,
@@ -43,27 +51,6 @@ class Image {
   }
 
   factory Image.fromMap(Map<String, dynamic> map) {
-    List<Engager> likesUID = [];
-    List<Engager> upvotesUID = [];
-    dynamic jsonUpvotes = map['upvoted_users'];
-    dynamic jsonLikers = map['liked_users'];
-
-    if (jsonUpvotes != null) {
-      for (var item in jsonUpvotes) {
-        Engager upvoter = Engager.fromMap(item);
-
-        upvotesUID.add(upvoter);
-      }
-    }
-
-    if (jsonLikers != null) {
-      for (var item in jsonLikers) {
-        Engager likers = Engager.fromMap(item);
-
-        likesUID.add(likers);
-      }
-    }
-
     return Image(
       imageId: map['image_id'] as String,
       owner: map['image_owner'] as String,
@@ -71,15 +58,15 @@ class Image {
       lastName: map['last_name'],
       imageCaption: map['caption'] != null ? map['caption'] as String : '',
       uploadDateTime: DateTime.parse(map['created_at']),
-      likesUID: likesUID,
-      upvotesUID: upvotesUID,
+      likes: map['likes'],
+      upvotes: map['upvotes'],
+      userLiked: map['user_liked'],
+      userUpvoted: map['user_upvoted'],
+      likesUID: [],
+      upvotesUID: [],
       comments: [],
     );
   }
-
-  int get upvotes => upvotesUID.length;
-
-  int get likes => likesUID.length;
 
   String get imageReq {
     String requestUrl = "$goRepoDomain/image?id=$imageId";

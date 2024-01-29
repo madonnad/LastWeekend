@@ -2,7 +2,6 @@ part of 'new_album_frame_cubit.dart';
 
 enum AlbumViewMode { popular, guests, timeline }
 
-@immutable
 class NewAlbumFrameState extends Equatable {
   final Album album;
   final AlbumViewMode viewMode;
