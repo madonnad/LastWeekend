@@ -370,7 +370,7 @@ class GoRepository {
     }
   }
 
-  Future<bool> likePhoto(String token, String imageID) async {
+  Future<int> likePhoto(String token, String imageID) async {
     var url = Uri.http(domain, '/image/like', {"image_id": imageID});
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
@@ -378,18 +378,20 @@ class GoRepository {
 
     try {
       if (response.statusCode == 200) {
-        return true;
+        final jsonData = json.decode(response.body);
+        int count = jsonData["count"];
+        return count;
       }
       print('Request failed with status: ${response.statusCode}');
       print('Response body: #${response.body}');
-      return false;
+      return 0;
     } catch (e) {
       print(e);
-      return false;
+      return 0;
     }
   }
 
-  Future<bool> unlikePhoto(String token, String imageID) async {
+  Future<int> unlikePhoto(String token, String imageID) async {
     var url = Uri.http(domain, '/image/like', {"image_id": imageID});
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
@@ -397,14 +399,58 @@ class GoRepository {
 
     try {
       if (response.statusCode == 200) {
-        return true;
+        final jsonData = json.decode(response.body);
+        int count = jsonData["count"];
+        return count;
       }
       print('Request failed with status: ${response.statusCode}');
       print('Response body: #${response.body}');
-      return false;
+      return 0;
     } catch (e) {
       print(e);
-      return false;
+      return 0;
+    }
+  }
+
+  Future<int> upvotePhoto(String token, String imageID) async {
+    var url = Uri.http(domain, '/image/upvote', {"image_id": imageID});
+    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
+
+    final response = await http.post(url, headers: headers);
+
+    try {
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body);
+        int count = jsonData["count"];
+        return count;
+      }
+      print('Request failed with status: ${response.statusCode}');
+      print('Response body: #${response.body}');
+      return 0;
+    } catch (e) {
+      print(e);
+      return 0;
+    }
+  }
+
+  Future<int> removeUpvoteFromPhoto(String token, String imageID) async {
+    var url = Uri.http(domain, '/image/upvote', {"image_id": imageID});
+    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
+
+    final response = await http.delete(url, headers: headers);
+
+    try {
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body);
+        int count = jsonData["count"];
+        return count;
+      }
+      print('Request failed with status: ${response.statusCode}');
+      print('Response body: #${response.body}');
+      return 0;
+    } catch (e) {
+      print(e);
+      return 0;
     }
   }
 

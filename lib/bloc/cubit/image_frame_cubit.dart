@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/new_album_frame_cubit.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/comment.dart';
@@ -12,21 +13,22 @@ import 'package:shared_photo/repositories/go_repository.dart';
 part 'image_frame_state.dart';
 
 class ImageFrameCubit extends Cubit<ImageFrameState> {
+  AppBloc appBloc;
   img.Image image;
   Album album;
   AlbumViewMode viewMode;
   int initialIndex;
   GoRepository goRepository;
-  String token;
   ImageFrameCubit({
+    required this.appBloc,
     required this.image,
     required this.album,
     required this.viewMode,
     required this.initialIndex,
     required this.goRepository,
-    required this.token,
   }) : super(
           ImageFrameState(
+            uid: appBloc.state.user.id,
             pageController: PageController(initialPage: initialIndex),
             selectedImage: image,
             album: album,
@@ -38,12 +40,54 @@ class ImageFrameCubit extends Cubit<ImageFrameState> {
   }
 
   Future<void> initializeComments() async {
-    img.Image _image = state.selectedImage;
+    img.Image image = state.selectedImage;
 
     emit(state.copyWith(loading: true));
-    _image.comments =
-        await goRepository.getImageComments(token, _image.imageId);
-    emit(state.copyWith(loading: false, selectedImage: _image));
+    image.comments = await goRepository.getImageComments(
+        appBloc.state.user.token, image.imageId);
+    emit(state.copyWith(loading: false, selectedImage: image));
+  }
+
+  Future<void> toggleLike() async {
+    img.Image image = state.selectedImage;
+    emit(state.copyWith(likeLoading: true));
+
+    if (state.selectedImage.userLiked == true) {
+      image.likes = await goRepository.unlikePhoto(
+          appBloc.state.user.token, state.selectedImage.imageId);
+      image.userLiked = false;
+      emit(state.copyWith(likeLoading: false, selectedImage: image));
+      return;
+    }
+
+    if (state.selectedImage.userLiked == false) {
+      image.likes = await goRepository.likePhoto(
+          appBloc.state.user.token, state.selectedImage.imageId);
+      image.userLiked = true;
+      emit(state.copyWith(likeLoading: false, selectedImage: image));
+      return;
+    }
+  }
+
+  Future<void> toggleUpvote() async {
+    img.Image image = state.selectedImage;
+    emit(state.copyWith(upvoteLoading: true));
+
+    if (state.selectedImage.userUpvoted == true) {
+      image.upvotes = await goRepository.removeUpvoteFromPhoto(
+          appBloc.state.user.token, state.selectedImage.imageId);
+      image.userUpvoted = false;
+      emit(state.copyWith(upvoteLoading: false, selectedImage: image));
+      return;
+    }
+
+    if (state.selectedImage.userUpvoted == false) {
+      image.upvotes = await goRepository.upvotePhoto(
+          appBloc.state.user.token, state.selectedImage.imageId);
+      image.userUpvoted = true;
+      emit(state.copyWith(upvoteLoading: false, selectedImage: image));
+      return;
+    }
   }
 
   void changeViewMode(String? selection) {

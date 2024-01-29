@@ -21,7 +21,6 @@ void main() async {
   final auth0Repository = Auth0Repository();
   final goRepository = GoRepository();
   final cameras = await availableCameras();
-  //print(cameras);
 
   runApp(MainApp(
     auth0Repository: auth0Repository,
