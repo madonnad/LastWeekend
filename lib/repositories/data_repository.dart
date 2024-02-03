@@ -12,32 +12,6 @@ class DataRepository {
 
   DataRepository({required this.token});
 
-  Future<List<Album>> getUsersAlbums() async {
-    final List<Album> albums = [];
-    var url = Uri.http(domain, '/user/album');
-    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
-
-    final response = await http.get(url, headers: headers);
-
-    if (response.statusCode == 200) {
-      final responseBody = response.body;
-
-      final jsonData = json.decode(responseBody);
-      if (jsonData == null) {
-        return albums;
-      }
-
-      for (var item in jsonData) {
-        Album album = Album.fromMap(item);
-        albums.add(album);
-      }
-      //print(albums);
-      return albums;
-    }
-    throw HttpException(
-        "Failed to get users albums with status: ${response.statusCode}");
-  }
-
   Future<List<Image>> getUserImages(String token) async {
     final List<Image> images = [];
     var url = Uri.http(domain, '/user/image');
