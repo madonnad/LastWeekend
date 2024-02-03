@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
-import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
 import 'package:shared_photo/repositories/auth0_repository.dart';
+import 'package:shared_photo/repositories/data_repository.dart';
 import 'package:shared_photo/repositories/go_repository.dart';
 import 'package:shared_photo/router/generate_route.dart';
 import 'package:shared_photo/screens/auth.dart';
@@ -18,28 +18,19 @@ void main() async {
     DeviceOrientation.portraitUp,
   ]);
 
-  final auth0Repository = Auth0Repository();
-  final goRepository = GoRepository();
   final cameras = await availableCameras();
 
   runApp(MainApp(
-    auth0Repository: auth0Repository,
-    goRepository: goRepository,
     cameras: cameras,
   ));
 }
 
 class MainApp extends StatelessWidget {
-  final Auth0Repository _auth0Repository;
-  final GoRepository _goRepository;
   final List<CameraDescription> cameras;
   const MainApp({
-    required Auth0Repository auth0Repository,
-    required GoRepository goRepository,
     required this.cameras,
     super.key,
-  })  : _auth0Repository = auth0Repository,
-        _goRepository = goRepository;
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -48,31 +39,26 @@ class MainApp extends StatelessWidget {
     );
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(systemNavigationBarColor: Colors.black));
-    return MultiRepositoryProvider(
-      providers: [
-        RepositoryProvider.value(
-          value: _auth0Repository,
+    return RepositoryProvider(
+      create: (context) => Auth0Repository(),
+      child: BlocProvider(
+        create: (context) => AppBloc(
+          auth0repository: context.read<Auth0Repository>(),
+          cameras: cameras,
         ),
-        RepositoryProvider.value(
-          value: _goRepository,
+        child: MultiRepositoryProvider(
+          providers: [
+            RepositoryProvider(
+              create: (context) =>
+                  GoRepository(token: context.read<AppBloc>().state.user.token),
+            ),
+            RepositoryProvider(
+              create: (context) => DataRepository(
+                  token: context.read<AppBloc>().state.user.token),
+            ),
+          ],
+          child: const MainAppView(),
         ),
-      ],
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) => AppBloc(
-              auth0repository: _auth0Repository,
-              cameras: cameras,
-            ),
-          ),
-          BlocProvider(
-            create: (context) => ProfileBloc(
-              appBloc: context.read<AppBloc>(),
-              goRepository: _goRepository,
-            ),
-          ),
-        ],
-        child: const MainAppView(),
       ),
     );
   }

@@ -43,8 +43,7 @@ class ImageFrameCubit extends Cubit<ImageFrameState> {
     img.Image image = state.selectedImage;
 
     emit(state.copyWith(loading: true));
-    image.comments = await goRepository.getImageComments(
-        appBloc.state.user.token, image.imageId);
+    image.comments = await goRepository.getImageComments(image.imageId);
     emit(state.copyWith(loading: false, selectedImage: image));
   }
 

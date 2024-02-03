@@ -26,7 +26,7 @@ class SearchCubit extends Cubit<SearchState> {
       const Duration(seconds: 1),
       () async {
         resultList =
-            await goRepository.searchLookup(token: token, lookup: lookup);
+            await goRepository.searchLookup(lookup: lookup);
       },
     );
 

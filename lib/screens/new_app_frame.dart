@@ -7,6 +7,7 @@ import 'package:shared_photo/bloc/cubit/camera_cubit.dart';
 import 'package:shared_photo/bloc/cubit/new_app_frame_cubit.dart';
 import 'package:shared_photo/components/new_app_frame/new_bottom_app_bar.dart';
 import 'package:shared_photo/models/album.dart';
+import 'package:shared_photo/repositories/data_repository.dart';
 import 'package:shared_photo/repositories/go_repository.dart';
 import 'package:shared_photo/screens/camera.dart';
 import 'package:shared_photo/screens/camera_locked_screen.dart';
@@ -25,9 +26,17 @@ class NewAppFrame extends StatelessWidget {
           create: (context) => NewAppFrameCubit(),
         ),
         BlocProvider(
+            create: (context) => ProfileBloc(
+              appBloc: context.read<AppBloc>(),
+              goRepository: context.read<GoRepository>(),
+              dataRepository: context.read<DataRepository>(),
+            ),
+          ),
+        BlocProvider(
           create: (context) => FeedBloc(
             appBloc: BlocProvider.of<AppBloc>(context),
             goRepository: context.read<GoRepository>(),
+            dataRepository: context.read<DataRepository>(),
           ),
         ),
         BlocProvider(
