@@ -24,7 +24,7 @@ class CameraCubit extends Cubit<CameraState> {
     for (int i = 0; i < photosTaken.length; i++) {
       CapturedImage image = photosTaken[i];
       try {
-        bool uploadSucceeded = await goRepository.postNewImage(token, image);
+        bool uploadSucceeded = await goRepository.postNewImage(image);
         if (!uploadSucceeded) {
           throw false;
         }

@@ -4,6 +4,7 @@ import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/bloc/feed_bloc.dart';
 import 'package:shared_photo/components/app_comp/sliver_lw_app_bar.dart';
 import 'package:shared_photo/components/view_comp/album_list_item.dart';
+import 'package:shared_photo/repositories/data_repository.dart';
 import 'package:shared_photo/repositories/go_repository.dart';
 
 class FeedScreen extends StatelessWidget {
@@ -13,7 +14,6 @@ class FeedScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<FeedBloc, FeedState>(
       builder: (context, state) {
-        GoRepository goRepository = GoRepository();
         String token = context.read<AppBloc>().state.user.token;
         return CustomScrollView(
           shrinkWrap: true,
@@ -43,7 +43,7 @@ class FeedScreen extends StatelessWidget {
             SliverToBoxAdapter(
               child: ElevatedButton(
                 onPressed: () {
-                  goRepository.getUserImages(token);
+                  context.read<DataRepository>().getUserImages(token);
                 },
                 child: const Text('Test Request'),
               ),

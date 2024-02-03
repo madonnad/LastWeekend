@@ -5,6 +5,7 @@ import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/friend.dart';
 import 'package:shared_photo/models/image.dart';
 import 'package:shared_photo/models/notification.dart';
+import 'package:shared_photo/repositories/data_repository.dart';
 import 'package:shared_photo/repositories/go_repository.dart';
 
 part 'profile_event.dart';
@@ -13,9 +14,13 @@ part 'profile_state.dart';
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final AppBloc appBloc;
   final GoRepository goRepository;
+  final DataRepository dataRepository;
 
-  ProfileBloc({required this.appBloc, required this.goRepository})
-      : super(ProfileState.empty) {
+  ProfileBloc({
+    required this.appBloc,
+    required this.dataRepository,
+    required this.goRepository,
+  }) : super(ProfileState.empty) {
     final String token = appBloc.state.user.token;
 
     on<InitializeProfile>(
@@ -23,17 +28,16 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         String token = appBloc.state.user.token;
         emit(state.copyWith(isLoading: true));
 
-        goRepository.getImageComments(
-            token, "c629661f-575b-4dd8-87f5-dde913ab764d");
+        goRepository.getImageComments("c629661f-575b-4dd8-87f5-dde913ab764d");
 
-        List<Album> myAlbums = await goRepository.getUsersAlbums(token);
+        List<Album> myAlbums = await dataRepository.getUsersAlbums();
 
         List<Notification> myNotifications =
-            await goRepository.getNotifications(token);
+            await goRepository.getNotifications();
 
-        List<Image> myImages = await goRepository.getUserImages(token);
+        List<Image> myImages = await dataRepository.getUserImages(token);
 
-        List<Friend> myFriends = await goRepository.getFriendsList(token);
+        List<Friend> myFriends = await dataRepository.getFriendsList(token);
 
         emit(
           state.copyWith(
@@ -62,7 +66,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
           myNotifications.removeWhere(
               (element) => element.notificationID == event.friendID);
-          myFriends = await goRepository.getFriendsList(token);
+          myFriends = await dataRepository.getFriendsList(token);
 
           emit(state.copyWith(
               isLoading: false,
@@ -104,7 +108,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
           myNotifications.removeWhere(
               (element) => element.notificationID == event.albumID);
-          myAlbums = await goRepository.getUsersAlbums(token);
+          myAlbums = await dataRepository.getUsersAlbums();
 
           emit(
             state.copyWith(

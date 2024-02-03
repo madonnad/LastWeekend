@@ -5,18 +5,19 @@ import 'dart:typed_data';
 
 import 'package:http/http.dart' as http;
 import 'package:shared_photo/bloc/cubit/create_album_cubit.dart';
-import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/captured_image.dart';
 import 'package:shared_photo/models/comment.dart';
-import 'package:shared_photo/models/friend.dart';
-import 'package:shared_photo/models/image.dart';
 import 'package:shared_photo/models/notification.dart';
 import 'package:shared_photo/models/search_result.dart';
 import 'package:shared_photo/utils/api_variables.dart';
 import 'package:web_socket_channel/io.dart';
 
 class GoRepository {
-  Stream<String> webSocketConnection(String token) async* {
+  String token;
+
+  GoRepository({required this.token});
+
+  Stream<String> webSocketConnection() async* {
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
     final wsURL = Uri.parse('ws://0.0.0.0:2525/ws');
     var connection = IOWebSocketChannel.connect(wsURL, headers: headers);
@@ -27,8 +28,7 @@ class GoRepository {
     }
   }
 
-  Future<List<SearchResult>> searchLookup(
-      {required String token, required String lookup}) async {
+  Future<List<SearchResult>> searchLookup({required String lookup}) async {
     List<SearchResult> searchResults = [];
 
     var url = Uri.http(domain, '/search', {"lookup": lookup});
@@ -62,109 +62,7 @@ class GoRepository {
         "Failed to full text search with status: ${response.statusCode}");
   }
 
-  Future<List<Album>> getUsersAlbums(String token) async {
-    final List<Album> albums = [];
-    var url = Uri.http(domain, '/user/album');
-    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
-
-    final response = await http.get(url, headers: headers);
-
-    if (response.statusCode == 200) {
-      final responseBody = response.body;
-
-      final jsonData = json.decode(responseBody);
-      if (jsonData == null) {
-        return albums;
-      }
-
-      for (var item in jsonData) {
-        Album album = Album.fromMap(item);
-        albums.add(album);
-      }
-      //print(albums);
-      return albums;
-    }
-    throw HttpException(
-        "Failed to get users albums with status: ${response.statusCode}");
-  }
-
-  Future<List<Image>> getUserImages(String token) async {
-    final List<Image> images = [];
-    var url = Uri.http(domain, '/user/image');
-    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
-    final response = await http.get(url, headers: headers);
-
-    if (response.statusCode == 200) {
-      final responseBody = response.body;
-
-      final jsonData = json.decode(responseBody);
-      if (jsonData == null) {
-        return images;
-      }
-
-      for (var item in jsonData) {
-        Image image = Image.fromMap(item);
-        images.add(image);
-      }
-      //print(images);
-      return images;
-    }
-
-    print('Request failed with status: ${response.statusCode}');
-    print('Response body: #${response.body}');
-    return images;
-  }
-
-  Future<List<Friend>> getFriendsList(String token) async {
-    final List<Friend> friends = [];
-
-    var url = Uri.http(domain, '/user/friend');
-    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
-    final response = await http.get(url, headers: headers);
-
-    if (response.statusCode == 200) {
-      final responseBody = response.body;
-
-      final jsonData = json.decode(responseBody);
-      if (jsonData == null) {
-        return friends;
-      }
-
-      for (var item in jsonData) {
-        friends.add(Friend.fromJson(item));
-      }
-      //print(friends);
-      return friends;
-    }
-    print('Request failed with status: ${response.statusCode}');
-    print('Response body: #${response.body}');
-    return friends;
-  }
-
-  Future<List<Album>> getFeedAlbums(String token) async {
-    final List<Album> albums = [];
-    var url = Uri.http(domain, '/feed');
-    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
-
-    final response = await http.get(url, headers: headers);
-    if (response.statusCode == 200) {
-      final responseBody = response.body;
-
-      final jsonData = json.decode(responseBody);
-
-      for (var item in jsonData) {
-        Album album = Album.fromMap(item);
-        albums.add(album);
-      }
-      //print(albums);
-      return albums;
-    }
-    print('Request failed with status: ${response.statusCode}');
-    print('Response body: #${response.body}');
-    return albums;
-  }
-
-  Future<List<Notification>> getNotifications(String token) async {
+  Future<List<Notification>> getNotifications() async {
     final List<Notification> notificationList = [];
 
     var url = Uri.http(domain, '/notifications');
@@ -204,7 +102,7 @@ class GoRepository {
     return notificationList;
   }
 
-  Future<String?> postNewAlbum(String token, CreateAlbumState state) async {
+  Future<String?> postNewAlbum(CreateAlbumState state) async {
     Map<String, dynamic> albumInformation = state.toJson();
     String encodedBody = json.encode(albumInformation);
 
@@ -231,7 +129,7 @@ class GoRepository {
     }
   }
 
-  Future<bool> postNewImage(String token, CapturedImage image) async {
+  Future<bool> postNewImage(CapturedImage image) async {
     var url = Uri.http(domain, '/user/image');
     final Map<String, String> headers = {
       "Content-Type": "application/json",
@@ -267,7 +165,7 @@ class GoRepository {
     }
 
     if (image.addToRecap) {
-      bool addImage = await addImageToRecap(token, imageId);
+      bool addImage = await addImageToRecap(imageId);
 
       if (addImage == false) {
         print("failed to add to recap");
@@ -278,7 +176,7 @@ class GoRepository {
     return true;
   }
 
-  Future<bool> addImageToRecap(String token, String imageId) async {
+  Future<bool> addImageToRecap(String imageId) async {
     var url = Uri.http(domain, '/user/recap', {'id': imageId});
     final Map<String, String> headers = {
       "Content-Type": "application/json",
@@ -300,7 +198,7 @@ class GoRepository {
     }
   }
 
-  Future<List<Comment>> getImageComments(String token, String imageId) async {
+  Future<List<Comment>> getImageComments(String imageId) async {
     List<Comment> commentList = [];
 
     var url = Uri.http(domain, '/image/comment', {'image_id': imageId});

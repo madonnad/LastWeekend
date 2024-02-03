@@ -105,7 +105,7 @@ class CreateAlbumCubit extends Cubit<CreateAlbumState> {
   Future<void> createAlbum() async {
     try {
       final String token = appBloc.state.user.token;
-      final String? imageId = await goRepository.postNewAlbum(token, state);
+      final String? imageId = await goRepository.postNewAlbum(state);
       if (imageId == null) {
         throw const FormatException("Failed creating new image");
       }
