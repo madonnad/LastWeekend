@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/components/profile_comp/friends_comp/friend_gesture_text.dart';
-import 'package:shared_photo/components/profile_comp/friends_comp/friends_bottom_modal_sheet.dart';
 
 class ProfileFlexibleSpace extends StatelessWidget {
   const ProfileFlexibleSpace({super.key});

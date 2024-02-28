@@ -7,8 +7,7 @@ import 'package:shared_photo/utils/api_variables.dart';
 import 'package:http/http.dart' as http;
 
 class AlbumService {
-
-  Future<String?> postNewAlbum(String token, CreateAlbumState state) async {
+  static Future<Album?> postNewAlbum(String token, CreateAlbumState state) async {
     Map<String, dynamic> albumInformation = state.toJson();
     String encodedBody = json.encode(albumInformation);
 
@@ -24,7 +23,7 @@ class AlbumService {
 
       if (response.statusCode == 200) {
         Map<String, dynamic> body = json.decode(response.body);
-        return body['album_cover_id'];
+        return Album.fromMap(body);
       }
       print('Request failed with status: ${response.statusCode}');
       print('Response body: #${response.body}');
@@ -35,8 +34,7 @@ class AlbumService {
     }
   }
 
-
-Future<List<Album>> getUsersAlbums(String token) async {
+  static Future<List<Album>> getUsersAlbums(String token) async {
     final List<Album> albums = [];
     var url = Uri.http(domain, '/user/album');
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
@@ -62,7 +60,7 @@ Future<List<Album>> getUsersAlbums(String token) async {
         "Failed to get users albums with status: ${response.statusCode}");
   }
 
-   Future<List<Album>> getFeedAlbums(String token) async {
+  static Future<List<Album>> getFeedAlbums(String token) async {
     final List<Album> albums = [];
     var url = Uri.http(domain, '/feed');
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};

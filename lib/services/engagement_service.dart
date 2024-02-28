@@ -5,7 +5,8 @@ import 'package:shared_photo/utils/api_variables.dart';
 import 'package:http/http.dart' as http;
 
 class EngagementService {
-  Future<List<Comment>> getImageComments(String token, String imageId) async {
+  static Future<List<Comment>> getImageComments(
+      String token, String imageId) async {
     List<Comment> commentList = [];
 
     var url = Uri.http(domain, '/image/comment', {'image_id': imageId});
@@ -35,7 +36,7 @@ class EngagementService {
     return commentList;
   }
 
-  Future<int> likePhoto(String token, String imageID) async {
+  static Future<int> likePhoto(String token, String imageID) async {
     var url = Uri.http(domain, '/image/like', {"image_id": imageID});
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
@@ -55,8 +56,8 @@ class EngagementService {
       return 0;
     }
   }
-  
-  Future<int> unlikePhoto(String token, String imageID) async {
+
+  static Future<int> unlikePhoto(String token, String imageID) async {
     var url = Uri.http(domain, '/image/like', {"image_id": imageID});
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
@@ -77,7 +78,7 @@ class EngagementService {
     }
   }
 
-  Future<int> upvotePhoto(String token, String imageID) async {
+  static Future<int> upvotePhoto(String token, String imageID) async {
     var url = Uri.http(domain, '/image/upvote', {"image_id": imageID});
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
@@ -98,7 +99,7 @@ class EngagementService {
     }
   }
 
-  Future<int> removeUpvoteFromPhoto(String token, String imageID) async {
+  static Future<int> removeUpvoteFromPhoto(String token, String imageID) async {
     var url = Uri.http(domain, '/image/upvote', {"image_id": imageID});
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 

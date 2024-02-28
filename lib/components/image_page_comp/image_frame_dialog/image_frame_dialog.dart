@@ -1,7 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/image_frame_cubit.dart';
 import 'package:shared_photo/bloc/cubit/new_album_frame_cubit.dart';

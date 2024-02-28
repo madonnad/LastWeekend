@@ -1,15 +1,10 @@
-import 'dart:ffi';
-
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/image_frame_cubit.dart';
 import 'package:shared_photo/bloc/cubit/new_album_frame_cubit.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/image.dart' as img;
-import 'package:shared_photo/repositories/go_repository.dart';
 import 'package:shared_photo/screens/image_frame.dart';
 
 class GuestItemComponent extends StatelessWidget {
@@ -41,12 +36,10 @@ class GuestItemComponent extends StatelessWidget {
           useSafeArea: true,
           builder: (ctx) => BlocProvider(
             create: (context) => ImageFrameCubit(
-              appBloc: context.read<AppBloc>(),
               image: image,
               album: album,
               viewMode: viewMode,
               initialIndex: selectedIndex,
-              goRepository: context.read<GoRepository>(),
             ),
             child: ImageFrame(
               image: image,

@@ -1,6 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
-
 import 'package:shared_photo/models/guest.dart';
 import 'package:shared_photo/models/image.dart';
 import 'package:shared_photo/utils/api_variables.dart';
@@ -247,4 +245,14 @@ class Album {
     sortedGuests.addAll(pendingGuests);
     return sortedGuests;
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Album &&
+          runtimeType == other.runtimeType &&
+          albumId == other.albumId;
+
+  @override
+  int get hashCode => albumId.hashCode;
 }

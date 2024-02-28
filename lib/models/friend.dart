@@ -1,6 +1,7 @@
+import 'package:equatable/equatable.dart';
 import 'package:shared_photo/utils/api_variables.dart';
 
-class Friend {
+class Friend extends Equatable {
   final String uid;
   final String firstName;
   final String lastName;
@@ -27,4 +28,7 @@ class Friend {
 
     return requestUrl;
   }
+
+  @override
+  List<Object?> get props => [uid];
 }

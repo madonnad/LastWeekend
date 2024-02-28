@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/components/new_profile_comp/monthly_recap_comps/current_month.dart';
 import 'package:shared_photo/components/new_profile_comp/monthly_recap_comps/empty_month.dart';
 import 'package:shared_photo/components/new_profile_comp/monthly_recap_comps/published_month.dart';

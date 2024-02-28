@@ -100,21 +100,23 @@ class _NewFeedState extends State<NewFeed> {
         BlocBuilder<FeedBloc, FeedState>(
           builder: (context, state) {
             return SliverList.separated(
-              itemCount: state.albums.length,
+              itemCount: state.feedAlbumList.length,
               itemBuilder: (context, index) {
-                if (state.albums[index].phase == AlbumPhases.reveal &&
+                if (state.feedAlbumList[index].phase == AlbumPhases.reveal &&
                     index == 0) {
                   return Padding(
                     padding: const EdgeInsets.only(top: 30.0),
                     child: FeedListItem(
-                      album: state.albums[index],
+                      album: state.feedAlbumList[index],
                     ),
                   );
                 }
-                if (state.albums[index].phase == AlbumPhases.reveal) {
+                if (state.feedAlbumList[index].phase == AlbumPhases.reveal) {
                   return FeedListItem(
-                    album: state.albums[index],
+                    album: state.feedAlbumList[index],
                   );
+                } else {
+                  return null;
                 }
               },
               separatorBuilder: (context, index) {

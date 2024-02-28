@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/cubit/create_album_cubit.dart';
-import 'package:shared_photo/components/album_create_comp/album_cover_select.dart';
-import 'package:shared_photo/components/album_create_comp/album_title_field.dart';
-import 'package:shared_photo/components/album_create_comp/date_time_section.dart';
+import 'package:shared_photo/components/create_album_comp/create_album_info_comp/album_cover_select.dart';
+import 'package:shared_photo/components/create_album_comp/create_album_info_comp/album_title_field.dart';
+
 import 'package:shared_photo/components/app_comp/section_header_small.dart';
-import 'package:shared_photo/components/album_create_comp/add_friends_info_list.dart';
-import 'package:shared_photo/components/album_create_comp/create_album_button.dart';
+import 'package:shared_photo/components/create_album_comp/create_album_friend_comp/add_friends_info_list.dart';
+import 'package:shared_photo/components/create_album_comp/create_album_info_comp/create_album_button.dart';
+import 'package:shared_photo/components/create_album_comp/create_album_info_comp/date_time_section.dart';
 
 class AlbumCreateDetail extends StatelessWidget {
   final PageController createAlbumController;

@@ -1,4 +1,3 @@
-import 'package:shared_photo/models/friend.dart';
 import 'package:shared_photo/utils/api_variables.dart';
 
 enum InviteStatus { accept, decline, pending }
