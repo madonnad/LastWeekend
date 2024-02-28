@@ -13,6 +13,24 @@ class InitializeProfile extends ProfileEvent {
   List<Object?> get props => [];
 }
 
+class AddFriendToList extends ProfileEvent {
+  final Friend friend;
+
+  const AddFriendToList({required this.friend});
+
+  @override
+  List<Object?> get props => [friend];
+}
+
+class AddAlbumToMap extends ProfileEvent {
+  final Album album;
+
+  const AddAlbumToMap({required this.album});
+
+  @override
+  List<Object?> get props => [album];
+}
+
 class FetchProfileAlbumCoverURL extends ProfileEvent {
   final int index;
 

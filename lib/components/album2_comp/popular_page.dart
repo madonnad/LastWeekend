@@ -1,12 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/components/album2_comp/image_components/top_item_component.dart';
 import 'package:shared_photo/components/app_comp/section_header_small.dart';
 import 'package:shared_photo/models/album.dart';
-import 'package:shared_photo/models/image.dart' as img;
 
 class PopularPage extends StatelessWidget {
   final Album album;
@@ -53,6 +50,8 @@ class PopularPage extends StatelessWidget {
                         ),
                       ],
                     );
+                  } else {
+                    return null;
                   }
                 },
                 separatorBuilder: (context, index) {

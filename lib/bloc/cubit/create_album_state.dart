@@ -20,7 +20,7 @@ final class CreateAlbumState extends Equatable {
   final DateTime? revealDateTime;
   final TimeOfDay? revealTimeOfDay;
   // Friends List
-  final List<Friend> friendsList;
+  final Map<String, Friend> friendsMap;
   final List<Friend> invitedFriends;
   final List<Friend> searchResult;
   final FriendState friendState;
@@ -41,7 +41,7 @@ final class CreateAlbumState extends Equatable {
     this.revealDateTime,
     this.revealTimeOfDay,
     //Friends
-    required this.friendsList,
+    required this.friendsMap,
     this.invitedFriends = const [],
     this.searchResult = const [],
     this.friendState = FriendState.empty,
@@ -61,7 +61,7 @@ final class CreateAlbumState extends Equatable {
     String? lockTimeString,
     DateTime? revealDateTime,
     TimeOfDay? revealTimeOfDay,
-    List<Friend>? friendsList,
+    Map<String, Friend>? friendsMap,
     List<Friend>? searchResult,
     FriendState? friendState,
     String? modalTextString,
@@ -78,7 +78,7 @@ final class CreateAlbumState extends Equatable {
       lockTimeOfDay: lockTimeOfDay ?? this.lockTimeOfDay,
       revealDateTime: revealDateTime ?? this.revealDateTime,
       revealTimeOfDay: revealTimeOfDay ?? this.revealTimeOfDay,
-      friendsList: friendsList ?? this.friendsList,
+      friendsMap: friendsMap ?? this.friendsMap,
       searchResult: searchResult ?? this.searchResult,
       friendState: friendState ?? this.friendState,
       modalTextString: modalTextString ?? this.modalTextString,
@@ -100,7 +100,7 @@ final class CreateAlbumState extends Equatable {
       lockTimeOfDay: null,
       revealDateTime: revealDateTime,
       revealTimeOfDay: revealTimeOfDay,
-      friendsList: friendsList,
+      friendsMap: friendsMap,
       searchResult: searchResult,
       friendState: friendState,
       modalTextString: modalTextString,
@@ -120,7 +120,7 @@ final class CreateAlbumState extends Equatable {
       lockTimeOfDay: lockTimeOfDay,
       revealDateTime: null,
       revealTimeOfDay: null,
-      friendsList: friendsList,
+      friendsMap: friendsMap,
       searchResult: searchResult,
       friendState: friendState,
       modalTextString: modalTextString,
@@ -141,7 +141,7 @@ final class CreateAlbumState extends Equatable {
         revealDateTime,
         revealTimeOfDay,
         revealTimeString,
-        friendsList,
+        friendsMap,
         searchResult,
         friendState,
         modalTextString,
@@ -166,19 +166,18 @@ final class CreateAlbumState extends Equatable {
         lockTimeOfDay != null &&
         revealDateTime != null &&
         revealTimeOfDay != null &&
-        albumName.text.isNotEmpty &&
-        friendsList.isNotEmpty);
+        albumName.text.isNotEmpty);
   }
 
   //? Friend Getters
-  List<String> get friendUIDList {
-    List<String> uidList = friendsList.map((e) => e.uid).toList();
-    return uidList;
-  }
 
   List<String> get invitedUIDList {
     List<String> uidList = invitedFriends.map((e) => e.uid).toList();
     return uidList;
+  }
+
+  List<Friend> get friendsList {
+    return friendsMap.values.toList();
   }
 
   //? Date Getters and Formatter

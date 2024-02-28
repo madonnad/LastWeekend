@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
+import 'package:shared_photo/bloc/bloc/dashboard_bloc.dart';
 import 'package:shared_photo/components/app_comp/section_header_small.dart';
 import 'package:shared_photo/components/feed_comp/dashboard/horizontal_album_list.dart';
 
@@ -9,7 +9,7 @@ class AlbumHorizontalListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProfileBloc, ProfileState>(
+    return BlocBuilder<DashboardBloc, DashboardState>(
       builder: (context, state) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,

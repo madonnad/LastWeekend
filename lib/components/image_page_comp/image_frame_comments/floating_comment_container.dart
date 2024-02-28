@@ -1,10 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:math' as math;
 
-import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/image_frame_cubit.dart';
 
 class FloatingCommentContainer extends StatelessWidget {
@@ -13,8 +11,6 @@ class FloatingCommentContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String avatarUrl = context.read<AppBloc>().state.user.avatarUrl;
-
     return BlocBuilder<ImageFrameCubit, ImageFrameState>(
       builder: (context, state) {
         return Padding(

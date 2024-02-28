@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_photo/repositories/user_repository.dart';
 import 'package:shared_photo/screens/album_create/album_create_modal.dart';
-import 'package:shared_photo/screens/new_create_album_frame.dart';
 
 class CreateAlbumComponent extends StatelessWidget {
   const CreateAlbumComponent({super.key});
@@ -13,12 +13,16 @@ class CreateAlbumComponent extends StatelessWidget {
       onTap: () {
         HapticFeedback.mediumImpact();
         showModalBottomSheet(
-            backgroundColor: Colors.black,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            isScrollControlled: true,
-            context: context,
-            builder: (context) => const AlbumCreateModal());
+          backgroundColor: Colors.black,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          isScrollControlled: true,
+          context: context,
+          builder: (ctx) => RepositoryProvider.value(
+            value: context.read<UserRepository>(),
+            child: const AlbumCreateModal(),
+          ),
+        );
       },
       child: Column(
         children: [

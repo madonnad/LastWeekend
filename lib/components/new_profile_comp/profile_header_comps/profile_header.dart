@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
-import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
 import 'package:shared_photo/components/new_profile_comp/profile_header_comps/custom_profile_picture.dart';
-import 'package:shared_photo/components/new_profile_comp/profile_header_comps/profile_detail_element.dart';
+import 'package:shared_photo/components/new_profile_comp/profile_header_comps/profile_header_details.dart';
 
 class ProfileHeader extends StatelessWidget {
   const ProfileHeader({super.key});
@@ -13,10 +12,6 @@ class ProfileHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AppBloc, AppState>(
       builder: (context, state) {
-        String numOfFriends =
-            context.read<ProfileBloc>().state.myFriends.length.toString();
-        String numOfAlbums =
-            context.read<ProfileBloc>().state.myAlbums.length.toString();
         return Column(
           children: [
             CustomProfilePicture(
@@ -37,20 +32,7 @@ class ProfileHeader extends StatelessWidget {
                 ),
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ProfileDetailElement(
-                  title: "friends",
-                  value: numOfFriends,
-                ),
-                const SizedBox(width: 45),
-                ProfileDetailElement(
-                  title: "albums",
-                  value: numOfAlbums,
-                ),
-              ],
-            )
+            const ProfileHeaderDetail(),
           ],
         );
       },

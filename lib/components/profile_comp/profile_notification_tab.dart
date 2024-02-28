@@ -67,6 +67,8 @@ class ProfileNotificationTab extends StatelessWidget {
                       notificationDetailString: 'commented',
                     );
                 }
+              } else {
+                return null;
               }
             },
           ),

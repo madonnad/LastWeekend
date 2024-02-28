@@ -4,29 +4,46 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_photo/bloc/bloc/app_bloc.dart';
-import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
 import 'package:shared_photo/models/friend.dart';
-import 'package:shared_photo/repositories/go_repository.dart';
+import 'package:shared_photo/repositories/data_repository/data_repository.dart';
+import 'package:shared_photo/repositories/user_repository.dart';
 
 part 'create_album_state.dart';
 
 class CreateAlbumCubit extends Cubit<CreateAlbumState> {
-  AppBloc appBloc;
-  ProfileBloc profileBloc;
-  GoRepository goRepository;
+  UserRepository userRepository;
 
-  CreateAlbumCubit(
-      {required this.profileBloc,
-      required this.appBloc,
-      required this.goRepository})
+  CreateAlbumCubit({required this.userRepository})
       : super(
           CreateAlbumState(
             albumName: TextEditingController(),
             friendSearch: TextEditingController(),
-            friendsList: profileBloc.state.myFriends,
+            friendsMap: const {},
           ),
-        );
+        ) {
+    userRepository.friendStream.listen((event) {
+      StreamOperation type = event.$1;
+      Friend friend = event.$2;
+
+      switch (type) {
+        case StreamOperation.add:
+          addFriendToFriendsList(friend);
+        case StreamOperation.update:
+        case StreamOperation.delete:
+      }
+    });
+    initializeCubit();
+  }
+
+  void addFriendToFriendsList(Friend friend) {
+    Map<String, Friend> friendMap = Map.from(state.friendsMap);
+    String key = friend.uid;
+
+    if (!friendMap.containsKey(key) || friendMap[key] != friend) {
+      friendMap[key] = friend;
+      emit(state.copyWith(friendsMap: friendMap));
+    }
+  }
 
   void handleFriendAddRemoveFromAlbum(Friend friend) {
     List<Friend> currentInvited = List.from(state.invitedFriends);
@@ -37,35 +54,16 @@ class CreateAlbumCubit extends Cubit<CreateAlbumState> {
       emit(
         state.copyWith(invitedFriends: currentInvited),
       );
-      //createModalString();
     } else {
       currentInvited.add(friend);
       emit(
         state.copyWith(invitedFriends: currentInvited),
       );
-      //createModalString();
-    }
-  }
-
-  void createModalString() {
-    int addedFriendsLength = state.friendsList.length;
-    if (addedFriendsLength == 1) {
-      String genString = state.friendsList[0].firstName;
-      emit(state.copyWith(modalTextString: genString));
-    } else if (addedFriendsLength == 2) {
-      String genString =
-          '${state.friendsList[0].firstName} & ${state.friendsList[1].firstName}';
-      emit(state.copyWith(modalTextString: genString));
-    } else if (addedFriendsLength > 2) {
-      int numMorePeople = state.friendsList.length - 2;
-      String genString =
-          '${state.friendsList[0].firstName}, ${state.friendsList[1].firstName} & $numMorePeople other friends';
-      emit(state.copyWith(modalTextString: genString));
     }
   }
 
   void searchFriendByName() async {
-    await Future.delayed(const Duration(milliseconds: 500));
+    await Future.delayed(const Duration(milliseconds: 250));
     List<Friend> lookupResult = [];
 
     for (var friend in state.friendsList) {
@@ -103,25 +101,26 @@ class CreateAlbumCubit extends Cubit<CreateAlbumState> {
   }
 
   Future<void> createAlbum() async {
-    try {
-      final String token = appBloc.state.user.token;
-      final String? imageId = await goRepository.postNewAlbum(state);
-      if (imageId == null) {
-        throw const FormatException("Failed creating new image");
-      }
-      final String? imagePath =
-          state.albumCoverImagePath != null ? state.albumCoverImagePath! : null;
-      if (imagePath == null) {
-        throw const FormatException("No image path was provided to upload");
-      }
-      bool success =
-          await goRepository.uploadImageWithID(token, imagePath, imageId);
-      if (success == false) {
-        throw const FormatException("Image upload failed");
-      }
-    } catch (e) {
-      print(e);
-    }
+    // TODO: Implement the create album logic here and call Album Service.
+    
+    // try {
+    //   final String? imageId = await AlbumService.postNewAlbum(token, state);
+    //   if (imageId == null) {
+    //     throw const FormatException("Failed creating new image");
+    //   }
+    //   final String? imagePath =
+    //       state.albumCoverImagePath != null ? state.albumCoverImagePath! : null;
+    //   if (imagePath == null) {
+    //     throw const FormatException("No image path was provided to upload");
+    //   }
+    //   bool success =
+    //       await ImageService.postAlbumCoverImage(token, imagePath, imageId);
+    //   if (success == false) {
+    //     throw const FormatException("Image upload failed");
+    //   }
+    // } catch (e) {
+    //   print(e);
+    // }
   }
 
   void setUnlockDate(DateTime dateTime) {
@@ -167,5 +166,9 @@ class CreateAlbumCubit extends Cubit<CreateAlbumState> {
 
   void setRevealTime(TimeOfDay time) {
     emit(state.copyWith(revealTimeOfDay: time));
+  }
+
+  void initializeCubit() {
+    emit(state.copyWith(friendsMap: Map.from(userRepository.friendMap)));
   }
 }

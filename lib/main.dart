@@ -4,8 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/repositories/auth0_repository.dart';
-import 'package:shared_photo/repositories/data_repository.dart';
-import 'package:shared_photo/repositories/go_repository.dart';
+import 'package:shared_photo/repositories/data_repository/data_repository.dart';
+import 'package:shared_photo/repositories/user_repository.dart';
 import 'package:shared_photo/router/generate_route.dart';
 import 'package:shared_photo/screens/auth.dart';
 import 'package:shared_photo/screens/loading.dart';
@@ -46,19 +46,7 @@ class MainApp extends StatelessWidget {
           auth0repository: context.read<Auth0Repository>(),
           cameras: cameras,
         ),
-        child: MultiRepositoryProvider(
-          providers: [
-            RepositoryProvider(
-              create: (context) =>
-                  GoRepository(token: context.read<AppBloc>().state.user.token),
-            ),
-            RepositoryProvider(
-              create: (context) => DataRepository(
-                  token: context.read<AppBloc>().state.user.token),
-            ),
-          ],
-          child: const MainAppView(),
-        ),
+        child: const MainAppView(),
       ),
     );
   }
@@ -87,7 +75,22 @@ class MainAppView extends StatelessWidget {
       home: BlocBuilder<AppBloc, AppState>(
         builder: (context, state) {
           if (state is AuthenticatedState) {
-            return const NewAppFrame();
+            return MultiRepositoryProvider(
+              providers: [
+                RepositoryProvider(
+                  lazy: false,
+                  create: (context) => DataRepository(
+                    user: context.read<AppBloc>().state.user,
+                  ),
+                ),
+                RepositoryProvider(
+                  create: (context) => UserRepository(
+                    user: context.read<AppBloc>().state.user,
+                  ),
+                ),
+              ],
+              child: const NewAppFrame(),
+            );
           } else if (state is LoadingState) {
             return const LoadingScreen();
           } else {

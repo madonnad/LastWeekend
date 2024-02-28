@@ -1,7 +1,6 @@
 part of 'image_frame_cubit.dart';
 
 class ImageFrameState extends Equatable {
-  final String uid;
   final PageController pageController;
   final img.Image selectedImage;
   final Album album;
@@ -12,7 +11,6 @@ class ImageFrameState extends Equatable {
   final bool likeLoading;
   final bool upvoteLoading;
   ImageFrameState({
-    required this.uid,
     required this.pageController,
     required this.selectedImage,
     required this.album,
@@ -24,7 +22,6 @@ class ImageFrameState extends Equatable {
   });
 
   ImageFrameState copyWith({
-    String? uid,
     PageController? pageController,
     img.Image? selectedImage,
     Album? album,
@@ -35,7 +32,6 @@ class ImageFrameState extends Equatable {
     bool? upvoteLoading,
   }) {
     return ImageFrameState(
-      uid: uid ?? this.uid,
       pageController: pageController ?? this.pageController,
       selectedImage: selectedImage ?? this.selectedImage,
       album: album ?? this.album,
@@ -107,7 +103,6 @@ class ImageFrameState extends Equatable {
 
   @override
   List<Object?> get props => [
-        uid,
         pageController,
         selectedImage,
         album,

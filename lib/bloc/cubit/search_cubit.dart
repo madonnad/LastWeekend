@@ -17,7 +17,6 @@ class SearchCubit extends Cubit<SearchState> {
   }) : super(SearchState.empty);
 
   Future<void> querySearch(String lookup) async {
-    String token = appBloc.state.user.token;
     List<SearchResult> resultList = [];
 
     emit(state.copyWith(isLoading: true));
@@ -25,8 +24,7 @@ class SearchCubit extends Cubit<SearchState> {
     await Future.delayed(
       const Duration(seconds: 1),
       () async {
-        resultList =
-            await goRepository.searchLookup(lookup: lookup);
+        resultList = await goRepository.searchLookup(lookup: lookup);
       },
     );
 

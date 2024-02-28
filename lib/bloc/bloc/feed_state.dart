@@ -1,56 +1,39 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'feed_bloc.dart';
 
-final class FeedState extends Equatable {
-  final List<Album> albums;
+class FeedState extends Equatable {
+  final Map<String, Album> feedAlbumMap;
   final String? error;
-  final int loadedToPosition;
+  final String cursorID;
   final bool loading;
 
   const FeedState({
-    required this.albums,
+    required this.feedAlbumMap,
     this.error,
-    required this.loadedToPosition,
+    required this.cursorID,
     required this.loading,
   });
 
   static const empty =
-      FeedState(albums: [], loadedToPosition: 0, loading: false);
+      FeedState(feedAlbumMap: {}, cursorID: '', loading: false);
 
   FeedState copyWith({
-    List<Album>? albums,
+    Map<String, Album>? feedAlbumMap,
     String? error,
-    int? loadedToPosition,
+    String? cursorID,
     bool? loading,
   }) {
     return FeedState(
-        albums: albums ?? this.albums,
-        loadedToPosition: loadedToPosition ?? this.loadedToPosition,
+        feedAlbumMap: feedAlbumMap ?? this.feedAlbumMap,
+        cursorID: cursorID ?? this.cursorID,
         loading: loading ?? this.loading,
         error: error ?? this.error);
   }
 
+  List<Album> get feedAlbumList {
+    return feedAlbumMap.values.toList();
+  }
+
   @override
-  List<Object> get props => [albums, loadedToPosition, loading];
+  List<Object> get props => [feedAlbumMap, cursorID, loading];
 }
-
-/* class FeedEmptyState extends FeedState {}
-
-class FeedLoadingState extends FeedState {}
-
-class FeedFetchFailed extends FeedState {
-  final String error;
-  const FeedFetchFailed({
-    required this.error,
-  });
-}
-
-class FeedPopulatedState extends FeedState {
-  final List<Album> albums;
-  final int loadedToPosition;
-
-  const FeedPopulatedState({
-    required this.albums,
-    required this.loadedToPosition,
-  });
-} */

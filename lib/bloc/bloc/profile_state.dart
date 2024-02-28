@@ -1,18 +1,18 @@
 part of 'profile_bloc.dart';
 
 class ProfileState extends Equatable {
-  final List<Album> myAlbums;
+  final Map<String, Album> myAlbumsMap;
   final List<Image> myImages;
-  final List<Friend> myFriends;
+  final Map<String, Friend> myFriendsMap;
   final List<Notification> myNotifications;
   final bool showNotification;
   final bool? isLoading;
   final String? error;
 
   const ProfileState({
-    required this.myAlbums,
+    required this.myAlbumsMap,
     required this.myImages,
-    required this.myFriends,
+    required this.myFriendsMap,
     required this.myNotifications,
     required this.showNotification,
     this.isLoading,
@@ -20,9 +20,9 @@ class ProfileState extends Equatable {
   });
 
   static const empty = ProfileState(
-    myAlbums: [],
+    myAlbumsMap: {},
     myImages: [],
-    myFriends: [],
+    myFriendsMap: {},
     myNotifications: [],
     showNotification: false,
     isLoading: false,
@@ -30,18 +30,18 @@ class ProfileState extends Equatable {
   );
 
   ProfileState copyWith({
-    List<Album>? myAlbums,
+    Map<String, Album>? myAlbumsMap,
     List<Image>? myImages,
-    List<Friend>? myFriends,
+    Map<String, Friend>? myFriendsMap,
     List<Notification>? myNotifications,
     bool? showNotification,
     bool? isLoading,
     String? error,
   }) {
     return ProfileState(
-      myAlbums: myAlbums ?? this.myAlbums,
+      myAlbumsMap: myAlbumsMap ?? this.myAlbumsMap,
       myImages: myImages ?? this.myImages,
-      myFriends: myFriends ?? this.myFriends,
+      myFriendsMap: myFriendsMap ?? this.myFriendsMap,
       myNotifications: myNotifications ?? this.myNotifications,
       showNotification: showNotification ?? this.showNotification,
       error: error ?? this.error,
@@ -49,42 +49,21 @@ class ProfileState extends Equatable {
     );
   }
 
-  List<Album> get activeAlbums {
-    List<Album> albumList = [];
-    for (final album in myAlbums) {
-      if (album.phase != AlbumPhases.reveal) {
-        albumList.add(album);
-      }
-    }
-    return albumList;
+  List<Album> get myAlbums {
+    return myAlbumsMap.values.toList();
   }
 
-  List<Album> get unlockedAlbums {
-    List<Album> albumList = [];
-    for (final album in myAlbums) {
-      if (album.phase == AlbumPhases.unlock) {
-        albumList.add(album);
-      }
-    }
-    return albumList;
-  }
-
-  List<Album> get revealedAlbums {
-    List<Album> albumList = [];
-    for (final album in myAlbums) {
-      if (album.phase == AlbumPhases.reveal) {
-        albumList.add(album);
-      }
-    }
-    return albumList;
+  List<Friend> get myFriends {
+    return myFriendsMap.values.toList();
   }
 
   @override
   List<Object?> get props => [
+        myAlbumsMap,
         myImages,
-        myAlbums,
+        myAlbumsMap,
         myNotifications,
-        myFriends,
+        myFriendsMap,
         isLoading,
         error,
         showNotification

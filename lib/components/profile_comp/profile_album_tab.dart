@@ -30,7 +30,7 @@ class _ProfileAlbumTabState extends State<ProfileAlbumTab> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "${state.myAlbums.length} Albums",
+                    "${state.myAlbumsMap.length} Albums",
                     style: GoogleFonts.poppins(
                         fontSize: 12,
                         fontWeight: FontWeight.w300,
