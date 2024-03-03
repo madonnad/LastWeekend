@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_photo/bloc/cubit/new_album_frame_cubit.dart';
+import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
 import 'package:shared_photo/components/album2_comp/invite_comps/invite_page.dart';
 import 'package:shared_photo/components/album2_comp/lock_comps/album_lock_tab_view.dart';
 import 'package:shared_photo/components/album2_comp/util_comps/album_appbar_title.dart';
@@ -9,25 +9,31 @@ import 'package:shared_photo/components/album2_comp/reveal_comps/album_reveal_ta
 import 'package:shared_photo/components/album2_comp/unlock_comps/album_unlock_tab_view.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/arguments.dart';
+import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 
-class NewAlbumFrame extends StatelessWidget {
+class AlbumFrame extends StatelessWidget {
   final Arguments arguments;
   final List<String> filterList = ["Popular", "Guests", "Timeline"];
 
-  NewAlbumFrame({super.key, required this.arguments});
+  AlbumFrame({super.key, required this.arguments});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => NewAlbumFrameCubit(album: arguments.album),
+      create: (context) => AlbumFrameCubit(
+        album: arguments.album,
+        dataRepository: context.read<DataRepository>(),
+      ),
       child: Scaffold(
         backgroundColor: Colors.black,
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: Colors.black,
           automaticallyImplyLeading: false,
-          title: AlbumAppBarTitle(
-            arguments: arguments,
+          title: BlocBuilder<AlbumFrameCubit, AlbumFrameState>(
+            builder: (context, state) {
+              return AlbumAppBarTitle(album: state.album);
+            },
           ),
         ),
         body: GestureDetector(
@@ -82,17 +88,17 @@ class NewAlbumFrame extends StatelessWidget {
                   ],
                 ),
               ),
-              BlocBuilder<NewAlbumFrameCubit, NewAlbumFrameState>(
+              BlocBuilder<AlbumFrameCubit, AlbumFrameState>(
                 builder: (context, state) {
                   switch (state.album.phase) {
                     case AlbumPhases.reveal:
-                      return AlbumRevealTabView(arguments: arguments);
+                      return const AlbumRevealTabView();
                     case AlbumPhases.invite:
-                      return InvitePage(arguments: arguments);
+                      return const InvitePage();
                     case AlbumPhases.unlock:
-                      return AlbumUnlockTabView(arguments: arguments);
+                      return const AlbumUnlockTabView();
                     case AlbumPhases.lock:
-                      return AlbumLockTabView(arguments: arguments);
+                      return const AlbumLockTabView();
                     default:
                       return const Placeholder();
                   }

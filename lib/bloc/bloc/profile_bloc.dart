@@ -91,6 +91,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       }
     });
 
+    dataRepository.imageStream.listen((event) {});
+
     add(InitializeProfile());
   }
 }

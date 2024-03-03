@@ -1,18 +1,21 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_photo/bloc/cubit/new_album_frame_cubit.dart';
+import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/image.dart' as img;
+import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 
 part 'image_frame_state.dart';
 
 class ImageFrameCubit extends Cubit<ImageFrameState> {
+  DataRepository dataRepository;
   img.Image image;
   Album album;
   AlbumViewMode viewMode;
   int initialIndex;
   ImageFrameCubit({
+    required this.dataRepository,
     required this.image,
     required this.album,
     required this.viewMode,
@@ -27,57 +30,53 @@ class ImageFrameCubit extends Cubit<ImageFrameState> {
           ),
         ) {
     initializeComments();
+
+    dataRepository.imageStream.listen((event) {});
   }
 
   Future<void> initializeComments() async {
     img.Image image = state.selectedImage;
 
     emit(state.copyWith(loading: true));
-    // image.comments =
-    //     await EngagementService.getImageComments(state.uid, image.imageId);
+
+    image.commentMap = await dataRepository.initalizeCommentsAndStore(
+        album.albumId, image.imageId);
+
     emit(state.copyWith(loading: false, selectedImage: image));
   }
 
   Future<void> toggleLike() async {
     img.Image image = state.selectedImage;
+
     emit(state.copyWith(likeLoading: true));
 
-    if (state.selectedImage.userLiked == true) {
-      // image.likes = await EngagementService.unlikePhoto(
-      //     appBloc.state.user.token, state.selectedImage.imageId);
-      image.userLiked = false;
-      emit(state.copyWith(likeLoading: false, selectedImage: image));
-      return;
-    }
+    late bool userLiked;
+    late int count;
 
-    if (state.selectedImage.userLiked == false) {
-      // image.likes = await EngagementService.likePhoto(
-      //     appBloc.state.user.token, state.selectedImage.imageId);
-      image.userLiked = true;
-      emit(state.copyWith(likeLoading: false, selectedImage: image));
-      return;
-    }
+    (userLiked, count) = await dataRepository.toggleImageLike(
+        album.albumId, image.imageId, image.userLiked);
+
+    image.userLiked = userLiked;
+    image.likes = count;
+
+    emit(state.copyWith(likeLoading: false, selectedImage: image));
   }
 
   Future<void> toggleUpvote() async {
     img.Image image = state.selectedImage;
+
     emit(state.copyWith(upvoteLoading: true));
 
-    if (state.selectedImage.userUpvoted == true) {
-      // image.upvotes = await EngagementService.removeUpvoteFromPhoto(
-      //     appBloc.state.user.token, state.selectedImage.imageId);
-      image.userUpvoted = false;
-      emit(state.copyWith(upvoteLoading: false, selectedImage: image));
-      return;
-    }
+    late bool userUpvoted;
+    late int count;
 
-    if (state.selectedImage.userUpvoted == false) {
-      // image.upvotes = await EngagementService.upvotePhoto(
-      //     appBloc.state.user.token, state.selectedImage.imageId);
-      image.userUpvoted = true;
-      emit(state.copyWith(upvoteLoading: false, selectedImage: image));
-      return;
-    }
+    (userUpvoted, count) = await dataRepository.toggleImageUpvote(
+        album.albumId, image.imageId, image.userUpvoted);
+
+    image.userUpvoted = userUpvoted;
+    image.upvotes = count;
+
+    emit(state.copyWith(upvoteLoading: false, selectedImage: image));
   }
 
   void changeViewMode(String? selection) {

@@ -14,7 +14,7 @@ class Album {
   String ownerFirst;
   String ownerLast;
   String albumCoverId;
-  List<Image> images;
+  Map<String, Image> imageMap;
   List<Guest> guests;
   String? creationDateTime;
   String lockDateTime;
@@ -37,7 +37,7 @@ class Album {
     required this.visibility,
     required this.phase,
     this.albumCoverId = '',
-    this.images = const [],
+    this.imageMap = const {},
     this.guests = const [],
     this.albumCoverUrl,
   });
@@ -72,7 +72,7 @@ class Album {
   }
 
   factory Album.fromMap(Map<String, dynamic> map) {
-    List<Image> images = [];
+    Map<String, Image> images = {};
     List<Guest> guests = [];
     Visibility visibility;
     AlbumPhases phase;
@@ -83,7 +83,7 @@ class Album {
       for (var item in jsonImages) {
         Image image = Image.fromMap(item);
 
-        images.add(image);
+        images.putIfAbsent(image.imageId, () => image);
       }
     }
 
@@ -128,7 +128,7 @@ class Album {
       ownerLast: map['owner_last'],
       creationDateTime: map['created_at'],
       guests: guests,
-      images: images,
+      imageMap: images,
       lockDateTime: map['locked_at'],
       unlockDateTime: map['unlocked_at'],
       revealDateTime: map['revealed_at'],
@@ -153,6 +153,10 @@ class Album {
     String fullName = "$ownerFirst $ownerLast";
 
     return fullName;
+  }
+
+  List<Image> get images {
+    return imageMap.values.toList();
   }
 
   List<Image> get rankedImages {
