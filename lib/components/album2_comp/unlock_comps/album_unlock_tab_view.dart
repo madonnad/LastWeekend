@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
 import 'package:shared_photo/components/album2_comp/unlock_comps/album_unlock_tab_bar.dart';
 import 'package:shared_photo/components/album2_comp/unlock_comps/unlock_timeline_page.dart';
-import 'package:shared_photo/models/arguments.dart';
 
 class AlbumUnlockTabView extends StatelessWidget {
-  final Arguments arguments;
-  const AlbumUnlockTabView({super.key, required this.arguments});
+  const AlbumUnlockTabView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,11 +27,15 @@ class AlbumUnlockTabView extends StatelessWidget {
                     Navigator.of(context).pop();
                   }
                 },
-                child: TabBarView(
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: <Widget>[
-                    UnlockTimelinePage(album: arguments.album),
-                  ],
+                child: BlocBuilder<AlbumFrameCubit, AlbumFrameState>(
+                  builder: (context, state) {
+                    return TabBarView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: <Widget>[
+                        UnlockTimelinePage(album: state.album),
+                      ],
+                    );
+                  },
                 ),
               ),
             ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_photo/bloc/bloc/album_bloc.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/bloc/dashboard_bloc.dart';
 import 'package:shared_photo/bloc/bloc/feed_bloc.dart';
@@ -23,12 +22,6 @@ class NewAppFrame extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => NewAppFrameCubit(),
-        ),
-        BlocProvider(
-          create: (context) => AlbumBloc(
-            user: context.read<AppBloc>().state.user,
-            dataRepository: context.read<DataRepository>(),
-          ),
         ),
         BlocProvider(
           create: (context) => ProfileBloc(

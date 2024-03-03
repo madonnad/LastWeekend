@@ -39,5 +39,7 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
         }
       },
     );
+
+    dataRepository.imageStream.listen((event) {});
   }
 }

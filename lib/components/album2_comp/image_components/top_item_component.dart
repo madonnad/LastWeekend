@@ -2,9 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/cubit/image_frame_cubit.dart';
-import 'package:shared_photo/bloc/cubit/new_album_frame_cubit.dart';
+import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/image.dart' as img;
+import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 import 'package:shared_photo/screens/image_frame.dart';
 
 class TopItemComponent extends StatelessWidget {
@@ -20,14 +21,11 @@ class TopItemComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Album album = context.read<NewAlbumFrameCubit>().album;
-    AlbumViewMode viewMode = context.read<NewAlbumFrameCubit>().state.viewMode;
+    Album album = context.read<AlbumFrameCubit>().album;
+    AlbumViewMode viewMode = context.read<AlbumFrameCubit>().state.viewMode;
 
-    int selectedIndex = context
-        .read<NewAlbumFrameCubit>()
-        .state
-        .selectedModeImages
-        .indexOf(image);
+    int selectedIndex =
+        context.read<AlbumFrameCubit>().state.selectedModeImages.indexOf(image);
     return AspectRatio(
       aspectRatio: 4 / 5,
       child: Stack(
@@ -41,6 +39,7 @@ class TopItemComponent extends StatelessWidget {
                 useSafeArea: true,
                 builder: (ctx) => BlocProvider(
                   create: (context) => ImageFrameCubit(
+                    dataRepository: context.read<DataRepository>(),
                     image: image,
                     album: album,
                     viewMode: viewMode,

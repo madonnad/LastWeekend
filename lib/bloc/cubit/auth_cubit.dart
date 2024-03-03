@@ -6,7 +6,6 @@ import 'package:shared_photo/repositories/auth0_repository.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  //final AuthenticationRepository _authenticationRepository;
   final Auth0Repository _auth0repository;
 
   AuthCubit(this._auth0repository)

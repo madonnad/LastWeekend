@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_photo/models/arguments.dart';
+import 'package:shared_photo/models/album.dart';
 
 class AlbumAppBarTitle extends StatelessWidget {
-  final Arguments arguments;
-  const AlbumAppBarTitle({super.key, required this.arguments});
+  final Album album;
+  const AlbumAppBarTitle({super.key, required this.album});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class AlbumAppBarTitle extends StatelessWidget {
         Expanded(
           flex: 11,
           child: Text(
-            arguments.album.albumName,
+            album.albumName,
             textAlign: TextAlign.center,
             style: GoogleFonts.josefinSans(
               fontWeight: FontWeight.w600,
@@ -53,7 +53,7 @@ class AlbumAppBarTitle extends StatelessWidget {
                   ),
                   title: Center(
                     child: Text(
-                      arguments.album.albumName,
+                      album.albumName,
                     ),
                   ),
                   children: [
@@ -78,7 +78,7 @@ class AlbumAppBarTitle extends StatelessWidget {
                               ),
                             ),
                             TextSpan(
-                              text: arguments.album.fullName,
+                              text: album.fullName,
                               style: GoogleFonts.josefinSans(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 16,
@@ -110,7 +110,7 @@ class AlbumAppBarTitle extends StatelessWidget {
                               ),
                             ),
                             TextSpan(
-                              text: arguments.album.guests.length.toString(),
+                              text: album.guests.length.toString(),
                               style: GoogleFonts.josefinSans(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 16,

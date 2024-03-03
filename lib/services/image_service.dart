@@ -98,6 +98,7 @@ class ImageService {
         Map<String, dynamic> body = json.decode(response.body);
         imageId = body['image_id'];
 
+        // ignore: unused_local_variable
         bool upload =
             await postAlbumCoverImage(token, image.imageXFile.path, imageId);
         if (upload = false) {
