@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
-import 'package:shared_photo/components/album2_comp/image_components/blank_item_component.dart';
-import 'package:shared_photo/components/album2_comp/image_components/top_item_component.dart';
+import 'package:shared_photo/components/album_comp/image_components/blank_item_component.dart';
+import 'package:shared_photo/components/album_comp/image_components/top_item_component.dart';
 import 'package:shared_photo/components/app_comp/section_header_small.dart';
 import 'package:shared_photo/models/album.dart';
 
-class LockTimelinePage extends StatelessWidget {
+class UnlockTimelinePage extends StatelessWidget {
   final Album album;
-  const LockTimelinePage({super.key, required this.album});
+  const UnlockTimelinePage({super.key, required this.album});
 
   @override
   Widget build(BuildContext context) {

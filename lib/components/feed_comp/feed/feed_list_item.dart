@@ -13,7 +13,8 @@ class FeedListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double devHeight = MediaQuery.of(context).size.height;
-    Arguments arguments = Arguments(album: album);
+    Arguments arguments =
+        Arguments(album: album);
 
     return Padding(
       padding: const EdgeInsets.only(top: 30, left: 12, right: 12),

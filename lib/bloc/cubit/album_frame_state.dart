@@ -4,45 +4,65 @@ enum AlbumViewMode { popular, guests, timeline }
 
 class AlbumFrameState extends Equatable {
   final Album album;
-  final Map<String, Image> imageMap;
+  final Map<String, img.Image> imageMap;
+  final PageController pageController;
+  final img.Image selectedImage;
+  final List<img.Image> rankedImages;
+  final List<img.Image> topThreeImages;
+  final List<img.Image> remainingRankedImages;
   final AlbumViewMode viewMode;
   final List<String> filterList = ["Popular", "Guests", "Timeline"];
 
   AlbumFrameState({
     required this.album,
-    this.imageMap = const {},
+    required this.imageMap,
+    required this.pageController,
+    required this.selectedImage,
+    this.rankedImages = const [],
+    this.topThreeImages = const [],
+    this.remainingRankedImages = const [],
     required this.viewMode,
   });
 
   AlbumFrameState copyWith({
     Album? album,
-    Map<String, Image>? imageMap,
-    int? filterIndex,
+    Map<String, img.Image>? imageMap,
+    PageController? pageController,
+    img.Image? selectedImage,
+    List<img.Image>? rankedImages,
+    List<img.Image>? topThreeImages,
+    List<img.Image>? remainingRankedImages,
     AlbumViewMode? viewMode,
   }) {
     return AlbumFrameState(
       album: album ?? this.album,
       imageMap: imageMap ?? this.imageMap,
+      pageController: pageController ?? this.pageController,
+      selectedImage: selectedImage ?? this.selectedImage,
+      rankedImages: rankedImages ?? this.rankedImages,
+      topThreeImages: topThreeImages ?? this.topThreeImages,
+      remainingRankedImages:
+          remainingRankedImages ?? this.remainingRankedImages,
       viewMode: viewMode ?? this.viewMode,
     );
   }
 
-  List<Image> get selectedModeImages {
+  List<img.Image> get selectedModeImages {
     switch (viewMode) {
       case AlbumViewMode.popular:
         return rankedImages;
       case AlbumViewMode.guests:
-        List<Image> ungroupedGuests = [];
-        for (List<Image> list in imagesGroupedByGuest) {
-          for (Image image in list) {
+        List<img.Image> ungroupedGuests = [];
+        for (List<img.Image> list in imagesGroupedByGuest) {
+          for (img.Image image in list) {
             ungroupedGuests.add(image);
           }
         }
         return ungroupedGuests;
       case AlbumViewMode.timeline:
-        List<Image> ungroupedTimeline = [];
-        for (List<Image> list in imagesGroupedSortedByDate) {
-          for (Image image in list) {
+        List<img.Image> ungroupedTimeline = [];
+        for (List<img.Image> list in imagesGroupedSortedByDate) {
+          for (img.Image image in list) {
             ungroupedTimeline.add(image);
           }
         }
@@ -50,41 +70,13 @@ class AlbumFrameState extends Equatable {
     }
   }
 
-  List<Image> get images {
+  List<img.Image> get images {
     return imageMap.values.toList();
   }
 
-  List<Image> get rankedImages {
-    List<Image> rankedImages = List.from(images);
-    rankedImages.sort((a, b) => b.upvotes.compareTo(a.upvotes));
-
-    return rankedImages;
-  }
-
-  List<Image> get topThreeImages {
-    List<Image> images = List.from(rankedImages);
-    if (rankedImages.length > 3) {
-      return images.getRange(0, 3).toList();
-    } else if (rankedImages.isNotEmpty) {
-      return rankedImages.getRange(0, images.length - 1).toList();
-    } else {
-      return [];
-    }
-  }
-
-  List<Image> get remainingRankedImages {
-    List<Image> images = List.from(rankedImages);
-    if (rankedImages.length > 3) {
-      images.removeRange(0, 3);
-      return images;
-    } else {
-      return [];
-    }
-  }
-
-  List<List<Image>> get imagesGroupedByGuest {
-    Map<String, List<Image>> mapImages = {};
-    List<List<Image>> listImages = [];
+  List<List<img.Image>> get imagesGroupedByGuest {
+    Map<String, List<img.Image>> mapImages = {};
+    List<List<img.Image>> listImages = [];
 
     for (var item in images) {
       if (!mapImages.containsKey(item.owner)) {
@@ -106,9 +98,9 @@ class AlbumFrameState extends Equatable {
     return listImages;
   }
 
-  List<List<Image>> get imagesGroupedSortedByDate {
-    Map<String, List<Image>> mapImages = {};
-    List<List<Image>> listImages = [];
+  List<List<img.Image>> get imagesGroupedSortedByDate {
+    Map<String, List<img.Image>> mapImages = {};
+    List<List<img.Image>> listImages = [];
 
     for (var item in images) {
       if (!mapImages.containsKey(item.dateString)) {
@@ -130,10 +122,25 @@ class AlbumFrameState extends Equatable {
     return listImages;
   }
 
+  List<img.Image> get imageFrameTimelineList {
+    List<img.Image> ungroupedTimeline = [];
+    for (List<img.Image> list in imagesGroupedSortedByDate) {
+      for (img.Image image in list) {
+        ungroupedTimeline.add(image);
+      }
+    }
+    return ungroupedTimeline;
+  }
+
   @override
   List<Object?> get props => [
         album,
         imageMap,
+        pageController,
+        selectedImage,
+        rankedImages,
+        topThreeImages,
+        remainingRankedImages,
         viewMode,
       ];
 }

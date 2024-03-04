@@ -72,7 +72,7 @@ class FloatingCommentContainer extends StatelessWidget {
                             ? null
                             : () =>
                                 context.read<ImageFrameCubit>().toggleLike(),
-                        icon: state.selectedImage.userLiked
+                        icon: state.userLiked
                             ? const Icon(Icons.favorite)
                             : const Icon(Icons.favorite_outline),
                         color: Colors.white,
@@ -87,7 +87,7 @@ class FloatingCommentContainer extends StatelessWidget {
                               : () => context
                                   .read<ImageFrameCubit>()
                                   .toggleUpvote(),
-                          icon: state.selectedImage.userUpvoted
+                          icon: state.userUpvoted
                               ? const Icon(Icons.label_important)
                               : const Icon(Icons.label_important_outline),
                           color: Colors.white,

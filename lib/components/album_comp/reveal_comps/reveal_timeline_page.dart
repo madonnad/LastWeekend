@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
-import 'package:shared_photo/components/album2_comp/image_components/top_item_component.dart';
+import 'package:shared_photo/components/album_comp/image_components/top_item_component.dart';
 import 'package:shared_photo/components/app_comp/section_header_small.dart';
 
 class RevealTimelinePage extends StatelessWidget {

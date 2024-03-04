@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
-import 'package:shared_photo/bloc/cubit/image_frame_cubit.dart';
+import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
 import 'package:shared_photo/components/image_page_comp/image_frame_container/image_frame_metadata_row.dart';
 
 class ImageFrameImageContainer extends StatelessWidget {
@@ -10,7 +10,7 @@ class ImageFrameImageContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ImageFrameCubit, ImageFrameState>(
+    return BlocBuilder<AlbumFrameCubit, AlbumFrameState>(
       builder: (context, state) {
         Map<String, String> headers =
             context.read<AppBloc>().state.user.headers;
@@ -32,9 +32,10 @@ class ImageFrameImageContainer extends StatelessWidget {
               Expanded(
                 child: PageView.builder(
                   controller: state.pageController,
-                  onPageChanged: (index) =>
-                      context.read<ImageFrameCubit>().imageChange(index),
-                  itemCount: state.selectedModeImages.length,
+                  onPageChanged: (index) => context
+                      .read<AlbumFrameCubit>()
+                      .initalizeImageFrameWithSelectedImage(index),
+                  itemCount: state.imageFrameTimelineList.length,
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -45,7 +46,7 @@ class ImageFrameImageContainer extends StatelessWidget {
                             color: const Color.fromRGBO(19, 19, 19, 1),
                             image: DecorationImage(
                                 image: CachedNetworkImageProvider(
-                                  state.selectedModeImages[index].imageReq,
+                                  state.imageFrameTimelineList[index].imageReq,
                                   headers: headers,
                                 ),
                                 fit: BoxFit.cover),

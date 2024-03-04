@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
 import 'package:shared_photo/bloc/cubit/image_frame_cubit.dart';
 import 'package:shared_photo/components/image_page_comp/image_frame_dialog/image_frame_dialog.dart';
 
@@ -14,7 +15,7 @@ class ImageFrameControlBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           GestureDetector(
-            onTap: () => context.read<ImageFrameCubit>().previousImage(),
+            onTap: () => context.read<AlbumFrameCubit>().previousImage(),
             child: const Icon(
               Icons.arrow_back_ios_new,
               size: 25,
@@ -39,7 +40,7 @@ class ImageFrameControlBar extends StatelessWidget {
           ),
           const SizedBox(width: 25),
           GestureDetector(
-            onTap: () => context.read<ImageFrameCubit>().nextImage(),
+            onTap: () => context.read<AlbumFrameCubit>().nextImage(),
             child: const Icon(
               Icons.arrow_forward_ios,
               size: 25,

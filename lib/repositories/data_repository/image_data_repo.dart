@@ -72,9 +72,11 @@ extension ImageDataRepo on DataRepository {
     if (albumMap[albumID]?.imageMap[imageID] != null) {
       Image image;
       if (currentStatus) {
-        newCount = await EngagementService.removeUpvoteFromPhoto(user.token, imageID);
+        newCount =
+            await EngagementService.removeUpvoteFromPhoto(user.token, imageID);
         userUpvoted = false;
-      } else {
+      }
+      if (!currentStatus) {
         newCount = await EngagementService.upvotePhoto(user.token, imageID);
         userUpvoted = true;
       }
