@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
-import 'package:shared_photo/components/album2_comp/lock_comps/album_lock_tab_bar.dart';
-import 'package:shared_photo/components/album2_comp/lock_comps/lock_timeline_page.dart';
+import 'package:shared_photo/components/album_comp/lock_comps/album_lock_tab_bar.dart';
+import 'package:shared_photo/components/album_comp/lock_comps/lock_timeline_page.dart';
 
 class AlbumLockTabView extends StatelessWidget {
   const AlbumLockTabView({super.key});

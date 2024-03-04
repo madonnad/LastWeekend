@@ -1,7 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_photo/models/album.dart';
-import 'package:shared_photo/models/image.dart';
+import 'package:shared_photo/models/image.dart' as img;
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 
 part 'album_frame_state.dart';
@@ -9,18 +10,25 @@ part 'album_frame_state.dart';
 class AlbumFrameCubit extends Cubit<AlbumFrameState> {
   DataRepository dataRepository;
   Album album;
-  AlbumFrameCubit({required this.album, required this.dataRepository})
-      : super(
+  AlbumFrameCubit({
+    required this.album,
+    required this.dataRepository,
+  }) : super(
           AlbumFrameState(
             album: album,
+            imageMap: Map.from(album.imageMap),
             viewMode: AlbumViewMode.popular,
+            pageController: PageController(),
+            selectedImage: album.images[0],
           ),
         ) {
+    // Set Internal Ranked Images
+    setRankedImages();
     // Initialize Frame State with Empty Album Image Map
     initializeFrameState();
 
     dataRepository.imageStream.listen((event) {
-      Image newImage = event.image;
+      img.Image newImage = event.image;
       String albumID = event.albumID;
       String imageID = event.imageID;
 
@@ -30,12 +38,45 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
     });
   }
 
-  void updateImageInAlbum(String imageID, Image image) {
+  void updateImageInAlbum(String imageID, img.Image image) {
     if (state.imageMap.containsKey(imageID)) {
-      Map<String, Image> newImageMap = Map.from(state.imageMap);
+      Map<String, img.Image> newImageMap = Map.from(state.imageMap);
       newImageMap[imageID] = image;
       emit(state.copyWith(imageMap: newImageMap));
     }
+  }
+
+  void setRankedImages() {
+    List<img.Image> rankedImages = List.from(state.images);
+    List<img.Image> topThreeImages = [];
+    List<img.Image> remainingRankedImages = List.from(rankedImages);
+
+    // Set Ranked
+    rankedImages.sort((a, b) => b.upvotes.compareTo(a.upvotes));
+
+    // Set Top Three Images
+    if (rankedImages.length > 3) {
+      topThreeImages.addAll(rankedImages.getRange(0, 3).toList());
+    } else if (rankedImages.isNotEmpty) {
+      topThreeImages
+          .addAll(rankedImages.getRange(0, rankedImages.length - 1).toList());
+    } else {
+      topThreeImages = [];
+    }
+
+    // Set Remaining Ranked Images
+    if (remainingRankedImages.length > 3) {
+      remainingRankedImages.removeRange(0, 3);
+    } else {
+      remainingRankedImages = [];
+    }
+
+    // Emit Ranked Images
+    emit(state.copyWith(
+      rankedImages: rankedImages,
+      topThreeImages: topThreeImages,
+      remainingRankedImages: remainingRankedImages,
+    ));
   }
 
   void changePage(index) {
@@ -58,10 +99,23 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
     emit(state.copyWith(viewMode: viewMode));
   }
 
+  void initalizeImageFrameWithSelectedImage(int selectedIndex) {
+    PageController pageController = PageController(initialPage: selectedIndex);
+    img.Image image = state.imageFrameTimelineList[selectedIndex];
+    emit(state.copyWith(selectedImage: image, pageController: pageController));
+  }
+
+  void nextImage() {
+    state.pageController.nextPage(
+        duration: const Duration(milliseconds: 250), curve: Curves.easeIn);
+  }
+
+  void previousImage() {
+    state.pageController.previousPage(
+        duration: const Duration(milliseconds: 250), curve: Curves.easeIn);
+  }
+
   void initializeFrameState() {
     emit(state.copyWith(imageMap: album.imageMap));
-    Album emptyImageAlbum = state.album;
-    emptyImageAlbum.imageMap = {};
-    emit(state.copyWith(album: emptyImageAlbum));
   }
 }

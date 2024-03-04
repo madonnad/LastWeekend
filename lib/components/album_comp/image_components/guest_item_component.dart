@@ -23,26 +23,35 @@ class GuestItemComponent extends StatelessWidget {
     Album album = context.read<AlbumFrameCubit>().album;
     AlbumViewMode viewMode = context.read<AlbumFrameCubit>().state.viewMode;
 
-    int selectedIndex =
-        context.read<AlbumFrameCubit>().state.selectedModeImages.indexOf(image);
+    int selectedIndex = context
+        .read<AlbumFrameCubit>()
+        .state
+        .imageFrameTimelineList
+        .indexOf(image);
     return GestureDetector(
       onTap: () {
+        context
+            .read<AlbumFrameCubit>()
+            .initalizeImageFrameWithSelectedImage(selectedIndex);
         showModalBottomSheet(
           context: context,
           isScrollControlled: true,
           useRootNavigator: true,
           useSafeArea: true,
-          builder: (ctx) => BlocProvider(
-            create: (context) => ImageFrameCubit(
-              dataRepository: context.read<DataRepository>(),
-              image: image,
-              album: album,
-              viewMode: viewMode,
-              initialIndex: selectedIndex,
-            ),
-            child: ImageFrame(
-              image: image,
-            ),
+          builder: (ctx) => MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (context) => ImageFrameCubit(
+                  dataRepository: context.read<DataRepository>(),
+                  image: image,
+                  albumID: album.albumId,
+                ),
+              ),
+              BlocProvider.value(
+                value: context.read<AlbumFrameCubit>(),
+              ),
+            ],
+            child: const ImageFrame(),
           ),
         );
       },

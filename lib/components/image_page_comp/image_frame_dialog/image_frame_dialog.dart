@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
-import 'package:shared_photo/bloc/cubit/image_frame_cubit.dart';
 import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
 import 'package:shared_photo/components/image_page_comp/image_frame_appbar.dart';
 import 'package:shared_photo/components/image_page_comp/image_frame_dialog/dialog_image_row.dart';
@@ -12,7 +11,7 @@ class ImageFrameDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ImageFrameCubit, ImageFrameState>(
+    return BlocBuilder<AlbumFrameCubit, AlbumFrameState>(
       builder: (context, state) {
         Map<String, String> headers =
             context.read<AppBloc>().state.user.headers;
@@ -67,7 +66,9 @@ class ImageFrameDialog extends StatelessWidget {
 
                       return GestureDetector(
                         onTap: () {
-                          context.read<ImageFrameCubit>().imageChange(index);
+                          context
+                              .read<AlbumFrameCubit>()
+                              .initalizeImageFrameWithSelectedImage(index);
                           state.pageController.jumpToPage(index);
                           Navigator.of(context).pop();
                         },

@@ -1,113 +1,149 @@
 part of 'image_frame_cubit.dart';
 
 class ImageFrameState extends Equatable {
-  final PageController pageController;
-  final img.Image selectedImage;
-  final Album album;
-  final AlbumViewMode viewMode;
-  final List<String> filterList = ["Popular", "Guests", "Timeline"];
-  final int selectedIndex;
+  final String imageId;
+  final String owner;
+  final String firstName;
+  final String lastName;
+  final String imageCaption;
+  final DateTime uploadDateTime;
+  final int likes;
+  final int upvotes;
+  final bool userLiked;
+  final bool userUpvoted;
+  final Map<String, Comment> commentMap;
+  final List<Engager> likesUID;
+  final List<Engager> upvotesUID;
   final bool loading;
   final bool likeLoading;
   final bool upvoteLoading;
-  ImageFrameState({
-    required this.pageController,
-    required this.selectedImage,
-    required this.album,
-    required this.viewMode,
-    required this.selectedIndex,
+  const ImageFrameState({
+    required this.imageId,
+    required this.owner,
+    required this.firstName,
+    required this.lastName,
+    required this.imageCaption,
+    required this.uploadDateTime,
+    required this.likes,
+    required this.upvotes,
+    required this.userLiked,
+    required this.userUpvoted,
+    required this.likesUID,
+    required this.upvotesUID,
+    this.commentMap = const {},
     this.loading = false,
     this.likeLoading = false,
     this.upvoteLoading = false,
   });
 
+  factory ImageFrameState.setImageToState({required Image image}) {
+    return ImageFrameState(
+      imageId: image.imageId,
+      owner: image.owner,
+      firstName: image.firstName,
+      lastName: image.lastName,
+      imageCaption: image.imageCaption,
+      uploadDateTime: image.uploadDateTime,
+      likes: image.likes,
+      upvotes: image.upvotes,
+      userLiked: image.userLiked,
+      userUpvoted: image.userUpvoted,
+      likesUID: image.likesUID,
+      upvotesUID: image.upvotesUID,
+      commentMap: image.commentMap,
+      loading: false,
+      likeLoading: false,
+      upvoteLoading: false,
+    );
+  }
+
   ImageFrameState copyWith({
-    PageController? pageController,
-    img.Image? selectedImage,
-    Album? album,
-    AlbumViewMode? viewMode,
-    int? selectedIndex,
+    String? imageId,
+    String? owner,
+    String? firstName,
+    String? lastName,
+    String? imageCaption,
+    DateTime? uploadDateTime,
+    int? likes,
+    int? upvotes,
+    bool? userLiked,
+    bool? userUpvoted,
+    Map<String, Comment>? commentMap,
+    List<Engager>? likesUID,
+    List<Engager>? upvotesUID,
     bool? loading,
     bool? likeLoading,
     bool? upvoteLoading,
   }) {
     return ImageFrameState(
-      pageController: pageController ?? this.pageController,
-      selectedImage: selectedImage ?? this.selectedImage,
-      album: album ?? this.album,
-      viewMode: viewMode ?? this.viewMode,
-      selectedIndex: selectedIndex ?? this.selectedIndex,
+      imageId: imageId ?? this.imageId,
+      owner: owner ?? this.owner,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      imageCaption: imageCaption ?? this.imageCaption,
+      uploadDateTime: uploadDateTime ?? this.uploadDateTime,
+      likes: likes ?? this.likes,
+      upvotes: upvotes ?? this.upvotes,
+      userLiked: userLiked ?? this.userLiked,
+      userUpvoted: userUpvoted ?? this.userUpvoted,
+      commentMap: commentMap ?? this.commentMap,
+      likesUID: likesUID ?? this.likesUID,
+      upvotesUID: upvotesUID ?? this.upvotesUID,
       loading: loading ?? this.loading,
       likeLoading: likeLoading ?? this.likeLoading,
       upvoteLoading: upvoteLoading ?? this.upvoteLoading,
     );
   }
 
-  int get filterIndex {
-    switch (viewMode) {
-      case AlbumViewMode.popular:
-        return filterList.indexWhere((element) => element == "Popular");
-      case AlbumViewMode.guests:
-        return filterList.indexWhere((element) => element == "Guests");
-      case AlbumViewMode.timeline:
-        return filterList.indexWhere((element) => element == "Timeline");
-    }
+  List<Comment> get comments {
+    return commentMap.values.toList();
   }
 
-  List<img.Image> get rankedImageList {
-    return album.rankedImages;
+  String get imageReq {
+    String requestUrl = "$goRepoDomain/image?id=$imageId";
+
+    return requestUrl;
   }
 
-  List<img.Image> get guestImageList {
-    List<img.Image> ungroupedGuests = [];
-    for (List<img.Image> list in album.imagesGroupedByGuest) {
-      for (img.Image image in list) {
-        ungroupedGuests.add(image);
-      }
-    }
-    return ungroupedGuests;
+  String get avatarReq {
+    String requestUrl = "$goRepoDomain/image?id=$owner";
+
+    return requestUrl;
   }
 
-  List<img.Image> get timelineImageList {
-    List<img.Image> ungroupedTimeline = [];
-    for (List<img.Image> list in album.imagesGroupedSortedByDate) {
-      for (img.Image image in list) {
-        ungroupedTimeline.add(image);
-      }
-    }
-    return ungroupedTimeline;
+  String get fullName {
+    String fullName = "$firstName $lastName";
+
+    return fullName;
   }
 
-  List<img.Image> get selectedModeImages {
-    switch (viewMode) {
-      case AlbumViewMode.popular:
-        return album.rankedImages;
-      case AlbumViewMode.guests:
-        List<img.Image> ungroupedGuests = [];
-        for (List<img.Image> list in album.imagesGroupedByGuest) {
-          for (img.Image image in list) {
-            ungroupedGuests.add(image);
-          }
-        }
-        return ungroupedGuests;
-      case AlbumViewMode.timeline:
-        List<img.Image> ungroupedTimeline = [];
-        for (List<img.Image> list in album.imagesGroupedSortedByDate) {
-          for (img.Image image in list) {
-            ungroupedTimeline.add(image);
-          }
-        }
-        return ungroupedTimeline;
-    }
+  String get dateString {
+    var newFormat = DateFormat.yMMMMd('en_US');
+    String updatedDt = newFormat.format(uploadDateTime);
+    return updatedDt; // 20-04-03
+  }
+
+  String get timeString {
+    var newFormat = DateFormat("jm");
+    String updatedDt = newFormat.format(uploadDateTime);
+    return updatedDt; // 20-04-03
   }
 
   @override
   List<Object?> get props => [
-        pageController,
-        selectedImage,
-        album,
-        viewMode,
-        selectedIndex,
+        imageId,
+        owner,
+        firstName,
+        lastName,
+        imageCaption,
+        uploadDateTime,
+        likes,
+        upvotes,
+        userLiked,
+        userUpvoted,
+        commentMap,
+        likesUID,
+        upvotesUID,
         loading,
         likeLoading,
         upvoteLoading,

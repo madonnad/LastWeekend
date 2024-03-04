@@ -29,7 +29,7 @@ class ImageFrameMetadataRow extends StatelessWidget {
                       width: 5,
                     ),
                     Text(
-                      state.selectedImage.likes.toString(),
+                      state.likes.toString(),
                       style: GoogleFonts.josefinSans(
                         fontSize: 18,
                         color: Colors.white,
@@ -55,7 +55,7 @@ class ImageFrameMetadataRow extends StatelessWidget {
                       width: 5,
                     ),
                     Text(
-                      state.selectedImage.upvotes.toString(),
+                      state.upvotes.toString(),
                       style: GoogleFonts.josefinSans(
                         fontSize: 18,
                         color: Colors.white,
@@ -67,7 +67,7 @@ class ImageFrameMetadataRow extends StatelessWidget {
               ],
             ),
             Text(
-              state.selectedImage.dateString,
+              state.dateString,
               style: GoogleFonts.josefinSans(
                 fontSize: 16,
                 fontWeight: FontWeight.w700,

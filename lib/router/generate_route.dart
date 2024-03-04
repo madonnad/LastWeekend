@@ -15,6 +15,7 @@ Route onGenerateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => const AlbumCreateModal());
     case '/album':
       Arguments arguments = settings.arguments as Arguments;
+
       return PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 300),
         reverseTransitionDuration: const Duration(milliseconds: 150),
