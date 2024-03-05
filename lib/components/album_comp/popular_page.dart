@@ -35,7 +35,7 @@ class PopularPage extends StatelessWidget {
                         return Padding(
                           padding: const EdgeInsets.only(left: 16.0),
                           child: TopItemComponent(
-                            image: state.rankedImages[index],
+                            image: state.topThreeImages[index],
                             radius: 18,
                             headers: headers,
                           ),
@@ -45,7 +45,7 @@ class PopularPage extends StatelessWidget {
                         return Stack(
                           children: [
                             TopItemComponent(
-                              image: state.rankedImages[index],
+                              image: state.topThreeImages[index],
                               radius: 18,
                               headers: headers,
                             ),
