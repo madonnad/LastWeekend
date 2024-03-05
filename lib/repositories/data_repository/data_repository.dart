@@ -22,7 +22,7 @@ class DataRepository {
   // Stream Controllers
   // Feed Controller = Lists of Album
   // Album Controller = Single Album Changes
-  // Image Controller = Single Album Changes
+  // Image Controller = Single Image Changes
 
   final _feedController = StreamController<(StreamOperation, List<Album>)>();
   final _albumController =

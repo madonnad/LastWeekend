@@ -1,11 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_photo/models/comment.dart';
-import 'package:shared_photo/models/engager.dart';
 import 'package:shared_photo/models/image.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
-import 'package:shared_photo/utils/api_variables.dart';
 
 part 'image_frame_state.dart';
 
@@ -17,20 +14,19 @@ class ImageFrameCubit extends Cubit<ImageFrameState> {
     required this.dataRepository,
     required this.image,
     required this.albumID,
-  }) : super(ImageFrameState.setImageToState(
-          image: image,
-        )) {
+  }) : super(ImageFrameState(image: image)) {
     initializeComments(image);
 
     dataRepository.imageStream.listen((event) {});
   }
 
   void changeImageFrameState(Image image) {
-    emit(ImageFrameState.setImageToState(image: image));
+    emit(state.copyWith(image: image));
     initializeComments(image);
   }
 
   Future<void> toggleLike() async {
+    Image image = state.image;
     emit(state.copyWith(likeLoading: true));
 
     late bool userLiked;
@@ -39,11 +35,14 @@ class ImageFrameCubit extends Cubit<ImageFrameState> {
     (userLiked, count) = await dataRepository.toggleImageLike(
         albumID, image.imageId, image.userLiked);
 
-    emit(
-        state.copyWith(likeLoading: false, userLiked: userLiked, likes: count));
+    image.userLiked = userLiked;
+    image.likes = count;
+
+    emit(state.copyWith(likeLoading: false, image: image));
   }
 
   Future<void> toggleUpvote() async {
+    Image image = state.image;
     emit(state.copyWith(upvoteLoading: true));
 
     late bool userUpvoted;
@@ -52,16 +51,21 @@ class ImageFrameCubit extends Cubit<ImageFrameState> {
     (userUpvoted, count) = await dataRepository.toggleImageUpvote(
         albumID, image.imageId, image.userUpvoted);
 
-    emit(state.copyWith(
-        upvoteLoading: false, userUpvoted: userUpvoted, upvotes: count));
+    image.userUpvoted = userUpvoted;
+    image.upvotes = count;
+
+    emit(state.copyWith(upvoteLoading: false, image: image));
   }
 
   Future<void> initializeComments(Image image) async {
-    emit(state.copyWith(loading: true, commentMap: {}));
+    image.commentMap = {};
+    emit(state.copyWith(loading: true, image: image));
 
     Map<String, Comment> commentMap =
         await dataRepository.initalizeCommentsAndStore(albumID, image.imageId);
 
-    emit(state.copyWith(loading: false, commentMap: commentMap));
+    image.commentMap = commentMap;
+
+    emit(state.copyWith(loading: false, image: image));
   }
 }

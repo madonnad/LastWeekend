@@ -28,7 +28,7 @@ class ImageFrameCaption extends StatelessWidget {
               return CircleAvatar(
                 backgroundColor: const Color.fromRGBO(25, 25, 25, 1),
                 foregroundImage: CachedNetworkImageProvider(
-                  state.avatarReq,
+                  state.image.avatarReq,
                   headers: headers,
                 ),
                 radius: 20,
@@ -45,7 +45,7 @@ class ImageFrameCaption extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      state.fullName,
+                      state.image.fullName,
                       style: GoogleFonts.josefinSans(
                         color: Colors.white54,
                         fontWeight: FontWeight.w600,
@@ -60,7 +60,7 @@ class ImageFrameCaption extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Text(
-                            state.imageCaption,
+                            state.image.imageCaption,
                             style: GoogleFonts.josefinSans(
                               color: Colors.white,
                               fontWeight: FontWeight.w600,

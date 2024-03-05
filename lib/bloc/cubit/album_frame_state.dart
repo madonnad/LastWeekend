@@ -4,7 +4,6 @@ enum AlbumViewMode { popular, guests, timeline }
 
 class AlbumFrameState extends Equatable {
   final Album album;
-  final Map<String, img.Image> imageMap;
   final PageController pageController;
   final img.Image selectedImage;
   final List<img.Image> rankedImages;
@@ -15,7 +14,6 @@ class AlbumFrameState extends Equatable {
 
   AlbumFrameState({
     required this.album,
-    required this.imageMap,
     required this.pageController,
     required this.selectedImage,
     this.rankedImages = const [],
@@ -26,7 +24,6 @@ class AlbumFrameState extends Equatable {
 
   AlbumFrameState copyWith({
     Album? album,
-    Map<String, img.Image>? imageMap,
     PageController? pageController,
     img.Image? selectedImage,
     List<img.Image>? rankedImages,
@@ -36,7 +33,6 @@ class AlbumFrameState extends Equatable {
   }) {
     return AlbumFrameState(
       album: album ?? this.album,
-      imageMap: imageMap ?? this.imageMap,
       pageController: pageController ?? this.pageController,
       selectedImage: selectedImage ?? this.selectedImage,
       rankedImages: rankedImages ?? this.rankedImages,
@@ -71,7 +67,7 @@ class AlbumFrameState extends Equatable {
   }
 
   List<img.Image> get images {
-    return imageMap.values.toList();
+    return album.imageMap.values.toList();
   }
 
   List<List<img.Image>> get imagesGroupedByGuest {
@@ -135,7 +131,6 @@ class AlbumFrameState extends Equatable {
   @override
   List<Object?> get props => [
         album,
-        imageMap,
         pageController,
         selectedImage,
         rankedImages,

@@ -16,7 +16,6 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
   }) : super(
           AlbumFrameState(
             album: album,
-            imageMap: Map.from(album.imageMap),
             viewMode: AlbumViewMode.popular,
             pageController: PageController(),
             selectedImage: album.images[0],
@@ -24,8 +23,6 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
         ) {
     // Set Internal Ranked Images
     setRankedImages();
-    // Initialize Frame State with Empty Album Image Map
-    initializeFrameState();
 
     dataRepository.imageStream.listen((event) {
       img.Image newImage = event.image;
@@ -39,10 +36,12 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
   }
 
   void updateImageInAlbum(String imageID, img.Image image) {
-    if (state.imageMap.containsKey(imageID)) {
-      Map<String, img.Image> newImageMap = Map.from(state.imageMap);
+    if (state.album.imageMap.containsKey(imageID)) {
+      Album album = state.album;
+      Map<String, img.Image> newImageMap = Map.from(state.album.imageMap);
       newImageMap[imageID] = image;
-      emit(state.copyWith(imageMap: newImageMap));
+      album.imageMap = newImageMap;
+      emit(state.copyWith(album: album));
     }
   }
 
@@ -113,9 +112,5 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
   void previousImage() {
     state.pageController.previousPage(
         duration: const Duration(milliseconds: 250), curve: Curves.easeIn);
-  }
-
-  void initializeFrameState() {
-    emit(state.copyWith(imageMap: album.imageMap));
   }
 }
