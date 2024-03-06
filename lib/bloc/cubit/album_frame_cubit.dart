@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +12,7 @@ part 'album_frame_state.dart';
 class AlbumFrameCubit extends Cubit<AlbumFrameState> {
   DataRepository dataRepository;
   Album album;
+  late StreamSubscription imageStreamSubscription;
   AlbumFrameCubit({
     required this.album,
     required this.dataRepository,
@@ -24,7 +27,7 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
     // Set Internal Ranked Images
     setRankedImages();
 
-    dataRepository.imageStream.listen((event) {
+    imageStreamSubscription = dataRepository.imageStream.listen((event) {
       img.Image newImage = event.image;
       String albumID = event.albumID;
       String imageID = event.imageID;
@@ -37,21 +40,27 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
 
   void updateImageInAlbum(String imageID, img.Image image) {
     if (state.album.imageMap.containsKey(imageID)) {
-      Album album = state.album;
-      Map<String, img.Image> newImageMap = Map.from(state.album.imageMap);
-      newImageMap[imageID] = image;
-      album.imageMap = newImageMap;
+      Album album = Album.from(state.album);
+      album.imageMap[imageID] = image;
       emit(state.copyWith(album: album));
+      setRankedImages();
     }
   }
 
   void setRankedImages() {
-    List<img.Image> rankedImages = List.from(state.images);
+    List<img.Image> rankedImages = List.from(state.album.images);
     List<img.Image> topThreeImages = [];
-    List<img.Image> remainingRankedImages = List.from(rankedImages);
 
     // Set Ranked
-    rankedImages.sort((a, b) => b.upvotes.compareTo(a.upvotes));
+    rankedImages.sort((a, b) {
+      if (a.upvotes == b.upvotes) {
+        return a.uploadDateTime.compareTo(b.uploadDateTime);
+      } else {
+        return b.upvotes.compareTo(a.upvotes);
+      }
+    });
+
+    List<img.Image> remainingRankedImages = List.from(rankedImages);
 
     // Set Top Three Images
     if (rankedImages.length > 3) {
@@ -112,5 +121,11 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
   void previousImage() {
     state.pageController.previousPage(
         duration: const Duration(milliseconds: 250), curve: Curves.easeIn);
+  }
+
+  @override
+  Future<void> close() {
+    imageStreamSubscription.cancel();
+    return super.close();
   }
 }

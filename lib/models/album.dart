@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:timeago/timeago.dart' as timeago;
 import 'package:shared_photo/models/guest.dart';
 import 'package:shared_photo/models/image.dart';
 import 'package:shared_photo/utils/api_variables.dart';
@@ -16,10 +17,10 @@ class Album {
   String albumCoverId;
   Map<String, Image> imageMap;
   List<Guest> guests;
-  String? creationDateTime;
-  String lockDateTime;
-  String unlockDateTime;
-  String revealDateTime;
+  DateTime creationDateTime;
+  DateTime lockDateTime;
+  DateTime unlockDateTime;
+  DateTime revealDateTime;
   String? albumCoverUrl;
   Visibility visibility;
   AlbumPhases phase;
@@ -30,7 +31,7 @@ class Album {
     required this.albumOwner,
     required this.ownerFirst,
     required this.ownerLast,
-    this.creationDateTime,
+    required this.creationDateTime,
     required this.lockDateTime,
     required this.unlockDateTime,
     required this.revealDateTime,
@@ -53,9 +54,10 @@ class Album {
     albumOwner: "",
     ownerFirst: "",
     ownerLast: "",
-    lockDateTime: "",
-    unlockDateTime: "",
-    revealDateTime: "",
+    creationDateTime: DateTime.utc(1900),
+    lockDateTime: DateTime.utc(1900),
+    unlockDateTime: DateTime.utc(1900),
+    revealDateTime: DateTime.utc(1900),
     visibility: Visibility.public,
     phase: AlbumPhases.invite,
   );
@@ -69,6 +71,26 @@ class Album {
       'locked_at': lockDateTime,
       'revealed_at': revealDateTime,
     };
+  }
+
+  factory Album.from(Album album) {
+    return Album(
+      albumId: album.albumId,
+      albumName: album.albumName,
+      albumOwner: album.albumOwner,
+      ownerFirst: album.ownerFirst,
+      ownerLast: album.ownerLast,
+      albumCoverId: album.albumCoverId,
+      imageMap: album.imageMap,
+      guests: album.guests,
+      creationDateTime: album.creationDateTime,
+      lockDateTime: album.lockDateTime,
+      unlockDateTime: album.unlockDateTime,
+      revealDateTime: album.revealDateTime,
+      albumCoverUrl: album.albumCoverUrl,
+      visibility: album.visibility,
+      phase: album.phase,
+    );
   }
 
   factory Album.fromMap(Map<String, dynamic> map) {
@@ -126,12 +148,12 @@ class Album {
       albumOwner: map['album_owner'] as String,
       ownerFirst: map['owner_first'],
       ownerLast: map['owner_last'],
-      creationDateTime: map['created_at'],
+      creationDateTime: DateTime.parse(map['created_at']),
       guests: guests,
       imageMap: images,
-      lockDateTime: map['locked_at'],
-      unlockDateTime: map['unlocked_at'],
-      revealDateTime: map['revealed_at'],
+      lockDateTime: DateTime.parse(map['locked_at']),
+      unlockDateTime: DateTime.parse(map['unlocked_at']),
+      revealDateTime: DateTime.parse(map['revealed_at']),
       visibility: visibility,
       phase: phase,
     );
@@ -153,6 +175,10 @@ class Album {
     String fullName = "$ownerFirst $ownerLast";
 
     return fullName;
+  }
+
+  String get timeSince {
+    return timeago.format(revealDateTime);
   }
 
   List<Image> get images {
@@ -250,13 +276,13 @@ class Album {
     return sortedGuests;
   }
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Album &&
-          runtimeType == other.runtimeType &&
-          albumId == other.albumId;
+  // @override
+  // bool operator ==(Object other) =>
+  //     identical(this, other) ||
+  //     other is Album &&
+  //         runtimeType == other.runtimeType &&
+  //         albumId == other.albumId;
 
-  @override
-  int get hashCode => albumId.hashCode;
+  // @override
+  // int get hashCode => albumId.hashCode;
 }

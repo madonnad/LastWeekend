@@ -26,7 +26,7 @@ class ImageFrameCubit extends Cubit<ImageFrameState> {
   }
 
   Future<void> toggleLike() async {
-    Image image = state.image;
+    Image image = Image.from(state.image);
     emit(state.copyWith(likeLoading: true));
 
     late bool userLiked;
@@ -42,7 +42,7 @@ class ImageFrameCubit extends Cubit<ImageFrameState> {
   }
 
   Future<void> toggleUpvote() async {
-    Image image = state.image;
+    Image image = Image.from(state.image);
     emit(state.copyWith(upvoteLoading: true));
 
     late bool userUpvoted;
