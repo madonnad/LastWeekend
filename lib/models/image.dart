@@ -68,6 +68,24 @@ class Image {
     );
   }
 
+  factory Image.from(Image image) {
+    return Image(
+      imageId: image.imageId,
+      owner: image.owner,
+      firstName: image.firstName,
+      lastName: image.lastName,
+      uploadDateTime: image.uploadDateTime,
+      imageCaption: image.imageCaption,
+      likes: image.likes,
+      upvotes: image.upvotes,
+      userLiked: image.userLiked,
+      userUpvoted: image.userUpvoted,
+      commentMap: image.commentMap,
+      likesUID: image.likesUID,
+      upvotesUID: image.upvotesUID,
+    );
+  }
+
   List<Comment> get comments {
     return commentMap.values.toList();
   }

@@ -75,8 +75,7 @@ extension ImageDataRepo on DataRepository {
         newCount =
             await EngagementService.removeUpvoteFromPhoto(user.token, imageID);
         userUpvoted = false;
-      }
-      if (!currentStatus) {
+      } else {
         newCount = await EngagementService.upvotePhoto(user.token, imageID);
         userUpvoted = true;
       }

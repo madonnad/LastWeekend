@@ -41,14 +41,14 @@ class FeedSlideshowInset extends StatelessWidget {
                             .read<FeedSlideshowCubit>()
                             .updatePage(index),
                         controller: state.pageController,
-                        itemCount: 3,
+                        itemCount: state.topThreeImages.length,
                         allowImplicitScrolling: true,
                         itemBuilder: (context, index) {
                           return Container(
                             decoration: BoxDecoration(
                               image: DecorationImage(
                                 image: CachedNetworkImageProvider(
-                                  state.album.rankedImages[index].imageReq,
+                                  state.topThreeImages[index].imageReq,
                                   headers: headers,
                                 ),
                                 fit: BoxFit.cover,
@@ -150,19 +150,16 @@ class FeedSlideshowInset extends StatelessWidget {
                           size: 25,
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(right: 15.0),
-                        child: Icon(
-                          Icons.favorite_outline,
-                          color: Colors.white54,
-                          size: 25,
-                        ),
-                      ),
                       Icon(
-                        Icons.arrow_circle_up,
+                        Icons.favorite_outline,
                         color: Colors.white54,
                         size: 25,
                       ),
+                      // Icon(
+                      //   Icons.arrow_circle_up,
+                      //   color: Colors.white54,
+                      //   size: 25,
+                      // ),
                     ],
                   )
                 ],

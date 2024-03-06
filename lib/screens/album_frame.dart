@@ -13,9 +13,10 @@ import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 
 class AlbumFrame extends StatelessWidget {
   final Arguments arguments;
-  final List<String> filterList = ["Popular", "Guests", "Timeline"];
 
   AlbumFrame({super.key, required this.arguments});
+
+  final List<String> filterList = ["Popular", "Guests", "Timeline"];
 
   @override
   Widget build(BuildContext context) {

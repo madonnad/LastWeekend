@@ -29,6 +29,14 @@ extension AlbumDataRepo on DataRepository {
 
   // Initializer Functions
 
+  Map<String, Image> getAlbumImages(String albumID) {
+    if (albumMap.containsKey(albumID) &&
+        albumMap[albumID]!.imageMap.isNotEmpty) {
+      return albumMap[albumID]!.imageMap;
+    }
+    return {};
+  }
+
   Map<String, Album> activeAlbums() {
     return albumMap.values
         .where((album) =>
