@@ -30,39 +30,18 @@ class ImageFrameDialog extends StatelessWidget {
                 const ImageFrameAppBar(),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: state.selectedModeImages.length,
+                    itemCount: state.imageFrameTimelineList.length,
                     itemBuilder: (context, index) {
                       String listText = '';
-                      switch (state.viewMode) {
-                        case AlbumViewMode.popular:
-                          listText =
-                              "${state.selectedModeImages[index].upvotes} Upvotes";
-                        // if (index != 0) {
-                        //   String previousText =
-                        //       "${state.selectedModeImages[index - 1].upvotes} Upvotes";
-                        //   if (listText == previousText) {
-                        //     listText = '';
-                        //   }
-                        // }
-                        case AlbumViewMode.guests:
-                          listText = state.selectedModeImages[index].fullName;
-                        // if (index != 0) {
-                        //   String previousText =
-                        //       state.selectedModeImages[index - 1].fullName;
-                        //   if (listText == previousText) {
-                        //     listText = '';
-                        //   }
-                        // }
-                        case AlbumViewMode.timeline:
-                          listText = state.selectedModeImages[index].dateString;
-                        // if (index != 0) {
-                        //   String previousText =
-                        //       state.selectedModeImages[index - 1].dateString;
-                        //   if (listText == previousText) {
-                        //     listText = '';
-                        //   }
-                        // }
-                      }
+                      listText =
+                          "${state.imageFrameTimelineList[index].dateString} ${state.imageFrameTimelineList[index].timeString}";
+                      // if (index != 0) {
+                      //   String previousText =
+                      //       state.selectedModeImages[index - 1].dateString;
+                      //   if (listText == previousText) {
+                      //     listText = '';
+                      //   }
+                      // }
 
                       return GestureDetector(
                         onTap: () {
@@ -77,7 +56,7 @@ class ImageFrameDialog extends StatelessWidget {
                           child: SizedBox(
                             height: 140,
                             child: DialogImageRow(
-                              url: state.selectedModeImages[index].imageReq,
+                              url: state.imageFrameTimelineList[index].imageReq,
                               headers: headers,
                               listText: listText,
                             ),

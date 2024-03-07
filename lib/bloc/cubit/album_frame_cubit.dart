@@ -21,11 +21,13 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
             album: album,
             viewMode: AlbumViewMode.popular,
             pageController: PageController(),
-            selectedImage: album.images[0],
           ),
         ) {
     // Set Internal Ranked Images
     setRankedImages();
+    if (state.images.isNotEmpty) {
+      emit(state.copyWith(selectedImage: state.images[0]));
+    }
 
     imageStreamSubscription = dataRepository.imageStream.listen((event) {
       img.Image newImage = event.image;
