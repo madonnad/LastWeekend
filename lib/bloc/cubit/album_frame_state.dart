@@ -5,7 +5,7 @@ enum AlbumViewMode { popular, guests, timeline }
 class AlbumFrameState extends Equatable {
   final Album album;
   final PageController pageController;
-  final img.Image selectedImage;
+  final img.Image? selectedImage;
   final List<img.Image> rankedImages;
   final List<img.Image> topThreeImages;
   final List<img.Image> remainingRankedImages;
@@ -15,7 +15,7 @@ class AlbumFrameState extends Equatable {
   AlbumFrameState({
     required this.album,
     required this.pageController,
-    required this.selectedImage,
+    this.selectedImage,
     this.rankedImages = const [],
     this.topThreeImages = const [],
     this.remainingRankedImages = const [],

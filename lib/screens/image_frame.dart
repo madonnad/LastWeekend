@@ -22,7 +22,7 @@ class ImageFrame extends StatelessWidget {
       listener: (context, state) {
         context
             .read<ImageFrameCubit>()
-            .changeImageFrameState(state.selectedImage);
+            .changeImageFrameState(state.selectedImage!);
       },
       child: BlocBuilder<ImageFrameCubit, ImageFrameState>(
         builder: (context, state) {
