@@ -5,7 +5,8 @@ class CameraState extends Equatable {
   final List<CapturedImage> uploadList;
   final int? selectedIndex;
   final CapturedImage? selectedImage;
-  final List<Album> activeAlbums;
+  //final List<Album> unlockedAlbums;
+  final Map<String, Album> unlockedAlbumMap;
   final Album? selectedAlbum;
   final TextEditingController captionTextController;
   final bool loading;
@@ -14,20 +15,22 @@ class CameraState extends Equatable {
     required this.uploadList,
     required this.selectedIndex,
     required this.selectedImage,
-    required this.activeAlbums,
+    //required this.unlockedAlbums,
+    required this.unlockedAlbumMap,
     required this.selectedAlbum,
     required this.captionTextController,
     required this.loading,
   });
 
-  factory CameraState.empty(List<Album> activeAlbums) {
+  factory CameraState.empty() {
     return CameraState(
       photosTaken: const [],
       uploadList: const [],
       selectedIndex: null,
       selectedImage: null,
-      selectedAlbum: activeAlbums.isEmpty ? null : activeAlbums[0],
-      activeAlbums: activeAlbums,
+      selectedAlbum: null,
+      //unlockedAlbums: const [],
+      unlockedAlbumMap: HashMap(),
       captionTextController: TextEditingController(),
       loading: false,
     );
@@ -38,7 +41,8 @@ class CameraState extends Equatable {
     List<CapturedImage>? uploadList,
     int? selectedIndex,
     CapturedImage? selectedImage,
-    List<Album>? activeAlbums,
+    //List<Album>? unlockedAlbums,
+    Map<String, Album>? unlockedAlbumMap,
     Album? selectedAlbum,
     TextEditingController? captionTextController,
     bool? loading,
@@ -49,7 +53,8 @@ class CameraState extends Equatable {
       selectedIndex: selectedIndex ?? this.selectedIndex,
       selectedImage: selectedImage ?? this.selectedImage,
       selectedAlbum: selectedAlbum ?? this.selectedAlbum,
-      activeAlbums: activeAlbums ?? this.activeAlbums,
+      //unlockedAlbums: unlockedAlbums ?? this.unlockedAlbums,
+      unlockedAlbumMap: unlockedAlbumMap ?? this.unlockedAlbumMap,
       captionTextController:
           captionTextController ?? this.captionTextController,
       loading: loading ?? this.loading,
@@ -59,6 +64,10 @@ class CameraState extends Equatable {
   List<CapturedImage> get selectedAlbumImageList {
     return List.from(
         photosTaken.where((element) => element.album == selectedAlbum));
+  }
+
+  List<Album> get unlockedAlbums {
+    return unlockedAlbumMap.values.toList();
   }
 
   Map<Album, List<CapturedImage>> get mapOfAlbumImages {
@@ -87,7 +96,8 @@ class CameraState extends Equatable {
         uploadList,
         selectedIndex,
         selectedAlbum,
-        activeAlbums,
+        //unlockedAlbums,
+        unlockedAlbumMap,
         selectedImage,
         selectedImageRecap,
         captionTextController,

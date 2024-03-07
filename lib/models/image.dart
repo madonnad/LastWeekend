@@ -17,7 +17,7 @@ class Image {
   int upvotes;
   bool userLiked;
   bool userUpvoted;
-  List<Comment> comments;
+  Map<String, Comment> commentMap;
   List<Engager> likesUID;
   List<Engager> upvotesUID;
 
@@ -32,7 +32,7 @@ class Image {
     required this.upvotes,
     required this.userLiked,
     required this.userUpvoted,
-    required this.comments,
+    required this.commentMap,
     required this.likesUID,
     required this.upvotesUID,
   });
@@ -64,8 +64,30 @@ class Image {
       userUpvoted: map['user_upvoted'],
       likesUID: [],
       upvotesUID: [],
-      comments: [],
+      commentMap: {},
     );
+  }
+
+  factory Image.from(Image image) {
+    return Image(
+      imageId: image.imageId,
+      owner: image.owner,
+      firstName: image.firstName,
+      lastName: image.lastName,
+      uploadDateTime: image.uploadDateTime,
+      imageCaption: image.imageCaption,
+      likes: image.likes,
+      upvotes: image.upvotes,
+      userLiked: image.userLiked,
+      userUpvoted: image.userUpvoted,
+      commentMap: image.commentMap,
+      likesUID: image.likesUID,
+      upvotesUID: image.upvotesUID,
+    );
+  }
+
+  List<Comment> get comments {
+    return commentMap.values.toList();
   }
 
   String get imageReq {

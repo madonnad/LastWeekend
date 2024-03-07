@@ -8,6 +8,11 @@ abstract class FeedEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class AddAlbumsToFeed extends FeedEvent {
+  final List<Album> albums;
+  const AddAlbumsToFeed({required this.albums});
+}
+
 class FeedDataRequested extends FeedEvent {
   final int index;
   const FeedDataRequested({

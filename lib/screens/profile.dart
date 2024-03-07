@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_photo/components/profile_comp/notification_comp/album_invite_notification_comp.dart';
-import 'package:shared_photo/components/profile_comp/notification_comp/basic_notification_comp.dart';
-import 'package:shared_photo/components/profile_comp/notification_comp/friend_request_notification_comp.dart';
 import 'package:shared_photo/components/profile_comp/profile_album_tab.dart';
 import 'package:shared_photo/components/profile_comp/profile_flexible_space.dart';
 import 'package:shared_photo/components/profile_comp/profile_notification_tab.dart';
@@ -35,9 +31,6 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   @override
   Widget build(BuildContext context) {
-    PageController profileController = PageController();
-    TabController profileTabController = TabController(length: 3, vsync: this);
-
     double devHeight = MediaQuery.of(context).size.height;
     return NestedScrollView(
       headerSliverBuilder: (context, innerBoxIsScrolled) => [

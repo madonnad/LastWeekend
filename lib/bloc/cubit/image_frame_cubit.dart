@@ -1,126 +1,71 @@
-import 'dart:typed_data';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
-import 'package:shared_photo/bloc/bloc/app_bloc.dart';
-import 'package:shared_photo/bloc/cubit/new_album_frame_cubit.dart';
-import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/comment.dart';
-import 'package:shared_photo/models/image.dart' as img;
-import 'package:shared_photo/repositories/go_repository.dart';
+import 'package:shared_photo/models/image.dart';
+import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 
 part 'image_frame_state.dart';
 
 class ImageFrameCubit extends Cubit<ImageFrameState> {
-  AppBloc appBloc;
-  img.Image image;
-  Album album;
-  AlbumViewMode viewMode;
-  int initialIndex;
-  GoRepository goRepository;
+  DataRepository dataRepository;
+  Image image;
+  String albumID;
   ImageFrameCubit({
-    required this.appBloc,
+    required this.dataRepository,
     required this.image,
-    required this.album,
-    required this.viewMode,
-    required this.initialIndex,
-    required this.goRepository,
-  }) : super(
-          ImageFrameState(
-            uid: appBloc.state.user.id,
-            pageController: PageController(initialPage: initialIndex),
-            selectedImage: image,
-            album: album,
-            viewMode: viewMode,
-            selectedIndex: initialIndex,
-          ),
-        ) {
-    initializeComments();
+    required this.albumID,
+  }) : super(ImageFrameState(image: image)) {
+    initializeComments(image);
+
+    dataRepository.imageStream.listen((event) {});
   }
 
-  Future<void> initializeComments() async {
-    img.Image image = state.selectedImage;
-
-    emit(state.copyWith(loading: true));
-    image.comments = await goRepository.getImageComments(image.imageId);
-    emit(state.copyWith(loading: false, selectedImage: image));
+  void changeImageFrameState(Image image) {
+    emit(state.copyWith(image: image));
+    initializeComments(image);
   }
 
   Future<void> toggleLike() async {
-    img.Image image = state.selectedImage;
+    Image image = Image.from(state.image);
     emit(state.copyWith(likeLoading: true));
 
-    if (state.selectedImage.userLiked == true) {
-      image.likes = await goRepository.unlikePhoto(
-          appBloc.state.user.token, state.selectedImage.imageId);
-      image.userLiked = false;
-      emit(state.copyWith(likeLoading: false, selectedImage: image));
-      return;
-    }
+    late bool userLiked;
+    late int count;
 
-    if (state.selectedImage.userLiked == false) {
-      image.likes = await goRepository.likePhoto(
-          appBloc.state.user.token, state.selectedImage.imageId);
-      image.userLiked = true;
-      emit(state.copyWith(likeLoading: false, selectedImage: image));
-      return;
-    }
+    (userLiked, count) = await dataRepository.toggleImageLike(
+        albumID, image.imageId, image.userLiked);
+
+    image.userLiked = userLiked;
+    image.likes = count;
+
+    emit(state.copyWith(likeLoading: false, image: image));
   }
 
   Future<void> toggleUpvote() async {
-    img.Image image = state.selectedImage;
+    Image image = Image.from(state.image);
     emit(state.copyWith(upvoteLoading: true));
 
-    if (state.selectedImage.userUpvoted == true) {
-      image.upvotes = await goRepository.removeUpvoteFromPhoto(
-          appBloc.state.user.token, state.selectedImage.imageId);
-      image.userUpvoted = false;
-      emit(state.copyWith(upvoteLoading: false, selectedImage: image));
-      return;
-    }
+    late bool userUpvoted;
+    late int count;
 
-    if (state.selectedImage.userUpvoted == false) {
-      image.upvotes = await goRepository.upvotePhoto(
-          appBloc.state.user.token, state.selectedImage.imageId);
-      image.userUpvoted = true;
-      emit(state.copyWith(upvoteLoading: false, selectedImage: image));
-      return;
-    }
+    (userUpvoted, count) = await dataRepository.toggleImageUpvote(
+        albumID, image.imageId, image.userUpvoted);
+
+    image.userUpvoted = userUpvoted;
+    image.upvotes = count;
+
+    emit(state.copyWith(upvoteLoading: false, image: image));
   }
 
-  void changeViewMode(String? selection) {
-    switch (selection) {
-      case "Popular":
-        int newIndex = state.rankedImageList.indexOf(state.selectedImage);
-        emit(state.copyWith(viewMode: AlbumViewMode.popular));
-        state.pageController.jumpToPage(newIndex);
-      case "Guests":
-        int newIndex = state.guestImageList.indexOf(state.selectedImage);
-        emit(state.copyWith(viewMode: AlbumViewMode.guests));
-        state.pageController.jumpToPage(newIndex);
-      case "Timeline":
-        int newIndex = state.timelineImageList.indexOf(state.selectedImage);
-        emit(state.copyWith(
-          viewMode: AlbumViewMode.timeline,
-        ));
-        state.pageController.jumpToPage(newIndex);
-    }
-  }
+  Future<void> initializeComments(Image image) async {
+    image.commentMap = {};
+    emit(state.copyWith(loading: true, image: image));
 
-  void imageChange(index) {
-    img.Image newImage = state.selectedModeImages[index];
-    emit(state.copyWith(selectedImage: newImage));
-    initializeComments();
-  }
+    Map<String, Comment> commentMap =
+        await dataRepository.initalizeCommentsAndStore(albumID, image.imageId);
 
-  void nextImage() {
-    state.pageController.nextPage(
-        duration: const Duration(milliseconds: 250), curve: Curves.easeIn);
-  }
+    image.commentMap = commentMap;
 
-  void previousImage() {
-    state.pageController.previousPage(
-        duration: const Duration(milliseconds: 250), curve: Curves.easeIn);
+    emit(state.copyWith(loading: false, image: image));
   }
 }

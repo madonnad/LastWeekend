@@ -9,6 +9,7 @@ import 'package:shared_photo/models/album.dart';
 
 class ActiveAlbumDropdown extends StatelessWidget {
   final double opacity;
+
   const ActiveAlbumDropdown({super.key, required this.opacity});
 
   @override
@@ -32,7 +33,7 @@ class ActiveAlbumDropdown extends StatelessWidget {
                   color: Colors.black,
                 ),
                 iconStyleData: const IconStyleData(iconSize: 0),
-                items: state.activeAlbums
+                items: state.unlockedAlbums
                     .map(
                       (e) => DropdownMenuItem<Album>(
                         value: e,

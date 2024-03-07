@@ -1,10 +1,9 @@
 import 'package:camera/camera.dart';
-import 'package:equatable/equatable.dart';
 import 'package:shared_photo/models/album.dart';
 
-class CapturedImage extends Equatable {
-  final XFile imageXFile;
-  final Album? album;
+class CapturedImage {
+  XFile imageXFile;
+  Album? album;
   String? caption;
   bool addToRecap;
 
@@ -31,6 +30,6 @@ class CapturedImage extends Equatable {
     };
   }
 
-  @override
-  List<Object?> get props => [imageXFile, album, caption, addToRecap];
+  // @override
+  // List<Object?> get props => [imageXFile, album, caption, addToRecap];
 }

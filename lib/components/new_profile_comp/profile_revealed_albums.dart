@@ -21,7 +21,7 @@ class ProfileRevealedAlbums extends StatelessWidget {
                 child: SectionHeaderSmall("albums"),
               ),
               HorizontalAlbumList(
-                albumList: state.revealedAlbums,
+                albumList: state.myAlbums,
               ),
             ],
           ),

@@ -47,7 +47,7 @@ class Auth0Repository {
         parameters: {'given_name': firstName, 'family_name': lastName},
       );
 
-      loginWithEmailAndPassword(email: email, password: password);
+      loginWithEmailAndPassword(email: user.email, password: password);
     } catch (e) {
       print(e);
     }

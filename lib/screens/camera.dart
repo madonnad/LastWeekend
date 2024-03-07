@@ -1,13 +1,8 @@
-import 'dart:io';
-import 'dart:math';
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
 import 'package:shared_photo/bloc/cubit/camera_cubit.dart';
 import 'package:shared_photo/components/camera_comp/active_album_dropdown.dart';
 import 'package:shared_photo/components/camera_comp/captured_preview_listview.dart';

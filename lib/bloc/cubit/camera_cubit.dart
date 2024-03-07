@@ -1,19 +1,65 @@
+import 'dart:collection';
+
 import 'package:bloc/bloc.dart';
-import 'package:camera/camera.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/captured_image.dart';
-import 'package:shared_photo/repositories/go_repository.dart';
+import 'package:shared_photo/models/user.dart';
+import 'package:shared_photo/repositories/data_repository/data_repository.dart';
+import 'package:shared_photo/services/image_service.dart';
 
 part 'camera_state.dart';
 
 class CameraCubit extends Cubit<CameraState> {
-  ProfileBloc profileBloc;
-  GoRepository goRepository;
-  CameraCubit({required this.profileBloc, required this.goRepository})
-      : super(CameraState.empty(profileBloc.state.unlockedAlbums));
+  DataRepository dataRepository;
+  User user;
+
+  CameraCubit({required this.dataRepository, required this.user})
+      : super(CameraState.empty()) {
+    dataRepository.albumStream.listen((event) {
+      StreamOperation streamOperation = event.$1;
+      Album album = event.$2;
+
+      // Check if user is in the album that was passed
+      bool userIsGuest = album.guests.any((guest) => guest.uid == user.id);
+
+      // Only allow album through if it passes these qualities
+      if (userIsGuest && album.phase == AlbumPhases.unlock) {
+        switch (streamOperation) {
+          case StreamOperation.add:
+            addUnlockedAlbums(album);
+          case StreamOperation.update:
+          case StreamOperation.delete:
+        }
+      }
+    });
+    // Initalize Unlocked Album Map
+    _initalizeUnlockedAlbums();
+  }
+
+  void addUnlockedAlbums(Album album) {
+    Map<String, Album> albumMap = Map.from(state.unlockedAlbumMap);
+
+    String key = album.albumId;
+
+    if (!albumMap.containsKey(key) || albumMap[key] != album) {
+      albumMap[key] = album;
+
+      if (albumMap.length == 1) {
+        emit(state.copyWith(
+            unlockedAlbumMap: albumMap,
+            selectedAlbum: albumMap.entries.first.value));
+        return;
+      }
+      emit(state.copyWith(unlockedAlbumMap: albumMap));
+    }
+  }
+
+  void _initalizeUnlockedAlbums() {
+    Map<String, Album> unlockedMap = Map.from(dataRepository.unlockedAlbums());
+    emit(state.copyWith(unlockedAlbumMap: unlockedMap));
+  }
 
   Future<void> uploadImagesToAlbums(String token) async {
     List<CapturedImage> photosTaken = List.from(state.photosTaken);
@@ -24,7 +70,8 @@ class CameraCubit extends Cubit<CameraState> {
     for (int i = 0; i < photosTaken.length; i++) {
       CapturedImage image = photosTaken[i];
       try {
-        bool uploadSucceeded = await goRepository.postNewImage(image);
+        bool uploadSucceeded =
+            await ImageService.postCapturedImage(token, image);
         if (!uploadSucceeded) {
           throw false;
         }

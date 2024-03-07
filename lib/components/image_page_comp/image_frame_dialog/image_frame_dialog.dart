@@ -1,10 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
-import 'package:shared_photo/bloc/cubit/image_frame_cubit.dart';
-import 'package:shared_photo/bloc/cubit/new_album_frame_cubit.dart';
+import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
 import 'package:shared_photo/components/image_page_comp/image_frame_appbar.dart';
 import 'package:shared_photo/components/image_page_comp/image_frame_dialog/dialog_image_row.dart';
 
@@ -13,7 +11,7 @@ class ImageFrameDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ImageFrameCubit, ImageFrameState>(
+    return BlocBuilder<AlbumFrameCubit, AlbumFrameState>(
       builder: (context, state) {
         Map<String, String> headers =
             context.read<AppBloc>().state.user.headers;
@@ -32,43 +30,24 @@ class ImageFrameDialog extends StatelessWidget {
                 const ImageFrameAppBar(),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: state.selectedModeImages.length,
+                    itemCount: state.imageFrameTimelineList.length,
                     itemBuilder: (context, index) {
                       String listText = '';
-                      switch (state.viewMode) {
-                        case AlbumViewMode.popular:
-                          listText =
-                              "${state.selectedModeImages[index].upvotes} Upvotes";
-                        // if (index != 0) {
-                        //   String previousText =
-                        //       "${state.selectedModeImages[index - 1].upvotes} Upvotes";
-                        //   if (listText == previousText) {
-                        //     listText = '';
-                        //   }
-                        // }
-                        case AlbumViewMode.guests:
-                          listText = state.selectedModeImages[index].fullName;
-                        // if (index != 0) {
-                        //   String previousText =
-                        //       state.selectedModeImages[index - 1].fullName;
-                        //   if (listText == previousText) {
-                        //     listText = '';
-                        //   }
-                        // }
-                        case AlbumViewMode.timeline:
-                          listText = state.selectedModeImages[index].dateString;
-                        // if (index != 0) {
-                        //   String previousText =
-                        //       state.selectedModeImages[index - 1].dateString;
-                        //   if (listText == previousText) {
-                        //     listText = '';
-                        //   }
-                        // }
-                      }
+                      listText =
+                          "${state.imageFrameTimelineList[index].dateString} ${state.imageFrameTimelineList[index].timeString}";
+                      // if (index != 0) {
+                      //   String previousText =
+                      //       state.selectedModeImages[index - 1].dateString;
+                      //   if (listText == previousText) {
+                      //     listText = '';
+                      //   }
+                      // }
 
                       return GestureDetector(
                         onTap: () {
-                          context.read<ImageFrameCubit>().imageChange(index);
+                          context
+                              .read<AlbumFrameCubit>()
+                              .initalizeImageFrameWithSelectedImage(index);
                           state.pageController.jumpToPage(index);
                           Navigator.of(context).pop();
                         },
@@ -77,7 +56,7 @@ class ImageFrameDialog extends StatelessWidget {
                           child: SizedBox(
                             height: 140,
                             child: DialogImageRow(
-                              url: state.selectedModeImages[index].imageReq,
+                              url: state.imageFrameTimelineList[index].imageReq,
                               headers: headers,
                               listText: listText,
                             ),

@@ -4,8 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/repositories/auth0_repository.dart';
-import 'package:shared_photo/repositories/data_repository.dart';
-import 'package:shared_photo/repositories/go_repository.dart';
+import 'package:shared_photo/repositories/data_repository/data_repository.dart';
+import 'package:shared_photo/repositories/user_repository.dart';
 import 'package:shared_photo/router/generate_route.dart';
 import 'package:shared_photo/screens/auth.dart';
 import 'package:shared_photo/screens/loading.dart';
@@ -46,18 +46,30 @@ class MainApp extends StatelessWidget {
           auth0repository: context.read<Auth0Repository>(),
           cameras: cameras,
         ),
-        child: MultiRepositoryProvider(
-          providers: [
-            RepositoryProvider(
-              create: (context) =>
-                  GoRepository(token: context.read<AppBloc>().state.user.token),
-            ),
-            RepositoryProvider(
-              create: (context) => DataRepository(
-                  token: context.read<AppBloc>().state.user.token),
-            ),
-          ],
-          child: const MainAppView(),
+        child: BlocBuilder<AppBloc, AppState>(
+          builder: (context, state) {
+            switch (state.status) {
+              case AppStatus.authenticated:
+                return MultiRepositoryProvider(
+                  providers: [
+                    RepositoryProvider(
+                      lazy: false,
+                      create: (context) => DataRepository(
+                        user: context.read<AppBloc>().state.user,
+                      ),
+                    ),
+                    RepositoryProvider(
+                      create: (context) => UserRepository(
+                        user: context.read<AppBloc>().state.user,
+                      ),
+                    ),
+                  ],
+                  child: const MainAppView(),
+                );
+              case AppStatus.unauthenticated:
+                return const MainAppView();
+            }
+          },
         ),
       ),
     );
@@ -70,20 +82,7 @@ class MainAppView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.grey),
-        scaffoldBackgroundColor: Colors.white,
-        splashFactory: NoSplash.splashFactory,
-        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-          backgroundColor: Colors.black,
-        ),
-        bottomSheetTheme: const BottomSheetThemeData(
-            backgroundColor: Colors.black, surfaceTintColor: Colors.black),
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.black,
-        ),
-      ),
+      theme: lwCustomTheme(),
       home: BlocBuilder<AppBloc, AppState>(
         builder: (context, state) {
           if (state is AuthenticatedState) {
@@ -98,4 +97,21 @@ class MainAppView extends StatelessWidget {
       onGenerateRoute: onGenerateRoute,
     );
   }
+}
+
+ThemeData lwCustomTheme() {
+  return ThemeData(
+    useMaterial3: true,
+    colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.grey),
+    scaffoldBackgroundColor: Colors.white,
+    splashFactory: NoSplash.splashFactory,
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      backgroundColor: Colors.black,
+    ),
+    bottomSheetTheme: const BottomSheetThemeData(
+        backgroundColor: Colors.black, surfaceTintColor: Colors.black),
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Colors.black,
+    ),
+  );
 }

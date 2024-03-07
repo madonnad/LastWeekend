@@ -5,6 +5,7 @@ import 'package:shared_photo/bloc/cubit/feed_slideshow_cubit.dart';
 import 'package:shared_photo/components/feed_comp/feed/feed_slideshow_inset.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/arguments.dart';
+import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 
 class FeedListItem extends StatelessWidget {
   final Album album;
@@ -59,7 +60,7 @@ class FeedListItem extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "2 days ago",
+                            album.timeSince,
                             style: GoogleFonts.montserrat(
                               fontSize: 13,
                               fontWeight: FontWeight.w300,
@@ -81,7 +82,10 @@ class FeedListItem extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(top: 12),
                       child: BlocProvider(
-                        create: (context) => FeedSlideshowCubit(album: album),
+                        create: (context) => FeedSlideshowCubit(
+                          album: album,
+                          dataRepository: context.read<DataRepository>(),
+                        ),
                         child: const FeedSlideshowInset(),
                       ),
                     ),

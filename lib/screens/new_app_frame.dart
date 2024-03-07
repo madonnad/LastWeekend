@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
+import 'package:shared_photo/bloc/bloc/dashboard_bloc.dart';
 import 'package:shared_photo/bloc/bloc/feed_bloc.dart';
 import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
 import 'package:shared_photo/bloc/cubit/camera_cubit.dart';
 import 'package:shared_photo/bloc/cubit/new_app_frame_cubit.dart';
 import 'package:shared_photo/components/new_app_frame/new_bottom_app_bar.dart';
-import 'package:shared_photo/models/album.dart';
-import 'package:shared_photo/repositories/data_repository.dart';
-import 'package:shared_photo/repositories/go_repository.dart';
+import 'package:shared_photo/repositories/data_repository/data_repository.dart';
+import 'package:shared_photo/repositories/user_repository.dart';
 import 'package:shared_photo/screens/camera.dart';
-import 'package:shared_photo/screens/camera_locked_screen.dart';
-import 'package:shared_photo/screens/loading.dart';
 import 'package:shared_photo/screens/new_feed.dart';
 import 'package:shared_photo/screens/new_profile.dart';
 
@@ -26,23 +24,28 @@ class NewAppFrame extends StatelessWidget {
           create: (context) => NewAppFrameCubit(),
         ),
         BlocProvider(
-            create: (context) => ProfileBloc(
-              appBloc: context.read<AppBloc>(),
-              goRepository: context.read<GoRepository>(),
-              dataRepository: context.read<DataRepository>(),
-            ),
+          create: (context) => ProfileBloc(
+            userRepository: context.read<UserRepository>(),
+            dataRepository: context.read<DataRepository>(),
+            user: context.read<AppBloc>().state.user,
           ),
+        ),
+        BlocProvider(
+          create: (context) => DashboardBloc(
+            dataRepository: context.read<DataRepository>(),
+            user: context.read<AppBloc>().state.user,
+          ),
+        ),
         BlocProvider(
           create: (context) => FeedBloc(
-            appBloc: BlocProvider.of<AppBloc>(context),
-            goRepository: context.read<GoRepository>(),
             dataRepository: context.read<DataRepository>(),
           ),
         ),
         BlocProvider(
+          lazy: false,
           create: (context) => CameraCubit(
-            profileBloc: BlocProvider.of<ProfileBloc>(context),
-            goRepository: context.read<GoRepository>(),
+            user: context.read<AppBloc>().state.user,
+            dataRepository: context.read<DataRepository>(),
           ),
         ),
       ],
@@ -69,8 +72,6 @@ class NewAppFrame extends StatelessWidget {
                   BlocBuilder<AppBloc, AppState>(
                     builder: (context, state) {
                       AuthenticatedState appState = state as AuthenticatedState;
-                      List<Album> revealedAlbums =
-                          context.read<ProfileBloc>().state.unlockedAlbums;
                       return CameraScreen(cameras: appState.cameras);
                     },
                   ),

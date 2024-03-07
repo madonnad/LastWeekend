@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
-import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/arguments.dart';
 
@@ -18,6 +17,12 @@ class ListAlbumComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     Map<String, String> headers = context.read<AppBloc>().state.user.headers;
     Arguments arguments = Arguments(album: album);
+
+    String displayImageUrl =
+        album.images.isNotEmpty && album.phase == AlbumPhases.reveal
+            ? album.rankedImages[0].imageReq
+            : album.coverReq;
+
     return GestureDetector(
       onTap: () =>
           Navigator.of(context).pushNamed('/album', arguments: arguments),
@@ -34,7 +39,7 @@ class ListAlbumComponent extends StatelessWidget {
                 clipBehavior: Clip.hardEdge,
                 color: const Color.fromRGBO(19, 19, 19, 1),
                 child: CachedNetworkImage(
-                  imageUrl: album.coverReq,
+                  imageUrl: displayImageUrl,
                   httpHeaders: headers,
                   fit: BoxFit.cover,
                 ),
