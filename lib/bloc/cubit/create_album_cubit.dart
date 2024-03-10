@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_photo/models/exception.dart';
 import 'package:shared_photo/models/friend.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 import 'package:shared_photo/repositories/user_repository.dart';
@@ -12,9 +13,12 @@ part 'create_album_state.dart';
 
 class CreateAlbumCubit extends Cubit<CreateAlbumState> {
   UserRepository userRepository;
+  DataRepository dataRepository;
 
-  CreateAlbumCubit({required this.userRepository})
-      : super(
+  CreateAlbumCubit({
+    required this.userRepository,
+    required this.dataRepository,
+  }) : super(
           CreateAlbumState(
             albumName: TextEditingController(),
             friendSearch: TextEditingController(),
@@ -100,27 +104,22 @@ class CreateAlbumCubit extends Cubit<CreateAlbumState> {
     emit(state.copyWith(albumCoverImagePath: imagePath));
   }
 
-  Future<void> createAlbum() async {
-    // TODO: Implement the create album logic here and call Album Service.
-    
-    // try {
-    //   final String? imageId = await AlbumService.postNewAlbum(token, state);
-    //   if (imageId == null) {
-    //     throw const FormatException("Failed creating new image");
-    //   }
-    //   final String? imagePath =
-    //       state.albumCoverImagePath != null ? state.albumCoverImagePath! : null;
-    //   if (imagePath == null) {
-    //     throw const FormatException("No image path was provided to upload");
-    //   }
-    //   bool success =
-    //       await ImageService.postAlbumCoverImage(token, imagePath, imageId);
-    //   if (success == false) {
-    //     throw const FormatException("Image upload failed");
-    //   }
-    // } catch (e) {
-    //   print(e);
-    // }
+  Future<bool> createAlbum() async {
+    emit(state.copyWith(loading: true));
+    bool success = false;
+    String? error;
+
+    (success, error) = await dataRepository.createAlbum(state: state);
+
+    if (success) {
+      emit(state.copyWith(loading: false));
+      return success;
+    } else {
+      emit(state.copyWith(
+          loading: false, exception: ExceptionBase(errorMessage: error ?? '')));
+      emit(state.copyWith(exception: null));
+      return success;
+    }
   }
 
   void setUnlockDate(DateTime dateTime) {

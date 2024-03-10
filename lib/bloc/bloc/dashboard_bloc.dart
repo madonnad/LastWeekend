@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:shared_photo/models/album.dart';
+import 'package:shared_photo/models/guest.dart';
 import 'package:shared_photo/models/user.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 
@@ -39,9 +40,13 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       Album album = event.$2;
 
       // Check if user is in the album that was passed
-      bool userIsGuest = album.guests.any((guest) => guest.uid == user.id);
+      bool userIsGuest = album.guests.any((guest) {
+        return guest.status == InviteStatus.accept && guest.uid == user.id;
+      });
 
-      if (userIsGuest && album.phase != AlbumPhases.reveal) {
+      bool userIsOwner = album.albumOwner == user.id;
+
+      if ((userIsGuest || userIsOwner) && album.phase != AlbumPhases.reveal) {
         switch (type) {
           case StreamOperation.add:
             add(AddAlbumToMap(album: album));

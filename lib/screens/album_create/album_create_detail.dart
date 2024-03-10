@@ -17,61 +17,97 @@ class AlbumCreateDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.black,
-      padding: EdgeInsets.only(
-        top: kToolbarHeight,
-        left: 15,
-        right: 15,
-        bottom: MediaQuery.of(context).padding.bottom,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          GestureDetector(
-            onTap: () => Navigator.of(context).pop(),
-            child: const Icon(
-              Icons.close,
-              color: Colors.white,
-              size: 30,
-            ),
+    return BlocConsumer<CreateAlbumCubit, CreateAlbumState>(
+      listener: (context, state) {
+        if (state.exception != null) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(state.exception?.errorMessage ?? "Error")));
+        }
+      },
+      builder: (context, state) {
+        return Container(
+          color: Colors.black,
+          padding: EdgeInsets.only(
+            top: kToolbarHeight,
+            left: 15,
+            right: 15,
+            bottom: MediaQuery.of(context).padding.bottom,
           ),
-          const AlbumTitleField(),
-          const Expanded(
-            child: Align(
-              child: AlbumCoverSelect(),
-            ),
+          child: Stack(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  GestureDetector(
+                    onTap: () => Navigator.of(context).pop(),
+                    child: const Icon(
+                      Icons.close,
+                      color: Colors.white,
+                      size: 30,
+                    ),
+                  ),
+                  const AlbumTitleField(),
+                  const Expanded(
+                    child: Align(
+                      child: AlbumCoverSelect(),
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 10.0, bottom: 8),
+                    child: SectionHeaderSmall('Duration'),
+                  ),
+                  const DateTimeSection(),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 10.0, bottom: 10),
+                    child: SectionHeaderSmall('Friends'),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 25.0),
+                    child: AddFriendsInfoList(
+                      pageController: createAlbumController,
+                    ),
+                  ),
+                  BlocBuilder<CreateAlbumCubit, CreateAlbumState>(
+                    builder: (context, state) {
+                      return Align(
+                        alignment: Alignment.center,
+                        child: InkWell(
+                          onTap: state.canCreate
+                              ? () => context
+                                      .read<CreateAlbumCubit>()
+                                      .createAlbum()
+                                      .then((success) {
+                                    if (success) {
+                                      Navigator.of(context).pop();
+                                    }
+                                  })
+                              : null,
+                          child: const CreateAlbumButton(),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+              state.loading
+                  ? Container(
+                      height: MediaQuery.of(context).size.height,
+                      width: MediaQuery.of(context).size.width,
+                      color: Colors.black54,
+                      child: const Center(
+                        child: CircularProgressIndicator(
+                          backgroundColor: Colors.black54,
+                        ),
+                      ),
+                    )
+                  : const SizedBox(
+                      height: 0,
+                      width: 0,
+                    ),
+            ],
           ),
-          const Padding(
-            padding: EdgeInsets.only(top: 10.0, bottom: 8),
-            child: SectionHeaderSmall('Duration'),
-          ),
-          const DateTimeSection(),
-          const Padding(
-            padding: EdgeInsets.only(top: 10.0, bottom: 10),
-            child: SectionHeaderSmall('Friends'),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 25.0),
-            child: AddFriendsInfoList(
-              pageController: createAlbumController,
-            ),
-          ),
-          BlocBuilder<CreateAlbumCubit, CreateAlbumState>(
-            builder: (context, state) {
-              return Align(
-                alignment: Alignment.center,
-                child: GestureDetector(
-                  onTap: state.canCreate
-                      ? () => context.read<CreateAlbumCubit>().createAlbum()
-                      : null,
-                  child: const CreateAlbumButton(),
-                ),
-              );
-            },
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
