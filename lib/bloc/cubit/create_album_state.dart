@@ -25,6 +25,8 @@ final class CreateAlbumState extends Equatable {
   final List<Friend> searchResult;
   final FriendState friendState;
   final String modalTextString;
+  final bool loading;
+  final ExceptionBase? exception;
 
   const CreateAlbumState({
     required this.albumName,
@@ -46,6 +48,8 @@ final class CreateAlbumState extends Equatable {
     this.searchResult = const [],
     this.friendState = FriendState.empty,
     this.modalTextString = '',
+    this.loading = false,
+    this.exception,
   });
 
   CreateAlbumState copyWith({
@@ -65,6 +69,8 @@ final class CreateAlbumState extends Equatable {
     List<Friend>? searchResult,
     FriendState? friendState,
     String? modalTextString,
+    bool? loading,
+    ExceptionBase? exception,
   }) {
     return CreateAlbumState(
       albumName: albumName ?? this.albumName,
@@ -82,6 +88,8 @@ final class CreateAlbumState extends Equatable {
       searchResult: searchResult ?? this.searchResult,
       friendState: friendState ?? this.friendState,
       modalTextString: modalTextString ?? this.modalTextString,
+      loading: loading ?? this.loading,
+      exception: exception ?? this.exception,
     );
   }
 
@@ -104,6 +112,8 @@ final class CreateAlbumState extends Equatable {
       searchResult: searchResult,
       friendState: friendState,
       modalTextString: modalTextString,
+      loading: loading,
+      exception: exception,
     );
   }
 
@@ -124,6 +134,8 @@ final class CreateAlbumState extends Equatable {
       searchResult: searchResult,
       friendState: friendState,
       modalTextString: modalTextString,
+      loading: loading,
+      exception: exception,
     );
   }
 
@@ -145,6 +157,8 @@ final class CreateAlbumState extends Equatable {
         searchResult,
         friendState,
         modalTextString,
+        loading,
+        exception,
       ];
 
   bool get canContinue {
@@ -317,9 +331,11 @@ final class CreateAlbumState extends Equatable {
   }
 
   Map<String, dynamic> toJson() {
+    List<Map<String, dynamic>> inviteJson =
+        invitedFriends.map((e) => e.toJson()).toList();
     return {
       "album_name": albumName.text,
-      "invited_list": invitedUIDList,
+      "invite_list": inviteJson,
       "unlocked_at": finalUnlockDateTime.toUtc().toIso8601String(),
       "locked_at": finalLockDateTime.toUtc().toIso8601String(),
       "revealed_at": finalRevealDateTime.toUtc().toIso8601String(),

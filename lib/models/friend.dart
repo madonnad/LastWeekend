@@ -23,6 +23,14 @@ class Friend extends Equatable {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      "user_id": uid,
+      "first_name": firstName,
+      "last_name": lastName,
+    };
+  }
+
   String get imageReq {
     String requestUrl = "$goRepoDomain/image?id=$uid";
 

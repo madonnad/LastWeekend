@@ -63,7 +63,7 @@ extension AlbumDataRepo on DataRepository {
 
   // Create New Album
 
-  Future<void> createAlbum({required CreateAlbumState state}) async {
+  Future<(bool, String?)> createAlbum({required CreateAlbumState state}) async {
     try {
       Album? album = await AlbumService.postNewAlbum(user.token, state);
       if (album == null) {
@@ -82,8 +82,10 @@ extension AlbumDataRepo on DataRepository {
       }
 
       _albumController.add((StreamOperation.add, album));
+      return (true, null);
     } catch (e) {
       print(e);
+      return (false, e.toString());
     }
   }
 }

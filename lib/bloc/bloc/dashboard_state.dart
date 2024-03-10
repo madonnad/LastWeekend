@@ -25,6 +25,18 @@ class DashboardState extends Equatable {
     return activeAlbumMap.values.toList();
   }
 
+  List<Album> get sortActiveAlbumList {
+    List<Album> activeAlbums = activeAlbumMap.values.toList();
+    activeAlbums.sort((a, b) {
+      if (a.phase.index != b.phase.index) {
+        return a.phase.index.compareTo(b.phase.index);
+      } else {
+        return b.creationDateTime.compareTo(a.creationDateTime);
+      }
+    });
+    return activeAlbums;
+  }
+
   @override
   List<Object> get props => [activeAlbumMap, loading];
 }

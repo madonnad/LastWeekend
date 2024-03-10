@@ -7,8 +7,11 @@ import 'package:shared_photo/utils/api_variables.dart';
 import 'package:http/http.dart' as http;
 
 class AlbumService {
-  static Future<Album?> postNewAlbum(String token, CreateAlbumState state) async {
+  static Future<Album?> postNewAlbum(
+      String token, CreateAlbumState state) async {
+    // print(state.toJson());
     Map<String, dynamic> albumInformation = state.toJson();
+    print(albumInformation);
     String encodedBody = json.encode(albumInformation);
 
     var url = Uri.http(domain, '/user/album');
