@@ -11,7 +11,6 @@ class AlbumService {
       String token, CreateAlbumState state) async {
     // print(state.toJson());
     Map<String, dynamic> albumInformation = state.toJson();
-    print(albumInformation);
     String encodedBody = json.encode(albumInformation);
 
     var url = Uri.http(domain, '/user/album');

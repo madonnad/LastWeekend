@@ -100,7 +100,6 @@ class Album {
     AlbumPhases phase;
     dynamic jsonImages = map['images'];
     dynamic jsonGuests = map['invite_list'];
-    print(jsonGuests);
 
     if (jsonImages != null) {
       for (var item in jsonImages) {
