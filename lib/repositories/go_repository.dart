@@ -4,17 +4,22 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:shared_photo/models/search_result.dart';
+import 'package:shared_photo/models/user.dart';
 import 'package:shared_photo/utils/api_variables.dart';
 import 'package:web_socket_channel/io.dart';
 
 class GoRepository {
-  String token;
+  User user;
 
-  GoRepository({required this.token});
+  GoRepository({required this.user}) {
+    webSocketConnection().listen((event) {});
+  }
 
   Stream<String> webSocketConnection() async* {
-    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
-    final wsURL = Uri.parse('ws://0.0.0.0:2525/ws');
+    final Map<String, String> headers = {
+      'Authorization': 'Bearer ${user.token}'
+    };
+    final wsURL = Uri.parse('ws://10.0.2.2:2525/ws');
     var connection = IOWebSocketChannel.connect(wsURL, headers: headers);
 
     await for (final message in connection.stream) {
@@ -27,7 +32,9 @@ class GoRepository {
     List<SearchResult> searchResults = [];
 
     var url = Uri.http(domain, '/search', {"lookup": lookup});
-    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
+    final Map<String, String> headers = {
+      'Authorization': 'Bearer ${user.token}'
+    };
 
     final response = await http.get(url, headers: headers);
 
@@ -56,5 +63,4 @@ class GoRepository {
     throw HttpException(
         "Failed to full text search with status: ${response.statusCode}");
   }
-
 }
