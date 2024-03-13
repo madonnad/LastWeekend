@@ -3,6 +3,7 @@ import 'package:shared_photo/components/new_profile_comp/profile_revealed_albums
 import 'package:shared_photo/components/new_profile_comp/monthly_recap_comps/monthly_recap_list.dart';
 import 'package:shared_photo/components/new_profile_comp/profile_header_comps/profile_header.dart';
 import 'package:shared_photo/components/new_profile_comp/profile_topfriend_comps/top_friends_component.dart';
+import 'package:shared_photo/components/profile_comp/logout_button.dart';
 
 class NewProfileScreen extends StatelessWidget {
   const NewProfileScreen({super.key});
@@ -21,6 +22,7 @@ class NewProfileScreen extends StatelessWidget {
               SizedBox(height: 25),
               MonthlyRecapList(),
               ProfileRevealedAlbums(),
+              LogoutButton(),
             ],
           ),
         ),
