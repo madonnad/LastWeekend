@@ -73,7 +73,7 @@ class _NewFeedState extends State<NewFeed> {
                 curve: Curves.linear,
               ),
               child: const Center(
-                child: StandardLogo(),
+                child: StandardLogo(fontSize: 30),
               ),
             ),
           ),

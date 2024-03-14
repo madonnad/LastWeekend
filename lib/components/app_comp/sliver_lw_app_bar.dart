@@ -23,7 +23,7 @@ class SliverLWAppBar extends StatelessWidget {
                 alignment: Alignment.center,
                 child: state.showNotification
                     ? const AnimatedLogo()
-                    : const StandardLogo(),
+                    : const StandardLogo(fontSize: 30),
               ),
               Align(
                 alignment: Alignment.centerRight,
