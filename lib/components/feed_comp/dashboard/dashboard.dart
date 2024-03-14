@@ -14,7 +14,9 @@ class Dashboard extends StatelessWidget {
       children: [
         Padding(
           padding: EdgeInsets.only(top: 15.0),
-          child: StandardLogo(),
+          child: StandardLogo(
+            fontSize: 30,
+          ),
         ),
         Expanded(
           child: Padding(

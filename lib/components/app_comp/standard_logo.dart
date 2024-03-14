@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class StandardLogo extends StatelessWidget {
-  const StandardLogo({super.key});
+  final double fontSize;
+  const StandardLogo({super.key, required this.fontSize});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +14,7 @@ class StandardLogo extends StatelessWidget {
             text: 'last',
             style: GoogleFonts.josefinSans(
                 color: Colors.white,
-                fontSize: 30,
+                fontSize: fontSize,
                 fontWeight: FontWeight.w100,
                 letterSpacing: -1.5),
           ),
@@ -21,7 +22,7 @@ class StandardLogo extends StatelessWidget {
             text: 'weekend',
             style: GoogleFonts.dancingScript(
               color: Colors.white,
-              fontSize: 30,
+              fontSize: fontSize,
             ),
           ),
         ],
