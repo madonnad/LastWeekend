@@ -10,22 +10,32 @@ import 'package:web_socket_channel/io.dart';
 
 class GoRepository {
   User user;
+  late IOWebSocketChannel _webSocketChannel;
 
   GoRepository({required this.user}) {
-    webSocketConnection().listen((event) {});
+    _webSocketChannel = webSocketConnection();
   }
 
-  Stream<String> webSocketConnection() async* {
+  IOWebSocketChannel webSocketConnection() {
     final Map<String, String> headers = {
       'Authorization': 'Bearer ${user.token}'
     };
     final wsURL = Uri.parse('ws://10.0.2.2:2525/ws');
     var connection = IOWebSocketChannel.connect(wsURL, headers: headers);
 
-    await for (final message in connection.stream) {
-      String text = message.toString();
-      yield text;
-    }
+    connection.stream.listen((event) {
+      print("connection open");
+      String text = event.toString();
+      print(text);
+    }, onDone: () {
+      print("WebSocket Connection Closed");
+    });
+
+    return connection;
+  }
+
+  void closeWebSocket() {
+    _webSocketChannel.sink.close();
   }
 
   Future<List<SearchResult>> searchLookup({required String lookup}) async {
