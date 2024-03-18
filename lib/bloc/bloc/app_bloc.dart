@@ -19,13 +19,17 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     on<AppUserChanged>(
       (event, emit) {
         if (event.user != User.empty) {
-          //print(event.user.token);
           emit(AuthenticatedState(event.user, cameras: cameras));
         } else {
           emit(const UnauthenticatedState());
         }
       },
     );
+
+    on<ChangeNewAccountEvent>((event, emit) {
+      User user = state.user.copyWith(newAccount: !state.user.newAccount);
+      emit(AuthenticatedState(user, cameras: cameras));
+    });
 
     on<AppLogoutRequested>(
       (event, emit) {

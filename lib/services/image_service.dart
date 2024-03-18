@@ -77,6 +77,48 @@ class ImageService {
     }
   }
 
+  static Future<bool> postProfilePicture(
+      //Used to be uploadByImageId
+      String token,
+      String imagePath,
+      String userID) async {
+    var url = Uri.http(domain, '/upload', {'id': userID});
+    final Map<String, String> headers = {
+      "Content-Type": "application/json",
+      'Authorization': 'Bearer $token'
+    };
+
+    final Map<String, String> gcpHeader = {
+      "Content-Type": "application/octet-stream"
+    };
+
+    Uint8List imageBytes = await File(imagePath).readAsBytes();
+
+    try {
+      var response = await http.get(url, headers: headers);
+
+      if (response.statusCode == 200) {
+        final gcpSignedUrl = Uri.parse(response.body);
+        final secureUrl = Uri.https(gcpSignedUrl.authority, gcpSignedUrl.path,
+            gcpSignedUrl.queryParameters);
+        final uploadResponse =
+            await http.put(secureUrl, headers: gcpHeader, body: imageBytes);
+
+        if (uploadResponse.statusCode == 200) {
+          return true;
+        }
+        response = uploadResponse;
+      }
+
+      print('Request failed with status: ${response.statusCode}');
+      print('Response body: #${response.body}');
+      return false;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
   static Future<bool> postCapturedImage(
       String token, CapturedImage image) async {
     //used to be postNewImage
