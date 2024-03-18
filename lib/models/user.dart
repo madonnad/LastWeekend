@@ -9,6 +9,7 @@ class User extends Equatable {
   final String firstName;
   final String lastName;
   final String token;
+  final bool newAccount;
   final DateTime? createdDateTime;
 
   // Constructors
@@ -17,16 +18,32 @@ class User extends Equatable {
     required this.firstName,
     required this.lastName,
     required this.token,
+    required this.newAccount,
     this.createdDateTime,
     this.email,
     this.username,
   });
+
+  User copyWith(
+      {String? id, String? firstName, String? lastName, bool? newAccount}) {
+    return User(
+      id: id ?? this.id,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      username: username,
+      token: token,
+      newAccount: newAccount ?? this.newAccount,
+      createdDateTime: createdDateTime,
+      email: email,
+    );
+  }
 
   static const empty = User(
     id: '',
     firstName: '',
     lastName: '',
     token: '',
+    newAccount: false,
   );
 
   // Getters
@@ -42,5 +59,6 @@ class User extends Equatable {
 
   //Equatable overrides
   @override
-  List<Object?> get props => [email, id, firstName, lastName, token];
+  List<Object?> get props =>
+      [email, id, firstName, lastName, token, newAccount];
 }

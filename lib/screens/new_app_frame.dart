@@ -12,6 +12,7 @@ import 'package:shared_photo/repositories/user_repository.dart';
 import 'package:shared_photo/screens/camera.dart';
 import 'package:shared_photo/screens/new_feed.dart';
 import 'package:shared_photo/screens/new_profile.dart';
+import 'package:shared_photo/screens/welcome_frame.dart';
 
 class NewAppFrame extends StatelessWidget {
   const NewAppFrame({super.key});
@@ -51,6 +52,20 @@ class NewAppFrame extends StatelessWidget {
       ],
       child: BlocBuilder<NewAppFrameCubit, NewAppFrameState>(
         builder: (context, state) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            bool newAccount = context.read<AppBloc>().state.user.newAccount;
+            if (newAccount != false) {
+              showModalBottomSheet(
+                isScrollControlled: true,
+                isDismissible: false,
+                enableDrag: false,
+                useSafeArea: true,
+                context: context,
+                builder: (context) => const WelcomeFrame(),
+              );
+            }
+          });
+
           final double devHeight = MediaQuery.of(context).size.height;
           return SafeArea(
             top: false,

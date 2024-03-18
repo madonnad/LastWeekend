@@ -36,9 +36,10 @@ class TopFriendsComponent extends StatelessWidget {
                       child: CircleAvatar(
                         radius: 30,
                         backgroundImage: CachedNetworkImageProvider(
-                          state.myFriends[index].imageReq,
-                          headers: headers,
-                        ),
+                            state.myFriends[index].imageReq,
+                            headers: headers,
+                            errorListener: (_) =>
+                                Image.asset("/asset/default.png")),
                       ),
                     ),
                   ),

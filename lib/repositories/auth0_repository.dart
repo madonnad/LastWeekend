@@ -11,6 +11,7 @@ import 'package:shared_photo/utils/api_variables.dart';
 class Auth0Repository {
   final auth0 = Auth0(auth0_domain, auth0_id);
   final String connection = "Username-Password-Authentication";
+  bool newAccount = false;
 
   final _userController = StreamController<User>();
 
@@ -25,7 +26,10 @@ class Auth0Repository {
 
       String email = userProfile.email != null ? userProfile.email! : 'email';
 
-      User user = await getInternalUserInformation(creds.accessToken, email);
+      User user = await getInternalUserInformation(
+          creds.accessToken, email, newAccount);
+
+      newAccount = false;
 
       _userController.sink.add(user);
       return;
@@ -46,6 +50,8 @@ class Auth0Repository {
         connection: connection,
         parameters: {'given_name': firstName, 'family_name': lastName},
       );
+
+      newAccount = true;
 
       loginWithEmailAndPassword(email: user.email, password: password);
     } catch (e) {
@@ -82,7 +88,8 @@ class Auth0Repository {
   }
 }
 
-Future<User> getInternalUserInformation(String token, String email) async {
+Future<User> getInternalUserInformation(
+    String token, String email, bool newAccount) async {
   var url = Uri.http(domain, '/user');
   final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
@@ -108,6 +115,7 @@ Future<User> getInternalUserInformation(String token, String email) async {
       lastName: last,
       token: token,
       createdDateTime: createdDateTime,
+      newAccount: newAccount,
     );
   }
   throw HttpException(

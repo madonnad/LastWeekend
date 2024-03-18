@@ -7,7 +7,7 @@ class Friend extends Equatable {
   final String lastName;
   final DateTime friendSince;
 
-  Friend({
+  const Friend({
     required this.uid,
     required this.firstName,
     required this.lastName,
