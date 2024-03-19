@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/feed_bloc.dart';
 import 'package:shared_photo/components/app_comp/standard_logo.dart';
 import 'package:shared_photo/components/feed_comp/dashboard/dashboard.dart';
+import 'package:shared_photo/components/feed_comp/feed/empty_feed.dart';
+import 'package:shared_photo/components/feed_comp/feed/feed_list.dart';
 import 'package:shared_photo/components/feed_comp/feed/feed_list_item.dart';
 import 'package:shared_photo/models/album.dart';
 
@@ -99,32 +101,13 @@ class _NewFeedState extends State<NewFeed> {
         ),
         BlocBuilder<FeedBloc, FeedState>(
           builder: (context, state) {
-            return SliverList.separated(
-              itemCount: state.feedAlbumList.length,
-              itemBuilder: (context, index) {
-                if (state.feedAlbumList[index].phase == AlbumPhases.reveal &&
-                    index == 0) {
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 30.0),
-                    child: FeedListItem(
-                      album: state.feedAlbumList[index],
-                    ),
-                  );
-                }
-                if (state.feedAlbumList[index].phase == AlbumPhases.reveal) {
-                  return FeedListItem(
-                    album: state.feedAlbumList[index],
-                  );
-                } else {
-                  return null;
-                }
-              },
-              separatorBuilder: (context, index) {
-                return const SizedBox(height: 20);
-              },
-            );
+            if (state.feedAlbumList.isNotEmpty) {
+              return const FeedList();
+            } else {
+              return const EmptyFeed();
+            }
           },
-        ),
+        )
       ],
     );
   }
