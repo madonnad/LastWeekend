@@ -37,18 +37,25 @@ class FeedListItem extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      InkWell(
-                        onTap: () => Navigator.of(context)
-                            .pushNamed('/album', arguments: arguments),
-                        child: Text(
-                          album.albumName,
-                          style: GoogleFonts.montserrat(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
+                      Expanded(
+                        child: FittedBox(
+                          alignment: Alignment.centerLeft,
+                          fit: BoxFit.scaleDown,
+                          child: InkWell(
+                            onTap: () => Navigator.of(context)
+                                .pushNamed('/album', arguments: arguments),
+                            child: Text(
+                              album.albumName,
+                              style: GoogleFonts.montserrat(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
+                            ),
                           ),
                         ),
                       ),
+                      const SizedBox(width: 15),
                       Row(
                         children: [
                           const Padding(

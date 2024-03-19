@@ -20,7 +20,7 @@ class GoRepository {
     final Map<String, String> headers = {
       'Authorization': 'Bearer ${user.token}'
     };
-    final wsURL = Uri.parse('ws://10.0.2.2:2525/ws');
+    final wsURL = Uri.parse('ws://$domain/ws');
     var connection = IOWebSocketChannel.connect(wsURL, headers: headers);
 
     connection.stream.listen((event) {
