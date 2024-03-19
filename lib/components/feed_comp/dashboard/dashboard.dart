@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_photo/bloc/bloc/dashboard_bloc.dart';
 
 import 'package:shared_photo/components/app_comp/section_header_small.dart';
 import 'package:shared_photo/components/app_comp/standard_logo.dart';
 import 'package:shared_photo/components/feed_comp/dashboard/dash_active_album.dart';
 import 'package:shared_photo/components/feed_comp/dashboard/dash_greeting.dart';
+import 'package:shared_photo/components/feed_comp/dashboard/empty_active_album_section.dart';
 
 class Dashboard extends StatelessWidget {
   const Dashboard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       children: [
-        Padding(
+        const Padding(
           padding: EdgeInsets.only(top: 15.0),
           child: StandardLogo(
             fontSize: 30,
@@ -20,16 +23,23 @@ class Dashboard extends StatelessWidget {
         ),
         Expanded(
           child: Padding(
-            padding: EdgeInsets.fromLTRB(15, 45, 15, 15),
+            padding: const EdgeInsets.fromLTRB(15, 45, 15, 15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                DashGreeting(),
+                const DashGreeting(),
                 Expanded(
                   flex: 5,
-                  child: AlbumHorizontalListView(),
+                  child: BlocBuilder<DashboardBloc, DashboardState>(
+                    builder: (context, state) {
+                      if (state.activeAlbums.isEmpty) {
+                        return const EmptyActiveAlbumSection();
+                      }
+                      return const AlbumHorizontalListView();
+                    },
+                  ),
                 ),
-                Expanded(
+                const Expanded(
                   flex: 2,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
