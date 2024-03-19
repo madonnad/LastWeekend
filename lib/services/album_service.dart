@@ -72,11 +72,16 @@ class AlbumService {
       final responseBody = response.body;
 
       final jsonData = json.decode(responseBody);
+      print(jsonData.runtimeType);
 
       for (var item in jsonData) {
         Album album = Album.fromMap(item);
         albums.add(album);
       }
+      return albums;
+    }
+
+    if (response.statusCode == 204) {
       return albums;
     }
     print('Request failed with status: ${response.statusCode}');

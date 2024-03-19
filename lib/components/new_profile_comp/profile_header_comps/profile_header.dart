@@ -12,12 +12,23 @@ class ProfileHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AppBloc, AppState>(
       builder: (context, state) {
+        double devWidth = MediaQuery.of(context).size.width;
+        double circleDiameter = devWidth * .25;
         return Column(
           children: [
-            CustomProfilePicture(
-              url: state.user.avatarUrl,
-              headers: state.user.headers,
+            CircleAvatar(
+              radius: circleDiameter,
+              backgroundColor: Colors.transparent,
+              backgroundImage: const AssetImage("lib/assets/default.png"),
+              foregroundImage: NetworkImage(
+                state.user.avatarUrl,
+                headers: state.user.headers,
+              ),
             ),
+            // CustomProfilePicture(
+            //   url: state.user.avatarUrl,
+            //   headers: state.user.headers,
+            // ),
             Padding(
               padding: const EdgeInsets.only(
                   top: 20.0, right: 35, left: 35, bottom: 5),

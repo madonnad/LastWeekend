@@ -15,14 +15,16 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
     on<AddAlbumsToFeed>((event, emit) {
       Map<String, Album> feedAlbumMap = Map.from(state.feedAlbumMap);
 
-      for (Album album in event.albums) {
-        String key = album.albumId;
-        if (!feedAlbumMap.containsKey(key) || feedAlbumMap[key] != album) {
-          feedAlbumMap[key] = album;
+      if (event.albums.isNotEmpty) {
+        for (Album album in event.albums) {
+          String key = album.albumId;
+          if (!feedAlbumMap.containsKey(key) || feedAlbumMap[key] != album) {
+            feedAlbumMap[key] = album;
+          }
         }
+        emit(state.copyWith(
+            feedAlbumMap: feedAlbumMap, cursorID: event.albums.last.albumId));
       }
-      emit(state.copyWith(
-          feedAlbumMap: feedAlbumMap, cursorID: event.albums.last.albumId));
     });
 
     dataRepository.feedStream.listen(

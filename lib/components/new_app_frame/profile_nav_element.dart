@@ -42,7 +42,7 @@ class ProfileNavElement extends StatelessWidget {
               ),
             ),
             child: CircleAvatar(
-              foregroundImage: CachedNetworkImageProvider(
+              foregroundImage: NetworkImage(
                 url,
                 headers: headers,
               ),
