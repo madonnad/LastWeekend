@@ -5,6 +5,34 @@ import 'package:shared_photo/utils/api_variables.dart';
 import 'package:http/http.dart' as http;
 
 class UserService {
+  static Future<bool> createUserEntry(
+      String token, String firstName, String lastName) async {
+    final Map<String, String> requestBodyJson = {
+      'first_name': firstName,
+      'last_name': lastName,
+    };
+    String encodedBody = json.encode(requestBodyJson);
+
+    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
+
+    var url = Uri.http(domain, '/user');
+    try {
+      final response =
+          await http.post(url, headers: headers, body: encodedBody);
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        print('Request failed with status: ${response.statusCode}');
+        print('Response body: #${response.body}');
+        return false;
+      }
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
   static Future<List<Friend>> getFriendsList(String token) async {
     final List<Friend> friends = [];
 

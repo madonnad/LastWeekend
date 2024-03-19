@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:auth0_flutter/auth0_flutter.dart';
 import 'package:shared_photo/models/user.dart';
+import 'package:shared_photo/services/user_service.dart';
 import 'package:shared_photo/utils/api_key.dart';
 import 'package:shared_photo/utils/api_variables.dart';
 
@@ -25,6 +26,20 @@ class Auth0Repository {
       UserProfile userProfile = creds.user;
 
       String email = userProfile.email != null ? userProfile.email! : 'email';
+
+      if (newAccount) {
+        String firstName =
+            userProfile.givenName != null ? userProfile.givenName! : 'first';
+        String lastName =
+            userProfile.familyName != null ? userProfile.familyName! : 'last';
+        bool creationStatus = await UserService.createUserEntry(
+            creds.accessToken, firstName, lastName);
+
+        if (!creationStatus) {
+          _userController.sink.add(User.empty);
+          return;
+        }
+      }
 
       User user = await getInternalUserInformation(
           creds.accessToken, email, newAccount);
@@ -71,12 +86,11 @@ class Auth0Repository {
 
       bool didStore =
           await auth0.credentialsManager.storeCredentials(credentials);
+
       userStream();
       if (!didStore) {
         throw Exception("Failed to store credentials");
       }
-
-      //print("token ${credentials.accessToken}");
     } catch (e) {
       print(e);
     }

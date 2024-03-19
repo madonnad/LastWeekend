@@ -13,7 +13,7 @@ class NewProfileScreen extends StatelessWidget {
     return const SingleChildScrollView(
       child: SafeArea(
         child: Padding(
-          padding: EdgeInsets.only(top: 15.0, left: 16, right: 16),
+          padding: EdgeInsets.only(top: 50.0, left: 16, right: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
