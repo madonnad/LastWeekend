@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
-import 'package:shared_photo/components/new_profile_comp/profile_header_comps/custom_profile_picture.dart';
 import 'package:shared_photo/components/new_profile_comp/profile_header_comps/profile_header_details.dart';
 
 class ProfileHeader extends StatelessWidget {
