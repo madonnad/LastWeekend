@@ -12,6 +12,7 @@ import 'package:shared_photo/repositories/user_repository.dart';
 import 'package:shared_photo/screens/camera.dart';
 import 'package:shared_photo/screens/new_feed.dart';
 import 'package:shared_photo/screens/new_profile.dart';
+import 'package:shared_photo/screens/search_frame.dart';
 import 'package:shared_photo/screens/welcome_frame.dart';
 
 class NewAppFrame extends StatelessWidget {
@@ -78,11 +79,7 @@ class NewAppFrame extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 controller: state.pageController,
                 children: [
-                  Center(
-                    child: Container(
-                      color: Colors.black,
-                    ),
-                  ),
+                  const SearchFrame(),
                   NewFeed(devHeight: devHeight),
                   BlocBuilder<AppBloc, AppState>(
                     builder: (context, state) {

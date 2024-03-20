@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/welcome_cubit.dart';
 import 'package:shared_photo/components/app_comp/standard_logo.dart';
-import 'package:shared_photo/components/new_auth/welcome_comps/profile_picture_upload.dart';
 import 'package:shared_photo/components/new_auth/welcome_comps/profile_upload_slide.dart';
 import 'package:shared_photo/components/new_auth/welcome_comps/welcome_slide.dart';
 

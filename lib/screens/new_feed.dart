@@ -5,8 +5,6 @@ import 'package:shared_photo/components/app_comp/standard_logo.dart';
 import 'package:shared_photo/components/feed_comp/dashboard/dashboard.dart';
 import 'package:shared_photo/components/feed_comp/feed/empty_feed.dart';
 import 'package:shared_photo/components/feed_comp/feed/feed_list.dart';
-import 'package:shared_photo/components/feed_comp/feed/feed_list_item.dart';
-import 'package:shared_photo/models/album.dart';
 
 class NewFeed extends StatefulWidget {
   final double devHeight;
