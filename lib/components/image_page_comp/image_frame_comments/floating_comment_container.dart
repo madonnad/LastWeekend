@@ -14,22 +14,22 @@ class FloatingCommentContainer extends StatelessWidget {
     return BlocBuilder<ImageFrameCubit, ImageFrameState>(
       builder: (context, state) {
         return Padding(
-          padding:
-              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom + 15),
           child: Container(
             decoration: BoxDecoration(
               color: const Color.fromRGBO(44, 44, 44, 1),
               borderRadius: BorderRadius.circular(15),
               boxShadow: const [
                 BoxShadow(
-                  color: Colors.black87,
-                  spreadRadius: 10,
+                  color: Colors.black,
+                  spreadRadius: 20,
                   blurRadius: 10,
-                  offset: Offset(0, 0), // changes position of shadow
+                  offset: Offset(0, 10), // changes position of shadow
                 )
               ],
             ),
-            height: 100,
+            height: 80,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Row(
@@ -40,6 +40,8 @@ class FloatingCommentContainer extends StatelessWidget {
                   Expanded(
                     flex: 2,
                     child: TextField(
+                      onTapOutside: (_) =>
+                          FocusManager.instance.primaryFocus?.unfocus(),
                       maxLines: null,
                       style: GoogleFonts.josefinSans(
                         color: Colors.white,

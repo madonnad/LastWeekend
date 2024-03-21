@@ -73,7 +73,7 @@ class NewAppFrame extends StatelessWidget {
             bottom: false,
             child: Scaffold(
               extendBody: state.index == 2 ? true : false,
-              resizeToAvoidBottomInset: true,
+              resizeToAvoidBottomInset: false,
               backgroundColor: Colors.black,
               body: PageView(
                 physics: const NeverScrollableScrollPhysics(),
