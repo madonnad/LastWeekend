@@ -6,8 +6,10 @@ import 'package:shared_photo/bloc/bloc/feed_bloc.dart';
 import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
 import 'package:shared_photo/bloc/cubit/camera_cubit.dart';
 import 'package:shared_photo/bloc/cubit/new_app_frame_cubit.dart';
+import 'package:shared_photo/bloc/cubit/search_cubit.dart';
 import 'package:shared_photo/components/new_app_frame/new_bottom_app_bar.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
+import 'package:shared_photo/repositories/go_repository.dart';
 import 'package:shared_photo/repositories/user_repository.dart';
 import 'package:shared_photo/screens/camera.dart';
 import 'package:shared_photo/screens/new_feed.dart';
@@ -79,7 +81,12 @@ class NewAppFrame extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 controller: state.pageController,
                 children: [
-                  const SearchFrame(),
+                  BlocProvider(
+                    create: (context) => SearchCubit(
+                      goRepository: context.read<GoRepository>(),
+                    ),
+                    child: const SearchFrame(),
+                  ),
                   NewFeed(devHeight: devHeight),
                   BlocBuilder<AppBloc, AppState>(
                     builder: (context, state) {

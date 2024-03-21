@@ -15,7 +15,7 @@ class StandardLogo extends StatelessWidget {
             style: GoogleFonts.josefinSans(
                 color: Colors.white,
                 fontSize: fontSize,
-                fontWeight: FontWeight.w100,
+                fontWeight: FontWeight.w200,
                 letterSpacing: -1.5),
           ),
           TextSpan(
@@ -23,6 +23,7 @@ class StandardLogo extends StatelessWidget {
             style: GoogleFonts.dancingScript(
               color: Colors.white,
               fontSize: fontSize,
+              fontWeight: FontWeight.w700,
             ),
           ),
         ],

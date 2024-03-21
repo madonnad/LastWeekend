@@ -40,6 +40,7 @@ class MainApp extends StatelessWidget {
     );
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(systemNavigationBarColor: Colors.black));
+
     return RepositoryProvider(
       create: (context) => Auth0Repository(),
       child: BlocProvider(
