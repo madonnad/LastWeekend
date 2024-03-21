@@ -14,9 +14,7 @@ class SearchBarComponent extends StatelessWidget {
           controller: state.searchController,
           onChanged: (_) {
             if (state.isLoading == false) {
-              context
-                  .read<SearchCubit>()
-                  .querySearch(state.searchController.text);
+              context.read<SearchCubit>().querySearch();
             }
           },
           cursorColor: Colors.black,
