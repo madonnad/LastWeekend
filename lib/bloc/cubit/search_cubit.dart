@@ -13,6 +13,10 @@ class SearchCubit extends Cubit<SearchState> {
     required this.goRepository,
   }) : super(SearchState.empty);
 
+  void clearTextController() {
+    emit(state.copyWith(searchController: TextEditingController()));
+  }
+
   Future<void> querySearch() async {
     List<SearchResult> resultList = [];
 

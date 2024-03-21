@@ -7,16 +7,19 @@ class LoadingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       backgroundColor: Colors.black,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        title: const StandardLogo(
-          fontSize: 35,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            StandardLogo(
+              fontSize: 40,
+            ),
+            CircularProgressIndicator.adaptive()
+          ],
         ),
-      ),
-      body: const Center(
-        child: CircularProgressIndicator.adaptive(),
       ),
     );
   }

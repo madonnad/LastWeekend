@@ -24,10 +24,6 @@ class ProfileHeader extends StatelessWidget {
                 headers: state.user.headers,
               ),
             ),
-            // CustomProfilePicture(
-            //   url: state.user.avatarUrl,
-            //   headers: state.user.headers,
-            // ),
             Padding(
               padding: const EdgeInsets.only(
                   top: 20.0, right: 35, left: 35, bottom: 5),
