@@ -66,8 +66,8 @@ class ImageFrameComment extends StatelessWidget {
                         comment.comment,
                         style: GoogleFonts.josefinSans(
                           color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
                         ),
                       ),
                     ),

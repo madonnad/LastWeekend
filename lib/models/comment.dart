@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:shared_photo/utils/api_variables.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -23,13 +25,15 @@ class Comment {
   });
 
   factory Comment.fromJson(Map<String, dynamic> map) {
+    List<int> bytes = map['comment'].toString().codeUnits;
+    String comment = utf8.decode(bytes);
     return Comment(
       id: map['id'],
       imageID: map['image_id'],
       userID: map['user_id'],
       firstName: map['first_name'],
       lastName: map['last_name'],
-      comment: map['comment'],
+      comment: comment,
       createdAt: DateTime.parse(map['created_at']),
       updatedAt:
           map['updated_at'] != null ? DateTime.parse(map['updated_at']) : null,
