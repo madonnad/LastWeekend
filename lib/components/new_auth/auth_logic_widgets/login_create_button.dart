@@ -21,18 +21,20 @@ class LoginCreateButton extends StatelessWidget {
               padding: const EdgeInsets.only(top: 60.0),
               child: ConfirmButton(
                 buttonText: "Create Account",
-                onTap: (state.emailValid == true &&
-                        state.passwordValid == true &&
-                        state.confirmPassValid == true &&
-                        state.firstNameValid == true &&
-                        state.lastNameValid == true)
-                    ? () => context
-                        .read<AuthCubit>()
-                        .createAccountWithCredentials(
-                            email: state.emailController!.text,
-                            password: state.passwordController!.text,
-                            firstName: state.firstNameController!.text,
-                            lastName: state.lastNameController!.text)
+                onTap: state.isLoading == false
+                    ? (state.emailValid == true &&
+                            state.passwordValid == true &&
+                            state.confirmPassValid == true &&
+                            state.firstNameValid == true &&
+                            state.lastNameValid == true)
+                        ? () => context
+                            .read<AuthCubit>()
+                            .createAccountWithCredentials(
+                                email: state.emailController!.text,
+                                password: state.passwordController!.text,
+                                firstName: state.firstNameController!.text,
+                                lastName: state.lastNameController!.text)
+                        : null
                     : null,
               ),
             )
@@ -40,10 +42,12 @@ class LoginCreateButton extends StatelessWidget {
               padding: const EdgeInsets.only(top: 60.0),
               child: ConfirmButton(
                 buttonText: "Login",
-                onTap: (state.emailValid == true && state.passwordValid == true)
-                    ? () => context.read<AuthCubit>().loginWithCredentials(
-                        email: state.emailController!.text,
-                        password: state.passwordController!.text)
+                onTap: state.isLoading == false
+                    ? (state.emailValid == true && state.passwordValid == true)
+                        ? () => context.read<AuthCubit>().loginWithCredentials(
+                            email: state.emailController!.text,
+                            password: state.passwordController!.text)
+                        : null
                     : null,
               ),
             ),

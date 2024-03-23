@@ -63,8 +63,8 @@ class ImageFrameCaption extends StatelessWidget {
                             state.image.imageCaption,
                             style: GoogleFonts.josefinSans(
                               color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
+                              fontWeight: FontWeight.w800,
+                              fontSize: 14,
                             ),
                           ),
                         ),
