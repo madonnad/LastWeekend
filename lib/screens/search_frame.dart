@@ -83,8 +83,11 @@ class _SearchFrameState extends State<SearchFrame>
                                       );
                                     }
                                     return GestureDetector(
-                                      onTap: () => Navigator.of(context)
-                                          .pushNamed('/friend'),
+                                      onTap: () =>
+                                          Navigator.of(context).pushNamed(
+                                        '/friend',
+                                        arguments: state.searchResult[index].id,
+                                      ),
                                       child: UserSearchResult(
                                         result: state.searchResult[index],
                                       ),

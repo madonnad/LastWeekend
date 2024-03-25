@@ -58,4 +58,28 @@ class UserService {
     print('Response body: #${response.body}');
     return friends;
   }
+
+  static Future<AnonymousFriend> getSearchedUser(
+      String token, String uid) async {
+    var url = Uri.http(domain, '/user/id', {'id': uid});
+    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
+
+    try {
+      final response = await http.get(url, headers: headers);
+
+      if (response.statusCode == 200) {
+        final responseBody = response.body;
+
+        final jsonData = json.decode(responseBody);
+
+        return AnonymousFriend.fromJson(jsonData);
+      }
+      print('Request failed with status: ${response.statusCode}');
+      print('Response body: #${response.body}');
+      return AnonymousFriend.empty;
+    } catch (e) {
+      print(e);
+      return AnonymousFriend.empty;
+    }
+  }
 }
