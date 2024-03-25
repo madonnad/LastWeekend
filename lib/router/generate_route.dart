@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/friend_profile_cubit.dart';
 import 'package:shared_photo/models/arguments.dart';
 import 'package:shared_photo/screens/album_create/album_create_modal.dart';
@@ -38,12 +39,16 @@ Route onGenerateRoute(RouteSettings settings) {
         },
       );
     case '/friend':
+      String uid = settings.arguments as String;
       return PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 300),
         reverseTransitionDuration: const Duration(milliseconds: 150),
         pageBuilder: (context, _, __) => BlocProvider(
           lazy: false,
-          create: (context) => FriendProfileCubit(),
+          create: (context) => FriendProfileCubit(
+            uid: uid,
+            token: context.read<AppBloc>().state.user.token,
+          ),
           child: const FriendProfileFrame(),
         ),
         transitionsBuilder: (context, a, b, c) {

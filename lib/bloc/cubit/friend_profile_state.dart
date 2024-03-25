@@ -1,63 +1,45 @@
 part of 'friend_profile_cubit.dart';
 
-enum FriendStatus { friends, pending, notFriends }
-
 class FriendProfileState extends Equatable {
-  final String firstName;
-  final String lastName;
-  final String uid;
-  final int numberOfFriends;
-  final int numberOfAlbums;
-  final FriendStatus friendStatus;
+  final AnonymousFriend anonymousFriend;
   final List<Album> albumList;
+  final bool loading;
 
-  const FriendProfileState(
-      {required this.firstName,
-      required this.lastName,
-      required this.uid,
-      required this.numberOfFriends,
-      required this.numberOfAlbums,
-      required this.friendStatus,
-      required this.albumList});
+  const FriendProfileState({
+    required this.anonymousFriend,
+    required this.albumList,
+    required this.loading,
+  });
 
   static const empty = FriendProfileState(
-    firstName: '',
-    lastName: '',
-    uid: '',
-    numberOfFriends: 0,
-    numberOfAlbums: 0,
-    friendStatus: FriendStatus.notFriends,
+    anonymousFriend: AnonymousFriend.empty,
     albumList: [],
+    loading: false,
   );
 
   FriendProfileState copyWith({
-    String? firstName,
-    String? lastName,
-    String? uid,
-    int? numberOfFriends,
-    int? numberOfAlbums,
-    FriendStatus? friendStatus,
+    AnonymousFriend? anonymousFriend,
     List<Album>? albumList,
+    bool? loading,
   }) {
     return FriendProfileState(
-      firstName: firstName ?? this.firstName,
-      lastName: lastName ?? this.lastName,
-      uid: uid ?? this.uid,
-      numberOfFriends: numberOfFriends ?? this.numberOfFriends,
-      numberOfAlbums: numberOfAlbums ?? this.numberOfAlbums,
-      friendStatus: friendStatus ?? this.friendStatus,
+      anonymousFriend: anonymousFriend ?? this.anonymousFriend,
       albumList: albumList ?? this.albumList,
+      loading: loading ?? this.loading,
     );
+  }
+
+  String get imageReq {
+    String uid = anonymousFriend.uid;
+    print(uid);
+    print("$goRepoDomain/image?id=$uid");
+    return "$goRepoDomain/image?id=$uid";
   }
 
   @override
   List<Object> get props => [
-        firstName,
-        lastName,
-        uid,
-        numberOfFriends,
-        numberOfAlbums,
-        friendStatus,
+        anonymousFriend,
         albumList,
+        loading,
       ];
 }
