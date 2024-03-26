@@ -89,6 +89,7 @@ class FeedListItem extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(top: 12),
                       child: BlocProvider(
+                        lazy: false,
                         create: (context) => FeedSlideshowCubit(
                           album: album,
                           dataRepository: context.read<DataRepository>(),

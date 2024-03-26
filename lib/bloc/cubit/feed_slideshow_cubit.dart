@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +12,7 @@ part 'feed_slideshow_state.dart';
 class FeedSlideshowCubit extends Cubit<FeedSlideshowState> {
   final Album album;
   final DataRepository dataRepository;
+  late StreamSubscription imageStreamSubscription;
 
   FeedSlideshowCubit({required this.album, required this.dataRepository})
       : super(
@@ -20,7 +23,8 @@ class FeedSlideshowCubit extends Cubit<FeedSlideshowState> {
             imageOwnerName: album.rankedImages[0].fullName,
           ),
         ) {
-    dataRepository.imageStream.listen((event) {
+    print("created ${album.albumName}");
+    imageStreamSubscription = dataRepository.imageStream.listen((event) {
       img.Image newImage = event.image;
       String albumID = event.albumID;
       String imageID = event.imageID;
@@ -78,5 +82,12 @@ class FeedSlideshowCubit extends Cubit<FeedSlideshowState> {
       avatarUrl: album.rankedImages[index].avatarReq,
       imageOwnerName: album.rankedImages[index].fullName,
     ));
+  }
+
+  @override
+  Future<void> close() {
+    print("close ${album.albumName}");
+    imageStreamSubscription.cancel();
+    return super.close();
   }
 }
