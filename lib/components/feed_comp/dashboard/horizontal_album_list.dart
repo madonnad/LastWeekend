@@ -19,7 +19,6 @@ class HorizontalAlbumList extends StatelessWidget {
           }
           return ListAlbumComponent(
             album: albumList[index - 1],
-            index: index - 1,
           );
         },
         separatorBuilder: (context, index) {
