@@ -7,11 +7,9 @@ import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/arguments.dart';
 
 class ListAlbumComponent extends StatelessWidget {
-  final int index;
   final Album album;
 
-  const ListAlbumComponent(
-      {super.key, required this.index, required this.album});
+  const ListAlbumComponent({super.key, required this.album});
 
   @override
   Widget build(BuildContext context) {

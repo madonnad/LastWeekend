@@ -40,15 +40,15 @@ Route onGenerateRoute(RouteSettings settings) {
         },
       );
     case '/friend':
-      String uid = settings.arguments as String;
+      String lookupUid = settings.arguments as String;
       return PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 300),
         reverseTransitionDuration: const Duration(milliseconds: 150),
         pageBuilder: (context, _, __) => BlocProvider(
           lazy: false,
           create: (context) => FriendProfileCubit(
-            uid: uid,
-            token: context.read<AppBloc>().state.user.token,
+            lookupUid: lookupUid,
+            user: context.read<AppBloc>().state.user,
             dataRepository: context.read<DataRepository>(),
           ),
           child: const FriendProfileFrame(),
