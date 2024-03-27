@@ -10,7 +10,7 @@ extension AlbumDataRepo on DataRepository {
     List<Album> usersAlbums = [];
     List<Album> feedAlbums = [];
 
-    usersAlbums = await AlbumService.getUsersAlbums(user.token);
+    usersAlbums = await AlbumService.getAuthUsersAlbums(user.token);
     feedAlbums = await AlbumService.getFeedAlbums(user.token);
 
     _feedController.add((StreamOperation.add, feedAlbums));
@@ -87,5 +87,29 @@ extension AlbumDataRepo on DataRepository {
       print(e);
       return (false, e.toString());
     }
+  }
+
+  Future<List<Album>> getRevealedAlbumsByAlbumID(List<String> albumIDs) async {
+    List<String> newAlbumIds = [];
+
+    for (String id in albumIDs) {
+      if (!albumMap.containsKey(id)) {
+        newAlbumIds.add(id);
+      }
+    }
+
+    List<Album> albums =
+        await AlbumService.getRevealedAlbumsByAlbumID(user.token, newAlbumIds);
+
+    for (Album album in albums) {
+      albumMap.putIfAbsent(album.albumId, () => album);
+    }
+
+    albums = albumMap.entries
+        .where((element) => albumIDs.contains(element.key))
+        .map((e) => e.value)
+        .toList();
+
+    return albums;
   }
 }
