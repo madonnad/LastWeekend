@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/friend_profile_cubit.dart';
+import 'package:shared_photo/components/feed_comp/dashboard/list_album_component.dart';
 import 'package:shared_photo/components/new_profile_comp/profile_header_comps/profile_detail_element.dart';
 
 class FriendProfileFrame extends StatelessWidget {
@@ -12,9 +13,15 @@ class FriendProfileFrame extends StatelessWidget {
   Widget build(BuildContext context) {
     double devWidth = MediaQuery.of(context).size.width;
     double circleDiameter = devWidth * .2;
+    double paddingHeight =
+        MediaQuery.of(context).viewPadding.top + kToolbarHeight;
     return Scaffold(
       backgroundColor: Colors.black,
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        forceMaterialTransparency: true,
+        elevation: 0,
         leading: GestureDetector(
           onTap: () => Navigator.of(context).pop(),
           child: const Icon(
@@ -28,7 +35,11 @@ class FriendProfileFrame extends StatelessWidget {
           return state.loading
               ? const Center(child: CircularProgressIndicator())
               : SingleChildScrollView(
-                  padding: const EdgeInsets.only(left: 16, right: 16),
+                  padding: EdgeInsets.only(
+                    top: paddingHeight,
+                    left: 16,
+                    right: 16,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -117,6 +128,27 @@ class FriendProfileFrame extends StatelessWidget {
                                 ),
                               )
                             ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 30.0),
+                        child: SizedBox(
+                          height: 300,
+                          child: ListView.separated(
+                            itemCount: state.albumList.length,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              return ListAlbumComponent(
+                                album: state.albumList[index],
+                                index: index,
+                              );
+                            },
+                            separatorBuilder: (context, index) {
+                              return const SizedBox(
+                                width: 10,
+                              );
+                            },
                           ),
                         ),
                       )

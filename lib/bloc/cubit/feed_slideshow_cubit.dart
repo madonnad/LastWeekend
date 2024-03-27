@@ -24,6 +24,13 @@ class FeedSlideshowCubit extends Cubit<FeedSlideshowState> {
           ),
         ) {
     print("created ${album.albumName}");
+
+    Map<String, img.Image> images =
+        dataRepository.getAlbumImages(album.albumId);
+    album.imageMap = images;
+
+    emit(state.copyWith(album: album));
+
     imageStreamSubscription = dataRepository.imageStream.listen((event) {
       img.Image newImage = event.image;
       String albumID = event.albumID;

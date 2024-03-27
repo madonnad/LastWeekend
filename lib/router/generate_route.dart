@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/friend_profile_cubit.dart';
 import 'package:shared_photo/models/arguments.dart';
+import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 import 'package:shared_photo/screens/album_create/album_create_modal.dart';
 import 'package:shared_photo/screens/auth.dart';
 import 'package:shared_photo/screens/album_frame.dart';
@@ -48,6 +49,7 @@ Route onGenerateRoute(RouteSettings settings) {
           create: (context) => FriendProfileCubit(
             uid: uid,
             token: context.read<AppBloc>().state.user.token,
+            dataRepository: context.read<DataRepository>(),
           ),
           child: const FriendProfileFrame(),
         ),

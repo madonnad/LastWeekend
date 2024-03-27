@@ -36,7 +36,7 @@ class AlbumService {
     }
   }
 
-  static Future<List<Album>> getUsersAlbums(String token) async {
+  static Future<List<Album>> getAuthUsersAlbums(String token) async {
     final List<Album> albums = [];
     var url = Uri.http(domain, '/user/album');
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
@@ -60,6 +60,34 @@ class AlbumService {
     }
     throw HttpException(
         "Failed to get users albums with status: ${response.statusCode}");
+  }
+
+  static Future<List<Album>> getRevealedAlbumsByAlbumID(
+      String token, List<String> albumIds) async {
+    final List<Album> albums = [];
+
+    var url = Uri.http(domain, '/album/revealed');
+    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
+    String encodedBody = json.encode(albumIds);
+
+    try {
+      final response =
+          await http.post(url, headers: headers, body: encodedBody);
+
+      if (response.statusCode == 200) {
+        final responseBody = response.body;
+        final jsonData = json.decode(responseBody);
+        for (var item in jsonData) {
+          Album album = Album.fromMap(item);
+          albums.add(album);
+        }
+        return albums;
+      }
+      return albums;
+    } catch (e) {
+      print(e);
+      return albums;
+    }
   }
 
   static Future<List<Album>> getFeedAlbums(String token) async {
