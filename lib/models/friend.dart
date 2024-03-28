@@ -84,6 +84,26 @@ class AnonymousFriend extends BaseFriend {
     albumIDs: [],
   );
 
+  AnonymousFriend copyWith({
+    String? firstName,
+    String? lastName,
+    String? uid,
+    FriendStatus? friendStatus,
+    int? numberOfFriends,
+    int? numberOfAlbums,
+    List<String>? albumIDs,
+  }) {
+    return AnonymousFriend(
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      uid: uid ?? this.uid,
+      friendStatus: friendStatus ?? this.friendStatus,
+      numberOfFriends: numberOfFriends ?? this.numberOfFriends,
+      numberOfAlbums: numberOfAlbums ?? this.numberOfAlbums,
+      albumIDs: albumIDs ?? this.albumIDs,
+    );
+  }
+
   factory AnonymousFriend.fromJson(Map<String, dynamic> json) {
     FriendStatus friendStatus = FriendStatus.notFriends;
     List<String> albumIDs = [];

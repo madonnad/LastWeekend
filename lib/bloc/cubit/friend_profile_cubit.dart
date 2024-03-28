@@ -4,6 +4,7 @@ import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/friend.dart';
 import 'package:shared_photo/models/user.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
+import 'package:shared_photo/services/request_service.dart';
 import 'package:shared_photo/services/user_service.dart';
 import 'package:shared_photo/utils/api_variables.dart';
 
@@ -32,5 +33,24 @@ class FriendProfileCubit extends Cubit<FriendProfileState> {
 
     emit(state.copyWith(
         anonymousFriend: result, albumList: revealedAlbums, loading: false));
+  }
+
+  void sendFriendRequest() async {
+    emit(state.copyWith(friendStatusLoading: true));
+    RequestService.sendFriendRequest(user.token, lookupUid).then((success) {
+      if (success) {
+        AnonymousFriend updatedFriend = state.anonymousFriend.copyWith(
+          friendStatus: FriendStatus.pending,
+        );
+        emit(state.copyWith(
+            anonymousFriend: updatedFriend, friendStatusLoading: false));
+      } else {
+        emit(state.copyWith(
+          exception: "Failed to send friend request",
+          friendStatusLoading: false,
+        ));
+        emit(state.copyWith(exception: ""));
+      }
+    });
   }
 }
