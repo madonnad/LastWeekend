@@ -24,7 +24,6 @@ class GoRepository {
     var connection = IOWebSocketChannel.connect(wsURL, headers: headers);
 
     connection.stream.listen((event) {
-      print("connection open");
       String text = event.toString();
       print(text);
     }, onDone: () {

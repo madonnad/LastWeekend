@@ -15,15 +15,20 @@ class FriendStatusLogic extends StatelessWidget {
           case FriendStatus.notFriends:
             return FriendStatusButton(
               text: "Add Friend",
-              backgroundColor: const Color.fromRGBO(181, 131, 141, 1),
+              backgroundColor: state.friendStatusLoading
+                  ? const Color.fromRGBO(181, 131, 141, .5)
+                  : const Color.fromRGBO(181, 131, 141, 1),
               textColor: Colors.black,
               borderColor: Colors.transparent,
-              onTap: () {},
+              onTap: () =>
+                  context.read<FriendProfileCubit>().sendFriendRequest(),
             );
           case FriendStatus.friends:
             return FriendStatusButton(
               text: "Friends",
-              backgroundColor: const Color.fromRGBO(19, 19, 19, 1),
+              backgroundColor: state.friendStatusLoading
+                  ? const Color.fromRGBO(19, 19, 19, .5)
+                  : const Color.fromRGBO(19, 19, 19, 1),
               textColor: const Color.fromRGBO(181, 131, 141, 1),
               borderColor: const Color.fromRGBO(181, 131, 141, 1),
               onTap: () {},
@@ -31,7 +36,9 @@ class FriendStatusLogic extends StatelessWidget {
           case FriendStatus.pending:
             return FriendStatusButton(
               text: "Pending",
-              backgroundColor: const Color.fromRGBO(181, 131, 141, .5),
+              backgroundColor: state.friendStatusLoading
+                  ? const Color.fromRGBO(181, 131, 141, .25)
+                  : const Color.fromRGBO(181, 131, 141, .5),
               textColor: Colors.black,
               borderColor: Colors.transparent,
               onTap: () {},
