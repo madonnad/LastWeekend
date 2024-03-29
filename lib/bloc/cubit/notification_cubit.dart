@@ -1,15 +1,16 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:shared_photo/repositories/realtime_repository.dart';
+import 'package:shared_photo/repositories/notification_repository.dart';
 
 part 'notification_state.dart';
 
 class NotificationCubit extends Cubit<NotificationState> {
-  RealtimeRepository realtimeRepository;
+  NotificationRepository notificationRepository;
 
-  NotificationCubit({required this.realtimeRepository})
+  NotificationCubit({required this.notificationRepository})
       : super(const NotificationState()) {
-    realtimeRepository.notificationStream.listen((event) {
+    notificationRepository.realtimeRepository.notificationStream
+        .listen((event) {
       print("Notification Received");
     });
   }
