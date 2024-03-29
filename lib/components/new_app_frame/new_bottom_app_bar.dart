@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_photo/bloc/cubit/new_app_frame_cubit.dart';
+import 'package:shared_photo/bloc/cubit/app_frame_cubit.dart';
 import 'package:shared_photo/components/new_app_frame/camera_nav_element.dart';
 import 'package:shared_photo/components/new_app_frame/icon_nav_element.dart';
 import 'package:shared_photo/components/new_app_frame/profile_nav_element.dart';
@@ -10,7 +10,7 @@ class NewBottomAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<NewAppFrameCubit, NewAppFrameState>(
+    return BlocBuilder<AppFrameCubit, AppFrameState>(
       builder: (context, state) {
         return BottomAppBar(
           height: 85,

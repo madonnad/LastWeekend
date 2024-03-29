@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/search_cubit.dart';
 import 'package:shared_photo/components/search_comp/search_album_comp.dart';
 import 'package:shared_photo/components/search_comp/search_bar_comp.dart';
 import 'package:shared_photo/components/search_comp/search_user_comp.dart';
 import 'package:shared_photo/models/search_result.dart';
-import 'package:shared_photo/repositories/go_repository.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
@@ -15,7 +15,7 @@ class SearchScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => SearchCubit(
-        goRepository: context.read<GoRepository>(),
+        user: context.read<AppBloc>().state.user,
       ),
       child: BlocBuilder<SearchCubit, SearchState>(
         builder: (context, state) {
