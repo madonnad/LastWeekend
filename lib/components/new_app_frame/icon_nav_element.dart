@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_photo/bloc/cubit/new_app_frame_cubit.dart';
+import 'package:shared_photo/bloc/cubit/app_frame_cubit.dart';
 
 class IconNavElement extends StatelessWidget {
   final int index;
@@ -16,7 +16,7 @@ class IconNavElement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<NewAppFrameCubit, NewAppFrameState>(
+    return BlocBuilder<AppFrameCubit, AppFrameState>(
       builder: (context, state) {
         if (state.index == index) {
           return GestureDetector(
@@ -28,7 +28,7 @@ class IconNavElement extends StatelessWidget {
           );
         } else if (state.index == 2) {
           return GestureDetector(
-            onTap: () => context.read<NewAppFrameCubit>().changePage(index),
+            onTap: () => context.read<AppFrameCubit>().changePage(index),
             child: Icon(
               unselectedIcon,
               size: 30,
@@ -37,7 +37,7 @@ class IconNavElement extends StatelessWidget {
           );
         } else {
           return GestureDetector(
-            onTap: () => context.read<NewAppFrameCubit>().changePage(index),
+            onTap: () => context.read<AppFrameCubit>().changePage(index),
             child: Icon(
               unselectedIcon,
               size: 30,

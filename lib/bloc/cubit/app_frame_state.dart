@@ -1,20 +1,22 @@
 part of 'app_frame_cubit.dart';
 
+@immutable
 class AppFrameState extends Equatable {
-  final PageController appFrameController;
-  final int pageNumber;
-  const AppFrameState({required this.appFrameController, this.pageNumber = 0});
+  final PageController pageController;
+  final int index;
+
+  const AppFrameState({required this.pageController, this.index = 1});
 
   AppFrameState copyWith({
-    PageController? appFrameController,
-    int? pageNumber,
+    PageController? pageController,
+    int? index,
   }) {
     return AppFrameState(
-      appFrameController: appFrameController ?? this.appFrameController,
-      pageNumber: pageNumber ?? this.pageNumber,
+      pageController: pageController ?? this.pageController,
+      index: index ?? this.index,
     );
   }
 
   @override
-  List<Object> get props => [appFrameController, pageNumber];
+  List<Object?> get props => [pageController, index];
 }

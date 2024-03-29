@@ -5,11 +5,10 @@ import 'package:shared_photo/bloc/bloc/dashboard_bloc.dart';
 import 'package:shared_photo/bloc/bloc/feed_bloc.dart';
 import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
 import 'package:shared_photo/bloc/cubit/camera_cubit.dart';
-import 'package:shared_photo/bloc/cubit/new_app_frame_cubit.dart';
+import 'package:shared_photo/bloc/cubit/app_frame_cubit.dart';
 import 'package:shared_photo/bloc/cubit/search_cubit.dart';
 import 'package:shared_photo/components/new_app_frame/new_bottom_app_bar.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
-import 'package:shared_photo/repositories/go_repository.dart';
 import 'package:shared_photo/repositories/user_repository.dart';
 import 'package:shared_photo/screens/camera.dart';
 import 'package:shared_photo/screens/new_feed.dart';
@@ -25,7 +24,7 @@ class NewAppFrame extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => NewAppFrameCubit(),
+          create: (context) => AppFrameCubit(),
         ),
         BlocProvider(
           create: (context) => ProfileBloc(
@@ -53,7 +52,7 @@ class NewAppFrame extends StatelessWidget {
           ),
         ),
       ],
-      child: BlocBuilder<NewAppFrameCubit, NewAppFrameState>(
+      child: BlocBuilder<AppFrameCubit, AppFrameState>(
         builder: (context, state) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             bool newAccount = context.read<AppBloc>().state.user.newAccount;
@@ -83,7 +82,7 @@ class NewAppFrame extends StatelessWidget {
                 children: [
                   BlocProvider(
                     create: (context) => SearchCubit(
-                      goRepository: context.read<GoRepository>(),
+                      user: context.read<AppBloc>().state.user,
                     ),
                     child: const SearchFrame(),
                   ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
-import 'package:shared_photo/bloc/cubit/new_app_frame_cubit.dart';
+import 'package:shared_photo/bloc/cubit/app_frame_cubit.dart';
 
 class ProfileNavElement extends StatelessWidget {
   final int index;
@@ -15,12 +15,12 @@ class ProfileNavElement extends StatelessWidget {
   Widget build(BuildContext context) {
     String? url = context.read<AppBloc>().state.user.avatarUrl;
     Map<String, String> headers = context.read<AppBloc>().state.user.headers;
-    return BlocBuilder<NewAppFrameCubit, NewAppFrameState>(
+    return BlocBuilder<AppFrameCubit, AppFrameState>(
       builder: (context, state) {
         bool isSelected = state.index == index;
         return GestureDetector(
           onTap: !isSelected
-              ? () => context.read<NewAppFrameCubit>().changePage(index)
+              ? () => context.read<AppFrameCubit>().changePage(index)
               : () => {},
           child: Container(
             height: 30,

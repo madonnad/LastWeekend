@@ -2,15 +2,16 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_photo/models/search_result.dart';
-import 'package:shared_photo/repositories/go_repository.dart';
+import 'package:shared_photo/models/user.dart';
+import 'package:shared_photo/services/search_service.dart';
 
 part 'search_state.dart';
 
 class SearchCubit extends Cubit<SearchState> {
-  final GoRepository goRepository;
+  final User user;
 
   SearchCubit({
-    required this.goRepository,
+    required this.user,
   }) : super(SearchState.empty);
 
   void clearTextController() {
@@ -25,8 +26,10 @@ class SearchCubit extends Cubit<SearchState> {
     await Future.delayed(
       const Duration(milliseconds: 250),
       () async {
-        resultList = await goRepository.searchLookup(
-            lookup: state.searchController.text);
+        resultList = await SearchService.searchLookup(
+          token: user.token,
+          lookup: state.searchController.text,
+        );
       },
     );
 

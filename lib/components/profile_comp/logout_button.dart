@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
-import 'package:shared_photo/repositories/go_repository.dart';
+import 'package:shared_photo/repositories/realtime_repository.dart';
 
 class LogoutButton extends StatelessWidget {
   const LogoutButton({super.key});
@@ -14,7 +14,7 @@ class LogoutButton extends StatelessWidget {
       child: Center(
         child: InkWell(
           onTap: () {
-            context.read<GoRepository>().closeWebSocket();
+            context.read<RealtimeRepository>().closeWebSocket();
             context.read<AppBloc>().add(const AppLogoutRequested());
           },
           child: Container(

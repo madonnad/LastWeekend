@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
-import 'package:shared_photo/bloc/cubit/new_app_frame_cubit.dart';
+import 'package:shared_photo/bloc/cubit/app_frame_cubit.dart';
 import 'package:shared_photo/bloc/cubit/search_cubit.dart';
 import 'package:shared_photo/components/new_search_comp/user_search_result.dart';
 import 'package:shared_photo/models/search_result.dart';
@@ -75,7 +75,7 @@ class _SearchFrameState extends State<SearchFrame>
                                         context.read<AppBloc>().state.user.id) {
                                       return GestureDetector(
                                         onTap: () => context
-                                            .read<NewAppFrameCubit>()
+                                            .read<AppFrameCubit>()
                                             .changePage(4),
                                         child: UserSearchResult(
                                           result: state.searchResult[index],
