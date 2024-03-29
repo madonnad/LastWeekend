@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/repositories/auth0_repository.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
+import 'package:shared_photo/repositories/notification_repository.dart';
 import 'package:shared_photo/repositories/realtime_repository.dart';
 import 'package:shared_photo/repositories/user_repository.dart';
 import 'package:shared_photo/router/generate_route.dart';
@@ -69,6 +70,11 @@ class MainApp extends StatelessWidget {
                     RepositoryProvider(
                       create: (context) => UserRepository(
                         user: context.read<AppBloc>().state.user,
+                      ),
+                    ),
+                    RepositoryProvider(
+                      create: (context) => NotificationRepository(
+                        realtimeRepository: context.read<RealtimeRepository>(),
                       ),
                     ),
                   ],
