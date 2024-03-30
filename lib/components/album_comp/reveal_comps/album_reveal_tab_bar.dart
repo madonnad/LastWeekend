@@ -13,7 +13,7 @@ class AlbumRevealTabBar extends StatelessWidget {
       duration: 1,
       buttonMargin: const EdgeInsets.only(top: 9, bottom: 9, right: 16),
       contentPadding: const EdgeInsets.symmetric(horizontal: 20),
-      radius: 20,
+      radius: 10,
       unselectedDecoration: const BoxDecoration(
         color: Color.fromRGBO(44, 44, 44, 1),
       ),

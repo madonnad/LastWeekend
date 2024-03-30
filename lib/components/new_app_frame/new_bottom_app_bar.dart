@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/cubit/app_frame_cubit.dart';
+import 'package:shared_photo/bloc/cubit/notification_cubit.dart';
 import 'package:shared_photo/components/new_app_frame/camera_nav_element.dart';
 import 'package:shared_photo/components/new_app_frame/icon_nav_element.dart';
 import 'package:shared_photo/components/new_app_frame/profile_nav_element.dart';
@@ -23,28 +24,38 @@ class NewBottomAppBar extends StatelessWidget {
                   : const Color.fromRGBO(19, 19, 19, 1),
               borderRadius: BorderRadius.circular(25),
             ),
-            child: const Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                IconNavElement(
+                const IconNavElement(
                   index: 0,
                   selectedIcon: Icons.search,
                   unselectedIcon: Icons.search_outlined,
                 ),
-                IconNavElement(
+                const IconNavElement(
                   index: 1,
                   selectedIcon: Icons.home,
                   unselectedIcon: Icons.home_outlined,
                 ),
-                CameraNavElement(
+                const CameraNavElement(
                   index: 2,
                 ),
-                IconNavElement(
-                  index: 3,
-                  selectedIcon: Icons.favorite,
-                  unselectedIcon: Icons.favorite_outline,
+                BlocBuilder<NotificationCubit, NotificationState>(
+                  builder: (context, state) {
+                    return Badge(
+                      smallSize: 9,
+                      backgroundColor: Colors.red,
+                      isLabelVisible:
+                          state.unreadNotificationTabs.contains(true),
+                      child: const IconNavElement(
+                        index: 3,
+                        selectedIcon: Icons.favorite,
+                        unselectedIcon: Icons.favorite_outline,
+                      ),
+                    );
+                  },
                 ),
-                ProfileNavElement(index: 4),
+                const ProfileNavElement(index: 4),
               ],
             ),
           ),

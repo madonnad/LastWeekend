@@ -5,8 +5,8 @@ import 'package:shared_photo/components/new_profile_comp/profile_header_comps/pr
 import 'package:shared_photo/components/new_profile_comp/profile_topfriend_comps/top_friends_component.dart';
 import 'package:shared_photo/components/profile_comp/logout_button.dart';
 
-class NewProfileScreen extends StatelessWidget {
-  const NewProfileScreen({super.key});
+class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

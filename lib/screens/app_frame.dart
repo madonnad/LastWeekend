@@ -6,18 +6,21 @@ import 'package:shared_photo/bloc/bloc/feed_bloc.dart';
 import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
 import 'package:shared_photo/bloc/cubit/camera_cubit.dart';
 import 'package:shared_photo/bloc/cubit/app_frame_cubit.dart';
+import 'package:shared_photo/bloc/cubit/notification_cubit.dart';
 import 'package:shared_photo/bloc/cubit/search_cubit.dart';
 import 'package:shared_photo/components/new_app_frame/new_bottom_app_bar.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
+import 'package:shared_photo/repositories/notification_repository.dart';
 import 'package:shared_photo/repositories/user_repository.dart';
 import 'package:shared_photo/screens/camera.dart';
 import 'package:shared_photo/screens/new_feed.dart';
-import 'package:shared_photo/screens/new_profile.dart';
+import 'package:shared_photo/screens/profile_screen.dart';
+import 'package:shared_photo/screens/notification_frame.dart';
 import 'package:shared_photo/screens/search_frame.dart';
 import 'package:shared_photo/screens/welcome_frame.dart';
 
-class NewAppFrame extends StatelessWidget {
-  const NewAppFrame({super.key});
+class AppFrame extends StatelessWidget {
+  const AppFrame({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +52,11 @@ class NewAppFrame extends StatelessWidget {
           create: (context) => CameraCubit(
             user: context.read<AppBloc>().state.user,
             dataRepository: context.read<DataRepository>(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => NotificationCubit(
+            notificationRepository: context.read<NotificationRepository>(),
           ),
         ),
       ],
@@ -93,12 +101,8 @@ class NewAppFrame extends StatelessWidget {
                       return CameraScreen(cameras: appState.cameras);
                     },
                   ),
-                  Center(
-                    child: Container(
-                      color: Colors.black,
-                    ),
-                  ),
-                  const NewProfileScreen()
+                  const NotificationFrame(),
+                  const ProfileScreen()
                 ],
               ),
               bottomNavigationBar: const NewBottomAppBar(),
