@@ -80,21 +80,26 @@ class AlbumInviteNotification extends Notification {
 
 class FriendRequestNotification extends Notification {
   final String userID;
-  final String requesterName;
+  final String firstName;
+  final String lastName;
   FriendRequestNotification({
     required super.notificationID,
     required super.receivedDateTime,
     required super.notificationMediaID,
     required this.userID,
-    required this.requesterName,
+    required this.firstName,
+    required this.lastName,
   });
+
+  String get fullName => '$firstName $lastName';
 
   factory FriendRequestNotification.fromMap(Map<String, dynamic> map) {
     return FriendRequestNotification(
       notificationID: map['user_id'],
       receivedDateTime: DateTime.parse(map['received_at']),
       userID: map['user_id'],
-      requesterName: '${map['first_name']} ${map['last_name']}',
+      firstName: map['first_name'],
+      lastName: map['last_name'],
       notificationMediaID: map['user_id'],
     );
   }

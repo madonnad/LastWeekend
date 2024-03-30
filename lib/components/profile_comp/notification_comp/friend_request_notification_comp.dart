@@ -95,7 +95,7 @@ class FriendRequestNotificationComp extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 5.0),
                                   child: Text(
-                                    notification.requesterName,
+                                    notification.fullName,
                                     style: GoogleFonts.poppins(
                                         fontSize: 14,
                                         color: Colors.white,
