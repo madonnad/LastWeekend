@@ -11,7 +11,7 @@ import 'package:shared_photo/repositories/user_repository.dart';
 import 'package:shared_photo/router/generate_route.dart';
 import 'package:shared_photo/screens/auth_frame.dart';
 import 'package:shared_photo/screens/loading.dart';
-import 'package:shared_photo/screens/new_app_frame.dart';
+import 'package:shared_photo/screens/app_frame.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -100,7 +100,7 @@ class MainAppView extends StatelessWidget {
       home: BlocBuilder<AppBloc, AppState>(
         builder: (context, state) {
           if (state is AuthenticatedState) {
-            return const NewAppFrame();
+            return const AppFrame();
           } else if (state is LoadingState) {
             return const LoadingScreen();
           } else {

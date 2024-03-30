@@ -8,14 +8,11 @@ import 'package:shared_photo/screens/album_create/album_create_modal.dart';
 import 'package:shared_photo/screens/auth.dart';
 import 'package:shared_photo/screens/album_frame.dart';
 import 'package:shared_photo/screens/friend_profile_frame.dart';
-import 'package:shared_photo/screens/profile.dart';
 
 Route onGenerateRoute(RouteSettings settings) {
   switch (settings.name) {
     case '/':
       return MaterialPageRoute(builder: (context) => const AuthScreen());
-    case 'profile':
-      return MaterialPageRoute(builder: (context) => const ProfileScreen());
     case '/create-album':
       return MaterialPageRoute(builder: (context) => const AlbumCreateModal());
     case '/album':
