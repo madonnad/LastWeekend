@@ -75,6 +75,7 @@ class MainApp extends StatelessWidget {
                     RepositoryProvider(
                       create: (context) => NotificationRepository(
                         realtimeRepository: context.read<RealtimeRepository>(),
+                        user: context.read<AppBloc>().state.user,
                       ),
                     ),
                   ],

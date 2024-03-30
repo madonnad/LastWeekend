@@ -9,7 +9,7 @@ class RealtimeRepository {
   User user;
   late IOWebSocketChannel _webSocketChannel;
 
-  final _notificationController = StreamController<Notification>();
+  final _notificationController = StreamController<Notification>.broadcast();
   Stream<Notification> get notificationStream => _notificationController.stream;
 
   RealtimeRepository({required this.user}) {
@@ -23,11 +23,14 @@ class RealtimeRepository {
     final wsURL = Uri.parse('ws://$domain/ws');
     var connection = IOWebSocketChannel.connect(wsURL, headers: headers);
 
-    connection.stream.listen((event) {
-      handleWebSocketMessage(event);
-    }, onDone: () {
-      print("WebSocket Connection Closed");
-    });
+    connection.stream.listen(
+      (event) {
+        handleWebSocketMessage(event);
+      },
+      onDone: () {
+        print("WebSocket Connection Closed");
+      },
+    );
 
     return connection;
   }
