@@ -1,18 +1,26 @@
+import 'package:equatable/equatable.dart';
 import 'package:shared_photo/utils/api_variables.dart';
 
 enum GenericNotificationType { likedPhoto, upvotePhoto, imageComment }
 
 enum NotificationType { generic, friendRequest, albumInvite }
 
-enum FriendRequestStatus { pending, accepted, decline}
+enum FriendRequestStatus {
+  pending(1),
+  accepted(2),
+  decline(3);
 
-abstract class Notification {
+  const FriendRequestStatus(this.val);
+  final int val;
+}
+
+abstract class Notification extends Equatable {
   final String notificationID;
   final DateTime receivedDateTime;
   final String notificationMediaID;
   final bool? notificationSeen;
 
-  Notification({
+  const Notification({
     required this.notificationID,
     required this.receivedDateTime,
     required this.notificationMediaID,
@@ -78,6 +86,9 @@ class AlbumInviteNotification extends Notification {
       ownerName: '${map['owner_first']} ${map['owner_last']}',
     );
   }
+
+  @override
+  List<Object?> get props => [];
 }
 
 class FriendRequestNotification extends Notification {
@@ -85,7 +96,7 @@ class FriendRequestNotification extends Notification {
   final String firstName;
   final String lastName;
   final FriendRequestStatus status;
-  FriendRequestNotification({
+  const FriendRequestNotification({
     required super.notificationID,
     required super.receivedDateTime,
     required super.notificationMediaID,
@@ -109,6 +120,23 @@ class FriendRequestNotification extends Notification {
       status: status,
     );
   }
+
+  FriendRequestNotification copyWith({
+    FriendRequestStatus? status,
+  }) {
+    return FriendRequestNotification(
+      notificationID: notificationID,
+      receivedDateTime: receivedDateTime,
+      notificationMediaID: notificationMediaID,
+      userID: userID,
+      firstName: firstName,
+      lastName: lastName,
+      status: status ?? this.status,
+    );
+  }
+
+  @override
+  List<Object?> get props => [status];
 }
 
 class SummaryNotification extends Notification {
@@ -119,7 +147,7 @@ class SummaryNotification extends Notification {
   final String albumID;
   final int typeTotal;
 
-  SummaryNotification({
+  const SummaryNotification({
     required super.notificationID,
     required super.notificationMediaID,
     required super.receivedDateTime,
@@ -144,6 +172,9 @@ class SummaryNotification extends Notification {
       typeTotal: map['album_type_total'],
     );
   }
+
+  @override
+  List<Object?> get props => [];
 }
 
 class GenericNotification extends Notification {
@@ -153,7 +184,7 @@ class GenericNotification extends Notification {
   final String albumName;
   final GenericNotificationType notificationType;
 
-  GenericNotification({
+  const GenericNotification({
     required super.notificationID,
     required super.receivedDateTime,
     required super.notificationMediaID,
@@ -187,4 +218,6 @@ class GenericNotification extends Notification {
       notificationType: notificationType,
     );
   }
+  @override
+  List<Object?> get props => [];
 }

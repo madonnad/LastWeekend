@@ -13,6 +13,9 @@ class NewBottomAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AppFrameCubit, AppFrameState>(
       builder: (context, state) {
+        if (state.pageController.page != 3) {
+          context.read<NotificationCubit>().clearAcceptedInvitesRequests();
+        }
         return BottomAppBar(
           height: 85,
           surfaceTintColor: Colors.transparent,
