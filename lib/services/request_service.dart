@@ -21,4 +21,40 @@ class RequestService {
       return false;
     }
   }
+
+  static Future<bool> acceptFriendRequest(
+      String token, String requestorID) async {
+    var url = Uri.http(domain, '/friend-request', {"id": requestorID});
+    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
+
+    try {
+      final response = await http.put(url, headers: headers);
+
+      if (response.statusCode == 200) {
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> denyFriendRequest(String token, String friendID) async {
+    var url =
+        Uri.http(domain, '/notifications/friend', {"friend_id": friendID});
+    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
+
+    try {
+      final response = await http.delete(url, headers: headers);
+
+      if (response.statusCode == 200) {
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
 }

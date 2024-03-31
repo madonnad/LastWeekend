@@ -3,43 +3,50 @@ part of 'notification_cubit.dart';
 class NotificationState extends Equatable {
   final int currentIndex;
   final List<bool> unreadNotificationTabs;
-  final Map<String, dynamic> allNotifications;
+  final Map<String, dynamic> friendRequestMap;
+  final Map<String, dynamic> albumInviteMap;
+  final Map<String, dynamic> genericNotificationMap;
+  final String exception;
 
   const NotificationState({
     this.currentIndex = 0,
     this.unreadNotificationTabs = const [false, false, false],
-    this.allNotifications = const {},
+    this.friendRequestMap = const {},
+    this.albumInviteMap = const {},
+    this.genericNotificationMap = const {},
+    this.exception = '',
   });
 
   NotificationState copyWith({
     int? currentIndex,
     List<bool>? unreadNotificationTabs,
-    Map<String, dynamic>? allNotifications,
+    Map<String, dynamic>? friendRequestMap,
+    Map<String, dynamic>? albumInviteMap,
+    Map<String, dynamic>? genericNotificationMap,
+    String? exception,
   }) {
     return NotificationState(
       currentIndex: currentIndex ?? this.currentIndex,
       unreadNotificationTabs:
           unreadNotificationTabs ?? this.unreadNotificationTabs,
-      allNotifications: allNotifications ?? this.allNotifications,
+      friendRequestMap: friendRequestMap ?? this.friendRequestMap,
+      albumInviteMap: albumInviteMap ?? this.albumInviteMap,
+      genericNotificationMap:
+          genericNotificationMap ?? this.genericNotificationMap,
+      exception: exception ?? this.exception,
     );
   }
 
-  List<AlbumInviteNotification> get albumInviteNotifications {
-    return allNotifications.values
-        .whereType<AlbumInviteNotification>()
-        .toList();
-  }
-
-  List<FriendRequestNotification> get friendRequestNotifications {
-    return allNotifications.values
-        .whereType<FriendRequestNotification>()
-        .toList();
-  }
+  List<FriendRequestNotification> get friendRequestList =>
+      friendRequestMap.values.whereType<FriendRequestNotification>().toList();
 
   @override
   List<Object> get props => [
         currentIndex,
         unreadNotificationTabs,
-        allNotifications,
+        friendRequestMap,
+        albumInviteMap,
+        genericNotificationMap,
+        exception,
       ];
 }
