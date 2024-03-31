@@ -9,8 +9,11 @@ class RealtimeRepository {
   User user;
   late IOWebSocketChannel _webSocketChannel;
 
-  final _notificationController = StreamController<Notification>.broadcast();
-  Stream<Notification> get notificationStream => _notificationController.stream;
+  // Stream Controllers
+  final _realtimeNotificationController =
+      StreamController<Notification>.broadcast();
+  Stream<Notification> get realtimeNotificationStream =>
+      _realtimeNotificationController.stream;
 
   RealtimeRepository({required this.user}) {
     _webSocketChannel = webSocketConnection();
@@ -44,14 +47,33 @@ class RealtimeRepository {
     String type = jsonData["type"];
     switch (type) {
       case "friend-request":
-        FriendRequestNotification notification =
-            FriendRequestNotification.fromMap(jsonData["payload"]);
-        _notificationController.add(notification);
+        wsFriendRequestMessageHandler(
+            jsonData['operation'], jsonData['payload']);
+        return;
       case "album-invite":
         return;
       case "general":
         return;
       default:
+        return;
+    }
+  }
+
+  void wsFriendRequestMessageHandler(String operation, dynamic payload) {
+    switch (operation) {
+      case "REQUEST":
+        FriendRequestNotification notification =
+            FriendRequestNotification.fromMap(
+                payload, FriendRequestStatus.pending);
+        _realtimeNotificationController.add(notification);
+        return;
+      case "ACCEPTED":
+        FriendRequestNotification notification =
+            FriendRequestNotification.fromMap(
+                payload, FriendRequestStatus.accepted);
+        _realtimeNotificationController.add(notification);
+        return;
+      case "DECLINED":
         return;
     }
   }

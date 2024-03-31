@@ -20,7 +20,8 @@ class FriendsAlbumSection extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SectionHeaderSmall("Zoe's Public Albums"),
+                    SectionHeaderSmall(
+                        "${state.anonymousFriend.firstName}'s Public Albums"),
                     SizedBox(
                       height: 300,
                       child: ListView.separated(

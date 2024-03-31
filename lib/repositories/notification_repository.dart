@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:shared_photo/models/notification.dart';
 import 'package:shared_photo/models/user.dart';
 import 'package:shared_photo/repositories/realtime_repository.dart';
@@ -8,16 +10,17 @@ class NotificationRepository {
   User user;
   Map<String, Notification> globalNotifications = <String, Notification>{};
 
+  final _notificationController = StreamController<Notification>();
+  Stream<Notification> get notificationStream => _notificationController.stream;
+
   NotificationRepository(
       {required this.realtimeRepository, required this.user}) {
     initializeNotifications();
-    realtimeRepository.notificationStream.listen((event) {
+    realtimeRepository.realtimeNotificationStream.listen((event) {
       switch (event.runtimeType) {
         case AlbumInviteNotification:
           AlbumInviteNotification notification =
               event as AlbumInviteNotification;
-          globalNotifications.putIfAbsent(
-              notification.notificationID, () => notification);
 
         case FriendRequestNotification:
           FriendRequestNotification notification =
@@ -25,13 +28,39 @@ class NotificationRepository {
 
           globalNotifications.putIfAbsent(
               notification.notificationID, () => notification);
+
+          _notificationController.add(notification);
         case GenericNotification:
           GenericNotification notification = event as GenericNotification;
 
           globalNotifications.putIfAbsent(
               notification.notificationID, () => notification);
+
+          _notificationController.add(notification);
       }
     });
+  }
+
+  void notificationTypeHandler(Notification notification) {
+    switch (notification.runtimeType) {
+      case FriendRequestNotification:
+        friendRequestHandler(notification as FriendRequestNotification);
+    }
+  }
+
+  void friendRequestHandler(FriendRequestNotification request) {
+    switch (request.status) {
+      case FriendRequestStatus.pending:
+        globalNotifications.putIfAbsent(request.notificationID, () => request);
+
+        _notificationController.add(request);
+      case FriendRequestStatus.accepted:
+        globalNotifications
+            .removeWhere((key, value) => key == request.notificationID);
+
+        
+      case FriendRequestStatus.decline:
+    }
   }
 
   Future<void> initializeNotifications() async {
@@ -42,17 +71,5 @@ class NotificationRepository {
       globalNotifications.putIfAbsent(
           notification.notificationID, () => notification);
     }
-  }
-
-  List<AlbumInviteNotification> get albumInviteNotifications {
-    return globalNotifications.values
-        .whereType<AlbumInviteNotification>()
-        .toList();
-  }
-
-  List<FriendRequestNotification> get friendRequestNotifications {
-    return globalNotifications.values
-        .whereType<FriendRequestNotification>()
-        .toList();
   }
 }

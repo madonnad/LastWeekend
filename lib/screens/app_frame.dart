@@ -10,7 +10,7 @@ import 'package:shared_photo/bloc/cubit/notification_cubit.dart';
 import 'package:shared_photo/bloc/cubit/search_cubit.dart';
 import 'package:shared_photo/components/new_app_frame/new_bottom_app_bar.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
-import 'package:shared_photo/repositories/notification_repository.dart';
+import 'package:shared_photo/repositories/realtime_repository.dart';
 import 'package:shared_photo/repositories/user_repository.dart';
 import 'package:shared_photo/screens/camera.dart';
 import 'package:shared_photo/screens/new_feed.dart';
@@ -56,7 +56,8 @@ class AppFrame extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => NotificationCubit(
-            notificationRepository: context.read<NotificationRepository>(),
+            realtimeRepository: context.read<RealtimeRepository>(),
+            user: context.read<AppBloc>().state.user,
           ),
         ),
       ],

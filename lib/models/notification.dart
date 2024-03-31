@@ -4,6 +4,8 @@ enum GenericNotificationType { likedPhoto, upvotePhoto, imageComment }
 
 enum NotificationType { generic, friendRequest, albumInvite }
 
+enum FriendRequestStatus { pending, accepted, decline}
+
 abstract class Notification {
   final String notificationID;
   final DateTime receivedDateTime;
@@ -82,6 +84,7 @@ class FriendRequestNotification extends Notification {
   final String userID;
   final String firstName;
   final String lastName;
+  final FriendRequestStatus status;
   FriendRequestNotification({
     required super.notificationID,
     required super.receivedDateTime,
@@ -89,11 +92,13 @@ class FriendRequestNotification extends Notification {
     required this.userID,
     required this.firstName,
     required this.lastName,
+    required this.status,
   });
 
   String get fullName => '$firstName $lastName';
 
-  factory FriendRequestNotification.fromMap(Map<String, dynamic> map) {
+  factory FriendRequestNotification.fromMap(
+      Map<String, dynamic> map, FriendRequestStatus status) {
     return FriendRequestNotification(
       notificationID: map['user_id'],
       receivedDateTime: DateTime.parse(map['received_at']),
@@ -101,6 +106,7 @@ class FriendRequestNotification extends Notification {
       firstName: map['first_name'],
       lastName: map['last_name'],
       notificationMediaID: map['user_id'],
+      status: status,
     );
   }
 }

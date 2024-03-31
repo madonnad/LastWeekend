@@ -6,7 +6,7 @@ import 'package:shared_photo/utils/api_variables.dart';
 import 'package:http/http.dart' as http;
 
 class NotificationService {
- Future<List<Notification>> getNotifications(String token) async {
+  Future<List<Notification>> getNotifications(String token) async {
     final List<Notification> notificationList = [];
 
     var url = Uri.http(domain, '/notifications');
@@ -28,7 +28,9 @@ class NotificationService {
       List<dynamic> friendRequestList = jsonData['friend_requests'] ?? [];
 
       for (var item in friendRequestList) {
-        notificationList.add(FriendRequestNotification.fromMap(item));
+        notificationList.add(
+          FriendRequestNotification.fromMap(item, FriendRequestStatus.pending),
+        );
       }
       for (var item in albumInviteList) {
         notificationList.add(AlbumInviteNotification.fromMap(item));
@@ -43,34 +45,6 @@ class NotificationService {
     print('Response body: #${response.body}');
 
     return notificationList;
-  }
-
-  Future<void> acceptFriendRequest(String token, String friendID) async {
-    var url =
-        Uri.http(domain, '/notifications/friend', {"friend_id": friendID});
-    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
-
-    final response = await http.post(url, headers: headers);
-
-    if (response.statusCode == 200) {
-      return;
-    }
-    throw HttpException(
-        "Failed to accept the friend request with status: ${response.statusCode}");
-  }
-
-  Future<void> denyFriendRequest(String token, String friendID) async {
-    var url =
-        Uri.http(domain, '/notifications/friend', {"friend_id": friendID});
-    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
-
-    final response = await http.delete(url, headers: headers);
-
-    if (response.statusCode == 200) {
-      return;
-    }
-    throw HttpException(
-        "Failed to delete the friend request with status: ${response.statusCode}");
   }
 
   Future<void> acceptAlbumInvite(String token, String albumID) async {
@@ -98,6 +72,4 @@ class NotificationService {
     throw HttpException(
         "Failed to accept the friend request with status: ${response.statusCode}");
   }
-
-
 }
