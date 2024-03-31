@@ -33,20 +33,27 @@ class NotificationCubit extends Cubit<NotificationState> {
   }
 
   Future<bool> acceptFriendRequest(String friendID) async {
-    bool success =
-        await RequestService.acceptFriendRequest(user.token, friendID);
+    Map<String, FriendRequestNotification> friendRequestCopy =
+        Map.from(state.friendRequestMap);
 
-    if (success) {
-      Map<String, FriendRequestNotification> friendRequestCopy =
-          Map.from(state.friendRequestMap);
-      friendRequestCopy.removeWhere((key, value) => key == friendID);
-      emit(state.copyWith(friendRequestMap: friendRequestCopy));
-      return true;
-    } else {
-      emit(state.copyWith(exception: "Failed to accept friend request"));
-      emit(state.copyWith(exception: ""));
-      return false;
+    if (friendRequestCopy[friendID] != null) {
+      bool success =
+          await RequestService.acceptFriendRequest(user.token, friendID);
+
+      if (success) {
+        FriendRequestNotification acceptedRequest = friendRequestCopy[friendID]!
+            .copyWith(status: FriendRequestStatus.accepted);
+
+        friendRequestCopy[friendID] = acceptedRequest;
+        emit(state.copyWith(friendRequestMap: friendRequestCopy));
+        return true;
+      } else {
+        emit(state.copyWith(exception: "Failed to accept friend request"));
+        emit(state.copyWith(exception: ""));
+        return false;
+      }
     }
+    return false;
   }
 
   void clearTabNotifications(int index) {
@@ -56,6 +63,15 @@ class NotificationCubit extends Cubit<NotificationState> {
       unreadNotificationTabs[index] = false;
       emit(state.copyWith(unreadNotificationTabs: unreadNotificationTabs));
     }
+  }
+
+  void clearAcceptedInvitesRequests() {
+    Map<String, FriendRequestNotification> friendReqMap =
+        Map.from(state.friendRequestMap);
+
+    friendReqMap.removeWhere(
+        (key, value) => value.status == FriendRequestStatus.accepted);
+    emit(state.copyWith(friendRequestMap: friendReqMap));
   }
 
   void changeTab(int index) {

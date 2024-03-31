@@ -3,9 +3,9 @@ part of 'notification_cubit.dart';
 class NotificationState extends Equatable {
   final int currentIndex;
   final List<bool> unreadNotificationTabs;
-  final Map<String, dynamic> friendRequestMap;
-  final Map<String, dynamic> albumInviteMap;
-  final Map<String, dynamic> genericNotificationMap;
+  final Map<String, FriendRequestNotification> friendRequestMap;
+  final Map<String, AlbumInviteNotification> albumInviteMap;
+  final Map<String, GenericNotification> genericNotificationMap;
   final String exception;
 
   const NotificationState({
@@ -20,9 +20,9 @@ class NotificationState extends Equatable {
   NotificationState copyWith({
     int? currentIndex,
     List<bool>? unreadNotificationTabs,
-    Map<String, dynamic>? friendRequestMap,
-    Map<String, dynamic>? albumInviteMap,
-    Map<String, dynamic>? genericNotificationMap,
+    Map<String, FriendRequestNotification>? friendRequestMap,
+    Map<String, AlbumInviteNotification>? albumInviteMap,
+    Map<String, GenericNotification>? genericNotificationMap,
     String? exception,
   }) {
     return NotificationState(
@@ -38,7 +38,8 @@ class NotificationState extends Equatable {
   }
 
   List<FriendRequestNotification> get friendRequestList =>
-      friendRequestMap.values.whereType<FriendRequestNotification>().toList();
+      List.from(friendRequestMap.values)
+        ..sort((a, b) => b.status.val.compareTo(a.status.val));
 
   @override
   List<Object> get props => [
@@ -47,6 +48,7 @@ class NotificationState extends Equatable {
         friendRequestMap,
         albumInviteMap,
         genericNotificationMap,
+        friendRequestList,
         exception,
       ];
 }
