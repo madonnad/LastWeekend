@@ -29,7 +29,7 @@ class NotificationService {
 
       for (var item in friendRequestList) {
         notificationList.add(
-          FriendRequestNotification.fromMap(item, FriendRequestStatus.pending),
+          FriendRequestNotification.fromMap(item),
         );
       }
       for (var item in albumInviteList) {

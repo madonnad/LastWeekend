@@ -40,7 +40,8 @@ class RequestService {
     }
   }
 
-  static Future<bool> denyFriendRequest(String token, String requestorID) async {
+  static Future<bool> deleteFriendRequest(
+      String token, String requestorID) async {
     var url = Uri.http(domain, '/friend-request', {"id": requestorID});
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 

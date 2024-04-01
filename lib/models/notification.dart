@@ -108,8 +108,13 @@ class FriendRequestNotification extends Notification {
 
   String get fullName => '$firstName $lastName';
 
-  factory FriendRequestNotification.fromMap(
-      Map<String, dynamic> map, FriendRequestStatus status) {
+  factory FriendRequestNotification.fromMap(Map<String, dynamic> map) {
+    FriendRequestStatus status = FriendRequestStatus.pending;
+
+    if (map['status'] == 'accepted') {
+      status = FriendRequestStatus.accepted;
+    }
+
     return FriendRequestNotification(
       notificationID: map['user_id'],
       receivedDateTime: DateTime.parse(map['received_at']),
