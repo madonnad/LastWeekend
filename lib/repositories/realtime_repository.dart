@@ -74,8 +74,6 @@ class RealtimeRepository {
 
         _realtimeNotificationController.add(notification);
         return;
-      case "DECLINED":
-        return;
     }
   }
 
