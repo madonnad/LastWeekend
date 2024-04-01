@@ -12,6 +12,9 @@ class FriendRequestList extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<NotificationCubit, NotificationState>(
       builder: (context, state) {
+        if (!state.newFriendRequestsSeen) {
+          context.read<NotificationCubit>().markListAsRead(2);
+        }
         return Padding(
           padding: const EdgeInsets.only(top: 25.0),
           child: ListView.builder(

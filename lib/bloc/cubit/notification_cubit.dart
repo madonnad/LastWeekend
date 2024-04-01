@@ -56,6 +56,23 @@ class NotificationCubit extends Cubit<NotificationState> {
     return false;
   }
 
+  Future<bool> denyFriendRequest(String friendID) async {
+    Map<String, FriendRequestNotification> friendRequestCopy =
+        Map.from(state.friendRequestMap);
+
+    bool success = await RequestService.denyFriendRequest(user.token, friendID);
+
+    if (success) {
+      friendRequestCopy.removeWhere((key, value) => key == friendID);
+      emit(state.copyWith(friendRequestMap: friendRequestCopy));
+      return true;
+    } else {
+      emit(state.copyWith(exception: "Failed to deny friend request"));
+      emit(state.copyWith(exception: ""));
+      return false;
+    }
+  }
+
   void clearTabNotifications(int index) {
     if (state.unreadNotificationTabs[index] == true) {
       List<bool> unreadNotificationTabs =
@@ -66,12 +83,29 @@ class NotificationCubit extends Cubit<NotificationState> {
   }
 
   void clearAcceptedInvitesRequests() {
-    Map<String, FriendRequestNotification> friendReqMap =
-        Map.from(state.friendRequestMap);
+    if (state.newFriendRequestsSeen) {
+      Map<String, FriendRequestNotification> friendReqMap =
+          Map.from(state.friendRequestMap);
+      friendReqMap.removeWhere(
+          (key, value) => value.status == FriendRequestStatus.accepted);
+      emit(state.copyWith(
+          friendRequestMap: friendReqMap, newFriendRequestsSeen: true));
+    }
+  }
 
-    friendReqMap.removeWhere(
-        (key, value) => value.status == FriendRequestStatus.accepted);
-    emit(state.copyWith(friendRequestMap: friendReqMap));
+  void markListAsRead(int index) {
+    switch (index) {
+      case 0:
+        emit(state.copyWith(newGenericNotificationsSeen: true));
+        emit(state.copyWith(newFriendRequestsSeen: true));
+        break;
+      case 1:
+        emit(state.copyWith(newAlbumInvitesSeen: true));
+        break;
+      case 2:
+        emit(state.copyWith(newFriendRequestsSeen: true));
+        break;
+    }
   }
 
   void changeTab(int index) {
@@ -127,13 +161,12 @@ class NotificationCubit extends Cubit<NotificationState> {
       case FriendRequestStatus.accepted:
         friendRequestCopy[request.notificationID] = request;
       case FriendRequestStatus.decline:
-        friendRequestCopy
-            .removeWhere((key, value) => key == request.notificationID);
     }
 
     emit(state.copyWith(
       friendRequestMap: friendRequestCopy,
       unreadNotificationTabs: [false, false, true],
+      newFriendRequestsSeen: false,
     ));
   }
 }

@@ -23,8 +23,6 @@ class FeedSlideshowCubit extends Cubit<FeedSlideshowState> {
             imageOwnerName: album.rankedImages[0].fullName,
           ),
         ) {
-    print("created ${album.albumName}");
-
     Map<String, img.Image> images =
         dataRepository.getAlbumImages(album.albumId);
     album.imageMap = images;

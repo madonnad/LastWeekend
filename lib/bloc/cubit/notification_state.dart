@@ -7,6 +7,9 @@ class NotificationState extends Equatable {
   final Map<String, AlbumInviteNotification> albumInviteMap;
   final Map<String, GenericNotification> genericNotificationMap;
   final String exception;
+  final bool newFriendRequestsSeen;
+  final bool newAlbumInvitesSeen;
+  final bool newGenericNotificationsSeen;
 
   const NotificationState({
     this.currentIndex = 0,
@@ -15,6 +18,9 @@ class NotificationState extends Equatable {
     this.albumInviteMap = const {},
     this.genericNotificationMap = const {},
     this.exception = '',
+    this.newFriendRequestsSeen = true,
+    this.newAlbumInvitesSeen = true,
+    this.newGenericNotificationsSeen = true,
   });
 
   NotificationState copyWith({
@@ -24,6 +30,9 @@ class NotificationState extends Equatable {
     Map<String, AlbumInviteNotification>? albumInviteMap,
     Map<String, GenericNotification>? genericNotificationMap,
     String? exception,
+    bool? newFriendRequestsSeen,
+    bool? newAlbumInvitesSeen,
+    bool? newGenericNotificationsSeen,
   }) {
     return NotificationState(
       currentIndex: currentIndex ?? this.currentIndex,
@@ -34,6 +43,11 @@ class NotificationState extends Equatable {
       genericNotificationMap:
           genericNotificationMap ?? this.genericNotificationMap,
       exception: exception ?? this.exception,
+      newFriendRequestsSeen:
+          newFriendRequestsSeen ?? this.newFriendRequestsSeen,
+      newAlbumInvitesSeen: newAlbumInvitesSeen ?? this.newAlbumInvitesSeen,
+      newGenericNotificationsSeen:
+          newGenericNotificationsSeen ?? this.newGenericNotificationsSeen,
     );
   }
 
@@ -50,5 +64,8 @@ class NotificationState extends Equatable {
         genericNotificationMap,
         friendRequestList,
         exception,
+        newFriendRequestsSeen,
+        newAlbumInvitesSeen,
+        newGenericNotificationsSeen,
       ];
 }

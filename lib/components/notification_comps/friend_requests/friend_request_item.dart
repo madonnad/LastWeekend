@@ -77,23 +77,12 @@ class FriendRequestItem extends StatelessWidget {
           const SizedBox(width: 15),
           Row(
             children: [
-              Container(
-                height: 25,
-                width: 75,
-                decoration: BoxDecoration(
-                  color: const Color.fromRGBO(44, 44, 44, 1),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Center(
-                  child: Text(
-                    "Deny",
-                    style: GoogleFonts.josefinSans(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
+              NotificationButton(
+                buttonText: "Deny",
+                backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
+                onTap: () => context
+                    .read<NotificationCubit>()
+                    .denyFriendRequest(requesterID),
               ),
               const SizedBox(width: 15),
               NotificationButton(
