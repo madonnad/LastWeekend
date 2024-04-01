@@ -63,14 +63,12 @@ class RealtimeRepository {
     switch (operation) {
       case "REQUEST":
         FriendRequestNotification notification =
-            FriendRequestNotification.fromMap(
-                payload, FriendRequestStatus.pending);
+            FriendRequestNotification.fromMap(payload);
         _realtimeNotificationController.add(notification);
         return;
       case "ACCEPTED":
         FriendRequestNotification notification =
-            FriendRequestNotification.fromMap(
-                payload, FriendRequestStatus.accepted);
+            FriendRequestNotification.fromMap(payload);
 
         _realtimeNotificationController.add(notification);
         return;
