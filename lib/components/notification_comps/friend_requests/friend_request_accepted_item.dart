@@ -17,18 +17,18 @@ class FriendRequestAcceptedItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      height: 75,
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+      padding: const EdgeInsets.only(left: 10, right: 15),
+      height: 50,
       decoration: BoxDecoration(
-        color: const Color.fromRGBO(19, 19, 19, 1),
+        color: const Color.fromRGBO(44, 44, 44, 1),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
         children: [
           CircleAvatar(
-            radius: 20,
-            backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
+            radius: 15,
+            backgroundColor: const Color.fromRGBO(19, 19, 19, 1),
             foregroundImage: NetworkImage(
               profileImage,
               headers: context.read<AppBloc>().state.user.headers,
@@ -37,35 +37,14 @@ class FriendRequestAcceptedItem extends StatelessWidget {
           ),
           const SizedBox(width: 10),
           Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    'You & $firstName',
-                    style: GoogleFonts.josefinSans(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      height: 1,
-                    ),
-                  ),
-                ),
-                FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    "are now friends! 🥳",
-                    style: GoogleFonts.josefinSans(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      height: 1,
-                    ),
-                  ),
-                ),
-              ],
+            child: Text(
+              "$firstName's now your friend! 🥳",
+              style: GoogleFonts.josefinSans(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                height: 1,
+              ),
             ),
           ),
           const SizedBox(width: 15),
@@ -75,12 +54,12 @@ class FriendRequestAcceptedItem extends StatelessWidget {
               arguments: requesterID,
             ),
             child: Text(
-              "Go to profile",
+              "Profile",
               style: GoogleFonts.josefinSans(
-                color: const Color.fromRGBO(229, 152, 155, 1),
+                color: const Color.fromRGBO(149, 149, 149, 1),
                 decoration: TextDecoration.underline,
-                decorationColor: const Color.fromRGBO(229, 152, 155, 1),
-                fontSize: 16,
+                decorationColor: const Color.fromRGBO(149, 149, 149, 1),
+                fontSize: 15,
                 fontWeight: FontWeight.w400,
                 height: 1,
               ),
