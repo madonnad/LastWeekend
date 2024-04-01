@@ -93,7 +93,6 @@ class FeedSlideshowCubit extends Cubit<FeedSlideshowState> {
 
   @override
   Future<void> close() {
-    print("close ${album.albumName}");
     imageStreamSubscription.cancel();
     return super.close();
   }
