@@ -71,6 +71,7 @@ class RealtimeRepository {
         FriendRequestNotification notification =
             FriendRequestNotification.fromMap(
                 payload, FriendRequestStatus.accepted);
+
         _realtimeNotificationController.add(notification);
         return;
       case "DECLINED":

@@ -79,7 +79,6 @@ class NotificationCubit extends Cubit<NotificationState> {
   }
 
   // Private Functions
-
   Future<void> _initalizeNotifications() async {
     Map<String, FriendRequestNotification> friendRequestFetch = {};
     Map<String, AlbumInviteNotification> albumInviteFetch = {};
@@ -124,10 +123,9 @@ class NotificationCubit extends Cubit<NotificationState> {
     switch (request.status) {
       case FriendRequestStatus.pending:
         friendRequestCopy.putIfAbsent(request.notificationID, () => request);
-      case FriendRequestStatus.accepted:
-        friendRequestCopy
-            .removeWhere((key, value) => key == request.notificationID);
 
+      case FriendRequestStatus.accepted:
+        friendRequestCopy[request.notificationID] = request;
       case FriendRequestStatus.decline:
         friendRequestCopy
             .removeWhere((key, value) => key == request.notificationID);
