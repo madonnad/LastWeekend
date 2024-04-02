@@ -69,6 +69,7 @@ extension FriendRequestRepo on NotificationRepository {
 
   void removeFriendRequestAccepted(
       bool canDelete, String notificationID) async {
+    print(notificationID);
     if (canDelete) {
       bool success =
           await RequestService.deleteFriendRequest(user.token, notificationID);
