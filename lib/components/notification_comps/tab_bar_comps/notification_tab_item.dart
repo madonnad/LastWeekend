@@ -23,7 +23,7 @@ class NotificationTabItem extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           context.read<NotificationCubit>().changeTab(index);
-          context.read<NotificationCubit>().clearTabNotifications(index);
+          context.read<NotificationCubit>().markListAsRead(index);
           DefaultTabController.of(context).animateTo(index);
         },
         child: NotiTabComp(

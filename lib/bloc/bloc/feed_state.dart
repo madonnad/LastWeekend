@@ -34,6 +34,14 @@ class FeedState extends Equatable {
     return feedAlbumMap.values.toList();
   }
 
+  List<Album> get revealedFeedAlbumList {
+    return feedAlbumMap.values
+        .where((element) =>
+            element.phase == AlbumPhases.reveal && element.images.isNotEmpty)
+        .toList()
+      ..sort(((a, b) => b.revealDateTime.compareTo(a.revealDateTime)));
+  }
+
   @override
   List<Object> get props => [feedAlbumMap, cursorID, loading];
 }

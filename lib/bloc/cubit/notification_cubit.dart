@@ -2,70 +2,80 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:shared_photo/models/notification.dart';
 import 'package:shared_photo/models/user.dart';
-import 'package:shared_photo/repositories/realtime_repository.dart';
-import 'package:shared_photo/services/notification_service.dart';
-import 'package:shared_photo/services/request_service.dart';
+import 'package:shared_photo/repositories/data_repository/data_repository.dart';
+import 'package:shared_photo/repositories/notification_repository/notification_repository.dart';
 
 part 'notification_state.dart';
 
 class NotificationCubit extends Cubit<NotificationState> {
   User user;
-  RealtimeRepository realtimeRepository;
+  NotificationRepository notificationRepository;
 
   NotificationCubit({
-    required this.realtimeRepository,
+    required this.notificationRepository,
     required this.user,
   }) : super(const NotificationState()) {
+    // Synchronize with Repository
     _initalizeNotifications();
 
-    realtimeRepository.realtimeNotificationStream.listen((notification) {
-      _notificationTypeHandler(notification);
+    // Listen to Repository
+    notificationRepository.notificationStream.listen((event) {
+      StreamOperation operation = event.$1;
+      Notification notification = event.$2;
+
+      switch (notification.runtimeType) {
+        case FriendRequestNotification:
+          _friendRequestHandler(
+              operation, notification as FriendRequestNotification);
+        case AlbumInviteNotification:
+        case GenericNotification:
+      }
     });
   }
 
-  void _notificationTypeHandler(Notification notification) {
-    switch (notification.runtimeType) {
-      case FriendRequestNotification:
-        _friendRequestHandler(notification as FriendRequestNotification);
-      case AlbumInviteNotification:
-      case GenericNotification:
+  void markListAsRead(int index) {
+    switch (index) {
+      case 0:
+        emit(state.copyWith(unseenGenericNoti: false));
+        return;
+      case 1:
+        emit(state.copyWith(unseenAlbumInvites: false));
+        return;
+      case 2:
+        for (FriendRequestNotification request in state.friendRequestList) {
+          if (request.notificationSeen == false) {
+            notificationRepository
+                .markFriendRequestSeen(request.notificationID);
+          }
+        }
+        emit(state.copyWith(unseenFriendRequests: false));
+        return;
     }
   }
 
-  Future<bool> acceptFriendRequest(String friendID) async {
-    Map<String, FriendRequestNotification> friendRequestCopy =
-        Map.from(state.friendRequestMap);
-
-    if (friendRequestCopy[friendID] != null) {
-      bool success =
-          await RequestService.acceptFriendRequest(user.token, friendID);
-
-      if (success) {
-        FriendRequestNotification acceptedRequest = friendRequestCopy[friendID]!
-            .copyWith(status: FriendRequestStatus.accepted);
-
-        friendRequestCopy[friendID] = acceptedRequest;
-        emit(state.copyWith(friendRequestMap: friendRequestCopy));
-        return true;
-      } else {
-        emit(state.copyWith(exception: "Failed to accept friend request"));
-        emit(state.copyWith(exception: ""));
-        return false;
-      }
-    }
-    return false;
+  void changeTab(int index) {
+    emit(state.copyWith(currentIndex: index));
   }
 
-  Future<bool> denyFriendRequest(String friendID) async {
-    Map<String, FriendRequestNotification> friendRequestCopy =
-        Map.from(state.friendRequestMap);
-
+  // Friend Request Functions
+  Future<bool> acceptFriendRequest(
+      {required String requestID, required String senderID}) async {
     bool success =
-        await RequestService.deleteFriendRequest(user.token, friendID);
+        await notificationRepository.acceptFriendRequest(requestID, senderID);
 
     if (success) {
-      friendRequestCopy.removeWhere((key, value) => key == friendID);
-      emit(state.copyWith(friendRequestMap: friendRequestCopy));
+      return true;
+    } else {
+      emit(state.copyWith(exception: "Failed to accept friend request"));
+      emit(state.copyWith(exception: ""));
+      return false;
+    }
+  }
+
+  Future<bool> denyFriendRequest(String requestID) async {
+    bool success = await notificationRepository.denyFriendRequest(requestID);
+
+    if (success) {
       return true;
     } else {
       emit(state.copyWith(exception: "Failed to deny friend request"));
@@ -74,110 +84,94 @@ class NotificationCubit extends Cubit<NotificationState> {
     }
   }
 
-  void clearTabNotifications(int index) {
-    if (state.unreadNotificationTabs[index] == true) {
-      List<bool> unreadNotificationTabs =
-          List.from(state.unreadNotificationTabs);
-      unreadNotificationTabs[index] = false;
-      emit(state.copyWith(unreadNotificationTabs: unreadNotificationTabs));
+  void clearTempNotifications() {
+    if (!state.unseenFriendRequests) {
+      _clearFriendRequestAccepted();
     }
-  }
-
-  void clearAcceptedInvitesRequests() {
-    Map<String, FriendRequestNotification> friendReqMap =
-        Map.from(state.friendRequestMap);
-
-    for (FriendRequestNotification request in friendReqMap.values) {
-      if (request.status == FriendRequestStatus.accepted) {
-        RequestService.deleteFriendRequest(user.token, request.notificationID);
-      }
-    }
-    friendReqMap.removeWhere(
-        (key, value) => value.status == FriendRequestStatus.accepted);
-    emit(state.copyWith(
-        friendRequestMap: friendReqMap, unseenFriendRequests: false));
-  }
-
-  void markListAsRead(int index) {
-    switch (index) {
-      case 0:
-        emit(state.copyWith(newGenericNotificationsSeen: true));
-        emit(state.copyWith(unseenFriendRequests: false));
-        break;
-      case 1:
-        emit(state.copyWith(newAlbumInvitesSeen: true));
-        break;
-      case 2:
-        emit(state.copyWith(unseenFriendRequests: false));
-        break;
-    }
-  }
-
-  void changeTab(int index) {
-    emit(state.copyWith(currentIndex: index));
+    if (!state.unseenAlbumInvites) {}
   }
 
   // Private Functions
   Future<void> _initalizeNotifications() async {
-    Map<String, FriendRequestNotification> friendRequestFetch = {};
-    Map<String, AlbumInviteNotification> albumInviteFetch = {};
-    Map<String, GenericNotification> genericNotificationFetch = {};
+    Map<String, FriendRequestNotification> friendRequestMap =
+        notificationRepository.friendRequestMap;
+    Map<String, AlbumInviteNotification> albumInviteMap =
+        notificationRepository.albumInviteMap;
+    Map<String, GenericNotification> genericMap =
+        notificationRepository.genericMap;
 
-    List<Notification> allNotifications =
-        await NotificationService().getNotifications(user.token);
+    bool unseenFriendRequests = false;
 
-    for (Notification notification in allNotifications) {
-      switch (notification.runtimeType) {
-        case FriendRequestNotification:
-          // Cast to FriendRequestNotification
-          FriendRequestNotification request =
-              notification as FriendRequestNotification;
-          // Add to the friendRequestFetch map
-          friendRequestFetch.putIfAbsent(request.notificationID, () => request);
-        case AlbumInviteNotification:
-          // Cast to AlbumInviteNotification
-          AlbumInviteNotification request =
-              notification as AlbumInviteNotification;
-          // Add to the albumInviteFetch map
-          albumInviteFetch.putIfAbsent(request.notificationID, () => request);
-        case GenericNotification:
-          // Cast to GenericNotification
-          GenericNotification request = notification as GenericNotification;
-          // Add to the genericNotificationFetch map
-          genericNotificationFetch.putIfAbsent(
-              request.notificationID, () => request);
-      }
-    }
-
-    bool unseenFriendRequests = friendRequestFetch.values
-        .any((element) => element.status == FriendRequestStatus.accepted);
-
-    emit(state.copyWith(
-      friendRequestMap: friendRequestFetch,
-      albumInviteMap: albumInviteFetch,
-      genericNotificationMap: genericNotificationFetch,
-      unseenFriendRequests: unseenFriendRequests,
-      unreadNotificationTabs: [false, false, unseenFriendRequests],
-    ));
+    emit(
+      state.copyWith(
+        friendRequestMap: friendRequestMap,
+        albumInviteMap: albumInviteMap,
+        genericNotificationMap: genericMap,
+        unseenFriendRequests: unseenFriendRequests,
+      ),
+    );
   }
 
-  void _friendRequestHandler(FriendRequestNotification request) {
+  void _clearFriendRequestAccepted() {
+    for (FriendRequestNotification request in state.friendRequestMap.values) {
+      if (request.status == FriendRequestStatus.accepted &&
+          request.notificationSeen) {
+        bool canDelete = false;
+        if (user.id == request.senderID) {
+          canDelete = true;
+        }
+        notificationRepository.removeFriendRequestAccepted(
+          canDelete,
+          request.notificationID,
+        );
+      }
+    }
+  }
+
+  void _friendRequestHandler(
+      StreamOperation operation, FriendRequestNotification request) {
     Map<String, FriendRequestNotification> friendRequestCopy =
         Map.from(state.friendRequestMap);
 
     switch (request.status) {
       case FriendRequestStatus.pending:
-        friendRequestCopy.putIfAbsent(request.notificationID, () => request);
+        friendRequestCopy[request.notificationID] = request;
+
+        emit(state.copyWith(
+          friendRequestMap: friendRequestCopy,
+          unseenFriendRequests: !request.notificationSeen,
+        ));
 
       case FriendRequestStatus.accepted:
-        friendRequestCopy[request.notificationID] = request;
+        switch (operation) {
+          case StreamOperation.add:
+            friendRequestCopy[request.notificationID] = request;
+            emit(state.copyWith(
+              friendRequestMap: friendRequestCopy,
+              unseenFriendRequests: true,
+            ));
+          case StreamOperation.delete:
+            friendRequestCopy
+                .removeWhere((key, value) => key == request.notificationID);
+            emit(state.copyWith(
+              friendRequestMap: friendRequestCopy,
+              unseenFriendRequests: false,
+            ));
+          case StreamOperation.update:
+            friendRequestCopy[request.notificationID] = request;
+            emit(state.copyWith(
+              friendRequestMap: friendRequestCopy,
+              unseenFriendRequests: true,
+            ));
+        }
       case FriendRequestStatus.decline:
+        friendRequestCopy
+            .removeWhere((key, value) => key == request.notificationID);
+        emit(state.copyWith(
+          friendRequestMap: friendRequestCopy,
+          unseenFriendRequests: false,
+        ));
+        return;
     }
-
-    emit(state.copyWith(
-      friendRequestMap: friendRequestCopy,
-      unreadNotificationTabs: [false, false, true],
-      unseenFriendRequests: true,
-    ));
   }
 }

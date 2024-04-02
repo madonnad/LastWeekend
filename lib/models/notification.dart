@@ -18,13 +18,13 @@ abstract class Notification extends Equatable {
   final String notificationID;
   final DateTime receivedDateTime;
   final String notificationMediaID;
-  final bool? notificationSeen;
+  final bool notificationSeen;
 
   const Notification({
     required this.notificationID,
     required this.receivedDateTime,
     required this.notificationMediaID,
-    this.notificationSeen,
+    required this.notificationSeen,
   });
 
   String get imageReq {
@@ -65,10 +65,11 @@ class AlbumInviteNotification extends Notification {
   final String albumName;
   final String albumOwner;
   final String ownerName;
-  AlbumInviteNotification({
+  const AlbumInviteNotification({
     required super.notificationID,
     required super.receivedDateTime,
     required super.notificationMediaID,
+    required super.notificationSeen,
     required this.albumID,
     required this.albumName,
     required this.albumOwner,
@@ -80,6 +81,7 @@ class AlbumInviteNotification extends Notification {
       notificationID: map['album_id'],
       receivedDateTime: DateTime.parse(map['received_at']),
       notificationMediaID: map['album_cover_id'],
+      notificationSeen: map['request_seen'],
       albumID: map['album_id'],
       albumName: map['album_name'],
       albumOwner: map['album_owner'],
@@ -92,7 +94,8 @@ class AlbumInviteNotification extends Notification {
 }
 
 class FriendRequestNotification extends Notification {
-  final String userID;
+  final String senderID;
+  final String receiverID;
   final String firstName;
   final String lastName;
   final FriendRequestStatus status;
@@ -100,13 +103,18 @@ class FriendRequestNotification extends Notification {
     required super.notificationID,
     required super.receivedDateTime,
     required super.notificationMediaID,
-    required this.userID,
+    required super.notificationSeen,
+    required this.senderID,
+    required this.receiverID,
     required this.firstName,
     required this.lastName,
     required this.status,
   });
 
   String get fullName => '$firstName $lastName';
+
+  String get senderReq => "$goRepoDomain/image?id=$senderID";
+  String get receiverReq => "$goRepoDomain/image?id=$receiverID";
 
   factory FriendRequestNotification.fromMap(Map<String, dynamic> map) {
     FriendRequestStatus status = FriendRequestStatus.pending;
@@ -116,24 +124,29 @@ class FriendRequestNotification extends Notification {
     }
 
     return FriendRequestNotification(
-      notificationID: map['user_id'],
+      notificationID: map['request_id'],
       receivedDateTime: DateTime.parse(map['received_at']),
-      userID: map['user_id'],
+      notificationSeen: map['request_seen'] as bool,
+      senderID: map['sender_id'],
+      receiverID: map['receiver_id'],
       firstName: map['first_name'],
       lastName: map['last_name'],
-      notificationMediaID: map['user_id'],
+      notificationMediaID: map['sender_id'],
       status: status,
     );
   }
 
   FriendRequestNotification copyWith({
     FriendRequestStatus? status,
+    bool? notificationSeen,
   }) {
     return FriendRequestNotification(
       notificationID: notificationID,
       receivedDateTime: receivedDateTime,
       notificationMediaID: notificationMediaID,
-      userID: userID,
+      notificationSeen: notificationSeen ?? this.notificationSeen,
+      senderID: senderID,
+      receiverID: receiverID,
       firstName: firstName,
       lastName: lastName,
       status: status ?? this.status,
@@ -141,7 +154,7 @@ class FriendRequestNotification extends Notification {
   }
 
   @override
-  List<Object?> get props => [status];
+  List<Object?> get props => [status, notificationSeen];
 }
 
 class SummaryNotification extends Notification {
@@ -156,6 +169,7 @@ class SummaryNotification extends Notification {
     required super.notificationID,
     required super.notificationMediaID,
     required super.receivedDateTime,
+    required super.notificationSeen,
     required this.notificationType,
     required this.nameOne,
     required this.nameTwo,
@@ -169,6 +183,7 @@ class SummaryNotification extends Notification {
       notificationID: map['album_id'],
       notificationMediaID: map['album_cover_id'],
       receivedDateTime: DateTime.parse(map['received_at']),
+      notificationSeen: map['request_seen'],
       notificationType: map['notification_type'],
       nameOne: map['name_one'],
       nameTwo: map['name_two'] ?? '',
@@ -193,7 +208,7 @@ class GenericNotification extends Notification {
     required super.notificationID,
     required super.receivedDateTime,
     required super.notificationMediaID,
-    super.notificationSeen,
+    required super.notificationSeen,
     required this.notifierID,
     required this.notifierName,
     required this.albumID,

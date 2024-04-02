@@ -6,12 +6,12 @@ import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 class FriendRequestAcceptedItem extends StatelessWidget {
   final String firstName;
   final String profileImage;
-  final String requesterID;
+  final String userID;
   const FriendRequestAcceptedItem({
     super.key,
     required this.firstName,
     required this.profileImage,
-    required this.requesterID,
+    required this.userID,
   });
 
   @override
@@ -51,7 +51,7 @@ class FriendRequestAcceptedItem extends StatelessWidget {
           GestureDetector(
             onTap: () => Navigator.of(context).pushNamed(
               '/friend',
-              arguments: requesterID,
+              arguments: userID,
             ),
             child: Text(
               "Profile",

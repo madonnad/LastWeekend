@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/notification_cubit.dart';
 import 'package:shared_photo/components/notification_comps/empty_lists/empty_list_comp.dart';
 import 'package:shared_photo/components/notification_comps/friend_requests/friend_request_accepted_item.dart';
@@ -26,18 +27,27 @@ class FriendRequestList extends StatelessWidget {
                   itemBuilder: (context, index) {
                     switch (state.friendRequestList[index].status) {
                       case FriendRequestStatus.accepted:
+                        bool userIsSender =
+                            state.friendRequestList[index].senderID ==
+                                context.read<AppBloc>().state.user.id;
+                        String profileImage = userIsSender
+                            ? state.friendRequestList[index].receiverReq
+                            : state.friendRequestList[index].senderReq;
+                        String userID = userIsSender
+                            ? state.friendRequestList[index].receiverID
+                            : state.friendRequestList[index].senderID;
                         return FriendRequestAcceptedItem(
                           firstName: state.friendRequestList[index].firstName,
-                          profileImage: state.friendRequestList[index].imageReq,
-                          requesterID:
-                              state.friendRequestList[index].notificationID,
+                          profileImage: profileImage,
+                          userID: userID,
                         );
                       case FriendRequestStatus.pending:
                         return FriendRequestItem(
                           firstName: state.friendRequestList[index].firstName,
                           lastName: state.friendRequestList[index].lastName,
                           profileImage: state.friendRequestList[index].imageReq,
-                          requesterID:
+                          senderID: state.friendRequestList[index].senderID,
+                          requestID:
                               state.friendRequestList[index].notificationID,
                         );
 

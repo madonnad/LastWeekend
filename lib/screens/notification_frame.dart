@@ -30,8 +30,7 @@ class NotificationFrame extends StatelessWidget {
                           return NotificationTabItem(
                             index: index,
                             isTabSelected: tabSelected,
-                            showNotification:
-                                state.unreadNotificationTabs[index],
+                            showNotification: state.tabShowNotification(index),
                           );
                         },
                       ),
