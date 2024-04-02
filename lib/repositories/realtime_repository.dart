@@ -16,19 +16,24 @@ class RealtimeRepository {
       _realtimeNotificationController.stream;
 
   RealtimeRepository({required this.user}) {
-    _webSocketChannel = webSocketConnection();
+    _webSocketChannel = _webSocketConnection();
   }
 
-  IOWebSocketChannel webSocketConnection() {
+  IOWebSocketChannel _webSocketConnection() {
     final Map<String, String> headers = {
       'Authorization': 'Bearer ${user.token}'
     };
     final wsURL = Uri.parse('ws://$domain/ws');
     var connection = IOWebSocketChannel.connect(wsURL, headers: headers);
 
+    if (connection.closeCode == null) {
+      print("WebSocket Connection Opened");
+    }
+
     connection.stream.listen(
       (event) {
         handleWebSocketMessage(event);
+        connection.sink.add("received");
       },
       onDone: () {
         print("WebSocket Connection Closed");
@@ -75,7 +80,14 @@ class RealtimeRepository {
     }
   }
 
+  void rebindWebSocket() {
+    _webSocketChannel = _webSocketConnection();
+  }
+
   void closeWebSocket() {
-    _webSocketChannel.sink.close(1000);
+    if (_webSocketChannel.closeCode == null) {
+      print('Closing WebSocket Normally');
+      _webSocketChannel.sink.close(1000);
+    }
   }
 }

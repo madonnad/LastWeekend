@@ -11,6 +11,7 @@ import 'package:shared_photo/bloc/cubit/search_cubit.dart';
 import 'package:shared_photo/components/new_app_frame/new_bottom_app_bar.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 import 'package:shared_photo/repositories/notification_repository/notification_repository.dart';
+import 'package:shared_photo/repositories/realtime_repository.dart';
 import 'package:shared_photo/repositories/user_repository.dart';
 import 'package:shared_photo/screens/camera.dart';
 import 'package:shared_photo/screens/new_feed.dart';
@@ -19,8 +20,44 @@ import 'package:shared_photo/screens/notification_frame.dart';
 import 'package:shared_photo/screens/search_frame.dart';
 import 'package:shared_photo/screens/welcome_frame.dart';
 
-class AppFrame extends StatelessWidget {
+class AppFrame extends StatefulWidget {
   const AppFrame({super.key});
+
+  @override
+  State<AppFrame> createState() => _AppFrameState();
+}
+
+class _AppFrameState extends State<AppFrame> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.resumed:
+        context.read<RealtimeRepository>().rebindWebSocket();
+        break;
+      case AppLifecycleState.detached:
+        break;
+      case AppLifecycleState.inactive:
+        break;
+      case AppLifecycleState.hidden:
+        break;
+      case AppLifecycleState.paused:
+        context.read<RealtimeRepository>().closeWebSocket();
+        break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
