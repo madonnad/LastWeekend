@@ -9,14 +9,16 @@ class FriendRequestItem extends StatelessWidget {
   final String firstName;
   final String lastName;
   final String profileImage;
-  final String requesterID;
+  final String senderID;
+  final String requestID;
 
   const FriendRequestItem({
     super.key,
     required this.firstName,
     required this.lastName,
     required this.profileImage,
-    required this.requesterID,
+    required this.senderID,
+    required this.requestID,
   });
 
   @override
@@ -82,15 +84,17 @@ class FriendRequestItem extends StatelessWidget {
                 backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
                 onTap: () => context
                     .read<NotificationCubit>()
-                    .denyFriendRequest(requesterID),
+                    .denyFriendRequest(requestID),
               ),
               const SizedBox(width: 15),
               NotificationButton(
                 buttonText: "Accept",
                 backgroundColor: const Color.fromRGBO(181, 131, 141, 1),
-                onTap: () => context
-                    .read<NotificationCubit>()
-                    .acceptFriendRequest(requesterID),
+                onTap: () =>
+                    context.read<NotificationCubit>().acceptFriendRequest(
+                          requestID: requestID,
+                          senderID: senderID,
+                        ),
               ),
             ],
           ),

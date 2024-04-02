@@ -14,7 +14,7 @@ class NewBottomAppBar extends StatelessWidget {
     return BlocBuilder<AppFrameCubit, AppFrameState>(
       builder: (context, state) {
         if (state.pageController.page != 3) {
-          context.read<NotificationCubit>().clearAcceptedInvitesRequests();
+          context.read<NotificationCubit>().clearTempNotifications();
         }
         return BottomAppBar(
           height: 85,
@@ -48,8 +48,7 @@ class NewBottomAppBar extends StatelessWidget {
                     return Badge(
                       smallSize: 9,
                       backgroundColor: Colors.red,
-                      isLabelVisible:
-                          state.unreadNotificationTabs.contains(true),
+                      isLabelVisible: state.unreadNotificationTabs,
                       child: const IconNavElement(
                         index: 3,
                         selectedIcon: Icons.favorite,
