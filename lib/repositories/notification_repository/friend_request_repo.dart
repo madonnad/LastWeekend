@@ -3,15 +3,15 @@ part of 'notification_repository.dart';
 extension FriendRequestRepo on NotificationRepository {
   void _friendRequestHandler(FriendRequestNotification request) {
     switch (request.status) {
-      case FriendRequestStatus.pending:
+      case RequestStatus.pending:
         friendRequestMap.putIfAbsent(request.notificationID, () => request);
 
         _notificationController.add((StreamOperation.add, request));
-      case FriendRequestStatus.accepted:
+      case RequestStatus.accepted:
         friendRequestMap[request.notificationID] = request;
         _notificationController.add((StreamOperation.update, request));
 
-      case FriendRequestStatus.decline:
+      case RequestStatus.denied:
     }
   }
 
@@ -24,8 +24,8 @@ extension FriendRequestRepo on NotificationRepository {
 
     if (success) {
       // Update Source of Truth
-      friendRequestMap.update(requestID,
-          (value) => value.copyWith(status: FriendRequestStatus.accepted));
+      friendRequestMap.update(
+          requestID, (value) => value.copyWith(status: RequestStatus.accepted));
       // Notify Listeners
       _notificationController
           .add((StreamOperation.update, friendRequestMap[requestID]!));
@@ -40,8 +40,8 @@ extension FriendRequestRepo on NotificationRepository {
 
     if (success) {
       // Update Source of Truth
-      FriendRequestNotification request = friendRequestMap[requestID]!
-          .copyWith(status: FriendRequestStatus.decline);
+      FriendRequestNotification request =
+          friendRequestMap[requestID]!.copyWith(status: RequestStatus.denied);
 
       friendRequestMap.removeWhere((key, value) => key == requestID);
       // Notify Listeners

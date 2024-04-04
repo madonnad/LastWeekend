@@ -26,7 +26,7 @@ class FriendRequestList extends StatelessWidget {
                   itemCount: state.friendRequestList.length,
                   itemBuilder: (context, index) {
                     switch (state.friendRequestList[index].status) {
-                      case FriendRequestStatus.accepted:
+                      case RequestStatus.accepted:
                         bool userIsSender =
                             state.friendRequestList[index].senderID ==
                                 context.read<AppBloc>().state.user.id;
@@ -41,7 +41,7 @@ class FriendRequestList extends StatelessWidget {
                           profileImage: profileImage,
                           userID: userID,
                         );
-                      case FriendRequestStatus.pending:
+                      case RequestStatus.pending:
                         return FriendRequestItem(
                           firstName: state.friendRequestList[index].firstName,
                           lastName: state.friendRequestList[index].lastName,
@@ -51,14 +51,14 @@ class FriendRequestList extends StatelessWidget {
                               state.friendRequestList[index].notificationID,
                         );
 
-                      case FriendRequestStatus.decline:
+                      case RequestStatus.denied:
                         return const SizedBox(height: 0);
                     }
                   },
                 ),
               ),
-              (state.friendRequestList.any((request) =>
-                      request.status == FriendRequestStatus.pending))
+              (state.friendRequestList.any(
+                      (request) => request.status == RequestStatus.pending))
                   ? const SizedBox(height: 0)
                   : const Expanded(
                       flex: 10,

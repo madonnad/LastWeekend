@@ -56,6 +56,7 @@ class RealtimeRepository {
             jsonData['operation'], jsonData['payload']);
         return;
       case "album-invite":
+        wsAlbumInviteMessageHandler(jsonData['operation'], jsonData['payload']);
         return;
       case "general":
         return;
@@ -64,20 +65,28 @@ class RealtimeRepository {
     }
   }
 
-  void wsFriendRequestMessageHandler(String operation, dynamic payload) {
+  void wsAlbumInviteMessageHandler(String operation, dynamic payload) {
     switch (operation) {
       case "REQUEST":
-        FriendRequestNotification notification =
-            FriendRequestNotification.fromMap(payload);
+        AlbumInviteNotification notification =
+            AlbumInviteNotification.fromMap(payload);
         _realtimeNotificationController.add(notification);
         return;
       case "ACCEPTED":
-        FriendRequestNotification notification =
-            FriendRequestNotification.fromMap(payload);
-
-        _realtimeNotificationController.add(notification);
-        return;
+      // TODO: Implement AlbumRequestResponse Class and Add Here
+      // _realtimeNotificationController.add(notification);
+      // return;
+      case "DENIED":
+      // TODO: Implement AlbumRequestResponse Class and Add Here
+      // _realtimeNotificationController.add(notification);
+      // return;
     }
+  }
+
+  void wsFriendRequestMessageHandler(String operation, dynamic payload) {
+    FriendRequestNotification notification =
+        FriendRequestNotification.fromMap(payload);
+    _realtimeNotificationController.add(notification);
   }
 
   void rebindWebSocket() {
