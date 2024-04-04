@@ -59,6 +59,8 @@ class AlbumInviteNotification extends Notification {
     required this.status,
   });
 
+  String get ownerImg => "$goRepoDomain/image?id=$albumOwner";
+
   factory AlbumInviteNotification.fromMap(Map<String, dynamic> map) {
     RequestStatus status = RequestStatus.pending;
 

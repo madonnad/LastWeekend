@@ -10,7 +10,7 @@ class EmptyListComponent extends StatelessWidget {
     return Center(
       child: FittedBox(
         child: Text(
-          "No $listName's",
+          "No ${listName}s",
           style: GoogleFonts.josefinSans(
             fontSize: 32,
             fontWeight: FontWeight.w400,

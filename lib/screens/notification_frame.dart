@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/cubit/notification_cubit.dart';
+import 'package:shared_photo/components/notification_comps/album_requests/album_requests_list.dart';
 import 'package:shared_photo/components/notification_comps/friend_requests/friend_requests_list.dart';
 import 'package:shared_photo/components/notification_comps/tab_bar_comps/notification_tab_item.dart';
 
@@ -43,9 +44,7 @@ class NotificationFrame extends StatelessWidget {
                         Container(
                           color: Colors.black,
                         ),
-                        Container(
-                          color: Colors.green,
-                        ),
+                        const AlbumRequestsList(),
                         const FriendRequestList(),
                       ],
                     ),

@@ -68,7 +68,7 @@ class FriendRequestItem extends StatelessWidget {
                     style: GoogleFonts.josefinSans(
                       color: Colors.white54,
                       fontSize: 14,
-                      fontWeight: FontWeight.w300,
+                      fontWeight: FontWeight.w400,
                       height: 1,
                     ),
                   ),
