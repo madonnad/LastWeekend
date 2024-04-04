@@ -4,6 +4,7 @@ class NotificationState extends Equatable {
   final int currentIndex;
   final Map<String, FriendRequestNotification> friendRequestMap;
   final Map<String, AlbumInviteNotification> albumInviteMap;
+  final Map<String, Notification> allNotificationMap;
   final String exception;
   final bool unseenFriendRequests;
   final bool unseenAlbumInvites;
@@ -13,6 +14,7 @@ class NotificationState extends Equatable {
     this.currentIndex = 0,
     this.friendRequestMap = const {},
     this.albumInviteMap = const {},
+    this.allNotificationMap = const {},
     this.exception = '',
     this.unseenFriendRequests = false,
     this.unseenAlbumInvites = false,
@@ -23,6 +25,7 @@ class NotificationState extends Equatable {
     int? currentIndex,
     Map<String, FriendRequestNotification>? friendRequestMap,
     Map<String, AlbumInviteNotification>? albumInviteMap,
+    Map<String, Notification>? allNotificationMap,
     String? exception,
     bool? unseenFriendRequests,
     bool? unseenAlbumInvites,
@@ -32,6 +35,7 @@ class NotificationState extends Equatable {
       currentIndex: currentIndex ?? this.currentIndex,
       friendRequestMap: friendRequestMap ?? this.friendRequestMap,
       albumInviteMap: albumInviteMap ?? this.albumInviteMap,
+      allNotificationMap: allNotificationMap ?? this.allNotificationMap,
       exception: exception ?? this.exception,
       unseenFriendRequests: unseenFriendRequests ?? this.unseenFriendRequests,
       unseenAlbumInvites: unseenAlbumInvites ?? this.unseenAlbumInvites,
@@ -65,6 +69,7 @@ class NotificationState extends Equatable {
         currentIndex,
         friendRequestMap,
         albumInviteMap,
+        allNotificationMap,
         friendRequestList,
         exception,
         unseenFriendRequests,

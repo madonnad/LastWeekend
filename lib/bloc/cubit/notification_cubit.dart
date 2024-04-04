@@ -28,7 +28,11 @@ class NotificationCubit extends Cubit<NotificationState> {
           _friendRequestHandler(
               operation, notification as FriendRequestNotification);
         case AlbumInviteNotification:
+          _albumInviteHandler(
+              operation, notification as AlbumInviteNotification);
         case AlbumInviteResponseNotification:
+          _albumInviteResponseHandler(
+              operation, notification as AlbumInviteResponseNotification);
       }
     });
   }
@@ -97,14 +101,14 @@ class NotificationCubit extends Cubit<NotificationState> {
         notificationRepository.friendRequestMap;
     Map<String, AlbumInviteNotification> albumInviteMap =
         notificationRepository.albumInviteMap;
-
-    bool unseenFriendRequests = false;
+    Map<String, Notification> allNotificationMap =
+        notificationRepository.allNotificationMap;
 
     emit(
       state.copyWith(
         friendRequestMap: friendRequestMap,
         albumInviteMap: albumInviteMap,
-        unseenFriendRequests: unseenFriendRequests,
+        allNotificationMap: allNotificationMap,
       ),
     );
   }
@@ -171,4 +175,33 @@ class NotificationCubit extends Cubit<NotificationState> {
         return;
     }
   }
+
+  void _albumInviteHandler(
+      StreamOperation operation, AlbumInviteNotification invite) {
+    Map<String, AlbumInviteNotification> albumInviteCopy =
+        Map.from(state.albumInviteMap);
+
+    switch (operation) {
+      case StreamOperation.add:
+        albumInviteCopy[invite.notificationID] = invite;
+        emit(
+          state.copyWith(
+            albumInviteMap: albumInviteCopy,
+            unseenAlbumInvites: true,
+          ),
+        );
+      case StreamOperation.delete:
+      case StreamOperation.update:
+        albumInviteCopy[invite.notificationID] = invite;
+        emit(
+          state.copyWith(
+            albumInviteMap: albumInviteCopy,
+            unseenAlbumInvites: false,
+          ),
+        );
+    }
+  }
+
+  void _albumInviteResponseHandler(
+      StreamOperation operation, AlbumInviteResponseNotification response) {}
 }
