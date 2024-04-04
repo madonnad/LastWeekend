@@ -51,6 +51,9 @@ class NotificationState extends Equatable {
     return unseenFriendRequests || unseenAlbumInvites || unseenGenericNoti;
   }
 
+  List<AlbumInviteNotification> get albumInviteList =>
+      List.from(albumInviteMap.values);
+
   bool tabShowNotification(int index) {
     switch (index) {
       case 0:

@@ -43,8 +43,9 @@ class NotiTabComp extends StatelessWidget {
                     borderRadius: const BorderRadius.all(Radius.circular(12)),
                     color: Colors.red,
                     border: Border.all(
-                      color: Colors.transparent,
+                      color: Colors.black,
                       width: 2,
+                      strokeAlign: BorderSide.strokeAlignCenter,
                     ),
                   ),
                 ),
