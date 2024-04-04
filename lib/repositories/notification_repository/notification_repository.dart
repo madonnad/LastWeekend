@@ -8,6 +8,7 @@ import 'package:shared_photo/services/notification_service.dart';
 import 'package:shared_photo/services/request_service.dart';
 
 part 'friend_request_repo.dart';
+part 'album_invite_repo.dart';
 
 class NotificationRepository {
   //Imports
@@ -19,7 +20,7 @@ class NotificationRepository {
       <String, FriendRequestNotification>{};
   Map<String, AlbumInviteNotification> albumInviteMap =
       <String, AlbumInviteNotification>{};
-  Map<String, GenericNotification> genericMap = <String, GenericNotification>{};
+  Map<String, Notification> allNotificationMap = <String, Notification>{};
 
   final _notificationController =
       StreamController<(StreamOperation, Notification)>.broadcast();
@@ -58,9 +59,9 @@ class NotificationRepository {
           albumInviteMap.putIfAbsent(notification.notificationID,
               () => notification as AlbumInviteNotification);
           _notificationController.add((StreamOperation.add, notification));
-        case GenericNotification:
-          genericMap.putIfAbsent(notification.notificationID,
-              () => notification as GenericNotification);
+        case AlbumInviteResponseNotification:
+          allNotificationMap.putIfAbsent(notification.notificationID,
+              () => notification as AlbumInviteResponseNotification);
           _notificationController.add((StreamOperation.add, notification));
       }
     }

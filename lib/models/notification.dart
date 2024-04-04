@@ -1,16 +1,17 @@
 import 'package:equatable/equatable.dart';
 import 'package:shared_photo/utils/api_variables.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 enum GenericNotificationType { likedPhoto, upvotePhoto, imageComment }
 
 enum NotificationType { generic, friendRequest, albumInvite }
 
-enum FriendRequestStatus {
+enum RequestStatus {
   pending(1),
   accepted(2),
-  decline(3);
+  denied(3);
 
-  const FriendRequestStatus(this.val);
+  const RequestStatus(this.val);
   final int val;
 }
 
@@ -33,30 +34,8 @@ abstract class Notification extends Equatable {
     return requestUrl;
   }
 
-  String get formattedDateTime {
-    String formattedDateTime;
-
-    final timeDiff = DateTime.now().difference(receivedDateTime).inSeconds;
-    int modTimeDiff = timeDiff ~/ 60;
-
-    if (modTimeDiff < 60) {
-      formattedDateTime = '$modTimeDiff min ago';
-    } else if (modTimeDiff > 60 && modTimeDiff < 86400) {
-      modTimeDiff = timeDiff ~/ 3600;
-      if (modTimeDiff == 1) {
-        formattedDateTime = '1 hour ago';
-      } else {
-        formattedDateTime = '$modTimeDiff hours ago';
-      }
-    } else {
-      modTimeDiff = timeDiff ~/ 86400;
-      if (modTimeDiff == 1) {
-        formattedDateTime = '1 day ago';
-      } else {
-        formattedDateTime = '$modTimeDiff day ago';
-      }
-    }
-    return formattedDateTime;
+  String get timeAgoString {
+    return timeago.format(receivedDateTime);
   }
 }
 
@@ -64,7 +43,9 @@ class AlbumInviteNotification extends Notification {
   final String albumID;
   final String albumName;
   final String albumOwner;
-  final String ownerName;
+  final String ownerFirst;
+  final String ownerLast;
+  final RequestStatus status;
   const AlbumInviteNotification({
     required super.notificationID,
     required super.receivedDateTime,
@@ -73,10 +54,20 @@ class AlbumInviteNotification extends Notification {
     required this.albumID,
     required this.albumName,
     required this.albumOwner,
-    required this.ownerName,
+    required this.ownerFirst,
+    required this.ownerLast,
+    required this.status,
   });
 
   factory AlbumInviteNotification.fromMap(Map<String, dynamic> map) {
+    RequestStatus status = RequestStatus.pending;
+
+    // switch (map['status']) {
+    //   case 'accepted':
+    //     status = RequestStatus.accepted;
+    //   case 'denied':
+    //     status = RequestStatus.decline;
+    // }
     return AlbumInviteNotification(
       notificationID: map['album_id'],
       receivedDateTime: DateTime.parse(map['received_at']),
@@ -85,12 +76,63 @@ class AlbumInviteNotification extends Notification {
       albumID: map['album_id'],
       albumName: map['album_name'],
       albumOwner: map['album_owner'],
-      ownerName: '${map['owner_first']} ${map['owner_last']}',
+      ownerFirst: map['owner_first'],
+      ownerLast: map['owner_last'],
+      status: status,
     );
   }
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [status, notificationSeen];
+}
+
+class AlbumInviteResponseNotification extends Notification {
+  final String albumID;
+  final String albumName;
+  final String receiverID;
+  final String receiverFirst;
+  final String receiverLast;
+  final RequestStatus status;
+
+  const AlbumInviteResponseNotification({
+    required super.notificationID, // Request ID
+    required super.receivedDateTime, // Received At
+    required super.notificationMediaID, // AlbumCoverID
+    required super.notificationSeen, // Request Seen
+    required this.albumID, // Album ID
+    required this.albumName, // Album Name
+    required this.receiverID, // Receiver ID
+    required this.receiverFirst, // Receiver First Name
+    required this.receiverLast, // Receiver Last Name
+    required this.status, // Request Status
+  });
+
+  factory AlbumInviteResponseNotification.fromMap(Map<String, dynamic> map) {
+    RequestStatus status = RequestStatus.pending;
+
+    if (map['status'] == 'accepted') {
+      status = RequestStatus.accepted;
+    }
+    if (map['status'] == 'denied') {
+      status = RequestStatus.denied;
+    }
+
+    return AlbumInviteResponseNotification(
+      notificationID: map['request_id'],
+      receivedDateTime: DateTime.parse(map['received_at']),
+      notificationMediaID: map['album_cover_id'],
+      notificationSeen: map['request_seen'],
+      albumID: map['album_id'],
+      albumName: map['album_name'],
+      receiverID: map['receiver_id'],
+      receiverFirst: map['receiver_first'],
+      receiverLast: map['receiver_last'],
+      status: status,
+    );
+  }
+
+  @override
+  List<Object?> get props => [status, notificationSeen];
 }
 
 class FriendRequestNotification extends Notification {
@@ -98,7 +140,7 @@ class FriendRequestNotification extends Notification {
   final String receiverID;
   final String firstName;
   final String lastName;
-  final FriendRequestStatus status;
+  final RequestStatus status;
   const FriendRequestNotification({
     required super.notificationID,
     required super.receivedDateTime,
@@ -117,10 +159,10 @@ class FriendRequestNotification extends Notification {
   String get receiverReq => "$goRepoDomain/image?id=$receiverID";
 
   factory FriendRequestNotification.fromMap(Map<String, dynamic> map) {
-    FriendRequestStatus status = FriendRequestStatus.pending;
+    RequestStatus status = RequestStatus.pending;
 
     if (map['status'] == 'accepted') {
-      status = FriendRequestStatus.accepted;
+      status = RequestStatus.accepted;
     }
 
     return FriendRequestNotification(
@@ -137,7 +179,7 @@ class FriendRequestNotification extends Notification {
   }
 
   FriendRequestNotification copyWith({
-    FriendRequestStatus? status,
+    RequestStatus? status,
     bool? notificationSeen,
   }) {
     return FriendRequestNotification(
@@ -155,89 +197,4 @@ class FriendRequestNotification extends Notification {
 
   @override
   List<Object?> get props => [status, notificationSeen];
-}
-
-class SummaryNotification extends Notification {
-  final String notificationType;
-  final String nameOne;
-  final String? nameTwo;
-  final String albumName;
-  final String albumID;
-  final int typeTotal;
-
-  const SummaryNotification({
-    required super.notificationID,
-    required super.notificationMediaID,
-    required super.receivedDateTime,
-    required super.notificationSeen,
-    required this.notificationType,
-    required this.nameOne,
-    required this.nameTwo,
-    required this.albumName,
-    required this.albumID,
-    required this.typeTotal,
-  });
-
-  factory SummaryNotification.fromMap(Map<String, dynamic> map) {
-    return SummaryNotification(
-      notificationID: map['album_id'],
-      notificationMediaID: map['album_cover_id'],
-      receivedDateTime: DateTime.parse(map['received_at']),
-      notificationSeen: map['request_seen'],
-      notificationType: map['notification_type'],
-      nameOne: map['name_one'],
-      nameTwo: map['name_two'] ?? '',
-      albumID: map['album_id'],
-      albumName: map['album_name'],
-      typeTotal: map['album_type_total'],
-    );
-  }
-
-  @override
-  List<Object?> get props => [];
-}
-
-class GenericNotification extends Notification {
-  final String notifierID;
-  final String notifierName;
-  final String albumID;
-  final String albumName;
-  final GenericNotificationType notificationType;
-
-  const GenericNotification({
-    required super.notificationID,
-    required super.receivedDateTime,
-    required super.notificationMediaID,
-    required super.notificationSeen,
-    required this.notifierID,
-    required this.notifierName,
-    required this.albumID,
-    required this.albumName,
-    required this.notificationType,
-  });
-
-  factory GenericNotification.fromMap(Map<String, dynamic> map) {
-    late GenericNotificationType notificationType;
-
-    switch (map['notification_type']) {
-      case 'upvote':
-        notificationType = GenericNotificationType.upvotePhoto;
-      case 'liked':
-        notificationType = GenericNotificationType.likedPhoto;
-    }
-
-    return GenericNotification(
-      notificationID: '',
-      receivedDateTime: DateTime.parse(map['received_at']),
-      notificationMediaID: map['media_id'],
-      notifierID: map['notifier_id'],
-      notifierName: map['notifier_name'],
-      albumID: map['album_id'],
-      albumName: map['album_name'],
-      notificationSeen: map['notification_seen'],
-      notificationType: notificationType,
-    );
-  }
-  @override
-  List<Object?> get props => [];
 }

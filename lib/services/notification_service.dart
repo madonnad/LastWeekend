@@ -21,22 +21,20 @@ class NotificationService {
       if (jsonData == null) {
         return notificationList;
       }
-
-      List<dynamic> summaryNotificationList =
-          jsonData['summary_notifications'] ?? [];
       List<dynamic> albumInviteList = jsonData['album_invites'] ?? [];
+      List<dynamic> albumRequestResponseList =
+          jsonData['album_request_responses'] ?? [];
       List<dynamic> friendRequestList = jsonData['friend_requests'] ?? [];
 
       for (var item in friendRequestList) {
-        notificationList.add(
-          FriendRequestNotification.fromMap(item),
-        );
+        notificationList.add(FriendRequestNotification.fromMap(item));
       }
       for (var item in albumInviteList) {
         notificationList.add(AlbumInviteNotification.fromMap(item));
       }
-      for (var item in summaryNotificationList) {
-        notificationList.add(SummaryNotification.fromMap(item));
+
+      for (var item in albumRequestResponseList) {
+        notificationList.add(AlbumInviteResponseNotification.fromMap(item));
       }
 
       return notificationList;

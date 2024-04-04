@@ -58,34 +58,34 @@ class _AnimatedNotificationState extends State<AnimatedNotification>
             ),
           );
         }
-        if (type is GenericNotification) {
-          switch (type.notificationType) {
-            case GenericNotificationType.likedPhoto:
-              return SlideTransition(
-                position: _offsetAnimation,
-                child: const Icon(
-                  Icons.favorite,
-                  color: Colors.red,
-                ),
-              );
-            case GenericNotificationType.upvotePhoto:
-              return SlideTransition(
-                position: _offsetAnimation,
-                child: const Icon(
-                  Icons.arrow_circle_up,
-                  color: Colors.deepPurple,
-                ),
-              );
-            case GenericNotificationType.imageComment:
-              return SlideTransition(
-                position: _offsetAnimation,
-                child: const Icon(
-                  Icons.comment,
-                  color: Colors.deepPurple,
-                ),
-              );
-          }
-        }
+        // if (type is GenericNotification) {
+        //   switch (type.notificationType) {
+        //     case GenericNotificationType.likedPhoto:
+        //       return SlideTransition(
+        //         position: _offsetAnimation,
+        //         child: const Icon(
+        //           Icons.favorite,
+        //           color: Colors.red,
+        //         ),
+        //       );
+        //     case GenericNotificationType.upvotePhoto:
+        //       return SlideTransition(
+        //         position: _offsetAnimation,
+        //         child: const Icon(
+        //           Icons.arrow_circle_up,
+        //           color: Colors.deepPurple,
+        //         ),
+        //       );
+        //     case GenericNotificationType.imageComment:
+        //       return SlideTransition(
+        //         position: _offsetAnimation,
+        //         child: const Icon(
+        //           Icons.comment,
+        //           color: Colors.deepPurple,
+        //         ),
+        //       );
+        //   }
+        // }
         return SizedBox.shrink();
       },
     );
