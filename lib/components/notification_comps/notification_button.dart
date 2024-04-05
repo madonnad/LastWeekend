@@ -4,12 +4,14 @@ import 'package:google_fonts/google_fonts.dart';
 class NotificationButton extends StatefulWidget {
   final String buttonText;
   final Color backgroundColor;
+  final Color? borderColor;
   final Future<bool> Function() onTap;
   const NotificationButton({
     super.key,
     required this.buttonText,
     required this.backgroundColor,
     required this.onTap,
+    this.borderColor,
   });
 
   @override
@@ -49,6 +51,10 @@ class _NotificationButtonState extends State<NotificationButton> {
               ? widget.backgroundColor
               : widget.backgroundColor.withOpacity(0.5),
           borderRadius: BorderRadius.circular(5),
+          border: Border.all(
+            color: widget.borderColor ?? widget.backgroundColor,
+            width: 1,
+          ),
         ),
         child: Center(
           child: Text(

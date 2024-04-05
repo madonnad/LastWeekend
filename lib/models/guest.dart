@@ -17,10 +17,14 @@ class Guest {
 
   factory Guest.fromMap(Map<String, dynamic> map) {
     late InviteStatus status;
-    switch (map['accepted']) {
-      case true:
+    switch (map['status']) {
+      case 'accepted':
         status = InviteStatus.accept;
-      case false:
+      case 'pending':
+        status = InviteStatus.pending;
+      case 'denied':
+        status = InviteStatus.decline;
+      default:
         status = InviteStatus.pending;
     }
 

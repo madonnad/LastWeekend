@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:shared_photo/utils/api_variables.dart';
+import 'package:shared_photo/utils/time_until.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 enum GenericNotificationType { likedPhoto, upvotePhoto, imageComment }
@@ -46,6 +47,7 @@ class AlbumInviteNotification extends Notification {
   final String ownerFirst;
   final String ownerLast;
   final RequestStatus status;
+  final DateTime unlockedAt;
   const AlbumInviteNotification({
     required super.notificationID,
     required super.receivedDateTime,
@@ -57,21 +59,26 @@ class AlbumInviteNotification extends Notification {
     required this.ownerFirst,
     required this.ownerLast,
     required this.status,
+    required this.unlockedAt,
   });
 
   String get ownerImg => "$goRepoDomain/image?id=$albumOwner";
+  String get timeUntil => TimeUntil.format(unlockedAt);
 
   factory AlbumInviteNotification.fromMap(Map<String, dynamic> map) {
     RequestStatus status = RequestStatus.pending;
 
-    // switch (map['status']) {
-    //   case 'accepted':
-    //     status = RequestStatus.accepted;
-    //   case 'denied':
-    //     status = RequestStatus.decline;
-    // }
+    switch (map['status']) {
+      case 'accepted':
+        status = RequestStatus.accepted;
+        break;
+      case 'denied':
+        status = RequestStatus.denied;
+        break;
+    }
+
     return AlbumInviteNotification(
-      notificationID: map['album_id'],
+      notificationID: map['request_id'],
       receivedDateTime: DateTime.parse(map['received_at']),
       notificationMediaID: map['album_cover_id'],
       notificationSeen: map['request_seen'],
@@ -81,6 +88,26 @@ class AlbumInviteNotification extends Notification {
       ownerFirst: map['owner_first'],
       ownerLast: map['owner_last'],
       status: status,
+      unlockedAt: DateTime.parse(map['unlocked_at']),
+    );
+  }
+
+  AlbumInviteNotification copyWith({
+    RequestStatus? status,
+    bool? notificationSeen,
+  }) {
+    return AlbumInviteNotification(
+      notificationID: notificationID,
+      receivedDateTime: receivedDateTime,
+      notificationMediaID: notificationMediaID,
+      albumID: albumID,
+      albumName: albumName,
+      albumOwner: albumOwner,
+      ownerFirst: ownerFirst,
+      ownerLast: ownerLast,
+      unlockedAt: unlockedAt,
+      status: status ?? this.status,
+      notificationSeen: notificationSeen ?? this.notificationSeen,
     );
   }
 

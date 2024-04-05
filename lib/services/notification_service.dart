@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:shared_photo/models/notification.dart';
 import 'package:shared_photo/utils/api_variables.dart';
@@ -43,31 +42,5 @@ class NotificationService {
     print('Response body: #${response.body}');
 
     return notificationList;
-  }
-
-  Future<void> acceptAlbumInvite(String token, String albumID) async {
-    var url = Uri.http(domain, '/notifications/album', {"album_id": albumID});
-    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
-
-    final response = await http.post(url, headers: headers);
-
-    if (response.statusCode == 200) {
-      return;
-    }
-    throw HttpException(
-        "Failed to accept the friend request with status: ${response.statusCode}");
-  }
-
-  Future<void> denyAlbumInvite(String token, String albumID) async {
-    var url = Uri.http(domain, '/notifications/album', {"album_id": albumID});
-    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
-
-    final response = await http.delete(url, headers: headers);
-
-    if (response.statusCode == 200) {
-      return;
-    }
-    throw HttpException(
-        "Failed to accept the friend request with status: ${response.statusCode}");
   }
 }

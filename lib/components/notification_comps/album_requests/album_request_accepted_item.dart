@@ -4,20 +4,23 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/notification_cubit.dart';
 import 'package:shared_photo/components/notification_comps/notification_button.dart';
+import 'package:gap/gap.dart';
 
-class AlbumRequestItem extends StatelessWidget {
+class AlbumRequestAcceptedItem extends StatelessWidget {
   final String profileImage;
   final String albumCover;
   final String firstName;
   final String albumName;
   final String requestID;
-  const AlbumRequestItem({
+  final String timeUntil;
+  const AlbumRequestAcceptedItem({
     super.key,
     required this.profileImage,
     required this.albumCover,
     required this.firstName,
     required this.albumName,
     required this.requestID,
+    required this.timeUntil,
   });
 
   @override
@@ -78,19 +81,21 @@ class AlbumRequestItem extends StatelessWidget {
                 Row(
                   children: [
                     NotificationButton(
-                      buttonText: "Deny",
-                      backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
-                      onTap: () async {
-                        return true;
-                      },
-                    ),
-                    const SizedBox(width: 15),
-                    NotificationButton(
-                      buttonText: "Accept",
-                      backgroundColor: const Color.fromRGBO(181, 131, 141, 1),
+                      buttonText: "Accepted",
+                      backgroundColor: const Color.fromRGBO(19, 19, 19, 1),
+                      borderColor: const Color.fromRGBO(181, 131, 141, 1),
                       onTap: () => context
                           .read<NotificationCubit>()
                           .acceptAlbumInvite(requestID: requestID),
+                    ),
+                    const Gap(10),
+                    Text(
+                      "Unlocks in $timeUntil",
+                      style: GoogleFonts.josefinSans(
+                        color: const Color.fromRGBO(181, 131, 141, 1),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ],
                 ),
