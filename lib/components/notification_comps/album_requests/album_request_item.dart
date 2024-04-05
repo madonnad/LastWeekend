@@ -80,9 +80,9 @@ class AlbumRequestItem extends StatelessWidget {
                     NotificationButton(
                       buttonText: "Deny",
                       backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
-                      onTap: () async {
-                        return true;
-                      },
+                      onTap: () => context
+                          .read<NotificationCubit>()
+                          .denyAlbumInvite(requestID: requestID),
                     ),
                     const SizedBox(width: 15),
                     NotificationButton(

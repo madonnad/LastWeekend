@@ -90,7 +90,19 @@ class NotificationCubit extends Cubit<NotificationState> {
 
 // Album Invite Functions
   Future<bool> acceptAlbumInvite({required String requestID}) async {
-    bool success = await notificationRepository.acceptAlbumRequest(requestID);
+    bool success = await notificationRepository.acceptAlbumInvite(requestID);
+
+    if (success) {
+      return true;
+    } else {
+      emit(state.copyWith(exception: "Failed to accept friend request"));
+      emit(state.copyWith(exception: ""));
+      return false;
+    }
+  }
+
+  Future<bool> denyAlbumInvite({required String requestID}) async {
+    bool success = await notificationRepository.denyAlbumInvite(requestID);
 
     if (success) {
       return true;
@@ -213,6 +225,14 @@ class NotificationCubit extends Cubit<NotificationState> {
           ),
         );
       case StreamOperation.delete:
+        albumInviteCopy
+            .removeWhere((key, value) => key == invite.notificationID);
+        emit(
+          state.copyWith(
+            albumInviteMap: albumInviteCopy,
+            unseenAlbumInvites: false,
+          ),
+        );
       case StreamOperation.update:
         albumInviteCopy[invite.notificationID] = invite;
         emit(

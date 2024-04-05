@@ -1,7 +1,7 @@
 part of 'notification_repository.dart';
 
 extension AlbumInviteRepo on NotificationRepository {
-  Future<bool> acceptAlbumRequest(String requestID) async {
+  Future<bool> acceptAlbumInvite(String requestID) async {
     bool success =
         await RequestService.acceptAlbumInvite(user.token, requestID);
 
@@ -12,6 +12,21 @@ extension AlbumInviteRepo on NotificationRepository {
       // Notify Listeners Locally
       _notificationController
           .add((StreamOperation.update, albumInviteMap[requestID]!));
+      return true;
+    }
+    return false;
+  }
+
+  Future<bool> denyAlbumInvite(String requestID) async {
+    bool success = await RequestService.denyAlbumInvite(user.token, requestID);
+    if (success) {
+      // Update Source of Truth
+      AlbumInviteNotification request =
+          albumInviteMap[requestID]!.copyWith(status: RequestStatus.denied);
+
+      albumInviteMap.removeWhere((key, value) => key == requestID);
+      // Notify Listeners Locally
+      _notificationController.add((StreamOperation.delete, request));
       return true;
     }
     return false;

@@ -81,9 +81,7 @@ class RequestService {
   }
 
   // Album Invites
-
   static Future<bool> acceptAlbumInvite(String token, String requestID) async {
-    print(requestID);
     var url = Uri.http(domain, '/album-invite', {"request_id": requestID});
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
