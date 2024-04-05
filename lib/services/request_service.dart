@@ -82,8 +82,9 @@ class RequestService {
 
   // Album Invites
 
-  Future<bool> acceptAlbumInvite(String token, String requestID) async {
-    var url = Uri.http(domain, '/album-invite', {"id": requestID});
+  static Future<bool> acceptAlbumInvite(String token, String requestID) async {
+    print(requestID);
+    var url = Uri.http(domain, '/album-invite', {"request_id": requestID});
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     try {
@@ -99,8 +100,8 @@ class RequestService {
     }
   }
 
-  Future<bool> denyAlbumInvite(String token, String requestID) async {
-    var url = Uri.http(domain, '/album-invite', {"id": requestID});
+  static Future<bool> denyAlbumInvite(String token, String requestID) async {
+    var url = Uri.http(domain, '/album-invite', {"request_id": requestID});
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     try {

@@ -1,7 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
 import 'package:shared_photo/models/guest.dart';
 
@@ -28,9 +28,12 @@ class InvitePage extends StatelessWidget {
                           CircleAvatar(
                             backgroundColor:
                                 const Color.fromRGBO(16, 16, 16, 1),
-                            foregroundImage: CachedNetworkImageProvider(
+                            foregroundImage: NetworkImage(
                               state.album.sortedGuestsByInvite[index].avatarReq,
+                              headers:
+                                  context.read<AppBloc>().state.user.headers,
                             ),
+                            onForegroundImageError: (_, __) {},
                           ),
                           const SizedBox(
                             width: 20,
@@ -49,16 +52,15 @@ class InvitePage extends StatelessWidget {
                           ),
                         ],
                       ),
-                      state.album.sortedGuestsByInvite[index].status ==
-                              InviteStatus.accept
-                          ? const Icon(
-                              Icons.check_circle,
-                              color: Colors.green,
-                            )
-                          : const Icon(
-                              Icons.help_outline_outlined,
-                              color: Color.fromRGBO(125, 125, 125, 1),
-                            )
+                      switch (state.album.sortedGuestsByInvite[index].status) {
+                        InviteStatus.accept =>
+                          const Icon(Icons.check_circle, color: Colors.green),
+                        InviteStatus.pending => const Icon(
+                            Icons.help_outline_outlined,
+                            color: Color.fromRGBO(125, 125, 125, 1)),
+                        InviteStatus.decline =>
+                          const Icon(Icons.cancel, color: Colors.red)
+                      }
                     ],
                   ),
                 );
