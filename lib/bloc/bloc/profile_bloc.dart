@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:shared_photo/models/album.dart';
+import 'package:shared_photo/models/base_album.dart';
 import 'package:shared_photo/models/friend.dart';
 import 'package:shared_photo/models/image.dart';
 import 'package:shared_photo/models/notification.dart';

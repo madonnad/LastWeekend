@@ -7,8 +7,8 @@ import 'package:shared_photo/components/album_comp/lock_comps/album_lock_tab_vie
 import 'package:shared_photo/components/album_comp/util_comps/album_appbar_title.dart';
 import 'package:shared_photo/components/album_comp/reveal_comps/album_reveal_tab_view.dart';
 import 'package:shared_photo/components/album_comp/unlock_comps/album_unlock_tab_view.dart';
-import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/arguments.dart';
+import 'package:shared_photo/models/base_album.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 
 class AlbumFrame extends StatelessWidget {
