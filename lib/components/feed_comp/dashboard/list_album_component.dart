@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/arguments.dart';
+import 'package:shared_photo/models/base_album.dart';
 
 class ListAlbumComponent extends StatelessWidget {
   final Album album;
