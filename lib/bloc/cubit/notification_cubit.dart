@@ -245,5 +245,15 @@ class NotificationCubit extends Cubit<NotificationState> {
   }
 
   void _albumInviteResponseHandler(
-      StreamOperation operation, AlbumInviteResponseNotification response) {}
+      StreamOperation operation, AlbumInviteResponseNotification response) {
+    Map<String, Notification> allNotiCopy = Map.from(state.albumInviteMap);
+    switch (operation) {
+      case StreamOperation.add:
+        allNotiCopy[response.notificationID] = response;
+        emit(state.copyWith(
+            allNotificationMap: allNotiCopy, unseenGenericNoti: true));
+      case StreamOperation.update:
+      case StreamOperation.delete:
+    }
+  }
 }

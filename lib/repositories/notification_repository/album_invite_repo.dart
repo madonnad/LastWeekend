@@ -1,6 +1,18 @@
 part of 'notification_repository.dart';
 
 extension AlbumInviteRepo on NotificationRepository {
+  void _ablumInviteHandler(AlbumInviteNotification invite) {
+    switch (invite.status) {
+      case RequestStatus.pending:
+        albumInviteMap.putIfAbsent(invite.notificationID, () => invite);
+        _notificationController.add((StreamOperation.add, invite));
+      case RequestStatus.accepted:
+      // TODO: Handle this case.
+      case RequestStatus.denied:
+      // TODO: Handle this case.
+    }
+  }
+
   Future<bool> acceptAlbumInvite(String requestID) async {
     bool success =
         await RequestService.acceptAlbumInvite(user.token, requestID);
