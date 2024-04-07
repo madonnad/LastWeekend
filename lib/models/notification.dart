@@ -29,6 +29,13 @@ abstract class Notification extends Equatable {
     required this.notificationSeen,
   });
 
+  Notification copyWith({
+    String? notificationID,
+    DateTime? receivedDateTime,
+    String? notificationMediaID,
+    bool? notificationSeen,
+  });
+
   String get imageReq {
     String requestUrl = "$goRepoDomain/image?id=$notificationMediaID";
 
@@ -92,14 +99,18 @@ class AlbumInviteNotification extends Notification {
     );
   }
 
+  @override
   AlbumInviteNotification copyWith({
+    String? notificationID,
+    DateTime? receivedDateTime,
+    String? notificationMediaID,
     RequestStatus? status,
     bool? notificationSeen,
   }) {
     return AlbumInviteNotification(
-      notificationID: notificationID,
-      receivedDateTime: receivedDateTime,
-      notificationMediaID: notificationMediaID,
+      notificationID: notificationID ?? this.notificationID,
+      receivedDateTime: receivedDateTime ?? this.receivedDateTime,
+      notificationMediaID: notificationMediaID ?? this.notificationMediaID,
       albumID: albumID,
       albumName: albumName,
       albumOwner: albumOwner,
@@ -118,9 +129,9 @@ class AlbumInviteNotification extends Notification {
 class AlbumInviteResponseNotification extends Notification {
   final String albumID;
   final String albumName;
-  final String receiverID;
-  final String receiverFirst;
-  final String receiverLast;
+  final String guestID;
+  final String guestFirst;
+  final String guestLast;
   final RequestStatus status;
 
   const AlbumInviteResponseNotification({
@@ -130,11 +141,16 @@ class AlbumInviteResponseNotification extends Notification {
     required super.notificationSeen, // Request Seen
     required this.albumID, // Album ID
     required this.albumName, // Album Name
-    required this.receiverID, // Receiver ID
-    required this.receiverFirst, // Receiver First Name
-    required this.receiverLast, // Receiver Last Name
+    required this.guestID, // Receiver ID
+    required this.guestFirst, // Receiver First Name
+    required this.guestLast, // Receiver Last Name
     required this.status, // Request Status
   });
+
+  String get senderURL => "$goRepoDomain/image?id=$guestID";
+  String get fullName => "$guestFirst $guestLast";
+  String get timeReceived =>
+      timeago.format(receivedDateTime, locale: "en_short");
 
   factory AlbumInviteResponseNotification.fromMap(Map<String, dynamic> map) {
     RequestStatus status = RequestStatus.pending;
@@ -153,10 +169,32 @@ class AlbumInviteResponseNotification extends Notification {
       notificationSeen: map['request_seen'],
       albumID: map['album_id'],
       albumName: map['album_name'],
-      receiverID: map['receiver_id'],
-      receiverFirst: map['receiver_first'],
-      receiverLast: map['receiver_last'],
+      guestID: map['guest_id'],
+      guestFirst: map['guest_first'],
+      guestLast: map['guest_last'],
       status: status,
+    );
+  }
+
+  @override
+  AlbumInviteResponseNotification copyWith({
+    String? notificationID,
+    String? notificationMediaID,
+    bool? notificationSeen,
+    DateTime? receivedDateTime,
+    RequestStatus? status,
+  }) {
+    return AlbumInviteResponseNotification(
+      albumID: albumID,
+      albumName: albumName,
+      guestID: guestID,
+      guestFirst: guestFirst,
+      guestLast: guestLast,
+      status: status ?? this.status,
+      notificationID: notificationID ?? this.notificationID,
+      notificationMediaID: notificationMediaID ?? this.notificationMediaID,
+      notificationSeen: notificationSeen ?? this.notificationSeen,
+      receivedDateTime: receivedDateTime ?? this.receivedDateTime,
     );
   }
 
@@ -208,13 +246,16 @@ class FriendRequestNotification extends Notification {
   }
 
   FriendRequestNotification copyWith({
-    RequestStatus? status,
+    String? notificationID,
+    String? notificationMediaID,
     bool? notificationSeen,
+    DateTime? receivedDateTime,
+    RequestStatus? status,
   }) {
     return FriendRequestNotification(
-      notificationID: notificationID,
-      receivedDateTime: receivedDateTime,
-      notificationMediaID: notificationMediaID,
+      notificationID: notificationID ?? this.notificationID,
+      receivedDateTime: receivedDateTime ?? this.receivedDateTime,
+      notificationMediaID: notificationMediaID ?? this.notificationMediaID,
       notificationSeen: notificationSeen ?? this.notificationSeen,
       senderID: senderID,
       receiverID: receiverID,
