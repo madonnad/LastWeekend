@@ -73,9 +73,10 @@ class RealtimeRepository {
         _realtimeNotificationController.add(notification);
         return;
       case "ACCEPTED":
-      // TODO: Implement AlbumRequestResponse Class and Add Here
-      // _realtimeNotificationController.add(notification);
-      // return;
+        AlbumInviteResponseNotification notification =
+            AlbumInviteResponseNotification.fromMap(payload);
+        _realtimeNotificationController.add(notification);
+        return;
       case "DENIED":
       // TODO: Implement AlbumRequestResponse Class and Add Here
       // _realtimeNotificationController.add(notification);

@@ -9,6 +9,7 @@ import 'package:shared_photo/services/request_service.dart';
 
 part 'friend_request_repo.dart';
 part 'album_invite_repo.dart';
+part 'all_noti_repo.dart';
 
 class NotificationRepository {
   //Imports
@@ -42,6 +43,10 @@ class NotificationRepository {
     switch (notification.runtimeType) {
       case FriendRequestNotification:
         _friendRequestHandler(notification as FriendRequestNotification);
+      case AlbumInviteNotification:
+        _ablumInviteHandler(notification as AlbumInviteNotification);
+      case AlbumInviteResponseNotification:
+        _allNotiHandler(notification);
     }
   }
 
