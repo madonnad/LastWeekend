@@ -61,7 +61,7 @@ extension FriendRequestRepo on NotificationRepository {
           friendRequestMap[requestID]!.copyWith(notificationSeen: true);
 
       // Notify Listeners
-      _notificationController.add((StreamOperation.add, request));
+      _notificationController.add((StreamOperation.update, request));
       return true;
     }
     return false;

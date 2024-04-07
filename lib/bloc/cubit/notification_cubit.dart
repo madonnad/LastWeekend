@@ -40,6 +40,12 @@ class NotificationCubit extends Cubit<NotificationState> {
   void markListAsRead(int index) {
     switch (index) {
       case 0:
+        for (Notification notification in state.allNotifications) {
+          if (notification.notificationSeen == false) {
+            notificationRepository
+                .markNotificationSeen(notification.notificationID);
+          }
+        }
         emit(state.copyWith(unseenGenericNoti: false));
         return;
       case 1:
@@ -136,6 +142,9 @@ class NotificationCubit extends Cubit<NotificationState> {
         (element.status == RequestStatus.pending &&
             element.notificationSeen == false));
 
+    bool allNotificationsUnseen = allNotificationMap.values
+        .any((element) => element.notificationSeen == false);
+
     emit(
       state.copyWith(
         friendRequestMap: friendRequestMap,
@@ -143,6 +152,7 @@ class NotificationCubit extends Cubit<NotificationState> {
         allNotificationMap: allNotificationMap,
         unseenFriendRequests: friendRequestUnseen,
         unseenAlbumInvites: albumInviteUnseen,
+        unseenGenericNoti: allNotificationsUnseen,
       ),
     );
   }
@@ -196,7 +206,7 @@ class NotificationCubit extends Cubit<NotificationState> {
             friendRequestCopy[request.notificationID] = request;
             emit(state.copyWith(
               friendRequestMap: friendRequestCopy,
-              unseenFriendRequests: true,
+              unseenFriendRequests: !request.notificationSeen,
             ));
         }
       case RequestStatus.denied:
@@ -251,8 +261,13 @@ class NotificationCubit extends Cubit<NotificationState> {
       case StreamOperation.add:
         allNotiCopy[response.notificationID] = response;
         emit(state.copyWith(
-            allNotificationMap: allNotiCopy, unseenGenericNoti: true));
+            allNotificationMap: allNotiCopy,
+            unseenGenericNoti: !response.notificationSeen));
       case StreamOperation.update:
+        allNotiCopy[response.notificationID] = response;
+        emit(state.copyWith(
+            allNotificationMap: allNotiCopy,
+            unseenGenericNoti: !response.notificationSeen));
       case StreamOperation.delete:
     }
   }

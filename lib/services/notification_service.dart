@@ -43,4 +43,23 @@ class NotificationService {
 
     return notificationList;
   }
+
+  static Future<bool> markNotificationSeen(
+      String token, String notificationID) async {
+    var url = Uri.http(domain, '/notifications', {"id": notificationID});
+    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
+
+    try {
+      final response = await http.patch(url, headers: headers);
+
+      if (response.statusCode == 200) {
+        print("service");
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
 }
