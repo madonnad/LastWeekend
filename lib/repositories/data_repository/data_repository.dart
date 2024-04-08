@@ -2,10 +2,13 @@ import 'dart:async';
 
 import 'package:shared_photo/bloc/cubit/create_album_cubit.dart';
 import 'package:shared_photo/models/album.dart';
+import 'package:shared_photo/models/guest.dart';
 import 'package:shared_photo/models/image.dart';
 import 'package:shared_photo/models/comment.dart';
 import 'package:shared_photo/models/image_change.dart';
+import 'package:shared_photo/models/notification.dart';
 import 'package:shared_photo/models/user.dart';
+import 'package:shared_photo/repositories/notification_repository/notification_repository.dart';
 import 'package:shared_photo/services/album_service.dart';
 import 'package:shared_photo/services/image_service.dart';
 import 'package:shared_photo/services/engagement_service.dart';
@@ -17,6 +20,7 @@ enum StreamOperation { add, update, delete }
 
 class DataRepository {
   User user;
+  NotificationRepository notificationRepository;
   Map<String, Album> albumMap = <String, Album>{};
 
   // Stream Controllers
@@ -35,7 +39,19 @@ class DataRepository {
   Stream<(StreamOperation, Album)> get albumStream => _albumController.stream;
   Stream<ImageChange> get imageStream => _imageController.stream;
 
-  DataRepository({required this.user}) {
+  DataRepository({
+    required this.user,
+    required this.notificationRepository,
+  }) {
     _initalizeAlbums();
+
+    notificationRepository.notificationStream.listen((event) {
+      StreamOperation operation = event.$1;
+      Notification notification = event.$2;
+
+      switch (notification.runtimeType) {
+        case AlbumInviteNotification:
+      }
+    });
   }
 }

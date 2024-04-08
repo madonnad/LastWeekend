@@ -62,19 +62,21 @@ class MainApp extends StatelessWidget {
                       ),
                     ),
                     RepositoryProvider(
+                      create: (context) => NotificationRepository(
+                        realtimeRepository: context.read<RealtimeRepository>(),
+                        user: context.read<AppBloc>().state.user,
+                      ),
+                    ),
+                    RepositoryProvider(
                       lazy: false,
                       create: (context) => DataRepository(
+                        notificationRepository:
+                            context.read<NotificationRepository>(),
                         user: context.read<AppBloc>().state.user,
                       ),
                     ),
                     RepositoryProvider(
                       create: (context) => UserRepository(
-                        user: context.read<AppBloc>().state.user,
-                      ),
-                    ),
-                    RepositoryProvider(
-                      create: (context) => NotificationRepository(
-                        realtimeRepository: context.read<RealtimeRepository>(),
                         user: context.read<AppBloc>().state.user,
                       ),
                     ),

@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:shared_photo/bloc/cubit/create_album_cubit.dart';
 import 'package:shared_photo/models/album.dart';
+import 'package:shared_photo/models/guest.dart';
 import 'package:shared_photo/utils/api_variables.dart';
 import 'package:http/http.dart' as http;
 
@@ -114,5 +115,30 @@ class AlbumService {
     print('Request failed with status: ${response.statusCode}');
     print('Response body: #${response.body}');
     return albums;
+  }
+
+  static Future<List<Guest>> updateGuestList(
+      String token, String albumID) async {
+    List<Guest> guests = [];
+
+    var url = Uri.http(domain, '/album/guests', {"album_id": albumID});
+    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
+
+    try {
+      final response = await http.get(url, headers: headers);
+
+      if (response.statusCode == 200) {
+        final responseBody = response.body;
+        final jsonData = json.decode(responseBody);
+
+        for (var item in jsonData) {
+          guests.add(Guest.fromMap(item));
+        }
+      }
+      return guests;
+    } catch (e) {
+      print(e);
+      return guests;
+    }
   }
 }

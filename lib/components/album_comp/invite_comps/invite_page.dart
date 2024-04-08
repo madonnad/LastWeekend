@@ -15,56 +15,76 @@ class InvitePage extends StatelessWidget {
         padding: const EdgeInsets.only(top: 8.0, left: 30, right: 30),
         child: BlocBuilder<AlbumFrameCubit, AlbumFrameState>(
           builder: (context, state) {
-            return ListView.builder(
-              itemCount: state.album.sortedGuestsByInvite.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
+            return Stack(
+              children: [
+                ListView.builder(
+                  itemCount: state.album.sortedGuestsByInvite.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          CircleAvatar(
-                            backgroundColor:
-                                const Color.fromRGBO(16, 16, 16, 1),
-                            foregroundImage: NetworkImage(
-                              state.album.sortedGuestsByInvite[index].avatarReq,
-                              headers:
-                                  context.read<AppBloc>().state.user.headers,
-                            ),
-                            onForegroundImageError: (_, __) {},
+                          Row(
+                            children: [
+                              CircleAvatar(
+                                backgroundColor:
+                                    const Color.fromRGBO(16, 16, 16, 1),
+                                foregroundImage: NetworkImage(
+                                  state.album.sortedGuestsByInvite[index]
+                                      .avatarReq,
+                                  headers: context
+                                      .read<AppBloc>()
+                                      .state
+                                      .user
+                                      .headers,
+                                ),
+                                onForegroundImageError: (_, __) {},
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              Text(
+                                state
+                                    .album.sortedGuestsByInvite[index].fullName,
+                                style: GoogleFonts.josefinSans(
+                                  color: state.album.sortedGuestsByInvite[index]
+                                              .status ==
+                                          InviteStatus.accept
+                                      ? Colors.white
+                                      : const Color.fromRGBO(125, 125, 125, 1),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
                           ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          Text(
-                            state.album.sortedGuestsByInvite[index].fullName,
-                            style: GoogleFonts.josefinSans(
-                              color: state.album.sortedGuestsByInvite[index]
-                                          .status ==
-                                      InviteStatus.accept
-                                  ? Colors.white
-                                  : const Color.fromRGBO(125, 125, 125, 1),
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
+                          switch (
+                              state.album.sortedGuestsByInvite[index].status) {
+                            InviteStatus.accept => const Icon(
+                                Icons.check_circle,
+                                color: Colors.green),
+                            InviteStatus.pending => const Icon(
+                                Icons.help_outline_outlined,
+                                color: Color.fromRGBO(125, 125, 125, 1)),
+                            InviteStatus.decline =>
+                              const Icon(Icons.cancel, color: Colors.red)
+                          }
                         ],
                       ),
-                      switch (state.album.sortedGuestsByInvite[index].status) {
-                        InviteStatus.accept =>
-                          const Icon(Icons.check_circle, color: Colors.green),
-                        InviteStatus.pending => const Icon(
-                            Icons.help_outline_outlined,
-                            color: Color.fromRGBO(125, 125, 125, 1)),
-                        InviteStatus.decline =>
-                          const Icon(Icons.cancel, color: Colors.red)
-                      }
-                    ],
-                  ),
-                );
-              },
+                    );
+                  },
+                ),
+                state.loading
+                    ? Container(
+                        height: MediaQuery.of(context).size.height,
+                        color: Colors.black54,
+                        child: const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      )
+                    : const SizedBox(height: 0),
+              ],
             );
           },
         ),

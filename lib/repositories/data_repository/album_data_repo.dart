@@ -112,4 +112,13 @@ extension AlbumDataRepo on DataRepository {
 
     return albums;
   }
+
+  Future<List<Guest>> updateAlbumsGuests(String albumID) async {
+    List<Guest> fetchedGuests =
+        await AlbumService.updateGuestList(user.token, albumID);
+
+    albumMap[albumID]!.guests = fetchedGuests;
+
+    return fetchedGuests;
+  }
 }

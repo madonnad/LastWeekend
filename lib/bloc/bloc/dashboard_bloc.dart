@@ -12,8 +12,10 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   DataRepository dataRepository;
   User user;
 
-  DashboardBloc({required this.dataRepository, required this.user})
-      : super(DashboardState.empty) {
+  DashboardBloc({
+    required this.dataRepository,
+    required this.user,
+  }) : super(DashboardState.empty) {
     on<InitializeDash>((event, emit) {
       emit(state.copyWith(
         activeAlbumMap: dataRepository.activeAlbums(),

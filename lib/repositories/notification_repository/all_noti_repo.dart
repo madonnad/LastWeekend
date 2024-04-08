@@ -9,7 +9,6 @@ extension AllNotiRepo on NotificationRepository {
   }
 
   Future<bool> markNotificationSeen(String notificationID) async {
-    print("hello");
     bool success = await NotificationService.markNotificationSeen(
         user.token, notificationID);
 
