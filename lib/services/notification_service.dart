@@ -53,7 +53,6 @@ class NotificationService {
       final response = await http.patch(url, headers: headers);
 
       if (response.statusCode == 200) {
-        print("service");
         return true;
       }
       return false;

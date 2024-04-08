@@ -7,9 +7,7 @@ extension AlbumInviteRepo on NotificationRepository {
         albumInviteMap.putIfAbsent(invite.notificationID, () => invite);
         _notificationController.add((StreamOperation.add, invite));
       case RequestStatus.accepted:
-      // TODO: Handle this case.
       case RequestStatus.denied:
-      // TODO: Handle this case.
     }
   }
 

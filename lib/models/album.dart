@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:flutter/foundation.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:shared_photo/models/guest.dart';
 import 'package:shared_photo/models/image.dart';
@@ -269,20 +270,25 @@ class Album {
     List<Guest> pendingGuests = unsortedGuests
         .where((element) => element.status == InviteStatus.pending)
         .toList();
+    List<Guest> deniedGuests = unsortedGuests
+        .where((element) => element.status == InviteStatus.decline)
+        .toList();
 
     List<Guest> sortedGuests = [];
     sortedGuests.addAll(acceptedGuests);
     sortedGuests.addAll(pendingGuests);
+    sortedGuests.addAll(deniedGuests);
     return sortedGuests;
   }
 
-  // @override
-  // bool operator ==(Object other) =>
-  //     identical(this, other) ||
-  //     other is Album &&
-  //         runtimeType == other.runtimeType &&
-  //         albumId == other.albumId;
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Album &&
+          runtimeType == other.runtimeType &&
+          albumId == other.albumId &&
+          listEquals(guests, other.guests);
 
-  // @override
-  // int get hashCode => albumId.hashCode;
+  @override
+  int get hashCode => albumId.hashCode ^ guests.hashCode;
 }

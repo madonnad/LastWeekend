@@ -11,6 +11,7 @@ class AlbumFrameState extends Equatable {
   final List<img.Image> remainingRankedImages;
   final AlbumViewMode viewMode;
   final List<String> filterList = ["Popular", "Guests", "Timeline"];
+  final bool loading;
 
   AlbumFrameState({
     required this.album,
@@ -20,6 +21,7 @@ class AlbumFrameState extends Equatable {
     this.topThreeImages = const [],
     this.remainingRankedImages = const [],
     required this.viewMode,
+    this.loading = false,
   });
 
   AlbumFrameState copyWith({
@@ -30,6 +32,7 @@ class AlbumFrameState extends Equatable {
     List<img.Image>? topThreeImages,
     List<img.Image>? remainingRankedImages,
     AlbumViewMode? viewMode,
+    bool? loading,
   }) {
     return AlbumFrameState(
       album: album ?? this.album,
@@ -40,6 +43,7 @@ class AlbumFrameState extends Equatable {
       remainingRankedImages:
           remainingRankedImages ?? this.remainingRankedImages,
       viewMode: viewMode ?? this.viewMode,
+      loading: loading ?? this.loading,
     );
   }
 
@@ -137,5 +141,6 @@ class AlbumFrameState extends Equatable {
         topThreeImages,
         remainingRankedImages,
         viewMode,
+        loading,
       ];
 }
