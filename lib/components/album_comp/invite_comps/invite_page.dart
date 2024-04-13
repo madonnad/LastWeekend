@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
-import 'package:shared_photo/models/guest.dart';
+import 'package:shared_photo/models/notification.dart';
 
 class InvitePage extends StatelessWidget {
   const InvitePage({super.key});
@@ -50,7 +50,7 @@ class InvitePage extends StatelessWidget {
                                 style: GoogleFonts.josefinSans(
                                   color: state.album.sortedGuestsByInvite[index]
                                               .status ==
-                                          InviteStatus.accept
+                                          RequestStatus.accepted
                                       ? Colors.white
                                       : const Color.fromRGBO(125, 125, 125, 1),
                                   fontSize: 18,
@@ -61,13 +61,13 @@ class InvitePage extends StatelessWidget {
                           ),
                           switch (
                               state.album.sortedGuestsByInvite[index].status) {
-                            InviteStatus.accept => const Icon(
+                            RequestStatus.accepted => const Icon(
                                 Icons.check_circle,
                                 color: Colors.green),
-                            InviteStatus.pending => const Icon(
+                            RequestStatus.pending => const Icon(
                                 Icons.help_outline_outlined,
                                 color: Color.fromRGBO(125, 125, 125, 1)),
-                            InviteStatus.decline =>
+                            RequestStatus.denied =>
                               const Icon(Icons.cancel, color: Colors.red)
                           }
                         ],

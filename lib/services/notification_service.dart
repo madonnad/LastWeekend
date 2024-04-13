@@ -29,11 +29,13 @@ class NotificationService {
         notificationList.add(FriendRequestNotification.fromMap(item));
       }
       for (var item in albumInviteList) {
+        print(item.toString());
         notificationList.add(AlbumInviteNotification.fromMap(item));
       }
 
       for (var item in albumRequestResponseList) {
-        notificationList.add(AlbumInviteResponseNotification.fromMap(item));
+        print(item.toString());
+        notificationList.add(AlbumInviteNotification.fromMap(item));
       }
 
       return notificationList;

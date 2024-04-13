@@ -1,12 +1,11 @@
+import 'package:shared_photo/models/notification.dart';
 import 'package:shared_photo/utils/api_variables.dart';
 
-enum InviteStatus { accept, decline, pending }
-
 class Guest {
-  final String uid;
-  final String firstName;
-  final String lastName;
-  final InviteStatus status;
+  String uid;
+  String firstName;
+  String lastName;
+  RequestStatus status;
 
   Guest({
     required this.uid,
@@ -16,16 +15,16 @@ class Guest {
   });
 
   factory Guest.fromMap(Map<String, dynamic> map) {
-    late InviteStatus status;
+    late RequestStatus status;
     switch (map['status']) {
       case 'accepted':
-        status = InviteStatus.accept;
+        status = RequestStatus.accepted;
       case 'pending':
-        status = InviteStatus.pending;
+        status = RequestStatus.pending;
       case 'denied':
-        status = InviteStatus.decline;
+        status = RequestStatus.denied;
       default:
-        status = InviteStatus.pending;
+        status = RequestStatus.pending;
     }
 
     return Guest(

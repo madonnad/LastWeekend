@@ -23,12 +23,11 @@ class AllNotisList extends StatelessWidget {
                 itemCount: state.allNotifications.length,
                 itemBuilder: (context, index) {
                   switch (state.allNotifications[index].runtimeType) {
-                    case AlbumInviteResponseNotification:
-                      AlbumInviteResponseNotification response =
-                          state.allNotifications[index]
-                              as AlbumInviteResponseNotification;
+                    case AlbumInviteNotification:
+                      AlbumInviteNotification response = state
+                          .allNotifications[index] as AlbumInviteNotification;
                       return AcceptedAlbumItem(
-                        profileImage: response.senderURL,
+                        profileImage: response.guestURL,
                         firstName: response.guestFirst,
                         albumName: response.albumName,
                         timeSince: response.timeReceived,

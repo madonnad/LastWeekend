@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:shared_photo/models/album.dart';
-import 'package:shared_photo/models/guest.dart';
+import 'package:shared_photo/models/notification.dart';
 import 'package:shared_photo/models/user.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 
@@ -36,6 +36,16 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       },
     );
 
+    on<UpdateAlbumInMap>((event, emit) {
+      Map<String, Album> albumMap = Map.from(state.activeAlbumMap);
+
+      Album album = event.album;
+      String key = album.albumId;
+
+      albumMap.update(key, (value) => album, ifAbsent: () => album);
+      emit(state.copyWith(activeAlbumMap: albumMap));
+    });
+
     // Stream Listeners
     dataRepository.albumStream.listen((event) {
       StreamOperation type = event.$1;
@@ -43,7 +53,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
       // Check if user is in the album that was passed
       bool userIsGuest = album.guests.any((guest) {
-        return guest.status == InviteStatus.accept && guest.uid == user.id;
+        return guest.status == RequestStatus.accepted && guest.uid == user.id;
       });
 
       bool userIsOwner = album.albumOwner == user.id;
@@ -53,6 +63,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
           case StreamOperation.add:
             add(AddAlbumToMap(album: album));
           case StreamOperation.update:
+            add(UpdateAlbumInMap(album: album));
           case StreamOperation.delete:
         }
       }

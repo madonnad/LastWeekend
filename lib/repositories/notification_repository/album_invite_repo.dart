@@ -4,10 +4,21 @@ extension AlbumInviteRepo on NotificationRepository {
   void _ablumInviteHandler(AlbumInviteNotification invite) {
     switch (invite.status) {
       case RequestStatus.pending:
-        albumInviteMap.putIfAbsent(invite.notificationID, () => invite);
+        if (invite.guestID == user.id) {
+          albumInviteMap.putIfAbsent(invite.notificationID, () => invite);
+        }
         _notificationController.add((StreamOperation.add, invite));
       case RequestStatus.accepted:
+        if (invite.albumOwner == user.id) {
+          allNotificationMap.putIfAbsent(invite.notificationID, () => invite);
+        }
+        // Add album to album repo (update dash) & update notification map for
+        // guest that accepted.
+        _notificationController.add((StreamOperation.update, invite));
       case RequestStatus.denied:
+        // Communicates to the notification cubit to remove
+        // Also goes to the data repo to update the album if present
+        _notificationController.add((StreamOperation.update, invite));
     }
   }
 
@@ -19,7 +30,7 @@ extension AlbumInviteRepo on NotificationRepository {
       // Update Source of Truth
       albumInviteMap.update(
           requestID, (value) => value.copyWith(status: RequestStatus.accepted));
-      // Notify Listeners Locally
+      // Notify Listeners Locally - This will add album to data repo
       _notificationController
           .add((StreamOperation.update, albumInviteMap[requestID]!));
       return true;
