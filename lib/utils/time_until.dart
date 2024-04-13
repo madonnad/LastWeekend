@@ -32,7 +32,7 @@ class TimeUntil {
     } else if (years > 2) {
       return "${years.floor()} years";
     } else {
-      return "already started";
+      return "0 minutes";
     }
   }
 }

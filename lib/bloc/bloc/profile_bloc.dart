@@ -58,8 +58,18 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           albumMap[key] = album;
           emit(state.copyWith(myAlbumsMap: albumMap));
         }
-      },
+      },  
     );
+
+    on<UpdateAlbumInMap>((event, emit) {
+      Map<String, Album> albumMap = Map.from(state.myAlbumsMap);
+
+      Album album = event.album;
+      String key = album.albumId;
+
+      albumMap.update(key, (value) => album, ifAbsent: () => album);
+      emit(state.copyWith(myAlbumsMap: albumMap));
+    });
 
     // Stream Listeners
     userRepository.friendStream.listen((event) {
@@ -86,6 +96,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           case StreamOperation.add:
             add(AddAlbumToMap(album: album));
           case StreamOperation.update:
+            add(UpdateAlbumInMap(album: album));
           case StreamOperation.delete:
         }
       }

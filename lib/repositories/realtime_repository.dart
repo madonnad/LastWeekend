@@ -66,22 +66,11 @@ class RealtimeRepository {
   }
 
   void wsAlbumInviteMessageHandler(String operation, dynamic payload) {
-    switch (operation) {
-      case "REQUEST":
-        AlbumInviteNotification notification =
-            AlbumInviteNotification.fromMap(payload);
-        _realtimeNotificationController.add(notification);
-        return;
-      case "ACCEPTED":
-        AlbumInviteResponseNotification notification =
-            AlbumInviteResponseNotification.fromMap(payload);
-        _realtimeNotificationController.add(notification);
-        return;
-      case "DENIED":
-      // TODO: Implement AlbumRequestResponse Class and Add Here
-      // _realtimeNotificationController.add(notification);
-      // return;
-    }
+    print(payload);
+    AlbumInviteNotification notification =
+        AlbumInviteNotification.fromMap(payload);
+    _realtimeNotificationController.add(notification);
+    return;
   }
 
   void wsFriendRequestMessageHandler(String operation, dynamic payload) {

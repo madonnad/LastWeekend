@@ -1,5 +1,5 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/foundation.dart';
+import 'package:shared_photo/models/notification.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:shared_photo/models/guest.dart';
 import 'package:shared_photo/models/image.dart';
@@ -17,7 +17,7 @@ class Album {
   String ownerLast;
   String albumCoverId;
   Map<String, Image> imageMap;
-  List<Guest> guests;
+  Map<String, Guest> guestMap;
   DateTime creationDateTime;
   DateTime lockDateTime;
   DateTime unlockDateTime;
@@ -40,7 +40,7 @@ class Album {
     required this.phase,
     this.albumCoverId = '',
     this.imageMap = const {},
-    this.guests = const [],
+    this.guestMap = const {},
     this.albumCoverUrl,
   });
 
@@ -83,7 +83,7 @@ class Album {
       ownerLast: album.ownerLast,
       albumCoverId: album.albumCoverId,
       imageMap: album.imageMap,
-      guests: album.guests,
+      guestMap: album.guestMap,
       creationDateTime: album.creationDateTime,
       lockDateTime: album.lockDateTime,
       unlockDateTime: album.unlockDateTime,
@@ -96,7 +96,7 @@ class Album {
 
   factory Album.fromMap(Map<String, dynamic> map) {
     Map<String, Image> images = {};
-    List<Guest> guests = [];
+    Map<String, Guest> guests = {};
     Visibility visibility;
     AlbumPhases phase;
     dynamic jsonImages = map['images'];
@@ -114,7 +114,7 @@ class Album {
       for (var item in jsonGuests) {
         Guest guest = Guest.fromMap(item);
 
-        guests.add(guest);
+        guests[guest.uid] = guest;
       }
     }
 
@@ -150,7 +150,7 @@ class Album {
       ownerFirst: map['owner_first'],
       ownerLast: map['owner_last'],
       creationDateTime: DateTime.parse(map['created_at']),
-      guests: guests,
+      guestMap: guests,
       imageMap: images,
       lockDateTime: DateTime.parse(map['locked_at']),
       unlockDateTime: DateTime.parse(map['unlocked_at']),
@@ -177,6 +177,8 @@ class Album {
 
     return fullName;
   }
+
+  List<Guest> get guests => guestMap.values.toList();
 
   String get timeSince {
     return timeago.format(revealDateTime);
@@ -263,15 +265,15 @@ class Album {
   }
 
   List<Guest> get sortedGuestsByInvite {
-    List<Guest> unsortedGuests = List.from(guests);
+    List<Guest> unsortedGuests = List.from(guestMap.values);
     List<Guest> acceptedGuests = unsortedGuests
-        .where((element) => element.status == InviteStatus.accept)
+        .where((element) => element.status == RequestStatus.accepted)
         .toList();
     List<Guest> pendingGuests = unsortedGuests
-        .where((element) => element.status == InviteStatus.pending)
+        .where((element) => element.status == RequestStatus.pending)
         .toList();
     List<Guest> deniedGuests = unsortedGuests
-        .where((element) => element.status == InviteStatus.decline)
+        .where((element) => element.status == RequestStatus.denied)
         .toList();
 
     List<Guest> sortedGuests = [];
@@ -287,8 +289,8 @@ class Album {
       other is Album &&
           runtimeType == other.runtimeType &&
           albumId == other.albumId &&
-          listEquals(guests, other.guests);
+          mapEquals(guestMap, other.guestMap);
 
   @override
-  int get hashCode => albumId.hashCode ^ guests.hashCode;
+  int get hashCode => albumId.hashCode ^ guestMap.hashCode;
 }

@@ -4,6 +4,7 @@ import 'package:shared_photo/models/notification.dart';
 import 'package:shared_photo/models/user.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 import 'package:shared_photo/repositories/notification_repository/notification_repository.dart';
+import 'package:shared_photo/services/request_service.dart';
 
 part 'notification_state.dart';
 
@@ -30,9 +31,6 @@ class NotificationCubit extends Cubit<NotificationState> {
         case AlbumInviteNotification:
           _albumInviteHandler(
               operation, notification as AlbumInviteNotification);
-        case AlbumInviteResponseNotification:
-          _albumInviteResponseHandler(
-              operation, notification as AlbumInviteResponseNotification);
       }
     });
   }
@@ -41,9 +39,13 @@ class NotificationCubit extends Cubit<NotificationState> {
     switch (index) {
       case 0:
         for (Notification notification in state.allNotifications) {
-          if (notification.notificationSeen == false) {
-            notificationRepository
-                .markNotificationSeen(notification.notificationID);
+          switch (notification.runtimeType) {
+            case AlbumInviteNotification:
+              notification as AlbumInviteNotification;
+              if (notification.responseSeen == false) {
+                RequestService.markAlbumInviteResponsetAsSeen(
+                    user.token, notification.notificationID);
+              }
           }
         }
         emit(state.copyWith(unseenGenericNoti: false));
@@ -222,11 +224,12 @@ class NotificationCubit extends Cubit<NotificationState> {
 
   void _albumInviteHandler(
       StreamOperation operation, AlbumInviteNotification invite) {
-    Map<String, AlbumInviteNotification> albumInviteCopy =
-        Map.from(state.albumInviteMap);
-
-    switch (operation) {
-      case StreamOperation.add:
+    switch (invite.status) {
+      // Manages the UI of the notifications - filtered for the those that need
+      // to see certain information.
+      case RequestStatus.pending:
+        Map<String, AlbumInviteNotification> albumInviteCopy =
+            Map.from(state.albumInviteMap);
         albumInviteCopy[invite.notificationID] = invite;
         emit(
           state.copyWith(
@@ -234,7 +237,40 @@ class NotificationCubit extends Cubit<NotificationState> {
             unseenAlbumInvites: !invite.notificationSeen,
           ),
         );
-      case StreamOperation.delete:
+
+      case RequestStatus.accepted:
+        // Sends the update to the owner of the album
+        // that someone has accepted the invite
+        if (user.id == invite.albumOwner) {
+          Map<String, Notification> allNotiCopy =
+              Map.from(state.allNotificationMap);
+          allNotiCopy.putIfAbsent(invite.notificationID, () => invite);
+          emit(
+            state.copyWith(
+              allNotificationMap: allNotiCopy,
+              unseenGenericNoti: !invite.responseSeen,
+            ),
+          );
+        }
+        // Sends the update to the guest of the album
+        // that they have accepted
+        if (user.id == invite.guestID) {
+          Map<String, AlbumInviteNotification> albumInviteCopy =
+              Map.from(state.albumInviteMap);
+          albumInviteCopy.update(
+            invite.notificationID,
+            (value) => value.copyWith(status: RequestStatus.accepted),
+          );
+          emit(
+            state.copyWith(
+              albumInviteMap: albumInviteCopy,
+              unseenAlbumInvites: !invite.notificationSeen,
+            ),
+          );
+        }
+      case RequestStatus.denied:
+        Map<String, AlbumInviteNotification> albumInviteCopy =
+            Map.from(state.albumInviteMap);
         albumInviteCopy
             .removeWhere((key, value) => key == invite.notificationID);
         emit(
@@ -243,32 +279,6 @@ class NotificationCubit extends Cubit<NotificationState> {
             unseenAlbumInvites: false,
           ),
         );
-      case StreamOperation.update:
-        albumInviteCopy[invite.notificationID] = invite;
-        emit(
-          state.copyWith(
-            albumInviteMap: albumInviteCopy,
-            unseenAlbumInvites: false,
-          ),
-        );
-    }
-  }
-
-  void _albumInviteResponseHandler(
-      StreamOperation operation, AlbumInviteResponseNotification response) {
-    Map<String, Notification> allNotiCopy = Map.from(state.albumInviteMap);
-    switch (operation) {
-      case StreamOperation.add:
-        allNotiCopy[response.notificationID] = response;
-        emit(state.copyWith(
-            allNotificationMap: allNotiCopy,
-            unseenGenericNoti: !response.notificationSeen));
-      case StreamOperation.update:
-        allNotiCopy[response.notificationID] = response;
-        emit(state.copyWith(
-            allNotificationMap: allNotiCopy,
-            unseenGenericNoti: !response.notificationSeen));
-      case StreamOperation.delete:
     }
   }
 }

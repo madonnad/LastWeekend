@@ -23,7 +23,7 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
             pageController: PageController(),
           ),
         ) {
-    checkGuestListChange();
+    //checkGuestListChange();
 
     // Set Internal Ranked Images
     setRankedImages();
@@ -42,14 +42,14 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
     });
   }
 
-  void checkGuestListChange() async {
-    emit(state.copyWith(loading: true));
+  // void checkGuestListChange() async {
+  //   emit(state.copyWith(loading: true));
 
-    Album album = Album.from(state.album);
-    album.guests = await dataRepository.updateAlbumsGuests(state.album.albumId);
+  //   Album album = Album.from(state.album);
+  //   album.guests = await dataRepository.updateAlbumsGuests(state.album.albumId);
 
-    emit(state.copyWith(album: album, loading: false));
-  }
+  //   emit(state.copyWith(album: album, loading: false));
+  // }
 
   void updateImageInAlbum(String imageID, img.Image image) {
     if (state.album.imageMap.containsKey(imageID)) {

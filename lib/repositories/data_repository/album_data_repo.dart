@@ -27,6 +27,14 @@ extension AlbumDataRepo on DataRepository {
     return albumMap;
   }
 
+  Future<Album> addAlbumByID(String albumID) async {
+    Album album = await AlbumService.getAlbumByID(user.token, albumID);
+
+    albumMap[album.albumId] = album;
+    _albumController.add((StreamOperation.add, album));
+    return album;
+  }
+
   // Initializer Functions
 
   Map<String, Image> getAlbumImages(String albumID) {
@@ -113,12 +121,44 @@ extension AlbumDataRepo on DataRepository {
     return albums;
   }
 
-  Future<List<Guest>> updateAlbumsGuests(String albumID) async {
-    List<Guest> fetchedGuests =
-        await AlbumService.updateGuestList(user.token, albumID);
+  // Future<List<Guest>> updateAlbumsGuests(String albumID) async {
+  //   List<Guest> fetchedGuests =
+  //       await AlbumService.updateGuestList(user.token, albumID);
 
-    albumMap[albumID]!.guests = fetchedGuests;
+  //   albumMap[albumID]!.guests = fetchedGuests;
 
-    return fetchedGuests;
+  //   return fetchedGuests;
+  // }
+
+  void _handleInviteResponse(AlbumInviteNotification notification) {
+    String albumID = notification.albumID;
+    String guestID = notification.guestID;
+
+    bool albumExists = albumMap.containsKey(albumID) ? true : false;
+
+    switch (notification.status) {
+      case RequestStatus.pending:
+        return;
+      case RequestStatus.accepted:
+        if (notification.guestID != user.id && albumExists) {
+          albumMap[albumID]!.guestMap[guestID]!.status = RequestStatus.accepted;
+          _albumController.add((StreamOperation.update, albumMap[albumID]!));
+          return;
+        }
+        if (notification.guestID == user.id) {
+          if (!albumExists) {
+            addAlbumByID(albumID);
+            return;
+          }
+          _albumController.add((StreamOperation.update, albumMap[albumID]!));
+          return;
+        }
+      case RequestStatus.denied:
+        if (notification.guestID != user.id && albumExists) {
+          albumMap[albumID]!.guestMap[guestID]!.status = RequestStatus.denied;
+          _albumController.add((StreamOperation.update, albumMap[albumID]!));
+          return;
+        }
+    }
   }
 }

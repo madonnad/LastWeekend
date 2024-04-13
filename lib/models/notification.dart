@@ -53,7 +53,11 @@ class AlbumInviteNotification extends Notification {
   final String albumOwner;
   final String ownerFirst;
   final String ownerLast;
+  final String guestID;
+  final String guestFirst;
+  final String guestLast;
   final RequestStatus status;
+  final bool responseSeen;
   final DateTime unlockedAt;
   const AlbumInviteNotification({
     required super.notificationID,
@@ -65,12 +69,19 @@ class AlbumInviteNotification extends Notification {
     required this.albumOwner,
     required this.ownerFirst,
     required this.ownerLast,
+    required this.guestID,
+    required this.guestFirst,
+    required this.guestLast,
+    required this.responseSeen,
     required this.status,
     required this.unlockedAt,
   });
 
-  String get ownerImg => "$goRepoDomain/image?id=$albumOwner";
+  String get ownerURL => "$goRepoDomain/image?id=$albumOwner";
+  String get guestURL => "$goRepoDomain/image?id=$guestID";
   String get timeUntil => TimeUntil.format(unlockedAt);
+  String get timeReceived => timeago.format(receivedDateTime,
+      locale: "en_short", clock: DateTime.now().toUtc());
 
   factory AlbumInviteNotification.fromMap(Map<String, dynamic> map) {
     RequestStatus status = RequestStatus.pending;
@@ -88,13 +99,17 @@ class AlbumInviteNotification extends Notification {
       notificationID: map['request_id'],
       receivedDateTime: DateTime.parse(map['received_at']),
       notificationMediaID: map['album_cover_id'],
-      notificationSeen: map['request_seen'],
+      notificationSeen: map['invite_seen'],
       albumID: map['album_id'],
       albumName: map['album_name'],
       albumOwner: map['album_owner'],
       ownerFirst: map['owner_first'],
       ownerLast: map['owner_last'],
+      guestID: map['guest_id'],
+      guestFirst: map['guest_first'],
+      guestLast: map['guest_last'],
       status: status,
+      responseSeen: map['response_seen'],
       unlockedAt: DateTime.parse(map['unlocked_at']),
     );
   }
@@ -111,90 +126,18 @@ class AlbumInviteNotification extends Notification {
       notificationID: notificationID ?? this.notificationID,
       receivedDateTime: receivedDateTime ?? this.receivedDateTime,
       notificationMediaID: notificationMediaID ?? this.notificationMediaID,
+      notificationSeen: notificationSeen ?? this.notificationSeen,
+      status: status ?? this.status,
       albumID: albumID,
       albumName: albumName,
       albumOwner: albumOwner,
       ownerFirst: ownerFirst,
       ownerLast: ownerLast,
-      unlockedAt: unlockedAt,
-      status: status ?? this.status,
-      notificationSeen: notificationSeen ?? this.notificationSeen,
-    );
-  }
-
-  @override
-  List<Object?> get props => [status, notificationSeen];
-}
-
-class AlbumInviteResponseNotification extends Notification {
-  final String albumID;
-  final String albumName;
-  final String guestID;
-  final String guestFirst;
-  final String guestLast;
-  final RequestStatus status;
-
-  const AlbumInviteResponseNotification({
-    required super.notificationID, // Request ID
-    required super.receivedDateTime, // Received At
-    required super.notificationMediaID, // AlbumCoverID
-    required super.notificationSeen, // Request Seen
-    required this.albumID, // Album ID
-    required this.albumName, // Album Name
-    required this.guestID, // Receiver ID
-    required this.guestFirst, // Receiver First Name
-    required this.guestLast, // Receiver Last Name
-    required this.status, // Request Status
-  });
-
-  String get senderURL => "$goRepoDomain/image?id=$guestID";
-  String get fullName => "$guestFirst $guestLast";
-  String get timeReceived =>
-      timeago.format(receivedDateTime, locale: "en_short");
-
-  factory AlbumInviteResponseNotification.fromMap(Map<String, dynamic> map) {
-    RequestStatus status = RequestStatus.pending;
-
-    if (map['status'] == 'accepted') {
-      status = RequestStatus.accepted;
-    }
-    if (map['status'] == 'denied') {
-      status = RequestStatus.denied;
-    }
-
-    return AlbumInviteResponseNotification(
-      notificationID: map['request_id'],
-      receivedDateTime: DateTime.parse(map['received_at']),
-      notificationMediaID: map['album_cover_id'],
-      notificationSeen: map['request_seen'],
-      albumID: map['album_id'],
-      albumName: map['album_name'],
-      guestID: map['guest_id'],
-      guestFirst: map['guest_first'],
-      guestLast: map['guest_last'],
-      status: status,
-    );
-  }
-
-  @override
-  AlbumInviteResponseNotification copyWith({
-    String? notificationID,
-    String? notificationMediaID,
-    bool? notificationSeen,
-    DateTime? receivedDateTime,
-    RequestStatus? status,
-  }) {
-    return AlbumInviteResponseNotification(
-      albumID: albumID,
-      albumName: albumName,
       guestID: guestID,
       guestFirst: guestFirst,
       guestLast: guestLast,
-      status: status ?? this.status,
-      notificationID: notificationID ?? this.notificationID,
-      notificationMediaID: notificationMediaID ?? this.notificationMediaID,
-      notificationSeen: notificationSeen ?? this.notificationSeen,
-      receivedDateTime: receivedDateTime ?? this.receivedDateTime,
+      responseSeen: responseSeen,
+      unlockedAt: unlockedAt,
     );
   }
 

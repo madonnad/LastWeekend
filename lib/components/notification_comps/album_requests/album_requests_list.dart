@@ -26,7 +26,7 @@ class AlbumRequestsList extends StatelessWidget {
                   switch (state.albumInviteList[index].status) {
                     case RequestStatus.pending:
                       return AlbumRequestItem(
-                        profileImage: state.albumInviteList[index].ownerImg,
+                        profileImage: state.albumInviteList[index].ownerURL,
                         albumCover: state.albumInviteList[index].imageReq,
                         firstName: state.albumInviteList[index].ownerFirst,
                         albumName: state.albumInviteList[index].albumName,
@@ -34,7 +34,7 @@ class AlbumRequestsList extends StatelessWidget {
                       );
                     case RequestStatus.accepted:
                       return AlbumRequestAcceptedItem(
-                        profileImage: state.albumInviteList[index].ownerImg,
+                        profileImage: state.albumInviteList[index].ownerURL,
                         albumCover: state.albumInviteList[index].imageReq,
                         firstName: state.albumInviteList[index].ownerFirst,
                         albumName: state.albumInviteList[index].albumName,

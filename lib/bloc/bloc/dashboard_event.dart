@@ -16,3 +16,9 @@ class AddAlbumToMap extends DashboardEvent {
 
   const AddAlbumToMap({required this.album});
 }
+
+class UpdateAlbumInMap extends DashboardEvent {
+  final Album album;
+
+  const UpdateAlbumInMap({required this.album});
+}

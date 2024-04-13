@@ -117,6 +117,29 @@ class AlbumService {
     return albums;
   }
 
+  static Future<Album> getAlbumByID(String token, String albumID) async {
+    Album album = Album.empty;
+    var url = Uri.http(domain, '/album', {'album_id': albumID});
+    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
+
+    final response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      final responseBody = response.body;
+
+      final jsonData = json.decode(responseBody);
+      if (jsonData == null) {
+        return album;
+      }
+
+      album = Album.fromMap(jsonData);
+
+      return album;
+    }
+    throw HttpException(
+        "Failed to get album by ID with status: ${response.statusCode}");
+  }
+
   static Future<List<Guest>> updateGuestList(
       String token, String albumID) async {
     List<Guest> guests = [];

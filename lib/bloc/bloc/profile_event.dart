@@ -31,6 +31,15 @@ class AddAlbumToMap extends ProfileEvent {
   List<Object?> get props => [album];
 }
 
+class UpdateAlbumInMap extends ProfileEvent {
+  final Album album;
+
+  const UpdateAlbumInMap({required this.album});
+
+  @override
+  List<Object?> get props => [album];
+}
+
 class FetchProfileAlbumCoverURL extends ProfileEvent {
   final int index;
 

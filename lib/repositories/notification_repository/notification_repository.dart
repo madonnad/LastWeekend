@@ -45,8 +45,6 @@ class NotificationRepository {
         _friendRequestHandler(notification as FriendRequestNotification);
       case AlbumInviteNotification:
         _ablumInviteHandler(notification as AlbumInviteNotification);
-      case AlbumInviteResponseNotification:
-        _allNotiHandler(notification);
     }
   }
 
@@ -61,13 +59,28 @@ class NotificationRepository {
               () => notification as FriendRequestNotification);
           _notificationController.add((StreamOperation.add, notification));
         case AlbumInviteNotification:
-          albumInviteMap.putIfAbsent(notification.notificationID,
-              () => notification as AlbumInviteNotification);
-          _notificationController.add((StreamOperation.add, notification));
-        case AlbumInviteResponseNotification:
-          allNotificationMap.putIfAbsent(notification.notificationID,
-              () => notification as AlbumInviteResponseNotification);
-          _notificationController.add((StreamOperation.add, notification));
+          AlbumInviteNotification noti =
+              notification as AlbumInviteNotification;
+          switch (noti.status) {
+            case RequestStatus.pending:
+              albumInviteMap.putIfAbsent(noti.notificationID, () => noti);
+              _notificationController.add((StreamOperation.add, noti));
+            case RequestStatus.accepted:
+              if (noti.guestID == user.id) {
+                albumInviteMap.putIfAbsent(noti.notificationID, () => noti);
+                _notificationController.add((StreamOperation.add, noti));
+              }
+              if (noti.albumOwner == user.id) {
+                allNotificationMap.putIfAbsent(noti.notificationID, () => noti);
+                _notificationController.add((StreamOperation.add, noti));
+              }
+            case RequestStatus.denied:
+              if (noti.guestID == user.id) {
+                albumInviteMap
+                    .removeWhere((key, value) => key == noti.notificationID);
+              }
+              _notificationController.add((StreamOperation.delete, noti));
+          }
       }
     }
   }

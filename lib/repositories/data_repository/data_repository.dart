@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:shared_photo/bloc/cubit/create_album_cubit.dart';
 import 'package:shared_photo/models/album.dart';
-import 'package:shared_photo/models/guest.dart';
 import 'package:shared_photo/models/image.dart';
 import 'package:shared_photo/models/comment.dart';
 import 'package:shared_photo/models/image_change.dart';
@@ -46,11 +45,12 @@ class DataRepository {
     _initalizeAlbums();
 
     notificationRepository.notificationStream.listen((event) {
-      StreamOperation operation = event.$1;
+      StreamOperation _ = event.$1;
       Notification notification = event.$2;
 
       switch (notification.runtimeType) {
         case AlbumInviteNotification:
+          _handleInviteResponse(notification as AlbumInviteNotification);
       }
     });
   }
