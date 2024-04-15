@@ -3,7 +3,9 @@ import 'package:shared_photo/utils/api_variables.dart';
 import 'package:shared_photo/utils/time_until.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-enum GenericNotificationType { likedPhoto, upvotePhoto, imageComment }
+enum EngageType { liked, upvoted }
+
+enum EngageOperation { add, remove }
 
 enum NotificationType { generic, friendRequest, albumInvite }
 
@@ -210,4 +212,98 @@ class FriendRequestNotification extends Notification {
 
   @override
   List<Object?> get props => [status, notificationSeen];
+}
+
+class EngagementNotification extends Notification {
+  final String albumID;
+  final String albumName;
+  final String receiverID;
+  final String notifierID;
+  final String notifierFirst;
+  final String notifierLast;
+  final EngageType notificationType;
+  final EngageOperation operation;
+  final int newCount;
+
+  const EngagementNotification({
+    required super.notificationID,
+    required super.receivedDateTime,
+    required super.notificationMediaID,
+    required super.notificationSeen,
+    required this.albumID,
+    required this.albumName,
+    required this.receiverID,
+    required this.notifierID,
+    required this.notifierFirst,
+    required this.notifierLast,
+    required this.notificationType,
+    required this.operation,
+    required this.newCount,
+  });
+
+  factory EngagementNotification.fromMap(
+      Map<String, dynamic> map, String operation) {
+    EngageType type = EngageType.liked;
+    EngageOperation op =
+        operation == 'ADD' ? EngageOperation.add : EngageOperation.remove;
+
+    if (map['notification_type'] == 'like') {
+      type = EngageType.liked;
+    }
+    if (map['notification_type'] == 'upvote') {
+      type = EngageType.upvoted;
+    }
+
+    return EngagementNotification(
+      notificationID: map['notification_id'],
+      receivedDateTime: DateTime.parse(map['received_at']),
+      notificationMediaID: map['image_id'],
+      notificationSeen: map['notification_seen'],
+      albumID: map['album_id'],
+      albumName: map['album_name'],
+      receiverID: map['receiver_id'],
+      notifierID: map['notifier_id'],
+      notifierFirst: map['notifier_first'],
+      notifierLast: map['notifier_last'],
+      notificationType: type,
+      operation: op,
+      newCount: map['new_count'],
+    );
+  }
+
+  @override
+  EngagementNotification copyWith({
+    String? notificationID,
+    String? notificationMediaID,
+    bool? notificationSeen,
+    DateTime? receivedDateTime,
+    EngageType? notificationType,
+    int? newCount,
+  }) {
+    return EngagementNotification(
+      notificationID: notificationID ?? this.notificationID,
+      receivedDateTime: receivedDateTime ?? this.receivedDateTime,
+      notificationMediaID: notificationMediaID ?? this.notificationMediaID,
+      notificationSeen: notificationSeen ?? this.notificationSeen,
+      albumID: albumID,
+      albumName: albumName,
+      receiverID: receiverID,
+      notifierID: notifierID,
+      notifierFirst: notifierFirst,
+      notifierLast: notifierLast,
+      notificationType: notificationType ?? this.notificationType,
+      operation: operation,
+      newCount: newCount ?? this.newCount,
+    );
+  }
+
+  @override
+  List<Object?> get props => [
+        notificationID,
+        receivedDateTime,
+        notificationMediaID,
+        notificationSeen,
+        notificationType,
+        newCount,
+      ];
 }

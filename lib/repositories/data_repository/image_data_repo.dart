@@ -98,4 +98,50 @@ extension ImageDataRepo on DataRepository {
     userUpvoted = false;
     return (userUpvoted, newCount);
   }
+
+  void _handleImageEngagement(EngagementNotification notification) {
+    switch (notification.notificationType) {
+      case EngageType.liked:
+        // TODO: Handle this case.
+        return;
+      case EngageType.upvoted:
+        String imageID = notification.notificationMediaID;
+        String albumID = notification.albumID;
+        EngageOperation operation = notification.operation;
+
+        if (albumMap[albumID]?.imageMap[imageID] == null) return;
+
+        Image image = albumMap[albumID]!.imageMap[imageID]!;
+
+        switch (operation) {
+          case EngageOperation.add:
+            // Add the upvote to the upvote count
+            image.upvotes++;
+
+            // Check if the person who upvote is in the list - if not then add
+            if (image.upvotesUID
+                .any((element) => element.uid != notification.notifierID)) {
+              String uid = notification.notifierID;
+              String firstName = notification.notifierFirst;
+              String lastName = notification.notifierLast;
+              Engager engager =
+                  Engager(uid: uid, firstName: firstName, lastName: lastName);
+
+              image.upvotesUID.add(engager);
+            }
+
+            // Add the image back to the global cache
+            albumMap[albumID]?.imageMap[imageID] = image;
+
+            // Preapre the ImageChange class for the image stream to update
+            ImageChange imageChange =
+                ImageChange(albumID: albumID, imageID: imageID, image: image);
+            _imageController.add(imageChange);
+
+            return;
+          case EngageOperation.remove:
+          // TODO: Handle this case.
+        }
+    }
+  }
 }

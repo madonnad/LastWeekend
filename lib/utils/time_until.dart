@@ -13,6 +13,14 @@ class TimeUntil {
     final num months = days / 30;
     final num years = days / 365;
 
+    print("seconds $seconds");
+    print("minutes $minutes");
+    print("hours $hours");
+    print("days $days");
+    print("weeks $weeks");
+    print("months $months");
+    print("years $years");
+
     if (seconds < 60) {
       return "less than 1 minute";
     } else if (minutes < 60) {
@@ -21,7 +29,7 @@ class TimeUntil {
       return "${hours.floor()} hours";
     } else if (days < 7) {
       return "${days.floor()} days";
-    } else if (weeks < 4) {
+    } else if (weeks < 5) {
       return "${weeks.floor()} weeks";
     } else if (months > 1 && months < 2) {
       return "${months.floor()} month";

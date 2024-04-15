@@ -44,7 +44,9 @@ class NotificationRepository {
       case FriendRequestNotification:
         _friendRequestHandler(notification as FriendRequestNotification);
       case AlbumInviteNotification:
-        _ablumInviteHandler(notification as AlbumInviteNotification);
+        _albumInviteHandler(notification as AlbumInviteNotification);
+      case EngagementNotification:
+        _engagementHandler(notification as EngagementNotification);
     }
   }
 

@@ -50,6 +50,7 @@ class RealtimeRepository {
     }
 
     String type = jsonData["type"];
+
     switch (type) {
       case "friend-request":
         wsFriendRequestMessageHandler(
@@ -58,15 +59,21 @@ class RealtimeRepository {
       case "album-invite":
         wsAlbumInviteMessageHandler(jsonData['operation'], jsonData['payload']);
         return;
-      case "general":
+      case "upvote":
+        wsEngagementMessageHandler(jsonData['operation'], jsonData['payload']);
         return;
       default:
         return;
     }
   }
 
+  void wsEngagementMessageHandler(String operation, dynamic payload) {
+    EngagementNotification notification =
+        EngagementNotification.fromMap(payload, operation);
+    _realtimeNotificationController.add(notification);
+  }
+
   void wsAlbumInviteMessageHandler(String operation, dynamic payload) {
-    print(payload);
     AlbumInviteNotification notification =
         AlbumInviteNotification.fromMap(payload);
     _realtimeNotificationController.add(notification);

@@ -87,7 +87,7 @@ class EngagementService {
     try {
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
-        int count = jsonData["count"];
+        int count = jsonData;
         return count;
       }
       print('Request failed with status: ${response.statusCode}');

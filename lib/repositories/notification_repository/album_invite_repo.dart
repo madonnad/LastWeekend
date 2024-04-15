@@ -1,7 +1,7 @@
 part of 'notification_repository.dart';
 
 extension AlbumInviteRepo on NotificationRepository {
-  void _ablumInviteHandler(AlbumInviteNotification invite) {
+  void _albumInviteHandler(AlbumInviteNotification invite) {
     switch (invite.status) {
       case RequestStatus.pending:
         if (invite.guestID == user.id) {
