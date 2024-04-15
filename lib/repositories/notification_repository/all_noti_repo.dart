@@ -1,6 +1,19 @@
 part of 'notification_repository.dart';
 
 extension AllNotiRepo on NotificationRepository {
+  void _engagementHandler(EngagementNotification notification) {
+    if (user.id != notification.receiverID) return;
+    if (notification.operation == EngageOperation.remove) return;
+
+    switch (notification.notificationType) {
+      case EngageType.liked:
+      case EngageType.upvoted:
+        allNotificationMap[notification.notificationID] = notification;
+        //TODO: Handle within the Notification Cubit
+        _notificationController.add((StreamOperation.add, notification)); 
+    }
+  }
+
   Future<bool> markNotificationSeen(String notificationID) async {
     // bool success = await NotificationService.markNotificationSeen(
     //     user.token, notificationID);
