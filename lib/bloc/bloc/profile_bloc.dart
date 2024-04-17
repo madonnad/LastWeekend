@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/friend.dart';
 import 'package:shared_photo/models/image.dart';
+import 'package:shared_photo/models/image_change.dart';
 import 'package:shared_photo/models/notification.dart';
 import 'package:shared_photo/models/user.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
@@ -58,7 +59,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           albumMap[key] = album;
           emit(state.copyWith(myAlbumsMap: albumMap));
         }
-      },  
+      },
     );
 
     on<UpdateAlbumInMap>((event, emit) {
@@ -68,6 +69,18 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       String key = album.albumId;
 
       albumMap.update(key, (value) => album, ifAbsent: () => album);
+      emit(state.copyWith(myAlbumsMap: albumMap));
+    });
+
+    on<UpdateImageInAlbum>((event, emit) {
+      Map<String, Album> albumMap = Map.from(state.myAlbumsMap);
+
+      String albumID = event.imageChange.albumID;
+      String imageID = event.imageChange.imageID;
+      Image image = event.imageChange.image;
+
+      albumMap[albumID]?.imageMap.update(imageID, (value) => image);
+
       emit(state.copyWith(myAlbumsMap: albumMap));
     });
 
@@ -102,7 +115,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       }
     });
 
-    dataRepository.imageStream.listen((event) {});
+    dataRepository.imageStream.listen((event) {
+      add(UpdateImageInAlbum(imageChange: event));
+    });
 
     add(InitializeProfile());
   }

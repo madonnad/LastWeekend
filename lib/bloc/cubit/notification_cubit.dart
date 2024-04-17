@@ -31,6 +31,8 @@ class NotificationCubit extends Cubit<NotificationState> {
         case AlbumInviteNotification:
           _albumInviteHandler(
               operation, notification as AlbumInviteNotification);
+        case EngagementNotification:
+          _engagementHandler(operation, notification as EngagementNotification);
       }
     });
   }
@@ -279,6 +281,20 @@ class NotificationCubit extends Cubit<NotificationState> {
             unseenAlbumInvites: false,
           ),
         );
+    }
+  }
+
+  void _engagementHandler(
+      StreamOperation operation, EngagementNotification notification) {
+    switch (operation) {
+      case StreamOperation.add:
+        Map<String, Notification> notificationMap = state.allNotificationMap;
+        notificationMap.putIfAbsent(notification.notificationID, () => notification);
+        emit(state.copyWith(allNotificationMap: notificationMap));
+      case StreamOperation.update:
+      // TODO: Handle this case.
+      case StreamOperation.delete:
+      // TODO: Handle this case.
     }
   }
 }
