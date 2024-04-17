@@ -13,6 +13,11 @@ class AddAlbumsToFeed extends FeedEvent {
   const AddAlbumsToFeed({required this.albums});
 }
 
+class UpdateAlbumImageInFeed extends FeedEvent {
+  final ImageChange imageChange;
+  const UpdateAlbumImageInFeed({required this.imageChange});
+}
+
 class FeedDataRequested extends FeedEvent {
   final int index;
   const FeedDataRequested({

@@ -49,9 +49,10 @@ class DataRepository {
     _initalizeAlbums();
 
     realtimeRepository.realtimeNotificationStream.listen((event) {
+      Notification notification = event;
       switch (event.runtimeType) {
         case EngagementNotification:
-          return;
+          _handleImageEngagement(notification as EngagementNotification);
       }
     });
 
@@ -62,8 +63,6 @@ class DataRepository {
       switch (notification.runtimeType) {
         case AlbumInviteNotification:
           _handleInviteResponse(notification as AlbumInviteNotification);
-        case EngagementNotification:
-          _handleImageEngagement(notification as EngagementNotification);
       }
     });
   }
