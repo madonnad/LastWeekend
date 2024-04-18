@@ -100,7 +100,6 @@ extension ImageDataRepo on DataRepository {
   }
 
   void _handleImageEngagement(EngagementNotification notification) {
-    print("hello");
     switch (notification.notificationType) {
       case EngageType.liked:
         // TODO: Handle this case.
@@ -117,7 +116,7 @@ extension ImageDataRepo on DataRepository {
         switch (operation) {
           case EngageOperation.add:
             // Add the upvote to the upvote count
-            image.upvotes++;
+            image.upvotes = notification.newCount;
 
             // Check if the person who upvote is in the list - if not then add
             if (image.upvotesUID

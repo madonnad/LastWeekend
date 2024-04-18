@@ -10,6 +10,7 @@ import 'package:shared_photo/components/album_comp/unlock_comps/album_unlock_tab
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/arguments.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
+import 'package:shared_photo/repositories/realtime_repository.dart';
 
 class AlbumFrame extends StatelessWidget {
   final Arguments arguments;
@@ -24,6 +25,7 @@ class AlbumFrame extends StatelessWidget {
       create: (context) => AlbumFrameCubit(
         album: arguments.album,
         dataRepository: context.read<DataRepository>(),
+        realtimeRepository: context.read<RealtimeRepository>(),
       ),
       child: Scaffold(
         backgroundColor: Colors.black,

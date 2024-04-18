@@ -8,6 +8,7 @@ import 'package:web_socket_channel/io.dart';
 class RealtimeRepository {
   User user;
   late IOWebSocketChannel _webSocketChannel;
+  late IOWebSocketChannel _albumWebSocketChannel;
 
   // Stream Controllers
   final _realtimeNotificationController =
@@ -43,6 +44,30 @@ class RealtimeRepository {
     return connection;
   }
 
+  IOWebSocketChannel _albumWebSocketConnection(String albumID) {
+    final Map<String, String> headers = {
+      'Authorization': 'Bearer ${user.token}'
+    };
+    final wsURL = Uri.parse('ws://$domain/ws/album?channel=$albumID');
+    var connection = IOWebSocketChannel.connect(wsURL, headers: headers);
+
+    if (connection.closeCode == null) {
+      print("Album $albumID WebSocket Connection Opened");
+    }
+
+    connection.stream.listen(
+      (event) {
+        handleWebSocketMessage(event);
+        connection.sink.add("received");
+      },
+      onDone: () {
+        print("Album WebSocket Connection Closed");
+      },
+    );
+
+    return connection;
+  }
+
   void handleWebSocketMessage(String message) {
     final jsonData = json.decode(message);
     if (jsonData == null) {
@@ -60,7 +85,6 @@ class RealtimeRepository {
         wsAlbumInviteMessageHandler(jsonData['operation'], jsonData['payload']);
         return;
       case "upvote":
-        print("realtime");
         wsEngagementMessageHandler(jsonData['operation'], jsonData['payload']);
         return;
       default:
@@ -87,8 +111,19 @@ class RealtimeRepository {
     _realtimeNotificationController.add(notification);
   }
 
+  void openAlbumChannelWebSocket(String albumID) {
+    _albumWebSocketChannel = _albumWebSocketConnection(albumID);
+  }
+
   void rebindWebSocket() {
     _webSocketChannel = _webSocketConnection();
+  }
+
+  void closeAlbumChannelWebSocket() {
+    if (_albumWebSocketChannel.closeCode == null) {
+      print('Closing Album WebSocket Normally');
+      _albumWebSocketChannel.sink.close(1000);
+    }
   }
 
   void closeWebSocket() {
