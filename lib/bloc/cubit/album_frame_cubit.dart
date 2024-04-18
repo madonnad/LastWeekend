@@ -26,14 +26,11 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
             pageController: PageController(),
           ),
         ) {
+    // Fetch Album to Initalize
+    initializeAlbum();
+
     realtimeRepository.openAlbumChannelWebSocket(album.albumId);
     //checkGuestListChange();
-
-    // Set Internal Ranked Images
-    setRankedImages();
-    if (state.images.isNotEmpty) {
-      emit(state.copyWith(selectedImage: state.images[0]));
-    }
 
     imageStreamSubscription = dataRepository.imageStream.listen((event) {
       img.Image newImage = event.image;
@@ -46,14 +43,29 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
     });
   }
 
-  // void checkGuestListChange() async {
-  //   emit(state.copyWith(loading: true));
+  /*void checkGuestListChange() async {
 
-  //   Album album = Album.from(state.album);
-  //   album.guests = await dataRepository.updateAlbumsGuests(state.album.albumId);
+    emit(state.copyWith(loading: true));
 
-  //   emit(state.copyWith(album: album, loading: false));
-  // }
+    Album album = Album.from(state.album);
+    album.guests = await dataRepository.updateAlbumsGuests(state.album.albumId);
+
+    emit(state.copyWith(album: album, loading: false));
+  }*/
+
+  void initializeAlbum() async {
+    emit(state.copyWith(loading: true));
+
+    Album updatedAlbum = await dataRepository.getAlbumByID(album.albumId);
+
+    emit(state.copyWith(album: updatedAlbum, loading: false));
+
+    // Set Internal Ranked Images
+    setRankedImages();
+    if (state.images.isNotEmpty) {
+      emit(state.copyWith(selectedImage: state.images[0]));
+    }
+  }
 
   void updateImageInAlbum(String imageID, img.Image image) {
     if (state.album.imageMap.containsKey(imageID)) {

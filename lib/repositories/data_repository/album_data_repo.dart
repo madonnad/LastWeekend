@@ -27,7 +27,7 @@ extension AlbumDataRepo on DataRepository {
     return albumMap;
   }
 
-  Future<Album> addAlbumByID(String albumID) async {
+  Future<Album> getAlbumByID(String albumID) async {
     Album album = await AlbumService.getAlbumByID(user.token, albumID);
 
     albumMap[album.albumId] = album;
@@ -147,7 +147,7 @@ extension AlbumDataRepo on DataRepository {
         }
         if (notification.guestID == user.id) {
           if (!albumExists) {
-            addAlbumByID(albumID);
+            getAlbumByID(albumID);
             return;
           }
           _albumController.add((StreamOperation.update, albumMap[albumID]!));
