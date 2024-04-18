@@ -6,16 +6,19 @@ import 'package:flutter/material.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/image.dart' as img;
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
+import 'package:shared_photo/repositories/realtime_repository.dart';
 
 part 'album_frame_state.dart';
 
 class AlbumFrameCubit extends Cubit<AlbumFrameState> {
+  RealtimeRepository realtimeRepository;
   DataRepository dataRepository;
   Album album;
   late StreamSubscription imageStreamSubscription;
   AlbumFrameCubit({
     required this.album,
     required this.dataRepository,
+    required this.realtimeRepository,
   }) : super(
           AlbumFrameState(
             album: album,
@@ -23,6 +26,7 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
             pageController: PageController(),
           ),
         ) {
+    realtimeRepository.openAlbumChannelWebSocket(album.albumId);
     //checkGuestListChange();
 
     // Set Internal Ranked Images
@@ -138,6 +142,7 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
 
   @override
   Future<void> close() {
+    realtimeRepository.closeAlbumChannelWebSocket();
     imageStreamSubscription.cancel();
     return super.close();
   }
