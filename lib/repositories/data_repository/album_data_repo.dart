@@ -37,7 +37,20 @@ extension AlbumDataRepo on DataRepository {
 
   // Initializer Functions
 
-  Map<String, Image> getAlbumImages(String albumID) {
+  Future<Map<String, Image>> getAlbumImages(String albumID) async {
+    List<Image> imageList =
+        await ImageService.getAlbumImages(user.token, albumID);
+
+    Map<String, Image> imageMap = {};
+
+    for (Image image in imageList) {
+      imageMap.putIfAbsent(image.imageId, () => image);
+    }
+
+    if (albumMap[albumID] == null) return imageMap;
+
+    albumMap[albumID]!.imageMap = imageMap;
+
     if (albumMap.containsKey(albumID) &&
         albumMap[albumID]!.imageMap.isNotEmpty) {
       return albumMap[albumID]!.imageMap;

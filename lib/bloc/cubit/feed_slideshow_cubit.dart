@@ -13,6 +13,7 @@ class FeedSlideshowCubit extends Cubit<FeedSlideshowState> {
   final Album album;
   final DataRepository dataRepository;
   late StreamSubscription imageStreamSubscription;
+  late Timer _timer;
 
   FeedSlideshowCubit({required this.album, required this.dataRepository})
       : super(
@@ -23,22 +24,11 @@ class FeedSlideshowCubit extends Cubit<FeedSlideshowState> {
             imageOwnerName: album.rankedImages[0].fullName,
           ),
         ) {
-    Map<String, img.Image> images =
-        dataRepository.getAlbumImages(album.albumId);
-    album.imageMap = images;
+    setAlbumImages();
 
-    emit(state.copyWith(album: album));
-
-    imageStreamSubscription = dataRepository.imageStream.listen((event) {
-      img.Image newImage = event.image;
-      String albumID = event.albumID;
-      String imageID = event.imageID;
-
-      if (album.albumId == albumID) {
-        updateImageInAlbum(imageID, newImage);
-      }
+    _timer = Timer.periodic(const Duration(seconds: 30), (timer) {
+      setAlbumImages();
     });
-    setTopThreeImages();
   }
 
   void updateImageInAlbum(String imageID, img.Image image) {
@@ -48,8 +38,19 @@ class FeedSlideshowCubit extends Cubit<FeedSlideshowState> {
       newImageMap[imageID] = image;
       album.imageMap = newImageMap;
       emit(state.copyWith(album: album));
+
       setTopThreeImages();
     }
+  }
+
+  Future<void> setAlbumImages() async {
+    Map<String, img.Image> images =
+        await dataRepository.getAlbumImages(album.albumId);
+    album.imageMap = images;
+
+    emit(state.copyWith(album: album));
+
+    setTopThreeImages();
   }
 
   void setTopThreeImages() {
@@ -91,7 +92,7 @@ class FeedSlideshowCubit extends Cubit<FeedSlideshowState> {
 
   @override
   Future<void> close() {
-    imageStreamSubscription.cancel();
+    _timer.cancel();
     return super.close();
   }
 }
