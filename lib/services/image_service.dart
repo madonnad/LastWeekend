@@ -35,6 +35,36 @@ class ImageService {
     return images;
   }
 
+  static Future<List<Image>> getAlbumImages(
+      String token, String albumID) async {
+    final List<Image> images = [];
+
+    var url = Uri.http(domain, '/album/images', {'album_id': albumID});
+    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
+
+    final response = await http.get(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      final responseBody = response.body;
+
+      final jsonData = json.decode(responseBody);
+      if (jsonData == null) {
+        return images;
+      }
+
+      for (var item in jsonData) {
+        Image image = Image.fromMap(item);
+        images.add(image);
+      }
+      //print(images);
+      return images;
+    }
+
+    print('Request failed with status: ${response.statusCode}');
+    print('Response body: #${response.body}');
+    return images;
+  }
+
   static Future<bool> postAlbumCoverImage(
       //Used to be uploadByImageId
       String token,
