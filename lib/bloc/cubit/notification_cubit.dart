@@ -289,8 +289,6 @@ class NotificationCubit extends Cubit<NotificationState> {
       StreamOperation operation, ConsolidatedNotification notification) {
     switch (operation) {
       case StreamOperation.add:
-        print('engagement handler: ${notification.notificationID}');
-
         bool unseenNoti = notification.notificationMap.values
             .any((element) => element.notificationSeen == false);
 
