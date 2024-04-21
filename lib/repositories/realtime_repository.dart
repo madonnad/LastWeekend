@@ -96,6 +96,7 @@ class RealtimeRepository {
     EngagementNotification notification =
         EngagementNotification.fromMap(payload, operation);
     _realtimeNotificationController.add(notification);
+    return;
   }
 
   void wsAlbumInviteMessageHandler(String operation, dynamic payload) {

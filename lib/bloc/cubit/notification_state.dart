@@ -55,7 +55,8 @@ class NotificationState extends Equatable {
       List.from(albumInviteMap.values)
         ..sort((a, b) => b.status.val.compareTo(a.status.val));
 
-  List<Notification> get allNotifications => allNotificationMap.values.toList();
+  List<Notification> get allNotifications => allNotificationMap.values.toList()
+    ..sort((a, b) => b.receivedDateTime.compareTo(a.receivedDateTime));
 
   bool tabShowNotification(int index) {
     switch (index) {
