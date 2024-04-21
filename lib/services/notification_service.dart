@@ -24,6 +24,8 @@ class NotificationService {
       List<dynamic> albumRequestResponseList =
           jsonData['album_request_responses'] ?? [];
       List<dynamic> friendRequestList = jsonData['friend_requests'] ?? [];
+      List<dynamic> engagementNotifications =
+          jsonData['engagement_notification'] ?? [];
 
       for (var item in friendRequestList) {
         notificationList.add(FriendRequestNotification.fromMap(item));
@@ -31,10 +33,12 @@ class NotificationService {
       for (var item in albumInviteList) {
         notificationList.add(AlbumInviteNotification.fromMap(item));
       }
-
       for (var item in albumRequestResponseList) {
         //print(item.toString());
         notificationList.add(AlbumInviteNotification.fromMap(item));
+      }
+      for (var item in engagementNotifications) {
+        notificationList.add(EngagementNotification.fromMap(item, "ADD"));
       }
 
       return notificationList;

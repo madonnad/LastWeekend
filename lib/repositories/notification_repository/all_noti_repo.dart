@@ -11,42 +11,32 @@ extension AllNotiRepo on NotificationRepository {
       consolNoti =
           allNotificationMap[notification.mapKey] as ConsolidatedNotification;
 
-      DateTime localNotiDate = consolNoti.latestDate.toLocal();
-      DateTime now = DateTime.now();
+      Map<String, EngagementNotification> consolNotiMap =
+          Map.from(consolNoti.notificationMap);
 
-      DateTime notiSimpleDate =
-          DateTime(localNotiDate.year, localNotiDate.month, localNotiDate.day);
-      DateTime today = DateTime(now.year, now.month, now.day);
+      DateTime latestDate = consolNoti.latestDate;
 
-      bool receivedToday = today.isAtSameMomentAs(notiSimpleDate);
-
-      if (receivedToday) {
-        Map<String, EngagementNotification> consolNotiMap =
-            Map.from(consolNoti.notificationMap);
-
-        DateTime latestDate = consolNoti.latestDate;
-
-        if (latestDate.isBefore(notification.receivedDateTime)) {
-          latestDate = notification.receivedDateTime;
-        }
-
-        consolNotiMap.putIfAbsent(
-          notification.notificationID,
-          () => notification,
-        );
-
-        consolNoti = consolNoti.copyWith(
-          receivedDateTime: latestDate,
-          latestDate: latestDate,
-          notificationMap: consolNotiMap,
-          notificationSeen: notification.notificationSeen,
-        );
-
-        allNotificationMap[notification.mapKey] = consolNoti;
-        _notificationController.add((StreamOperation.add, consolNoti));
-        return;
+      if (latestDate.isBefore(notification.receivedDateTime)) {
+        latestDate = notification.receivedDateTime;
       }
+
+      consolNotiMap.putIfAbsent(
+        notification.notificationID,
+        () => notification,
+      );
+
+      consolNoti = consolNoti.copyWith(
+        receivedDateTime: latestDate,
+        latestDate: latestDate,
+        notificationMap: consolNotiMap,
+        notificationSeen: notification.notificationSeen,
+      );
+
+      allNotificationMap[notification.mapKey] = consolNoti;
+      _notificationController.add((StreamOperation.add, consolNoti));
+      return;
     }
+
     Map<String, EngagementNotification> consolNotiMap = {};
     consolNotiMap[notification.notificationID] = notification;
 

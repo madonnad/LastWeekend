@@ -83,6 +83,9 @@ class NotificationRepository {
               }
               _notificationController.add((StreamOperation.delete, noti));
           }
+        case EngagementNotification:
+          EngagementNotification noti = notification as EngagementNotification;
+          _engagementHandler(noti);
       }
     }
   }
