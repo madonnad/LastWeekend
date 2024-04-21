@@ -31,8 +31,9 @@ class NotificationCubit extends Cubit<NotificationState> {
         case AlbumInviteNotification:
           _albumInviteHandler(
               operation, notification as AlbumInviteNotification);
-        case EngagementNotification:
-          _engagementHandler(operation, notification as EngagementNotification);
+        case ConsolidatedNotification:
+          _engagementHandler(
+              operation, notification as ConsolidatedNotification);
       }
     });
   }
@@ -285,12 +286,25 @@ class NotificationCubit extends Cubit<NotificationState> {
   }
 
   void _engagementHandler(
-      StreamOperation operation, EngagementNotification notification) {
+      StreamOperation operation, ConsolidatedNotification notification) {
     switch (operation) {
       case StreamOperation.add:
-        Map<String, Notification> notificationMap = state.allNotificationMap;
-        notificationMap.putIfAbsent(notification.notificationID, () => notification);
-        emit(state.copyWith(allNotificationMap: notificationMap));
+        print('engagement handler: ${notification.notificationID}');
+
+        bool unseenNoti = notification.notificationMap.values
+            .any((element) => element.notificationSeen == false);
+
+        Map<String, Notification> notiMap = state.allNotificationMap;
+        notiMap.update(
+          notification.mapKey,
+          (value) => notification,
+          ifAbsent: () => notification,
+        );
+        emit(state.copyWith(
+          allNotificationMap: notiMap,
+          unseenGenericNoti: unseenNoti,
+        ));
+
       case StreamOperation.update:
       // TODO: Handle this case.
       case StreamOperation.delete:

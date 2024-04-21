@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:shared_photo/utils/api_variables.dart';
 import 'package:shared_photo/utils/time_until.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -297,6 +298,20 @@ class EngagementNotification extends Notification {
     );
   }
 
+  String get mapKey {
+    String day = receivedDateTime.day.toString();
+    String month = receivedDateTime.month.toString();
+    String year = receivedDateTime.year.toString();
+
+    return "$day$month$year$notifierID";
+  }
+
+  String get notifierURL {
+    String requestUrl = "$goRepoDomain/image?id=$notifierID";
+
+    return requestUrl;
+  }
+
   @override
   List<Object?> get props => [
         notificationID,
@@ -306,4 +321,137 @@ class EngagementNotification extends Notification {
         notificationType,
         newCount,
       ];
+}
+
+class ConsolidatedNotification extends Notification {
+  final String notifierID;
+  final String notifierFirst;
+  final String notifierLast;
+  final Map<String, EngagementNotification> notificationMap;
+  final DateTime latestDate;
+
+  const ConsolidatedNotification({
+    required super.notificationID,
+    required super.receivedDateTime,
+    required super.notificationMediaID,
+    required super.notificationSeen,
+    required this.notifierID,
+    required this.notifierFirst,
+    required this.notifierLast,
+    required this.notificationMap,
+    required this.latestDate,
+  });
+
+  @override
+  ConsolidatedNotification copyWith({
+    String? notificationID,
+    DateTime? receivedDateTime,
+    String? notificationMediaID,
+    bool? notificationSeen,
+    Map<String, EngagementNotification>? notificationMap,
+    DateTime? latestDate,
+  }) {
+    return ConsolidatedNotification(
+      notificationID: notificationID ?? this.notificationID,
+      receivedDateTime: receivedDateTime ?? this.receivedDateTime,
+      notificationMediaID: notificationMediaID ?? this.notificationMediaID,
+      notificationSeen: notificationSeen ?? this.notificationSeen,
+      notificationMap: notificationMap ?? this.notificationMap,
+      latestDate: latestDate ?? this.latestDate,
+      notifierID: notifierID,
+      notifierFirst: notifierFirst,
+      notifierLast: notifierLast,
+    );
+  }
+
+  String get notificationText {
+    bool upvotesPresent = notificationMap.values
+            .where((element) => element.notificationType == EngageType.upvoted)
+            .isNotEmpty
+        ? true
+        : false;
+    bool likesPresent = notificationMap.values
+            .where((element) => element.notificationType == EngageType.liked)
+            .isNotEmpty
+        ? true
+        : false;
+
+    if (upvotesPresent && likesPresent) {
+      return "$upvoteText and $likeText";
+    } else if (upvotesPresent) {
+      return upvoteText;
+    } else if (likesPresent) {
+      return likeText;
+    } else {
+      return "sent you a notification!";
+    }
+  }
+
+  String get upvoteText {
+    int upvoteCount = notificationMap.values
+        .where((element) => element.notificationType == EngageType.upvoted)
+        .length;
+    if (upvoteCount == 0) {
+      return "";
+    } else if (upvoteCount == 1) {
+      return "upvoted an image";
+    } else {
+      return "upvoted $upvoteCount images";
+    }
+  }
+
+  String get likeText {
+    int likeCount = notificationMap.values
+        .where((element) => element.notificationType == EngageType.liked)
+        .length;
+    if (likeCount == 0) {
+      return "";
+    } else if (likeCount == 1) {
+      return "liked an image";
+    } else {
+      return "liked $likeCount images";
+    }
+  }
+
+  String get mapKey {
+    String day = receivedDateTime.day.toString();
+    String month = receivedDateTime.month.toString();
+    String year = receivedDateTime.year.toString();
+
+    return "$day$month$year$notifierID";
+  }
+
+  String get fullNotifierName {
+    return "$notifierFirst $notifierLast";
+  }
+
+  String get notifierURL {
+    String requestUrl = "$goRepoDomain/image?id=$notifierID";
+
+    return requestUrl;
+  }
+
+  String get timeReceived => timeago.format(
+        latestDate,
+        locale: "en_short",
+        clock: DateTime.now().toUtc(),
+      );
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ConsolidatedNotification &&
+          runtimeType == other.runtimeType &&
+          latestDate == other.latestDate &&
+          receivedDateTime == other.receivedDateTime &&
+          mapEquals(notificationMap, other.notificationMap);
+
+  @override
+  int get hashCode =>
+      latestDate.hashCode ^
+      receivedDateTime.hashCode ^
+      notificationMap.hashCode;
+
+  @override
+  List<Object?> get props => [notificationMap];
 }
