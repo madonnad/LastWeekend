@@ -26,9 +26,15 @@ class FeedSlideshowCubit extends Cubit<FeedSlideshowState> {
         ) {
     setAlbumImages();
 
-    _timer = Timer.periodic(const Duration(seconds: 30), (timer) {
-      setAlbumImages();
+    imageStreamSubscription = dataRepository.imageStream.listen((event) {
+      if (event.albumID == album.albumId) {
+        updateImageInAlbum(event.imageID, event.image);
+      }
     });
+
+    // _timer = Timer.periodic(const Duration(seconds: 30), (timer) {
+    //   setAlbumImages();
+    // });
   }
 
   void updateImageInAlbum(String imageID, img.Image image) {
@@ -93,6 +99,7 @@ class FeedSlideshowCubit extends Cubit<FeedSlideshowState> {
   @override
   Future<void> close() {
     _timer.cancel();
+    imageStreamSubscription.cancel();
     return super.close();
   }
 }
