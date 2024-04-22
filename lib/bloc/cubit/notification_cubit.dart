@@ -4,6 +4,7 @@ import 'package:shared_photo/models/notification.dart';
 import 'package:shared_photo/models/user.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 import 'package:shared_photo/repositories/notification_repository/notification_repository.dart';
+import 'package:shared_photo/services/engagement_service.dart';
 import 'package:shared_photo/services/request_service.dart';
 
 part 'notification_state.dart';
@@ -48,6 +49,15 @@ class NotificationCubit extends Cubit<NotificationState> {
               if (notification.responseSeen == false) {
                 RequestService.markAlbumInviteResponsetAsSeen(
                     user.token, notification.notificationID);
+              }
+            case ConsolidatedNotification:
+              notification as ConsolidatedNotification;
+              for (EngagementNotification noti
+                  in notification.notificationMap.values) {
+                if (noti.notificationSeen == false) {
+                  EngagementService.markNotificationSeen(
+                      user.token, noti.notificationID);
+                }
               }
           }
         }
