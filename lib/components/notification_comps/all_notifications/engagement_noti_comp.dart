@@ -13,7 +13,7 @@ class EngagementNotiComp extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 14),
-      height: 75,
+      height: 69,
       decoration: BoxDecoration(
         color: const Color.fromRGBO(19, 19, 19, 1),
         borderRadius: BorderRadius.circular(10),

@@ -140,7 +140,19 @@ extension ImageDataRepo on DataRepository {
 
             return;
           case EngageOperation.remove:
-          // TODO: Handle this case.
+            print(notification.newCount.toString());
+            image.upvotes = notification.newCount;
+            image.upvotesUID.removeWhere(
+                (element) => element.uid == notification.notifierID);
+
+            // Add the image back to the global cache
+            albumMap[albumID]?.imageMap[imageID] = image;
+
+            // Preapre the ImageChange class for the image stream to update
+            ImageChange imageChange =
+                ImageChange(albumID: albumID, imageID: imageID, image: image);
+            _imageController.add(imageChange);
+            return;
         }
     }
   }
