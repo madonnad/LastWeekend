@@ -102,8 +102,53 @@ extension ImageDataRepo on DataRepository {
   void _handleImageEngagement(EngagementNotification notification) {
     switch (notification.notificationType) {
       case EngageType.liked:
-        // TODO: Handle this case.
-        return;
+        String imageID = notification.notificationMediaID;
+        String albumID = notification.albumID;
+        EngageOperation operation = notification.operation;
+
+        if (albumMap[albumID]?.imageMap[imageID] == null) return;
+
+        Image image = albumMap[albumID]!.imageMap[imageID]!;
+
+        switch (operation) {
+          case EngageOperation.add:
+            // Add the upvote to the upvote count
+            image.likes = notification.newCount;
+
+            // Check if the person who upvote is in the list - if not then add
+            if (image.upvotesUID
+                .any((element) => element.uid != notification.notifierID)) {
+              String uid = notification.notifierID;
+              String firstName = notification.notifierFirst;
+              String lastName = notification.notifierLast;
+              Engager engager =
+                  Engager(uid: uid, firstName: firstName, lastName: lastName);
+
+              image.likesUID.add(engager);
+            }
+
+            // Add the image back to the global cache
+            albumMap[albumID]?.imageMap[imageID] = image;
+
+            // Preapre the ImageChange class for the image stream to update
+            ImageChange imageChange =
+                ImageChange(albumID: albumID, imageID: imageID, image: image);
+            _imageController.add(imageChange);
+            return;
+          case EngageOperation.remove:
+            image.likes = notification.newCount;
+            image.likesUID.removeWhere(
+                (element) => element.uid == notification.notifierID);
+
+            // Add the image back to the global cache
+            albumMap[albumID]?.imageMap[imageID] = image;
+
+            // Preapre the ImageChange class for the image stream to update
+            ImageChange imageChange =
+                ImageChange(albumID: albumID, imageID: imageID, image: image);
+            _imageController.add(imageChange);
+            return;
+        }
       case EngageType.upvoted:
         String imageID = notification.notificationMediaID;
         String albumID = notification.albumID;
@@ -140,7 +185,6 @@ extension ImageDataRepo on DataRepository {
 
             return;
           case EngageOperation.remove:
-            print(notification.newCount.toString());
             image.upvotes = notification.newCount;
             image.upvotesUID.removeWhere(
                 (element) => element.uid == notification.notifierID);

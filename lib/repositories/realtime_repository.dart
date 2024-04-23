@@ -87,6 +87,9 @@ class RealtimeRepository {
       case "upvote":
         wsEngagementMessageHandler(jsonData['operation'], jsonData['payload']);
         return;
+      case "liked":
+        wsEngagementMessageHandler(jsonData['operation'], jsonData['payload']);
+        return;
       default:
         return;
     }

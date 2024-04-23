@@ -139,29 +139,29 @@ class FeedSlideshowInset extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(right: 15.0),
-                        child: Icon(
-                          Icons.comment_rounded,
-                          color: Colors.white,
-                          size: 25,
-                        ),
-                      ),
-                      Icon(
-                        Icons.favorite_outline,
-                        color: Colors.white54,
-                        size: 25,
-                      ),
-                      // Icon(
-                      //   Icons.arrow_circle_up,
-                      //   color: Colors.white54,
-                      //   size: 25,
-                      // ),
-                    ],
-                  )
+                  // const Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: [
+                  //     Padding(
+                  //       padding: EdgeInsets.only(right: 15.0),
+                  //       child: Icon(
+                  //         Icons.comment_rounded,
+                  //         color: Colors.white,
+                  //         size: 25,
+                  //       ),
+                  //     ),
+                  //     Icon(
+                  //       Icons.favorite_outline,
+                  //       color: Colors.white54,
+                  //       size: 25,
+                  //     ),
+                  //     // Icon(
+                  //     //   Icons.arrow_circle_up,
+                  //     //   color: Colors.white54,
+                  //     //   size: 25,
+                  //     // ),
+                  //   ],
+                  // )
                 ],
               ),
             )
