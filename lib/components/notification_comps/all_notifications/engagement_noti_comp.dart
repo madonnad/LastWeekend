@@ -61,6 +61,7 @@ class EngagementNotiComp extends StatelessWidget {
               ],
             ),
           ),
+          const SizedBox(width: 10),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [

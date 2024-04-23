@@ -13,7 +13,7 @@ class FeedSlideshowCubit extends Cubit<FeedSlideshowState> {
   final Album album;
   final DataRepository dataRepository;
   late StreamSubscription imageStreamSubscription;
-  late Timer _timer;
+  //late Timer _timer;
 
   FeedSlideshowCubit({required this.album, required this.dataRepository})
       : super(
@@ -98,7 +98,7 @@ class FeedSlideshowCubit extends Cubit<FeedSlideshowState> {
 
   @override
   Future<void> close() {
-    _timer.cancel();
+    //_timer.cancel();
     imageStreamSubscription.cancel();
     return super.close();
   }

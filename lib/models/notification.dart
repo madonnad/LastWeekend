@@ -248,7 +248,7 @@ class EngagementNotification extends Notification {
     EngageOperation op =
         operation == 'ADD' ? EngageOperation.add : EngageOperation.remove;
 
-    if (map['notification_type'] == 'like') {
+    if (map['notification_type'] == 'liked') {
       type = EngageType.liked;
     }
     if (map['notification_type'] == 'upvote') {
