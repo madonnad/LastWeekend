@@ -20,10 +20,15 @@ extension AllNotiRepo on NotificationRepository {
         latestDate = notification.receivedDateTime;
       }
 
-      consolNotiMap.putIfAbsent(
-        notification.notificationID,
-        () => notification,
-      );
+      if (!consolNotiMap.values.any((element) =>
+          element.notificationType == notification.notificationType &&
+          element.notifierID == notification.notifierID &&
+          element.notificationMediaID == notification.notificationMediaID)) {
+        consolNotiMap.putIfAbsent(
+          notification.notificationID,
+          () => notification,
+        );
+      }
 
       consolNoti = consolNoti.copyWith(
         receivedDateTime: latestDate,

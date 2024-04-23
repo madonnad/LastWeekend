@@ -25,7 +25,8 @@ class RealtimeRepository {
       'Authorization': 'Bearer ${user.token}'
     };
     final wsURL = Uri.parse('ws://$domain/ws');
-    var connection = IOWebSocketChannel.connect(wsURL, headers: headers);
+    var connection =
+        IOWebSocketChannel.connect(wsURL, headers: headers, pingInterval: null);
 
     if (connection.closeCode == null) {
       print("WebSocket Connection Opened");
@@ -49,7 +50,8 @@ class RealtimeRepository {
       'Authorization': 'Bearer ${user.token}'
     };
     final wsURL = Uri.parse('ws://$domain/ws/album?channel=$albumID');
-    var connection = IOWebSocketChannel.connect(wsURL, headers: headers);
+    var connection =
+        IOWebSocketChannel.connect(wsURL, headers: headers, pingInterval: null);
 
     if (connection.closeCode == null) {
       print("Album $albumID WebSocket Connection Opened");
