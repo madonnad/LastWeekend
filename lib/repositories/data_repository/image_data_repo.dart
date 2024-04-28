@@ -148,6 +148,8 @@ extension ImageDataRepo on DataRepository {
                 ImageChange(albumID: albumID, imageID: imageID, image: image);
             _imageController.add(imageChange);
             return;
+          case EngageOperation.update:
+            // TODO: Handle this case.
         }
       case EngageType.upvoted:
         String imageID = notification.notificationMediaID;
@@ -197,6 +199,8 @@ extension ImageDataRepo on DataRepository {
                 ImageChange(albumID: albumID, imageID: imageID, image: image);
             _imageController.add(imageChange);
             return;
+          case EngageOperation.update:
+            // TODO: Handle this case.
         }
     }
   }

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_photo/utils/api_variables.dart';
@@ -6,7 +8,7 @@ import 'package:timeago/timeago.dart' as timeago;
 
 enum EngageType { liked, upvoted }
 
-enum EngageOperation { add, remove }
+enum EngageOperation { add, remove, update }
 
 enum NotificationType { generic, friendRequest, albumInvite }
 
@@ -191,6 +193,7 @@ class FriendRequestNotification extends Notification {
     );
   }
 
+  @override
   FriendRequestNotification copyWith({
     String? notificationID,
     String? notificationMediaID,
@@ -320,6 +323,105 @@ class EngagementNotification extends Notification {
         notificationSeen,
         notificationType,
         newCount,
+      ];
+}
+
+class CommentNotification extends Notification {
+  final String imageOwner;
+  final String albumID;
+  final String albumName;
+  final String notifierID;
+  final String notifierFirst;
+  final String notifierLast;
+  final String comment;
+  final DateTime? updatedDateTime;
+  final EngageOperation operation;
+
+  const CommentNotification({
+    required super.notificationID,
+    required super.notificationMediaID,
+    required this.imageOwner,
+    required this.albumID,
+    required this.albumName,
+    required this.notifierID,
+    required this.notifierFirst,
+    required this.notifierLast,
+    required this.comment,
+    this.updatedDateTime,
+    required super.receivedDateTime,
+    required super.notificationSeen,
+    required this.operation,
+  });
+
+  factory CommentNotification.fromMap(
+      Map<String, dynamic> map, String operation) {
+    EngageOperation op = EngageOperation.add;
+    switch (operation) {
+      case 'ADD':
+        EngageOperation.add;
+      case 'REMOVE':
+        EngageOperation.remove;
+      case 'UPDATE':
+        EngageOperation.update;
+    }
+
+    List<int> bytes = map['comment'].toString().codeUnits;
+    String comment = utf8.decode(bytes);
+
+    return CommentNotification(
+      notificationID: map['id'],
+      notificationMediaID: map['image_id'],
+      imageOwner: map['image_owner'],
+      albumID: map['album_id'],
+      albumName: map['album_name'],
+      notifierID: map['user_id'],
+      notifierFirst: map['first_name'],
+      notifierLast: map['last_name'],
+      comment: comment,
+      receivedDateTime: DateTime.parse(map['created_at']),
+      notificationSeen: map['seen'],
+      updatedDateTime: DateTime.parse(map['updated_at']),
+      operation: op,
+    );
+  }
+
+  @override
+  CommentNotification copyWith({
+    String? notificationID,
+    DateTime? receivedDateTime,
+    String? notificationMediaID,
+    bool? notificationSeen,
+  }) {
+    return CommentNotification(
+        notificationID: notificationID ?? this.notificationID,
+        notificationMediaID: notificationMediaID ?? this.notificationMediaID,
+        imageOwner: imageOwner,
+        albumID: albumID,
+        albumName: albumName,
+        notifierID: notifierID,
+        notifierFirst: notifierFirst,
+        notifierLast: notifierLast,
+        comment: comment,
+        receivedDateTime: receivedDateTime ?? this.receivedDateTime,
+        notificationSeen: notificationSeen ?? this.notificationSeen,
+        operation: operation);
+  }
+
+  String get shortTime => timeago.format(receivedDateTime, locale: 'en_short');
+
+  String get notifierURL => "$goRepoDomain/image?id=$imageOwner";
+  String get imageURL => "$goRepoDomain/image?id=$notificationMediaID";
+
+  String get fullName {
+    return '$notifierFirst $notifierLast';
+  }
+
+  @override
+  List<Object?> get props => [
+        notificationID,
+        notificationMediaID,
+        receivedDateTime,
+        notificationSeen,
       ];
 }
 

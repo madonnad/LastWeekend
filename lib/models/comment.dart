@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:shared_photo/models/notification.dart';
 import 'package:shared_photo/utils/api_variables.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -12,6 +13,7 @@ class Comment {
   String comment;
   DateTime createdAt;
   DateTime? updatedAt;
+  bool seen;
 
   Comment({
     required this.id,
@@ -22,7 +24,24 @@ class Comment {
     required this.comment,
     required this.createdAt,
     this.updatedAt,
+    required this.seen,
   });
+
+  // Create a Comment.fromCommentNotification factory constructor
+
+  factory Comment.fromCommentNotification(CommentNotification notification) {
+    return Comment(
+      id: notification.notificationID,
+      imageID: notification.notificationMediaID,
+      userID: notification.notifierID,
+      firstName: notification.notifierFirst,
+      lastName: notification.notifierLast,
+      comment: notification.comment,
+      createdAt: notification.receivedDateTime,
+      updatedAt: notification.updatedDateTime,
+      seen: notification.notificationSeen,
+    );
+  }
 
   factory Comment.fromJson(Map<String, dynamic> map) {
     List<int> bytes = map['comment'].toString().codeUnits;
@@ -37,6 +56,7 @@ class Comment {
       createdAt: DateTime.parse(map['created_at']),
       updatedAt:
           map['updated_at'] != null ? DateTime.parse(map['updated_at']) : null,
+      seen: map['seen'] ?? false,
     );
   }
 
