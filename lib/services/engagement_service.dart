@@ -36,6 +36,32 @@ class EngagementService {
     return commentList;
   }
 
+  static Future<Comment?> postNewComment(
+      String token, String imageID, String comment) async {
+    Map<String, dynamic> body = {'image_id': imageID, 'comment': comment};
+    String encodedBody = jsonEncode(body);
+
+    var url = Uri.http(domain, '/image/comment');
+    final Map<String, String> headers = {
+      "Content-Type": "application/json",
+      'Authorization': 'Bearer $token'
+    };
+
+    try {
+      final response =
+          await http.post(url, headers: headers, body: encodedBody);
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> body = json.decode(response.body);
+        return Comment.fromJson(body);
+      }
+      return null;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
   static Future<bool> markNotificationSeen(
       String token, String notificationID) async {
     var url = Uri.http(domain, '/notifications', {"id": notificationID});
