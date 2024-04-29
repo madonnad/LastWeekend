@@ -40,8 +40,11 @@ class FloatingCommentContainer extends StatelessWidget {
                   Expanded(
                     flex: 2,
                     child: TextField(
+                      controller: state.commentController,
                       onTapOutside: (_) =>
                           FocusManager.instance.primaryFocus?.unfocus(),
+                      onChanged: (_) =>
+                          context.read<ImageFrameCubit>().commentTextChange(),
                       maxLines: null,
                       style: GoogleFonts.josefinSans(
                         color: Colors.white,
@@ -63,7 +66,10 @@ class FloatingCommentContainer extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
-                        onPressed: () {},
+                        onPressed: state.canAddComment
+                            ? () =>
+                                context.read<ImageFrameCubit>().postComment()
+                            : null,
                         icon: const Icon(Icons.comment_rounded),
                         color: Colors.white,
                         disabledColor: Colors.white54,

@@ -8,8 +8,7 @@ extension ImageDataRepo on DataRepository {
       String albumID, String imageID) async {
     Map<String, Comment> commentMap = {};
 
-    if (albumMap.containsKey(albumID) &&
-        albumMap[albumID]!.imageMap.containsKey(imageID)) {
+    if (albumMap[albumID]?.imageMap[imageID] != null) {
       if (albumMap[albumID]!.imageMap[imageID]!.commentMap.isEmpty) {
         // Fetch List from Service
         List<Comment> imageComments =
@@ -28,6 +27,22 @@ extension ImageDataRepo on DataRepository {
       }
     }
     return commentMap;
+  }
+
+  Future<Comment?> addCommentToImage(
+      String albumID, String imageID, String comment) async {
+    Comment? postedComment =
+        await EngagementService.postNewComment(user.token, imageID, comment);
+
+    if (postedComment == null) return postedComment;
+
+    if (albumMap[albumID]?.imageMap[imageID] != null) {
+      Image image = albumMap[albumID]!.imageMap[imageID]!;
+
+      image.commentMap[postedComment.id] = postedComment;
+    }
+
+    return postedComment;
   }
 
   Future<(bool, int)> toggleImageLike(
@@ -149,7 +164,7 @@ extension ImageDataRepo on DataRepository {
             _imageController.add(imageChange);
             return;
           case EngageOperation.update:
-            // TODO: Handle this case.
+          // TODO: Handle this case.
         }
       case EngageType.upvoted:
         String imageID = notification.notificationMediaID;
@@ -200,7 +215,7 @@ extension ImageDataRepo on DataRepository {
             _imageController.add(imageChange);
             return;
           case EngageOperation.update:
-            // TODO: Handle this case.
+          // TODO: Handle this case.
         }
     }
   }

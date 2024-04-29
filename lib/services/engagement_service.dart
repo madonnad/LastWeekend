@@ -52,7 +52,7 @@ class EngagementService {
           await http.post(url, headers: headers, body: encodedBody);
 
       if (response.statusCode == 200) {
-        Map<String, dynamic> body = json.decode(response.body);
+        final body = json.decode(response.body);
         return Comment.fromJson(body);
       }
       return null;

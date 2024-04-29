@@ -1,32 +1,36 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/widgets.dart';
 import 'package:shared_photo/models/comment.dart';
-import 'package:shared_photo/models/image.dart';
+import 'package:shared_photo/models/image.dart' as img;
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 
 part 'image_frame_state.dart';
 
 class ImageFrameCubit extends Cubit<ImageFrameState> {
   DataRepository dataRepository;
-  Image image;
+  img.Image image;
   String albumID;
   ImageFrameCubit({
     required this.dataRepository,
     required this.image,
     required this.albumID,
-  }) : super(ImageFrameState(image: image)) {
+  }) : super(ImageFrameState(
+          image: image,
+          commentController: TextEditingController(),
+        )) {
     initializeComments(image);
 
     dataRepository.imageStream.listen((event) {});
   }
 
-  void changeImageFrameState(Image image) {
+  void changeImageFrameState(img.Image image) {
     emit(state.copyWith(image: image));
     initializeComments(image);
   }
 
   Future<void> toggleLike() async {
-    Image image = Image.from(state.image);
+    img.Image image = img.Image.from(state.image);
     emit(state.copyWith(likeLoading: true));
 
     late bool userLiked;
@@ -42,7 +46,7 @@ class ImageFrameCubit extends Cubit<ImageFrameState> {
   }
 
   Future<void> toggleUpvote() async {
-    Image image = Image.from(state.image);
+    img.Image image = img.Image.from(state.image);
     emit(state.copyWith(upvoteLoading: true));
 
     late bool userUpvoted;
@@ -57,7 +61,7 @@ class ImageFrameCubit extends Cubit<ImageFrameState> {
     emit(state.copyWith(upvoteLoading: false, image: image));
   }
 
-  Future<void> initializeComments(Image image) async {
+  Future<void> initializeComments(img.Image image) async {
     image.commentMap = {};
     emit(state.copyWith(loading: true, image: image));
 
@@ -67,5 +71,39 @@ class ImageFrameCubit extends Cubit<ImageFrameState> {
     image.commentMap = commentMap;
 
     emit(state.copyWith(loading: false, image: image));
+  }
+
+  void commentTextChange() {
+    bool textIsNotEmpty = state.commentController.text != '';
+
+    emit(state.copyWith(canAddComment: textIsNotEmpty));
+  }
+
+  Future<void> postComment() async {
+    String commentText = state.commentController.text;
+
+    if (commentText == '') return;
+
+    emit(state.copyWith(commentLoading: true));
+
+    Comment? comment = await dataRepository.addCommentToImage(
+        albumID, state.image.imageId, commentText);
+
+    if (comment == null) {
+      emit(state.copyWith(
+          commentLoading: false,
+          exception: "Error adding comment to image - try again"));
+      emit(state.copyWith(exception: ''));
+      return;
+    }
+
+    img.Image image = img.Image.from(state.image);
+    image.commentMap[comment.id] = comment;
+
+    emit(state.copyWith(
+      commentLoading: false,
+      image: image,
+      commentController: TextEditingController(),
+    ));
   }
 }
