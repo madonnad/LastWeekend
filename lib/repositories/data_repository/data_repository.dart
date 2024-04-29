@@ -53,6 +53,8 @@ class DataRepository {
       switch (event.runtimeType) {
         case EngagementNotification:
           _handleImageEngagement(notification as EngagementNotification);
+        case CommentNotification:
+          _handleImageComment(notification as CommentNotification);
       }
     });
 

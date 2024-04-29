@@ -62,6 +62,22 @@ extension AllNotiRepo on NotificationRepository {
     return;
   }
 
+  void _commentHandler(CommentNotification notification) {
+    if (user.id != notification.imageOwner) return;
+
+    switch (notification.operation) {
+      case EngageOperation.add:
+        allNotificationMap.putIfAbsent(
+            notification.notificationID, () => notification);
+        _notificationController.add((StreamOperation.add, notification));
+        return;
+      case EngageOperation.remove:
+      // TODO: Handle this case.
+      case EngageOperation.update:
+      // TODO: Handle this case.
+    }
+  }
+
   Future<bool> markNotificationSeen(String notificationID) async {
     // bool success = await NotificationService.markNotificationSeen(
     //     user.token, notificationID);

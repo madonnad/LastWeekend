@@ -114,6 +114,31 @@ extension ImageDataRepo on DataRepository {
     return (userUpvoted, newCount);
   }
 
+  void _handleImageComment(CommentNotification notification) {
+    switch (notification.operation) {
+      case EngageOperation.add:
+        Comment comment = Comment.fromCommentNotification(notification);
+
+        String albumID = notification.albumID;
+        String imageID = notification.notificationMediaID;
+
+        if (albumMap[albumID]?.imageMap[imageID] != null) {
+          Image image = albumMap[albumID]!.imageMap[imageID]!;
+
+          image.commentMap[comment.id] = comment;
+
+          ImageChange imageChange =
+              ImageChange(albumID: albumID, imageID: imageID, image: image);
+          _imageController.add(imageChange);
+        }
+        return;
+      case EngageOperation.remove:
+      // TODO: Handle this case.
+      case EngageOperation.update:
+      // TODO: Handle this case.
+    }
+  }
+
   void _handleImageEngagement(EngagementNotification notification) {
     switch (notification.notificationType) {
       case EngageType.liked:
