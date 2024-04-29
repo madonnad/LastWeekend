@@ -35,6 +35,8 @@ class NotificationCubit extends Cubit<NotificationState> {
         case ConsolidatedNotification:
           _engagementHandler(
               operation, notification as ConsolidatedNotification);
+        case CommentNotification:
+          _commentHandler(operation, notification as CommentNotification);
       }
     });
   }
@@ -302,15 +304,41 @@ class NotificationCubit extends Cubit<NotificationState> {
         bool unseenNoti = notification.notificationMap.values
             .any((element) => element.notificationSeen == false);
 
-        Map<String, Notification> notiMap = state.allNotificationMap;
+        Map<String, Notification> notiMap = Map.from(state.allNotificationMap);
         notiMap.update(
           notification.mapKey,
           (value) => notification,
           ifAbsent: () => notification,
         );
+
         emit(state.copyWith(
           allNotificationMap: notiMap,
           unseenGenericNoti: unseenNoti,
+        ));
+
+      case StreamOperation.update:
+      // TODO: Handle this case.
+      case StreamOperation.delete:
+      // TODO: Handle this case.
+    }
+  }
+
+  void _commentHandler(
+      StreamOperation operation, CommentNotification notification) {
+    switch (operation) {
+      case StreamOperation.add:
+        Map<String, Notification> notiMap = Map.from(state.allNotificationMap);
+        bool commentSeen = notification.notificationSeen;
+
+        notiMap.update(
+          notification.notificationID,
+          (value) => notification,
+          ifAbsent: () => notification,
+        );
+
+        emit(state.copyWith(
+          allNotificationMap: notiMap,
+          unseenGenericNoti: commentSeen,
         ));
 
       case StreamOperation.update:

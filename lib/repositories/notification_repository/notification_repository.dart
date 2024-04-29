@@ -47,6 +47,8 @@ class NotificationRepository {
         _albumInviteHandler(notification as AlbumInviteNotification);
       case EngagementNotification:
         _engagementHandler(notification as EngagementNotification);
+      case CommentNotification:
+        _commentHandler(notification as CommentNotification);
     }
   }
 

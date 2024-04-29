@@ -365,8 +365,8 @@ class CommentNotification extends Notification {
         EngageOperation.update;
     }
 
-    List<int> bytes = map['comment'].toString().codeUnits;
-    String comment = utf8.decode(bytes);
+    // List<int> bytes = map['comment'].toString().codeUnits;
+    // String comment = utf8.decode(bytes);
 
     return CommentNotification(
       notificationID: map['id'],
@@ -377,10 +377,11 @@ class CommentNotification extends Notification {
       notifierID: map['user_id'],
       notifierFirst: map['first_name'],
       notifierLast: map['last_name'],
-      comment: comment,
+      comment: map['comment'],
       receivedDateTime: DateTime.parse(map['created_at']),
       notificationSeen: map['seen'],
-      updatedDateTime: DateTime.parse(map['updated_at']),
+      updatedDateTime:
+          map['updated_at'] == null ? null : DateTime.parse(map['updated_at']),
       operation: op,
     );
   }

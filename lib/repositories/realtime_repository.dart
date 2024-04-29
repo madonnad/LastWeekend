@@ -92,6 +92,8 @@ class RealtimeRepository {
       case "liked":
         wsEngagementMessageHandler(jsonData['operation'], jsonData['payload']);
         return;
+      case "comment":
+        wsCommentMessageHandler(jsonData['operation'], jsonData['payload']);
       default:
         return;
     }
@@ -100,6 +102,13 @@ class RealtimeRepository {
   void wsEngagementMessageHandler(String operation, dynamic payload) {
     EngagementNotification notification =
         EngagementNotification.fromMap(payload, operation);
+    _realtimeNotificationController.add(notification);
+    return;
+  }
+
+  void wsCommentMessageHandler(String operation, dynamic payload) {
+    CommentNotification notification =
+        CommentNotification.fromMap(payload, operation);
     _realtimeNotificationController.add(notification);
     return;
   }
