@@ -69,7 +69,7 @@ class EngagementNotiComp extends StatelessWidget {
                 notification.timeReceived,
                 style: GoogleFonts.josefinSans(
                   color: Colors.white54,
-                  fontSize: 16,
+                  fontSize: 14,
                   fontWeight: FontWeight.w400,
                 ),
               ),

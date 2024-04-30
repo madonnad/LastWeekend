@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/cubit/notification_cubit.dart';
 import 'package:shared_photo/components/app_comp/section_header_small.dart';
 import 'package:shared_photo/components/notification_comps/all_notifications/accepted_album_item.dart';
+import 'package:shared_photo/components/notification_comps/all_notifications/comment_noti_item.dart';
 import 'package:shared_photo/components/notification_comps/all_notifications/engagement_noti_comp.dart';
 import 'package:shared_photo/components/notification_comps/empty_lists/empty_list_comp.dart';
 import 'package:shared_photo/models/notification.dart';
@@ -43,6 +44,10 @@ class AllNotisList extends StatelessWidget {
                           state.allNotifications[adjIndex]
                               as ConsolidatedNotification;
                       return EngagementNotiComp(notification: notification);
+                    case CommentNotification:
+                      CommentNotification notification = state
+                          .allNotifications[adjIndex] as CommentNotification;
+                      return CommentNotiItem(notification: notification);
                     default:
                       return Container(
                         height: 70,
