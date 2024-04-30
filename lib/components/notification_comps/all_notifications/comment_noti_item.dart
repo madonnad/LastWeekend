@@ -2,19 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
+import 'package:shared_photo/models/notification.dart';
 
-class AcceptedAlbumItem extends StatelessWidget {
-  final String profileImage;
-  final String firstName;
-  final String albumName;
-  final String timeSince;
-  const AcceptedAlbumItem({
-    super.key,
-    required this.profileImage,
-    required this.firstName,
-    required this.albumName,
-    required this.timeSince,
-  });
+class CommentNotiItem extends StatelessWidget {
+  final CommentNotification notification;
+  const CommentNotiItem({super.key, required this.notification});
 
   @override
   Widget build(BuildContext context) {
@@ -28,14 +20,22 @@ class AcceptedAlbumItem extends StatelessWidget {
       ),
       child: Row(
         children: [
-          CircleAvatar(
-            radius: 20,
-            backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
-            foregroundImage: NetworkImage(
-              profileImage,
-              headers: context.read<AppBloc>().state.user.headers,
+          AspectRatio(
+            aspectRatio: 60 / 65,
+            child: Container(
+              decoration: BoxDecoration(
+                color: const Color.fromRGBO(44, 44, 44, 1),
+                borderRadius: BorderRadius.circular(10),
+                image: DecorationImage(
+                  image: NetworkImage(
+                    notification.imageURL,
+                    headers: context.read<AppBloc>().state.user.headers,
+                  ),
+                  fit: BoxFit.cover,
+                  onError: (_, __) {},
+                ),
+              ),
             ),
-            onForegroundImageError: (_, __) {},
           ),
           const SizedBox(width: 10),
           Expanded(
@@ -43,22 +43,23 @@ class AcceptedAlbumItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: Text(
-                    "$firstName accepted your invite to",
-                    style: GoogleFonts.josefinSans(
-                      color: Colors.white60,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                    ),
+                Text(
+                  "${notification.fullName} commented:",
+                  style: GoogleFonts.josefinSans(
+                    color: Colors.white60,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
-                Text(
-                  albumName,
-                  style: GoogleFonts.josefinSans(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
+                Expanded(
+                  child: Text(
+                    notification.comment,
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.josefinSans(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ],
@@ -68,7 +69,7 @@ class AcceptedAlbumItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                timeSince,
+                notification.shortTime,
                 style: GoogleFonts.josefinSans(
                   color: Colors.white54,
                   fontSize: 14,
