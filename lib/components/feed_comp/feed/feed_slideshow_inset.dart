@@ -17,7 +17,7 @@ class FeedSlideshowInset extends StatelessWidget {
       builder: (context, state) {
         Map<String, String> headers =
             context.read<AppBloc>().state.user.headers;
-        Arguments arguments = Arguments(album: state.album);
+        Arguments arguments = Arguments(albumID: state.album.albumId);
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,

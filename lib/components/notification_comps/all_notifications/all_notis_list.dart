@@ -34,6 +34,7 @@ class AllNotisList extends StatelessWidget {
                           state.allNotifications[adjIndex]
                               as AlbumInviteNotification;
                       return AcceptedAlbumItem(
+                        albumID: response.albumID,
                         profileImage: response.guestURL,
                         firstName: response.guestFirst,
                         albumName: response.albumName,
