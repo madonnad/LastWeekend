@@ -1,9 +1,9 @@
 PODS:
-  - Auth0 (2.5.0):
+  - Auth0 (2.7.0):
     - JWTDecode (~> 3.1)
     - SimpleKeychain (~> 1.1)
-  - auth0_flutter (1.5.0):
-    - Auth0 (= 2.5.0)
+  - auth0_flutter (1.7.0):
+    - Auth0 (= 2.7.0)
     - Flutter
     - FlutterMacOS
     - JWTDecode (= 3.1.0)
@@ -11,9 +11,6 @@ PODS:
   - camera_avfoundation (0.0.1):
     - Flutter
   - Flutter (1.0.0)
-  - FMDB (2.7.5):
-    - FMDB/standard (= 2.7.5)
-  - FMDB/standard (2.7.5)
   - image_picker_ios (0.0.1):
     - Flutter
   - JWTDecode (3.1.0)
@@ -23,7 +20,7 @@ PODS:
   - SimpleKeychain (1.1.0)
   - sqflite (0.0.3):
     - Flutter
-    - FMDB (>= 2.7.5)
+    - FlutterMacOS
 
 DEPENDENCIES:
   - auth0_flutter (from `.symlinks/plugins/auth0_flutter/darwin`)
@@ -31,12 +28,11 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
-  - sqflite (from `.symlinks/plugins/sqflite/ios`)
+  - sqflite (from `.symlinks/plugins/sqflite/darwin`)
 
 SPEC REPOS:
   trunk:
     - Auth0
-    - FMDB
     - JWTDecode
     - SimpleKeychain
 
@@ -52,20 +48,19 @@ EXTERNAL SOURCES:
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
   sqflite:
-    :path: ".symlinks/plugins/sqflite/ios"
+    :path: ".symlinks/plugins/sqflite/darwin"
 
 SPEC CHECKSUMS:
-  Auth0: 72f19ad566fdf57f07bf37f828afd0c1570769a5
-  auth0_flutter: ae5ebf94520af57ebce16af395820b9e07abbc9f
-  camera_avfoundation: 3125e8cd1a4387f6f31c6c63abb8a55892a9eeeb
+  Auth0: 0f9856ed0b424c1e614e1520f708fc4800d390d5
+  auth0_flutter: ad1bf098a29e0430bc8a23feedcd70bcdc5da4c6
+  camera_avfoundation: 8b8d780bcfb6a4a02b0fbe2b4bd17b5b71946e68
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
-  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  image_picker_ios: 4a8aadfbb6dc30ad5141a2ce3832af9214a705b5
+  image_picker_ios: 99dfe1854b4fa34d0364e74a78448a0151025425
   JWTDecode: 3eaab1e06b6f4dcbdd6716aff09ba4c2104ca8b7
-  path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
+  path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c
   SimpleKeychain: f8707c8e97b38c6a6e687b17732afc9bcef06439
-  sqflite: 31f7eba61e3074736dff8807a9b41581e4f7f15a
+  sqflite: 673a0e54cc04b7d6dba8d24fb8095b31c3a99eec
 
-PODFILE CHECKSUM: a57f30d18f102dd3ce366b1d62a55ecbef2158e5
+PODFILE CHECKSUM: 1959d098c91d8a792531a723c4a9d7e9f6a01e38
 
 COCOAPODS: 1.12.1
