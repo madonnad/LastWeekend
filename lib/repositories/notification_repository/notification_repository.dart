@@ -88,6 +88,8 @@ class NotificationRepository {
         case EngagementNotification:
           EngagementNotification noti = notification as EngagementNotification;
           _engagementHandler(noti);
+        case CommentNotification:
+          _commentHandler(notification as CommentNotification);
       }
     }
   }
