@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
+import 'package:shared_photo/bloc/cubit/image_frame_cubit.dart';
 import 'package:shared_photo/components/album_comp/invite_comps/invite_page.dart';
 import 'package:shared_photo/components/album_comp/lock_comps/album_lock_tab_view.dart';
 import 'package:shared_photo/components/album_comp/util_comps/album_appbar_title.dart';
@@ -10,36 +11,36 @@ import 'package:shared_photo/components/album_comp/unlock_comps/album_unlock_tab
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/arguments.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
-import 'package:shared_photo/repositories/realtime_repository.dart';
+import 'package:shared_photo/screens/image_frame.dart';
+
+final List<String> filterList = ["Popular", "Guests", "Timeline"];
 
 class AlbumFrame extends StatelessWidget {
   final Arguments arguments;
 
-  AlbumFrame({super.key, required this.arguments});
-
-  final List<String> filterList = ["Popular", "Guests", "Timeline"];
+  const AlbumFrame({super.key, required this.arguments});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AlbumFrameCubit(
-        album: arguments.album,
-        dataRepository: context.read<DataRepository>(),
-        realtimeRepository: context.read<RealtimeRepository>(),
-      ),
-      child: Scaffold(
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        centerTitle: true,
         backgroundColor: Colors.black,
-        appBar: AppBar(
-          centerTitle: true,
-          backgroundColor: Colors.black,
-          automaticallyImplyLeading: false,
-          title: BlocBuilder<AlbumFrameCubit, AlbumFrameState>(
-            builder: (context, state) {
-              return AlbumAppBarTitle(album: state.album);
-            },
-          ),
+        automaticallyImplyLeading: false,
+        title: BlocBuilder<AlbumFrameCubit, AlbumFrameState>(
+          builder: (context, state) {
+            return AlbumAppBarTitle(album: state.album);
+          },
         ),
-        body: GestureDetector(
+      ),
+      body: BlocListener<AlbumFrameCubit, AlbumFrameState>(
+        listenWhen: (previous, current) =>
+            previous.album.imageMap != current.album.imageMap,
+        listener: (context, state) {
+          pushImageFrameIfPassed(context, state, arguments);
+        },
+        child: GestureDetector(
           onHorizontalDragUpdate: (details) {
             if (details.delta.dx > 7) {
               Navigator.of(context).pop();
@@ -49,53 +50,57 @@ class AlbumFrame extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text(
-                      "Invite",
-                      style: GoogleFonts.josefinSans(
-                        color: arguments.album.phase == AlbumPhases.invite
-                            ? Colors.white
-                            : const Color.fromRGBO(125, 125, 125, 1),
-                        fontSize: 16,
-                      ),
-                    ),
-                    Text(
-                      "Unlock",
-                      style: GoogleFonts.josefinSans(
-                        color: arguments.album.phase == AlbumPhases.unlock
-                            ? Colors.white
-                            : const Color.fromRGBO(125, 125, 125, 1),
-                        fontSize: 16,
-                      ),
-                    ),
-                    Text(
-                      "Lock",
-                      style: GoogleFonts.josefinSans(
-                        color: arguments.album.phase == AlbumPhases.lock
-                            ? Colors.white
-                            : const Color.fromRGBO(125, 125, 125, 1),
-                        fontSize: 16,
-                      ),
-                    ),
-                    Text(
-                      "Reveal",
-                      style: GoogleFonts.josefinSans(
-                        color: arguments.album.phase == AlbumPhases.reveal
-                            ? Colors.white
-                            : const Color.fromRGBO(125, 125, 125, 1),
-                        fontSize: 16,
-                      ),
-                    )
-                  ],
+                child: BlocBuilder<AlbumFrameCubit, AlbumFrameState>(
+                  builder: (context, state) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text(
+                          "Invite",
+                          style: GoogleFonts.josefinSans(
+                            color: state.album.phase == AlbumPhases.invite
+                                ? Colors.white
+                                : const Color.fromRGBO(125, 125, 125, 1),
+                            fontSize: 16,
+                          ),
+                        ),
+                        Text(
+                          "Unlock",
+                          style: GoogleFonts.josefinSans(
+                            color: state.album.phase == AlbumPhases.unlock
+                                ? Colors.white
+                                : const Color.fromRGBO(125, 125, 125, 1),
+                            fontSize: 16,
+                          ),
+                        ),
+                        Text(
+                          "Lock",
+                          style: GoogleFonts.josefinSans(
+                            color: state.album.phase == AlbumPhases.lock
+                                ? Colors.white
+                                : const Color.fromRGBO(125, 125, 125, 1),
+                            fontSize: 16,
+                          ),
+                        ),
+                        Text(
+                          "Reveal",
+                          style: GoogleFonts.josefinSans(
+                            color: state.album.phase == AlbumPhases.reveal
+                                ? Colors.white
+                                : const Color.fromRGBO(125, 125, 125, 1),
+                            fontSize: 16,
+                          ),
+                        )
+                      ],
+                    );
+                  },
                 ),
               ),
               BlocBuilder<AlbumFrameCubit, AlbumFrameState>(
                 builder: (context, state) {
                   switch (state.album.phase) {
                     case AlbumPhases.reveal:
-                      return const AlbumRevealTabView();
+                      return AlbumRevealTabView(arguments: arguments);
                     case AlbumPhases.invite:
                       return const InvitePage();
                     case AlbumPhases.unlock:
@@ -110,6 +115,46 @@ class AlbumFrame extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+void pushImageFrameIfPassed(
+    BuildContext context, AlbumFrameState state, Arguments arguments) {
+  if (arguments.imageID != null) {
+    int selectedIndex = context
+        .read<AlbumFrameCubit>()
+        .state
+        .imageFrameTimelineList
+        .indexWhere((element) => element.imageId == arguments.imageID);
+
+    context
+        .read<AlbumFrameCubit>()
+        .initalizeImageFrameWithSelectedImage(selectedIndex);
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      useRootNavigator: true,
+      useSafeArea: true,
+      builder: (ctx) => MultiBlocProvider(
+        providers: [
+          BlocProvider.value(
+            value: context.read<AlbumFrameCubit>(),
+          ),
+          BlocProvider(
+            create: (context) => ImageFrameCubit(
+              dataRepository: context.read<DataRepository>(),
+              image: context
+                  .read<AlbumFrameCubit>()
+                  .state
+                  .imageFrameTimelineList[selectedIndex],
+              albumID: arguments.albumID,
+            ),
+          ),
+        ],
+        child: const ImageFrame(),
       ),
     );
   }

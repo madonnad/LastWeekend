@@ -289,8 +289,9 @@ class Album {
       other is Album &&
           runtimeType == other.runtimeType &&
           albumId == other.albumId &&
-          mapEquals(guestMap, other.guestMap);
+          mapEquals(guestMap, other.guestMap) &&
+          mapEquals(imageMap, other.imageMap);
 
   @override
-  int get hashCode => albumId.hashCode ^ guestMap.hashCode;
+  int get hashCode => albumId.hashCode ^ guestMap.hashCode ^ imageMap.hashCode;
 }

@@ -14,7 +14,7 @@ class ListAlbumComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Map<String, String> headers = context.read<AppBloc>().state.user.headers;
-    Arguments arguments = Arguments(album: album);
+    Arguments arguments = Arguments(albumID: album.albumId);
 
     String displayImageUrl =
         album.images.isNotEmpty && album.phase == AlbumPhases.reveal

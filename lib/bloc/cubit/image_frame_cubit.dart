@@ -19,7 +19,8 @@ class ImageFrameCubit extends Cubit<ImageFrameState> {
           image: image,
           commentController: TextEditingController(),
         )) {
-    initializeComments(image);
+    changeImageFrameState(image);
+    //initializeComments(image);
 
     dataRepository.imageStream.listen((event) {});
   }
@@ -62,15 +63,12 @@ class ImageFrameCubit extends Cubit<ImageFrameState> {
   }
 
   Future<void> initializeComments(img.Image image) async {
-    image.commentMap = {};
+    img.Image internalImage = img.Image.from(image);
     emit(state.copyWith(loading: true, image: image));
-
-    Map<String, Comment> commentMap =
+    internalImage.commentMap =
         await dataRepository.initalizeCommentsAndStore(albumID, image.imageId);
 
-    image.commentMap = commentMap;
-
-    emit(state.copyWith(loading: false, image: image));
+    emit(state.copyWith(loading: false, image: internalImage));
   }
 
   void commentTextChange() {

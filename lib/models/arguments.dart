@@ -1,7 +1,6 @@
-import 'package:shared_photo/models/album.dart';
-
 class Arguments {
-  final Album album;
+  String albumID;
+  String? imageID;
 
-  Arguments({required this.album});
+  Arguments({required this.albumID, this.imageID});
 }

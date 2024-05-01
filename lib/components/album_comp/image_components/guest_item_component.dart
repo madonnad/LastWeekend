@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/cubit/image_frame_cubit.dart';
 import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
-import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/image.dart' as img;
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 import 'package:shared_photo/screens/image_frame.dart';
@@ -20,8 +19,7 @@ class GuestItemComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Album album = context.read<AlbumFrameCubit>().album;
-    AlbumViewMode viewMode = context.read<AlbumFrameCubit>().state.viewMode;
+    String albumID = context.read<AlbumFrameCubit>().albumID;
 
     int selectedIndex = context
         .read<AlbumFrameCubit>()
@@ -44,7 +42,7 @@ class GuestItemComponent extends StatelessWidget {
                 create: (context) => ImageFrameCubit(
                   dataRepository: context.read<DataRepository>(),
                   image: image,
-                  albumID: album.albumId,
+                  albumID: albumID,
                 ),
               ),
               BlocProvider.value(
