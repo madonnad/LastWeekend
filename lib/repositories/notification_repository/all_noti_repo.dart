@@ -64,6 +64,7 @@ extension AllNotiRepo on NotificationRepository {
 
   void _commentHandler(CommentNotification notification) {
     if (user.id != notification.imageOwner) return;
+    if (user.id == notification.notifierID) return;
 
     switch (notification.operation) {
       case EngageOperation.add:
