@@ -62,6 +62,23 @@ class EngagementService {
     }
   }
 
+  static Future<bool> markCommentSeen(String token, String commentID) async {
+    var url = Uri.http(domain, '/image/comment/seen', {"id": commentID});
+    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
+
+    try {
+      final response = await http.patch(url, headers: headers);
+
+      if (response.statusCode == 200) {
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
+
   static Future<bool> markNotificationSeen(
       String token, String notificationID) async {
     var url = Uri.http(domain, '/notifications', {"id": notificationID});
