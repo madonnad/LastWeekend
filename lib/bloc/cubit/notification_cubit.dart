@@ -328,7 +328,7 @@ class NotificationCubit extends Cubit<NotificationState> {
     switch (operation) {
       case StreamOperation.add:
         Map<String, Notification> notiMap = Map.from(state.allNotificationMap);
-        bool commentSeen = notification.notificationSeen;
+        bool commentSeen = !notification.notificationSeen;
 
         notiMap.update(
           notification.notificationID,
