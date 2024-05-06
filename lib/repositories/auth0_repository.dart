@@ -33,7 +33,7 @@ class Auth0Repository {
         String lastName =
             userProfile.familyName != null ? userProfile.familyName! : 'last';
         bool creationStatus = await UserService.createUserEntry(
-            creds.accessToken, firstName, lastName);
+            creds.accessToken, firstName, lastName, email);
 
         if (!creationStatus) {
           _userController.sink.add(User.empty);

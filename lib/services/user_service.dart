@@ -6,10 +6,11 @@ import 'package:http/http.dart' as http;
 
 class UserService {
   static Future<bool> createUserEntry(
-      String token, String firstName, String lastName) async {
+      String token, String firstName, String lastName, String email) async {
     final Map<String, String> requestBodyJson = {
       'first_name': firstName,
       'last_name': lastName,
+      'email': email,
     };
     String encodedBody = json.encode(requestBodyJson);
 
