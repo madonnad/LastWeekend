@@ -8,7 +8,7 @@ class NotificationService {
   Future<List<Notification>> getNotifications(String token) async {
     final List<Notification> notificationList = [];
 
-    var url = Uri.http(domain, '/notifications');
+    var url = Uri.https(domain, '/notifications');
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     final response = await http.get(url, headers: headers);
@@ -54,5 +54,4 @@ class NotificationService {
 
     return notificationList;
   }
-
 }

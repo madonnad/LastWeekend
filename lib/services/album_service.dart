@@ -14,7 +14,7 @@ class AlbumService {
     Map<String, dynamic> albumInformation = state.toJson();
     String encodedBody = json.encode(albumInformation);
 
-    var url = Uri.http(domain, '/user/album');
+    var url = Uri.https(domain, '/user/album');
     final Map<String, String> headers = {
       "Content-Type": "application/json",
       'Authorization': 'Bearer $token'
@@ -39,7 +39,7 @@ class AlbumService {
 
   static Future<List<Album>> getAuthUsersAlbums(String token) async {
     final List<Album> albums = [];
-    var url = Uri.http(domain, '/user/album');
+    var url = Uri.https(domain, '/user/album');
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     final response = await http.get(url, headers: headers);
@@ -67,7 +67,7 @@ class AlbumService {
       String token, List<String> albumIds) async {
     final List<Album> albums = [];
 
-    var url = Uri.http(domain, '/album/revealed');
+    var url = Uri.https(domain, '/album/revealed');
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
     String encodedBody = json.encode(albumIds);
 
@@ -93,7 +93,7 @@ class AlbumService {
 
   static Future<List<Album>> getFeedAlbums(String token) async {
     final List<Album> albums = [];
-    var url = Uri.http(domain, '/feed');
+    var url = Uri.https(domain, '/feed');
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     final response = await http.get(url, headers: headers);
@@ -119,7 +119,7 @@ class AlbumService {
 
   static Future<Album> getAlbumByID(String token, String albumID) async {
     Album album = Album.empty;
-    var url = Uri.http(domain, '/album', {'album_id': albumID});
+    var url = Uri.https(domain, '/album', {'album_id': albumID});
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     final response = await http.get(url, headers: headers);
@@ -144,7 +144,7 @@ class AlbumService {
       String token, String albumID) async {
     List<Guest> guests = [];
 
-    var url = Uri.http(domain, '/album/guests', {"album_id": albumID});
+    var url = Uri.https(domain, '/album/guests', {"album_id": albumID});
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     try {
