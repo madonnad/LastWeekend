@@ -25,6 +25,8 @@ class Auth0Repository {
       Credentials creds = await auth0.credentialsManager.credentials();
       UserProfile userProfile = creds.user;
 
+      print('has creds');
+
       String email = userProfile.email != null ? userProfile.email! : 'email';
 
       if (newAccount) {
@@ -104,7 +106,7 @@ class Auth0Repository {
 
 Future<User> getInternalUserInformation(
     String token, String email, bool newAccount) async {
-  var url = Uri.http(domain, '/user');
+  var url = Uri.https(domain, '/user');
   final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
   final response = await http.get(url, headers: headers);

@@ -11,7 +11,7 @@ class SearchService {
       {required String token, required String lookup}) async {
     List<SearchResult> searchResults = [];
 
-    var url = Uri.http(domain, '/search', {"lookup": lookup});
+    var url = Uri.https(domain, '/search', {"lookup": lookup});
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     final response = await http.get(url, headers: headers);

@@ -16,7 +16,7 @@ class UserService {
 
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
-    var url = Uri.http(domain, '/user');
+    var url = Uri.https(domain, '/user');
     try {
       final response =
           await http.post(url, headers: headers, body: encodedBody);
@@ -37,7 +37,7 @@ class UserService {
   static Future<List<Friend>> getFriendsList(String token) async {
     final List<Friend> friends = [];
 
-    var url = Uri.http(domain, '/user/friend');
+    var url = Uri.https(domain, '/user/friend');
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
     final response = await http.get(url, headers: headers);
 
@@ -62,7 +62,7 @@ class UserService {
 
   static Future<AnonymousFriend> getSearchedUser(
       String token, String uid) async {
-    var url = Uri.http(domain, '/user/id', {'id': uid});
+    var url = Uri.https(domain, '/user/id', {'id': uid});
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     try {

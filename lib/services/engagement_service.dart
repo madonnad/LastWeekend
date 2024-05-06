@@ -9,7 +9,7 @@ class EngagementService {
       String token, String imageId) async {
     List<Comment> commentList = [];
 
-    var url = Uri.http(domain, '/image/comment', {'image_id': imageId});
+    var url = Uri.https(domain, '/image/comment', {'image_id': imageId});
     final Map<String, String> headers = {
       "Content-Type": "application/json",
       'Authorization': 'Bearer $token'
@@ -41,7 +41,7 @@ class EngagementService {
     Map<String, dynamic> body = {'image_id': imageID, 'comment': comment};
     String encodedBody = jsonEncode(body);
 
-    var url = Uri.http(domain, '/image/comment');
+    var url = Uri.https(domain, '/image/comment');
     final Map<String, String> headers = {
       "Content-Type": "application/json",
       'Authorization': 'Bearer $token'
@@ -63,7 +63,7 @@ class EngagementService {
   }
 
   static Future<bool> markCommentSeen(String token, String commentID) async {
-    var url = Uri.http(domain, '/image/comment/seen', {"id": commentID});
+    var url = Uri.https(domain, '/image/comment/seen', {"id": commentID});
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     try {
@@ -81,7 +81,7 @@ class EngagementService {
 
   static Future<bool> markNotificationSeen(
       String token, String notificationID) async {
-    var url = Uri.http(domain, '/notifications', {"id": notificationID});
+    var url = Uri.https(domain, '/notifications', {"id": notificationID});
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     try {
@@ -98,7 +98,7 @@ class EngagementService {
   }
 
   static Future<int> likePhoto(String token, String imageID) async {
-    var url = Uri.http(domain, '/image/like', {"image_id": imageID});
+    var url = Uri.https(domain, '/image/like', {"image_id": imageID});
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     final response = await http.post(url, headers: headers);
@@ -119,7 +119,7 @@ class EngagementService {
   }
 
   static Future<int> unlikePhoto(String token, String imageID) async {
-    var url = Uri.http(domain, '/image/like', {"image_id": imageID});
+    var url = Uri.https(domain, '/image/like', {"image_id": imageID});
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     final response = await http.delete(url, headers: headers);
@@ -140,7 +140,7 @@ class EngagementService {
   }
 
   static Future<int> upvotePhoto(String token, String imageID) async {
-    var url = Uri.http(domain, '/image/upvote', {"image_id": imageID});
+    var url = Uri.https(domain, '/image/upvote', {"image_id": imageID});
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     final response = await http.post(url, headers: headers);
@@ -161,7 +161,7 @@ class EngagementService {
   }
 
   static Future<int> removeUpvoteFromPhoto(String token, String imageID) async {
-    var url = Uri.http(domain, '/image/upvote', {"image_id": imageID});
+    var url = Uri.https(domain, '/image/upvote', {"image_id": imageID});
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     final response = await http.delete(url, headers: headers);
