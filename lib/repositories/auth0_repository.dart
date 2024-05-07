@@ -27,6 +27,8 @@ class Auth0Repository {
 
       print('has creds');
 
+      print(creds.accessToken);
+
       String email = userProfile.email != null ? userProfile.email! : 'email';
 
       if (newAccount) {

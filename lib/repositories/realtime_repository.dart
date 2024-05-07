@@ -24,7 +24,7 @@ class RealtimeRepository {
     final Map<String, String> headers = {
       'Authorization': 'Bearer ${user.token}'
     };
-    final wsURL = Uri.parse('ws://$domain/ws');
+    final wsURL = Uri.parse('wss://$domain/ws');
     var connection =
         IOWebSocketChannel.connect(wsURL, headers: headers, pingInterval: null);
 
@@ -49,7 +49,7 @@ class RealtimeRepository {
     final Map<String, String> headers = {
       'Authorization': 'Bearer ${user.token}'
     };
-    final wsURL = Uri.parse('ws://$domain/ws/album?channel=$albumID');
+    final wsURL = Uri.parse('wss://$domain/ws/album?channel=$albumID');
     var connection =
         IOWebSocketChannel.connect(wsURL, headers: headers, pingInterval: null);
 
