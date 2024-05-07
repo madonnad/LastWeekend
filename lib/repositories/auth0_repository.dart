@@ -25,10 +25,6 @@ class Auth0Repository {
       Credentials creds = await auth0.credentialsManager.credentials();
       UserProfile userProfile = creds.user;
 
-      print('has creds');
-
-      print(creds.accessToken);
-
       String email = userProfile.email != null ? userProfile.email! : 'email';
 
       if (newAccount) {
