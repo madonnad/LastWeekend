@@ -65,9 +65,7 @@ class FriendProfileState extends Equatable {
 
   String get imageReq {
     String uid = anonymousFriend.uid;
-    print(uid);
-    print("$goRepoDomain/image?id=$uid");
-    return "$goRepoDomain/image?id=$uid";
+    return "https://${dotenv.env['DOMAIN']}/image?id=$uid";
   }
 
   @override

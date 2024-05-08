@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:shared_photo/utils/api_variables.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 enum FriendStatus { friends, pending, notFriends }
 
@@ -31,7 +31,7 @@ class BaseFriend extends Equatable {
   }
 
   String get imageReq {
-    return "$goRepoDomain/image?id=$uid";
+    return "https://${dotenv.env['DOMAIN']}/image?id=$uid";
   }
 
   @override

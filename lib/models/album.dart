@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_photo/models/notification.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:shared_photo/models/guest.dart';
@@ -161,13 +162,13 @@ class Album {
   }
 
   String get coverReq {
-    String requestUrl = "$goRepoDomain/image?id=$albumCoverId";
+    String requestUrl = "https://${dotenv.env['DOMAIN']}/image?id=$albumCoverId";
 
     return requestUrl;
   }
 
   String get ownerImageURl {
-    String requestUrl = "$goRepoDomain/image?id=$albumOwner";
+    String requestUrl = "https://${dotenv.env['DOMAIN']}/image?id=$albumOwner";
 
     return requestUrl;
   }
