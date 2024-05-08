@@ -11,5 +11,5 @@
 // const String domain = "10.0.2.2:2525";
 
 // GCP Server
-const goRepoDomain = "https://lw-services-j5ozbvdsua-uk.a.run.app";
-const String domain = "lw-services-j5ozbvdsua-uk.a.run.app";
+// const goRepoDomain = "https://lw-services-j5ozbvdsua-uk.a.run.app";
+// const String domain = "lw-services-j5ozbvdsua-uk.a.run.app";

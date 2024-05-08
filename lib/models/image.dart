@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_photo/models/comment.dart';
 import 'package:shared_photo/models/engager.dart';
@@ -91,13 +92,13 @@ class Image {
   }
 
   String get imageReq {
-    String requestUrl = "$goRepoDomain/image?id=$imageId";
+    String requestUrl = "https://${dotenv.env['DOMAIN']}/image?id=$imageId";
 
     return requestUrl;
   }
 
   String get avatarReq {
-    String requestUrl = "$goRepoDomain/image?id=$owner";
+    String requestUrl = "https://${dotenv.env['DOMAIN']}/image?id=$owner";
 
     return requestUrl;
   }

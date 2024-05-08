@@ -25,6 +25,24 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
+// ALL CUSTOM ENVIRONMENT VARIABLE FETCH
+def loadEnvFile(File envFile) {
+    def envMap = [:]
+    envFile.eachLine { line ->
+        // Check if the line is not empty and does not start with #
+        if (!line.trim().empty && !line.trim().startsWith('#')) {
+            def (key, value) = line.trim().split('=', 2) // Limit the split to 2 elements
+            envMap[key.trim()] = value.trim()
+        }
+    }
+    return envMap
+}
+
+def envFile = new File('../.env')
+def envVariables = loadEnvFile(envFile)
+
+//ENDS CUSTOM WORK
+
 android {
     namespace "com.example.shared_photo"
     compileSdkVersion flutter.compileSdkVersion
@@ -48,12 +66,12 @@ android {
         applicationId "com.example.shared_photo"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion 21
+        minSdkVersion 24
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
 
-        manifestPlaceholders += [auth0Domain: "dev-dtwzinh2v8hlmwqm.us.auth0.com", auth0Scheme: "https"]
+        manifestPlaceholders += [auth0Domain: envVariables['AUTH0_DOMAIN'], auth0Scheme: "https"]
     }
 
     buildTypes {

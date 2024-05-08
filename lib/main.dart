@@ -2,6 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/repositories/auth0_repository.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
@@ -14,6 +15,7 @@ import 'package:shared_photo/screens/loading.dart';
 import 'package:shared_photo/screens/app_frame.dart';
 
 void main() async {
+  await dotenv.load(fileName: ".env");
   WidgetsFlutterBinding.ensureInitialized();
 
   SystemChrome.setPreferredOrientations([
@@ -106,7 +108,7 @@ class MainAppView extends StatelessWidget {
           if (state is AuthenticatedState) {
             return const AppFrame();
           } else if (state is LoadingState) {
-            return const LoadingScreen();
+            return const AuthFrame();
           } else {
             return const AuthFrame();
           }

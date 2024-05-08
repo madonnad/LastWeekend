@@ -1,5 +1,5 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_photo/models/notification.dart';
-import 'package:shared_photo/utils/api_variables.dart';
 
 class Guest {
   String uid;
@@ -36,7 +36,7 @@ class Guest {
   }
 
   String get avatarReq {
-    String requestUrl = "$goRepoDomain/image?id=$uid";
+    String requestUrl = "https://${dotenv.env['DOMAIN']}image?id=$uid";
 
     return requestUrl;
   }

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_photo/models/notification.dart';
 import 'package:shared_photo/models/user.dart';
 import 'package:shared_photo/utils/api_variables.dart';
@@ -9,6 +10,7 @@ class RealtimeRepository {
   User user;
   late IOWebSocketChannel _webSocketChannel;
   late IOWebSocketChannel _albumWebSocketChannel;
+  String domain = dotenv.env['DOMAIN'] ?? '';
 
   // Stream Controllers
   final _realtimeNotificationController =

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_photo/models/friend.dart';
-import 'package:shared_photo/utils/api_variables.dart';
 import 'package:http/http.dart' as http;
 
 class UserService {
@@ -16,7 +16,7 @@ class UserService {
 
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
-    var url = Uri.https(domain, '/user');
+    var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/user');
     try {
       final response =
           await http.post(url, headers: headers, body: encodedBody);
@@ -37,7 +37,7 @@ class UserService {
   static Future<List<Friend>> getFriendsList(String token) async {
     final List<Friend> friends = [];
 
-    var url = Uri.https(domain, '/user/friend');
+    var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/user/friend');
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
     final response = await http.get(url, headers: headers);
 
@@ -62,7 +62,7 @@ class UserService {
 
   static Future<AnonymousFriend> getSearchedUser(
       String token, String uid) async {
-    var url = Uri.https(domain, '/user/id', {'id': uid});
+    var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/user/id', {'id': uid});
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     try {

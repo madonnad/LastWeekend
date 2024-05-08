@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_photo/models/search_result.dart';
-import 'package:shared_photo/utils/api_variables.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -11,7 +11,8 @@ class SearchService {
       {required String token, required String lookup}) async {
     List<SearchResult> searchResults = [];
 
-    var url = Uri.https(domain, '/search', {"lookup": lookup});
+    var url =
+        Uri.https(dotenv.env['DOMAIN'] ?? '', '/search', {"lookup": lookup});
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     final response = await http.get(url, headers: headers);
