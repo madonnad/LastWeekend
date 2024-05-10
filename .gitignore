@@ -10,6 +10,7 @@
 .svn/
 migrate_working_dir/
 .env
+/lib/assets/cert.pem
 
 # IntelliJ related
 *.iml

@@ -17,12 +17,13 @@ class ProfileHeader extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: circleDiameter,
-              backgroundColor: Colors.transparent,
+              backgroundColor: Colors.grey,
               backgroundImage: const AssetImage("lib/assets/default.png"),
               foregroundImage: NetworkImage(
                 state.user.avatarUrl,
                 headers: state.user.headers,
               ),
+              onForegroundImageError: (_, __) {},
             ),
             Padding(
               padding: const EdgeInsets.only(

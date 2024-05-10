@@ -41,11 +41,13 @@ class ProfileNavElement extends StatelessWidget {
               ),
             ),
             child: CircleAvatar(
+              backgroundImage: const AssetImage("lib/assets/default.png"),
               foregroundImage: NetworkImage(
                 url,
                 headers: headers,
               ),
-              backgroundColor: Colors.black,
+              onForegroundImageError: (_, __) {},
+              //backgroundColor: Colors.black,
               radius: 16,
             ),
           ),
