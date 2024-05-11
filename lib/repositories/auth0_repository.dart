@@ -107,8 +107,14 @@ class Auth0Repository {
 
 Future<User> getInternalUserInformation(
     String token, String email, bool newAccount) async {
-  String domain = dotenv.env['DOMAIN'] ?? '';
-  var url = Uri.https(domain, '/user');
+  //String domain = dotenv.env['DOMAIN'] ?? '';
+  //var url = Uri.https(domain, '/user');
+  Uri url = Uri(
+    scheme: dotenv.env['SCHEME'],
+    host: dotenv.env['DOMAIN'],
+    path: '/user',
+    port: int.parse(dotenv.env['PORT']!),
+  );
   final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
   final response = await http.get(url, headers: headers);

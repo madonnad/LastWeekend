@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
 import 'package:shared_photo/bloc/cubit/friend_profile_cubit.dart';
+import 'package:shared_photo/bloc/cubit/settings_cubit.dart';
 import 'package:shared_photo/models/arguments.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 import 'package:shared_photo/repositories/realtime_repository.dart';
@@ -79,7 +80,12 @@ Route onGenerateRoute(RouteSettings settings) {
       return PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 300),
         reverseTransitionDuration: const Duration(milliseconds: 150),
-        pageBuilder: (context, _, __) => const SettingsFrame(),
+        pageBuilder: (context, _, __) => BlocProvider(
+          create: (context) => SettingsCubit(
+            user: context.read<AppBloc>().state.user,
+          ),
+          child: const SettingsFrame(),
+        ),
         transitionsBuilder: (context, a, b, c) {
           var begin = const Offset(1.0, 0.0);
           var end = Offset.zero;

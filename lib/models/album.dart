@@ -4,7 +4,6 @@ import 'package:shared_photo/models/notification.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:shared_photo/models/guest.dart';
 import 'package:shared_photo/models/image.dart';
-import 'package:shared_photo/utils/api_variables.dart';
 
 enum Visibility { private, public, friends }
 
@@ -162,13 +161,15 @@ class Album {
   }
 
   String get coverReq {
-    String requestUrl = "https://${dotenv.env['DOMAIN']}/image?id=$albumCoverId";
+    String requestUrl =
+        "${dotenv.env['URL']}/image?id=$albumCoverId";
 
     return requestUrl;
   }
 
   String get ownerImageURl {
-    String requestUrl = "https://${dotenv.env['DOMAIN']}/image?id=$albumOwner";
+    String requestUrl =
+        "${dotenv.env['URL']}/image?id=$albumOwner";
 
     return requestUrl;
   }

@@ -11,8 +11,15 @@ class SearchService {
       {required String token, required String lookup}) async {
     List<SearchResult> searchResults = [];
 
-    var url =
-        Uri.https(dotenv.env['DOMAIN'] ?? '', '/search', {"lookup": lookup});
+    // var url =
+    //     Uri.https(dotenv.env['DOMAIN'] ?? '', '/search', {"lookup": lookup});
+    Uri url = Uri(
+      scheme: dotenv.env['SCHEME'],
+      host: dotenv.env['DOMAIN'],
+      port: int.parse(dotenv.env['PORT']!),
+      path: '/search',
+      queryParameters: {"lookup": lookup},
+    );
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     final response = await http.get(url, headers: headers);

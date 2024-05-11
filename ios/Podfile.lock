@@ -1,9 +1,9 @@
 PODS:
-  - Auth0 (2.7.1):
+  - Auth0 (2.7.2):
     - JWTDecode (~> 3.1)
     - SimpleKeychain (~> 1.1)
-  - auth0_flutter (1.7.1):
-    - Auth0 (= 2.7.1)
+  - auth0_flutter (1.7.2):
+    - Auth0 (= 2.7.2)
     - Flutter
     - FlutterMacOS
     - JWTDecode (= 3.1.0)
@@ -51,11 +51,11 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/sqflite/darwin"
 
 SPEC CHECKSUMS:
-  Auth0: 07dd395aa85be95e809f58347f66d97fc8679ac2
-  auth0_flutter: 9b2489a97107cf6984e2e69cdc1746c1a9ecda39
+  Auth0: 28cb24cb19ebd51f0b07751f16d83b59f4019532
+  auth0_flutter: f085572268059bc194c7b023d7f432f5ebb72413
   camera_avfoundation: 759172d1a77ae7be0de08fc104cfb79738b8a59e
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  image_picker_ios: b545a5f16c0fa88e3ecbbce3ed4de45567a8ec18
+  image_picker_ios: c560581cceedb403a6ff17f2f816d7fea1421fc1
   JWTDecode: 3eaab1e06b6f4dcbdd6716aff09ba4c2104ca8b7
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
   SimpleKeychain: f8707c8e97b38c6a6e687b17732afc9bcef06439

@@ -40,7 +40,7 @@ abstract class Notification extends Equatable {
   });
 
   String get imageReq {
-    String requestUrl = "https://${dotenv.env['DOMAIN']}/image?id=$notificationMediaID";
+    String requestUrl = "${dotenv.env['URL']}/image?id=$notificationMediaID";
 
     return requestUrl;
   }
@@ -80,8 +80,8 @@ class AlbumInviteNotification extends Notification {
     required this.unlockedAt,
   });
 
-  String get ownerURL => "https://${dotenv.env['DOMAIN']}/image?id=$albumOwner";
-  String get guestURL => "https://${dotenv.env['DOMAIN']}/image?id=$guestID";
+  String get ownerURL => "${dotenv.env['URL']}/image?id=$albumOwner";
+  String get guestURL => "${dotenv.env['URL']}/image?id=$guestID";
   String get timeUntil => TimeUntil.format(unlockedAt);
   String get timeReceived => timeago.format(receivedDateTime,
       locale: "en_short", clock: DateTime.now().toUtc());
@@ -168,8 +168,8 @@ class FriendRequestNotification extends Notification {
 
   String get fullName => '$firstName $lastName';
 
-  String get senderReq => "https://${dotenv.env['DOMAIN']}/image?id=$senderID";
-  String get receiverReq => "https://${dotenv.env['DOMAIN']}/image?id=$receiverID";
+  String get senderReq => "${dotenv.env['URL']}/image?id=$senderID";
+  String get receiverReq => "${dotenv.env['URL']}/image?id=$receiverID";
 
   factory FriendRequestNotification.fromMap(Map<String, dynamic> map) {
     RequestStatus status = RequestStatus.pending;
@@ -308,7 +308,7 @@ class EngagementNotification extends Notification {
   }
 
   String get notifierURL {
-    String requestUrl = "https://${dotenv.env['DOMAIN']}/image?id=$notifierID";
+    String requestUrl = "${dotenv.env['URL']}/image?id=$notifierID";
 
     return requestUrl;
   }
@@ -408,8 +408,8 @@ class CommentNotification extends Notification {
 
   String get shortTime => timeago.format(receivedDateTime, locale: 'en_short');
 
-  String get notifierURL => "https://${dotenv.env['DOMAIN']}/image?id=$imageOwner";
-  String get imageURL => "https://${dotenv.env['DOMAIN']}/image?id=$notificationMediaID";
+  String get notifierURL => "${dotenv.env['URL']}/image?id=$imageOwner";
+  String get imageURL => "${dotenv.env['URL']}/image?id=$notificationMediaID";
 
   String get fullName {
     return '$notifierFirst $notifierLast';
@@ -527,7 +527,7 @@ class ConsolidatedNotification extends Notification {
   }
 
   String get notifierURL {
-    String requestUrl = "https://${dotenv.env['DOMAIN']}/image?id=$notifierID";
+    String requestUrl = "${dotenv.env['URL']}/image?id=$notifierID";
 
     return requestUrl;
   }

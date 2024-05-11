@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_photo/models/notification.dart';
-import 'package:shared_photo/utils/api_variables.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class Comment {
@@ -64,7 +63,7 @@ class Comment {
   String get shortTime => timeago.format(createdAt, locale: 'en_short');
 
   String get avatarReq {
-    String requestUrl = "https://${dotenv.env['DOMAIN']}/image?id=$userID";
+    String requestUrl = "${dotenv.env['URL']}/image?id=$userID";
 
     return requestUrl;
   }

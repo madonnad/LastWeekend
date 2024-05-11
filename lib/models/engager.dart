@@ -1,5 +1,4 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:shared_photo/utils/api_variables.dart';
 
 class Engager {
   final String uid;
@@ -21,7 +20,7 @@ class Engager {
   }
 
   String get imageReq {
-    String requestUrl = "https://${dotenv.env['DOMAIN']}/image?id=$uid";
+    String requestUrl = "${dotenv.env['URL']}/image?id=$uid";
 
     return requestUrl;
   }

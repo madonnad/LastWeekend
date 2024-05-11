@@ -36,7 +36,7 @@ class Guest {
   }
 
   String get avatarReq {
-    String requestUrl = "https://${dotenv.env['DOMAIN']}image?id=$uid";
+    String requestUrl = "${dotenv.env['URL']}/image?id=$uid";
 
     return requestUrl;
   }

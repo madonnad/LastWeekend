@@ -20,7 +20,6 @@ class ProfileScreen extends StatelessWidget {
               SizedBox(height: 25),
               //MonthlyRecapList(),
               ProfileRevealedAlbums(),
-              //LogoutButton(),
             ],
           ),
         ),
