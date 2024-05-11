@@ -4,7 +4,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_photo/models/comment.dart';
 import 'package:shared_photo/models/engager.dart';
-import 'package:shared_photo/utils/api_variables.dart';
 
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class Image {
@@ -92,13 +91,13 @@ class Image {
   }
 
   String get imageReq {
-    String requestUrl = "https://${dotenv.env['DOMAIN']}/image?id=$imageId";
+    String requestUrl = "${dotenv.env['URL']}/image?id=$imageId";
 
     return requestUrl;
   }
 
   String get avatarReq {
-    String requestUrl = "https://${dotenv.env['DOMAIN']}/image?id=$owner";
+    String requestUrl = "${dotenv.env['URL']}image?id=$owner";
 
     return requestUrl;
   }

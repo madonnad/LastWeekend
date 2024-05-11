@@ -27,7 +27,7 @@ class EmptyFeed extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30.0),
               child: Text(
-                "Follow someone friends or start an album to see them here!",
+                "Follow someone or start an album to see them here!",
                 textAlign: TextAlign.center,
                 style: GoogleFonts.montserrat(
                   color: Colors.white.withOpacity(.5),

@@ -31,7 +31,7 @@ class BaseFriend extends Equatable {
   }
 
   String get imageReq {
-    return "https://${dotenv.env['DOMAIN']}/image?id=$uid";
+    return "${dotenv.env['URL']}/image?id=$uid";
   }
 
   @override

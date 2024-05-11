@@ -8,7 +8,14 @@ class NotificationService {
   Future<List<Notification>> getNotifications(String token) async {
     final List<Notification> notificationList = [];
 
-    var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/notifications');
+    //var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/notifications');
+    Uri url = Uri(
+      scheme: dotenv.env['SCHEME'],
+      host: dotenv.env['DOMAIN'],
+      port: int.parse(dotenv.env['PORT']!),
+      path: '/notifications',
+    );
+
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     final response = await http.get(url, headers: headers);

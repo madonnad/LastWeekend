@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_photo/models/notification.dart';
 import 'package:shared_photo/models/user.dart';
-import 'package:shared_photo/utils/api_variables.dart';
 import 'package:web_socket_channel/io.dart';
 
 class RealtimeRepository {
@@ -26,7 +25,13 @@ class RealtimeRepository {
     final Map<String, String> headers = {
       'Authorization': 'Bearer ${user.token}'
     };
-    final wsURL = Uri.parse('wss://$domain/ws');
+    //final wsURL = Uri.parse('wss://$domain/ws');
+    final Uri wsURL = Uri(
+      scheme: dotenv.env['WS_SCHEME'],
+      host: dotenv.env['DOMAIN'],
+      port: int.parse(dotenv.env['PORT']!),
+      path: '/ws',
+    );
     var connection =
         IOWebSocketChannel.connect(wsURL, headers: headers, pingInterval: null);
 
@@ -51,7 +56,14 @@ class RealtimeRepository {
     final Map<String, String> headers = {
       'Authorization': 'Bearer ${user.token}'
     };
-    final wsURL = Uri.parse('wss://$domain/ws/album?channel=$albumID');
+    //final wsURL = Uri.parse('wss://$domain/ws/album?channel=$albumID');
+    final Uri wsURL = Uri(
+      scheme: dotenv.env['WS_SCHEME'],
+      host: dotenv.env['DOMAIN'],
+      port: int.parse(dotenv.env['PORT']!),
+      path: '/ws/album',
+      queryParameters: {'channel': albumID},
+    );
     var connection =
         IOWebSocketChannel.connect(wsURL, headers: headers, pingInterval: null);
 

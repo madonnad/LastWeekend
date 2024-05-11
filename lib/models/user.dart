@@ -53,7 +53,7 @@ class User extends Equatable {
   bool get isNotEmpty => this != User.empty;
 
   Map<String, String> get headers => {"Authorization": "Bearer $token"};
-  String get avatarUrl => "https://${dotenv.env['DOMAIN']}/image?id=$id";
+  String get avatarUrl => "${dotenv.env['URL']}/image?id=$id";
 
   String get fullName => '$firstName $lastName';
 
