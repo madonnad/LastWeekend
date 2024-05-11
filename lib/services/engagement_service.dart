@@ -11,13 +11,10 @@ class EngagementService {
 
     // var url = Uri.https(
     //     dotenv.env['DOMAIN'] ?? '', '/image/comment', {'image_id': imageId});
-    Uri url = Uri(
-      scheme: dotenv.env['SCHEME'],
-      host: dotenv.env['DOMAIN'],
-      port: int.parse(dotenv.env['PORT']!),
-      path: '/image/comment',
-      queryParameters: {'image_id': imageId},
-    );
+
+    String urlString = "${dotenv.env['URL']}/image/comment?image_id=$imageId";
+    Uri url = Uri.parse(urlString);
+
     final Map<String, String> headers = {
       "Content-Type": "application/json",
       'Authorization': 'Bearer $token'
@@ -50,12 +47,9 @@ class EngagementService {
     String encodedBody = jsonEncode(body);
 
     //var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/image/comment');
-    Uri url = Uri(
-      scheme: dotenv.env['SCHEME'],
-      host: dotenv.env['DOMAIN'],
-      port: int.parse(dotenv.env['PORT']!),
-      path: '/image/comment',
-    );
+    String urlString = "${dotenv.env['URL']}/image/comment";
+    Uri url = Uri.parse(urlString);
+
     final Map<String, String> headers = {
       "Content-Type": "application/json",
       'Authorization': 'Bearer $token'
@@ -79,13 +73,9 @@ class EngagementService {
   static Future<bool> markCommentSeen(String token, String commentID) async {
     // var url = Uri.https(
     //     dotenv.env['DOMAIN'] ?? '', '/image/comment/seen', {"id": commentID});
-    Uri url = Uri(
-      scheme: dotenv.env['SCHEME'],
-      host: dotenv.env['DOMAIN'],
-      port: int.parse(dotenv.env['PORT']!),
-      path: '/image/comment/seen',
-      queryParameters: {"id": commentID},
-    );
+    String urlString = "${dotenv.env['URL']}/image/comment/seen?id=$commentID";
+    Uri url = Uri.parse(urlString);
+
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     try {
@@ -105,13 +95,9 @@ class EngagementService {
       String token, String notificationID) async {
     // var url = Uri.https(
     //     dotenv.env['DOMAIN'] ?? '', '/notifications', {"id": notificationID});
-    Uri url = Uri(
-      scheme: dotenv.env['SCHEME'],
-      host: dotenv.env['DOMAIN'],
-      port: int.parse(dotenv.env['PORT']!),
-      path: '/notifications',
-      queryParameters: {"id": notificationID},
-    );
+    String urlString = "${dotenv.env['URL']}/notifications?id=$notificationID";
+    Uri url = Uri.parse(urlString);
+
 
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
@@ -131,13 +117,9 @@ class EngagementService {
   static Future<int> likePhoto(String token, String imageID) async {
     // var url = Uri.https(
     //     dotenv.env['DOMAIN'] ?? '', '/image/like', {"image_id": imageID});
-    Uri url = Uri(
-      scheme: dotenv.env['SCHEME'],
-      host: dotenv.env['DOMAIN'],
-      port: int.parse(dotenv.env['PORT']!),
-      path: '/image/like',
-      queryParameters: {"image_id": imageID},
-    );
+    String urlString = "${dotenv.env['URL']}/image/like?image_id=$imageID";
+    Uri url = Uri.parse(urlString);
+
 
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
@@ -161,14 +143,9 @@ class EngagementService {
   static Future<int> unlikePhoto(String token, String imageID) async {
     // var url = Uri.https(
     //     dotenv.env['DOMAIN'] ?? '', '/image/like', {"image_id": imageID});
+    String urlString = "${dotenv.env['URL']}/image/like?image_id=$imageID";
+    Uri url = Uri.parse(urlString);
 
-    Uri url = Uri(
-      scheme: dotenv.env['SCHEME'],
-      host: dotenv.env['DOMAIN'],
-      port: int.parse(dotenv.env['PORT']!),
-      path: '/image/like',
-      queryParameters: {"image_id": imageID},
-    );
 
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
@@ -192,14 +169,10 @@ class EngagementService {
   static Future<int> upvotePhoto(String token, String imageID) async {
     // var url = Uri.https(
     //     dotenv.env['DOMAIN'] ?? '', '/image/upvote', {"image_id": imageID});
+    String urlString = "${dotenv.env['URL']}/image/upvote?image_id=$imageID";
+    Uri url = Uri.parse(urlString);
 
-    Uri url = Uri(
-      scheme: dotenv.env['SCHEME'],
-      host: dotenv.env['DOMAIN'],
-      port: int.parse(dotenv.env['PORT']!),
-      path: '/image/upvote',
-      queryParameters: {"image_id": imageID},
-    );
+
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     final response = await http.post(url, headers: headers);
@@ -222,14 +195,9 @@ class EngagementService {
   static Future<int> removeUpvoteFromPhoto(String token, String imageID) async {
     // var url = Uri.https(
     //     dotenv.env['DOMAIN'] ?? '', '/image/upvote', {"image_id": imageID});
+    String urlString = "${dotenv.env['URL']}/image/upvote?image_id=$imageID";
+    Uri url = Uri.parse(urlString);
 
-    Uri url = Uri(
-      scheme: dotenv.env['SCHEME'],
-      host: dotenv.env['DOMAIN'],
-      port: int.parse(dotenv.env['PORT']!),
-      path: '/image/upvote',
-      queryParameters: {"image_id": imageID},
-    );
 
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 

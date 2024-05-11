@@ -13,13 +13,11 @@ class SearchService {
 
     // var url =
     //     Uri.https(dotenv.env['DOMAIN'] ?? '', '/search', {"lookup": lookup});
-    Uri url = Uri(
-      scheme: dotenv.env['SCHEME'],
-      host: dotenv.env['DOMAIN'],
-      port: int.parse(dotenv.env['PORT']!),
-      path: '/search',
-      queryParameters: {"lookup": lookup},
-    );
+    String urlString =
+        "${dotenv.env['URL']}/search?lookup=$lookup";
+    Uri url = Uri.parse(urlString);
+
+
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     final response = await http.get(url, headers: headers);

@@ -11,12 +11,10 @@ class ImageService {
   static Future<List<Image>> getUserImages(String token) async {
     final List<Image> images = [];
     // var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/user/image');
-    Uri url = Uri(
-      scheme: dotenv.env['SCHEME'],
-      host: dotenv.env['DOMAIN'],
-      port: int.parse(dotenv.env['PORT']!),
-      path: '/user/image',
-    );
+
+    String urlString = "${dotenv.env['URL']}/user/image";
+    Uri url = Uri.parse(urlString);
+
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
     final response = await http.get(url, headers: headers);
 
@@ -47,13 +45,8 @@ class ImageService {
 
     // var url = Uri.https(
     //     dotenv.env['DOMAIN'] ?? '', '/album/images', {'album_id': albumID});
-    Uri url = Uri(
-      scheme: dotenv.env['SCHEME'],
-      host: dotenv.env['DOMAIN'],
-      port: int.parse(dotenv.env['PORT']!),
-      path: '/album/images',
-      queryParameters: {'album_id': albumID},
-    );
+    String urlString = "${dotenv.env['URL']}/album/images?album_id=$albumID";
+    Uri url = Uri.parse(urlString);
 
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
@@ -86,13 +79,9 @@ class ImageService {
       String imagePath,
       String imageId) async {
     // var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/upload', {'id': imageId});
-    Uri url = Uri(
-      scheme: dotenv.env['SCHEME'],
-      host: dotenv.env['DOMAIN'],
-      port: int.parse(dotenv.env['PORT']!),
-      path: '/upload',
-      queryParameters: {'id': imageId},
-    );
+    String urlString = "${dotenv.env['URL']}/upload?id=$imageId";
+    Uri url = Uri.parse(urlString);
+
 
     final Map<String, String> headers = {
       "Content-Type": "application/json",
@@ -137,13 +126,9 @@ class ImageService {
       String imagePath,
       String userID) async {
     // var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/upload', {'id': userID});
-    Uri url = Uri(
-      scheme: dotenv.env['SCHEME'],
-      host: dotenv.env['DOMAIN'],
-      port: int.parse(dotenv.env['PORT']!),
-      path: '/upload',
-      queryParameters: {'id': userID},
-    );
+    String urlString = "${dotenv.env['URL']}/upload?id=$userID";
+    Uri url = Uri.parse(urlString);
+
 
     final Map<String, String> headers = {
       "Content-Type": "application/json",
@@ -185,12 +170,10 @@ class ImageService {
       String token, CapturedImage image) async {
     //used to be postNewImage
     // var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/user/image');
-    Uri url = Uri(
-      scheme: dotenv.env['SCHEME'],
-      host: dotenv.env['DOMAIN'],
-      port: int.parse(dotenv.env['PORT']!),
-      path: '/user/image',
-    );
+    String urlString = "${dotenv.env['URL']}/user/image";
+    Uri url = Uri.parse(urlString);
+
+
     final Map<String, String> headers = {
       "Content-Type": "application/json",
       'Authorization': 'Bearer $token'
@@ -240,13 +223,10 @@ class ImageService {
   static Future<bool> addImageToRecap(String token, String imageId) async {
     // var url =
     //     Uri.https(dotenv.env['DOMAIN'] ?? '', '/user/recap', {'id': imageId});
-    Uri url = Uri(
-      scheme: dotenv.env['SCHEME'],
-      host: dotenv.env['DOMAIN'],
-      port: int.parse(dotenv.env['PORT']!),
-      path: '/user/recap',
-      queryParameters: {'id': imageId},
-    );
+    String urlString = "${dotenv.env['URL']}/user/recap?id=imageId";
+    Uri url = Uri.parse(urlString);
+
+
     final Map<String, String> headers = {
       "Content-Type": "application/json",
       'Authorization': 'Bearer $token'

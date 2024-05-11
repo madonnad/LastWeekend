@@ -26,12 +26,9 @@ class RealtimeRepository {
       'Authorization': 'Bearer ${user.token}'
     };
     //final wsURL = Uri.parse('wss://$domain/ws');
-    final Uri wsURL = Uri(
-      scheme: dotenv.env['WS_SCHEME'],
-      host: dotenv.env['DOMAIN'],
-      port: int.parse(dotenv.env['PORT']!),
-      path: '/ws',
-    );
+    String urlString = "${dotenv.env['WS_URL']}/ws";
+    Uri wsURL = Uri.parse(urlString);
+
     var connection =
         IOWebSocketChannel.connect(wsURL, headers: headers, pingInterval: null);
 
@@ -57,13 +54,9 @@ class RealtimeRepository {
       'Authorization': 'Bearer ${user.token}'
     };
     //final wsURL = Uri.parse('wss://$domain/ws/album?channel=$albumID');
-    final Uri wsURL = Uri(
-      scheme: dotenv.env['WS_SCHEME'],
-      host: dotenv.env['DOMAIN'],
-      port: int.parse(dotenv.env['PORT']!),
-      path: '/ws/album',
-      queryParameters: {'channel': albumID},
-    );
+    String urlString = "${dotenv.env['WS_URL']}/ws/album?channel=$albumID";
+    Uri wsURL = Uri.parse(urlString);
+  
     var connection =
         IOWebSocketChannel.connect(wsURL, headers: headers, pingInterval: null);
 
