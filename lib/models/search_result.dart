@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shared_photo/utils/api_variables.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 enum ResultType { album, user }
 
@@ -24,7 +24,7 @@ abstract class SearchResult {
   }
 
   String get imageReq {
-    String requestUrl = "$goRepoDomain/image?id=$id";
+    String requestUrl = "${dotenv.env['URL']}/image?id=$id";
 
     return requestUrl;
   }
@@ -43,7 +43,7 @@ class AlbumSearch extends SearchResult {
 
   factory AlbumSearch.fromMap(
       Map<String, dynamic> map, Map<String, String> headers) {
-    String requestUrl = "$goRepoDomain/image?id=${map['asset']}";
+    String requestUrl = "${dotenv.env['URL']}/image?id=${map['asset']}";
 
     return AlbumSearch(
       id: map["id"],
@@ -70,7 +70,7 @@ class UserSearch extends SearchResult {
 
   factory UserSearch.fromMap(
       Map<String, dynamic> map, Map<String, String> headers) {
-    String requestUrl = "$goRepoDomain/image?id=${map['asset']}";
+    String requestUrl = "${dotenv.env['URL']}/image?id=${map['asset']}";
 
     return UserSearch(
       id: map["id"],

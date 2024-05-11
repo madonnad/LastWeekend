@@ -1,7 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_photo/models/comment.dart';
-import 'package:shared_photo/utils/api_variables.dart';
 import 'package:http/http.dart' as http;
 
 class EngagementService {
@@ -9,7 +9,12 @@ class EngagementService {
       String token, String imageId) async {
     List<Comment> commentList = [];
 
-    var url = Uri.https(domain, '/image/comment', {'image_id': imageId});
+    // var url = Uri.https(
+    //     dotenv.env['DOMAIN'] ?? '', '/image/comment', {'image_id': imageId});
+
+    String urlString = "${dotenv.env['URL']}/image/comment?image_id=$imageId";
+    Uri url = Uri.parse(urlString);
+
     final Map<String, String> headers = {
       "Content-Type": "application/json",
       'Authorization': 'Bearer $token'
@@ -41,7 +46,10 @@ class EngagementService {
     Map<String, dynamic> body = {'image_id': imageID, 'comment': comment};
     String encodedBody = jsonEncode(body);
 
-    var url = Uri.https(domain, '/image/comment');
+    //var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/image/comment');
+    String urlString = "${dotenv.env['URL']}/image/comment";
+    Uri url = Uri.parse(urlString);
+
     final Map<String, String> headers = {
       "Content-Type": "application/json",
       'Authorization': 'Bearer $token'
@@ -63,7 +71,11 @@ class EngagementService {
   }
 
   static Future<bool> markCommentSeen(String token, String commentID) async {
-    var url = Uri.https(domain, '/image/comment/seen', {"id": commentID});
+    // var url = Uri.https(
+    //     dotenv.env['DOMAIN'] ?? '', '/image/comment/seen', {"id": commentID});
+    String urlString = "${dotenv.env['URL']}/image/comment/seen?id=$commentID";
+    Uri url = Uri.parse(urlString);
+
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     try {
@@ -81,7 +93,12 @@ class EngagementService {
 
   static Future<bool> markNotificationSeen(
       String token, String notificationID) async {
-    var url = Uri.https(domain, '/notifications', {"id": notificationID});
+    // var url = Uri.https(
+    //     dotenv.env['DOMAIN'] ?? '', '/notifications', {"id": notificationID});
+    String urlString = "${dotenv.env['URL']}/notifications?id=$notificationID";
+    Uri url = Uri.parse(urlString);
+
+
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     try {
@@ -98,7 +115,12 @@ class EngagementService {
   }
 
   static Future<int> likePhoto(String token, String imageID) async {
-    var url = Uri.https(domain, '/image/like', {"image_id": imageID});
+    // var url = Uri.https(
+    //     dotenv.env['DOMAIN'] ?? '', '/image/like', {"image_id": imageID});
+    String urlString = "${dotenv.env['URL']}/image/like?image_id=$imageID";
+    Uri url = Uri.parse(urlString);
+
+
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     final response = await http.post(url, headers: headers);
@@ -119,7 +141,12 @@ class EngagementService {
   }
 
   static Future<int> unlikePhoto(String token, String imageID) async {
-    var url = Uri.https(domain, '/image/like', {"image_id": imageID});
+    // var url = Uri.https(
+    //     dotenv.env['DOMAIN'] ?? '', '/image/like', {"image_id": imageID});
+    String urlString = "${dotenv.env['URL']}/image/like?image_id=$imageID";
+    Uri url = Uri.parse(urlString);
+
+
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     final response = await http.delete(url, headers: headers);
@@ -140,7 +167,12 @@ class EngagementService {
   }
 
   static Future<int> upvotePhoto(String token, String imageID) async {
-    var url = Uri.https(domain, '/image/upvote', {"image_id": imageID});
+    // var url = Uri.https(
+    //     dotenv.env['DOMAIN'] ?? '', '/image/upvote', {"image_id": imageID});
+    String urlString = "${dotenv.env['URL']}/image/upvote?image_id=$imageID";
+    Uri url = Uri.parse(urlString);
+
+
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     final response = await http.post(url, headers: headers);
@@ -161,7 +193,12 @@ class EngagementService {
   }
 
   static Future<int> removeUpvoteFromPhoto(String token, String imageID) async {
-    var url = Uri.https(domain, '/image/upvote', {"image_id": imageID});
+    // var url = Uri.https(
+    //     dotenv.env['DOMAIN'] ?? '', '/image/upvote', {"image_id": imageID});
+    String urlString = "${dotenv.env['URL']}/image/upvote?image_id=$imageID";
+    Uri url = Uri.parse(urlString);
+
+
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     final response = await http.delete(url, headers: headers);

@@ -2,15 +2,17 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:auth0_flutter/auth0_flutter.dart';
 import 'package:shared_photo/models/user.dart';
 import 'package:shared_photo/services/user_service.dart';
-import 'package:shared_photo/utils/api_key.dart';
-import 'package:shared_photo/utils/api_variables.dart';
 
 class Auth0Repository {
-  final auth0 = Auth0(auth0_domain, auth0_id);
+  final auth0 = Auth0(
+    dotenv.env['AUTH0_DOMAIN'] ?? '',
+    dotenv.env['AUTH0_ID'] ?? '',
+  );
   final String connection = "Username-Password-Authentication";
   bool newAccount = false;
 
@@ -76,13 +78,14 @@ class Auth0Repository {
 
   Future<void> loginWithEmailAndPassword(
       {required String email, required String password}) async {
-    String audience = "http://localhost:2525/go_services";
+    String audience = dotenv.env["AUTH0_AUDIENCE"] ?? '';
     try {
       Credentials credentials = await auth0.api.login(
-          usernameOrEmail: email,
-          password: password,
-          connectionOrRealm: connection,
-          audience: audience);
+        usernameOrEmail: email,
+        password: password,
+        connectionOrRealm: connection,
+        audience: audience,
+      );
 
       bool didStore =
           await auth0.credentialsManager.storeCredentials(credentials);
@@ -104,7 +107,11 @@ class Auth0Repository {
 
 Future<User> getInternalUserInformation(
     String token, String email, bool newAccount) async {
-  var url = Uri.https(domain, '/user');
+  //String domain = dotenv.env['DOMAIN'] ?? '';
+  //var url = Uri.https(domain, '/user');
+  String urlString = "${dotenv.env['URL']}/user";
+  Uri url = Uri.parse(urlString);
+
   final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
   final response = await http.get(url, headers: headers);

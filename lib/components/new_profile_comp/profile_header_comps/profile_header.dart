@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
@@ -15,14 +17,30 @@ class ProfileHeader extends StatelessWidget {
         double circleDiameter = devWidth * .25;
         return Column(
           children: [
+            SizedBox(
+              height: 56,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  GestureDetector(
+                    onTap: () => Navigator.of(context).pushNamed('/settings'),
+                    child: const Icon(
+                      Icons.settings,
+                      color: Colors.white70,
+                    ),
+                  ),
+                ],
+              ),
+            ),
             CircleAvatar(
               radius: circleDiameter,
-              backgroundColor: Colors.transparent,
+              backgroundColor: Colors.grey,
               backgroundImage: const AssetImage("lib/assets/default.png"),
               foregroundImage: NetworkImage(
                 state.user.avatarUrl,
                 headers: state.user.headers,
               ),
+              onForegroundImageError: (_, __) {},
             ),
             Padding(
               padding: const EdgeInsets.only(

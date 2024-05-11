@@ -1,4 +1,4 @@
-import 'package:shared_photo/utils/api_variables.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class Engager {
   final String uid;
@@ -20,7 +20,7 @@ class Engager {
   }
 
   String get imageReq {
-    String requestUrl = "$goRepoDomain/image?id=$uid";
+    String requestUrl = "${dotenv.env['URL']}/image?id=$uid";
 
     return requestUrl;
   }

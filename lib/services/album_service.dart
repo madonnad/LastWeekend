@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_photo/bloc/cubit/create_album_cubit.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/guest.dart';
-import 'package:shared_photo/utils/api_variables.dart';
 import 'package:http/http.dart' as http;
 
 class AlbumService {
@@ -14,7 +14,10 @@ class AlbumService {
     Map<String, dynamic> albumInformation = state.toJson();
     String encodedBody = json.encode(albumInformation);
 
-    var url = Uri.https(domain, '/user/album');
+    //var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/user/album');
+    String urlString = "${dotenv.env['URL']}/user/album";
+    Uri url = Uri.parse(urlString);
+
     final Map<String, String> headers = {
       "Content-Type": "application/json",
       'Authorization': 'Bearer $token'
@@ -39,7 +42,10 @@ class AlbumService {
 
   static Future<List<Album>> getAuthUsersAlbums(String token) async {
     final List<Album> albums = [];
-    var url = Uri.https(domain, '/user/album');
+    //var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/user/album');
+    String urlString = "${dotenv.env['URL']}/user/album";
+    Uri url = Uri.parse(urlString);
+
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     final response = await http.get(url, headers: headers);
@@ -67,7 +73,10 @@ class AlbumService {
       String token, List<String> albumIds) async {
     final List<Album> albums = [];
 
-    var url = Uri.https(domain, '/album/revealed');
+    //var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/album/revealed');
+    String urlString = "${dotenv.env['URL']}/album/revealed'";
+    Uri url = Uri.parse(urlString);
+
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
     String encodedBody = json.encode(albumIds);
 
@@ -93,7 +102,10 @@ class AlbumService {
 
   static Future<List<Album>> getFeedAlbums(String token) async {
     final List<Album> albums = [];
-    var url = Uri.https(domain, '/feed');
+    //var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/feed');
+    String urlString = "${dotenv.env['URL']}/feed";
+    Uri url = Uri.parse(urlString);
+ 
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     final response = await http.get(url, headers: headers);
@@ -119,7 +131,12 @@ class AlbumService {
 
   static Future<Album> getAlbumByID(String token, String albumID) async {
     Album album = Album.empty;
-    var url = Uri.https(domain, '/album', {'album_id': albumID});
+    // var url =
+    //     Uri.https(dotenv.env['DOMAIN'] ?? '', '/album', {'album_id': albumID});
+    String urlString = "${dotenv.env['URL']}/album?album_id=$albumID";
+    Uri url = Uri.parse(urlString);
+
+
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     final response = await http.get(url, headers: headers);
@@ -144,7 +161,12 @@ class AlbumService {
       String token, String albumID) async {
     List<Guest> guests = [];
 
-    var url = Uri.https(domain, '/album/guests', {"album_id": albumID});
+    // var url = Uri.https(
+    //     dotenv.env['DOMAIN'] ?? '', '/album/guests', {"album_id": albumID});
+    String urlString = "${dotenv.env['URL']}/album/guests?album_id=$albumID";
+    Uri url = Uri.parse(urlString);
+    
+
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     try {

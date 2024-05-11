@@ -2,15 +2,19 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_photo/models/captured_image.dart';
 import 'package:shared_photo/models/image.dart';
-import 'package:shared_photo/utils/api_variables.dart';
 import 'package:http/http.dart' as http;
 
 class ImageService {
   static Future<List<Image>> getUserImages(String token) async {
     final List<Image> images = [];
-    var url = Uri.https(domain, '/user/image');
+    // var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/user/image');
+
+    String urlString = "${dotenv.env['URL']}/user/image";
+    Uri url = Uri.parse(urlString);
+
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
     final response = await http.get(url, headers: headers);
 
@@ -39,7 +43,11 @@ class ImageService {
       String token, String albumID) async {
     final List<Image> images = [];
 
-    var url = Uri.https(domain, '/album/images', {'album_id': albumID});
+    // var url = Uri.https(
+    //     dotenv.env['DOMAIN'] ?? '', '/album/images', {'album_id': albumID});
+    String urlString = "${dotenv.env['URL']}/album/images?album_id=$albumID";
+    Uri url = Uri.parse(urlString);
+
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     final response = await http.get(url, headers: headers);
@@ -70,7 +78,11 @@ class ImageService {
       String token,
       String imagePath,
       String imageId) async {
-    var url = Uri.https(domain, '/upload', {'id': imageId});
+    // var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/upload', {'id': imageId});
+    String urlString = "${dotenv.env['URL']}/upload?id=$imageId";
+    Uri url = Uri.parse(urlString);
+
+
     final Map<String, String> headers = {
       "Content-Type": "application/json",
       'Authorization': 'Bearer $token'
@@ -87,10 +99,11 @@ class ImageService {
 
       if (response.statusCode == 200) {
         final gcpSignedUrl = Uri.parse(response.body);
-        final secureUrl = Uri.https(gcpSignedUrl.authority, gcpSignedUrl.path,
-            gcpSignedUrl.queryParameters);
+        // final secureUrl = Uri.https(gcpSignedUrl.authority, gcpSignedUrl.path,
+        //     gcpSignedUrl.queryParameters);
+
         final uploadResponse =
-            await http.put(secureUrl, headers: gcpHeader, body: imageBytes);
+            await http.put(gcpSignedUrl, headers: gcpHeader, body: imageBytes);
 
         if (uploadResponse.statusCode == 200) {
           return true;
@@ -112,7 +125,11 @@ class ImageService {
       String token,
       String imagePath,
       String userID) async {
-    var url = Uri.https(domain, '/upload', {'id': userID});
+    // var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/upload', {'id': userID});
+    String urlString = "${dotenv.env['URL']}/upload?id=$userID";
+    Uri url = Uri.parse(urlString);
+
+
     final Map<String, String> headers = {
       "Content-Type": "application/json",
       'Authorization': 'Bearer $token'
@@ -129,10 +146,10 @@ class ImageService {
 
       if (response.statusCode == 200) {
         final gcpSignedUrl = Uri.parse(response.body);
-        final secureUrl = Uri.https(gcpSignedUrl.authority, gcpSignedUrl.path,
-            gcpSignedUrl.queryParameters);
+        // final secureUrl = Uri.https(gcpSignedUrl.authority, gcpSignedUrl.path,
+        //     gcpSignedUrl.queryParameters);
         final uploadResponse =
-            await http.put(secureUrl, headers: gcpHeader, body: imageBytes);
+            await http.put(gcpSignedUrl, headers: gcpHeader, body: imageBytes);
 
         if (uploadResponse.statusCode == 200) {
           return true;
@@ -152,7 +169,11 @@ class ImageService {
   static Future<bool> postCapturedImage(
       String token, CapturedImage image) async {
     //used to be postNewImage
-    var url = Uri.https(domain, '/user/image');
+    // var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/user/image');
+    String urlString = "${dotenv.env['URL']}/user/image";
+    Uri url = Uri.parse(urlString);
+
+
     final Map<String, String> headers = {
       "Content-Type": "application/json",
       'Authorization': 'Bearer $token'
@@ -200,7 +221,12 @@ class ImageService {
   }
 
   static Future<bool> addImageToRecap(String token, String imageId) async {
-    var url = Uri.https(domain, '/user/recap', {'id': imageId});
+    // var url =
+    //     Uri.https(dotenv.env['DOMAIN'] ?? '', '/user/recap', {'id': imageId});
+    String urlString = "${dotenv.env['URL']}/user/recap?id=imageId";
+    Uri url = Uri.parse(urlString);
+
+
     final Map<String, String> headers = {
       "Content-Type": "application/json",
       'Authorization': 'Bearer $token'

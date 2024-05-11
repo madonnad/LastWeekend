@@ -1,14 +1,18 @@
 import 'dart:convert';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_photo/models/notification.dart';
-import 'package:shared_photo/utils/api_variables.dart';
 import 'package:http/http.dart' as http;
 
 class NotificationService {
   Future<List<Notification>> getNotifications(String token) async {
     final List<Notification> notificationList = [];
 
-    var url = Uri.https(domain, '/notifications');
+    //var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/notifications');
+    String urlString = "${dotenv.env['URL']}/notifications";
+    Uri url = Uri.parse(urlString);
+
+
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     final response = await http.get(url, headers: headers);

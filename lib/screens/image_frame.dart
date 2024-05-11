@@ -43,8 +43,11 @@ class ImageFrame extends StatelessWidget {
                     slivers: [
                       const SliverToBoxAdapter(child: ImageFrameAppBar()),
                       const SliverToBoxAdapter(
-                          child: ImageFrameImageContainer()),
-                      const SliverToBoxAdapter(child: ImageFrameControlBar()),
+                        child: ImageFrameImageContainer(),
+                      ),
+                      const SliverToBoxAdapter(
+                        child: ImageFrameControlBar(),
+                      ),
                       SliverToBoxAdapter(
                         child: ImageFrameCaption(headers: headers),
                       ),

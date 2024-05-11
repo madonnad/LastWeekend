@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
-import 'package:shared_photo/utils/api_variables.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class User extends Equatable {
   final String id;
@@ -53,7 +53,7 @@ class User extends Equatable {
   bool get isNotEmpty => this != User.empty;
 
   Map<String, String> get headers => {"Authorization": "Bearer $token"};
-  String get avatarUrl => "$goRepoDomain/image?id=$id";
+  String get avatarUrl => "${dotenv.env['URL']}/image?id=$id";
 
   String get fullName => '$firstName $lastName';
 

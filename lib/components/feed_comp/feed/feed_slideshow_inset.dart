@@ -119,10 +119,13 @@ class FeedSlideshowInset extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(right: 8.0),
                           child: CircleAvatar(
-                            backgroundImage: CachedNetworkImageProvider(
+                            backgroundImage:
+                                const AssetImage("lib/assets/default.png"),
+                            foregroundImage: NetworkImage(
                               state.avatarUrl,
                               headers: headers,
                             ),
+                            onForegroundImageError: (_, __) {},
                             radius: 15,
                             backgroundColor:
                                 const Color.fromRGBO(44, 44, 44, .75),
