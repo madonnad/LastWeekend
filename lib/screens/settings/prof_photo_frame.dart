@@ -105,7 +105,8 @@ class ProfPhotoFrame extends StatelessWidget {
                                 .then((value) {
                               if (value) {
                                 context
-                                .read<SettingsCubit>().clearNewImageFile();
+                                    .read<SettingsCubit>()
+                                    .clearNewImageFile();
                                 Navigator.of(context).pop();
                               }
                             });

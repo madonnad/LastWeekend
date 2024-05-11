@@ -9,12 +9,9 @@ class NotificationService {
     final List<Notification> notificationList = [];
 
     //var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/notifications');
-    Uri url = Uri(
-      scheme: dotenv.env['SCHEME'],
-      host: dotenv.env['DOMAIN'],
-      port: int.parse(dotenv.env['PORT']!),
-      path: '/notifications',
-    );
+    String urlString = "${dotenv.env['URL']}/notifications";
+    Uri url = Uri.parse(urlString);
+
 
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 

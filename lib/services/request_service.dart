@@ -6,13 +6,10 @@ class RequestService {
   static Future<bool> sendFriendRequest(String token, String uid) async {
     // var url =
     //     Uri.https(dotenv.env['DOMAIN'] ?? '', '/friend-request', {'id': uid});
-    Uri url = Uri(
-      scheme: dotenv.env['SCHEME'],
-      host: dotenv.env['DOMAIN'],
-      port: int.parse(dotenv.env['PORT']!),
-      path: '/friend-request',
-      queryParameters: {'id': uid},
-    );
+    String urlString = "${dotenv.env['URL']}/friend-request?id=$uid";
+    Uri url = Uri.parse(urlString);
+
+
     final Map<String, String> headers = {
       "Content-Type": "application/json",
       'Authorization': 'Bearer $token'
@@ -37,15 +34,11 @@ class RequestService {
     //   "id": senderID,
     //   "request_id": requestID,
     // });
-    Uri url = Uri(
-        scheme: dotenv.env['SCHEME'],
-        host: dotenv.env['DOMAIN'],
-        port: int.parse(dotenv.env['PORT']!),
-        path: '/friend-request',
-        queryParameters: {
-          "id": senderID,
-          "request_id": requestID,
-        });
+    String urlString =
+        "${dotenv.env['URL']}/friend-request?id=$senderID&request_id=$requestID";
+    Uri url = Uri.parse(urlString);
+
+
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     try {
@@ -65,13 +58,10 @@ class RequestService {
       String token, String requestID) async {
     // var url = Uri.https(
     //     dotenv.env['DOMAIN'] ?? '', '/friend-request', {"id": requestID});
-    Uri url = Uri(
-      scheme: dotenv.env['SCHEME'],
-      host: dotenv.env['DOMAIN'],
-      port: int.parse(dotenv.env['PORT']!),
-      path: '/friend-request',
-      queryParameters: {"id": requestID},
-    );
+    String urlString = "${dotenv.env['URL']}/friend-request?id=$requestID";
+    Uri url = Uri.parse(urlString);
+
+
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     try {
@@ -91,13 +81,10 @@ class RequestService {
       String token, String requestID) async {
     // var url = Uri.https(
     //     dotenv.env['DOMAIN'] ?? '', '/friend-request', {"id": requestID});
-    Uri url = Uri(
-      scheme: dotenv.env['SCHEME'],
-      host: dotenv.env['DOMAIN'],
-      port: int.parse(dotenv.env['PORT']!),
-      path: '/friend-request',
-      queryParameters: {"id": requestID},
-    );
+    String urlString = "${dotenv.env['URL']}/friend-request?id=$requestID";
+    Uri url = Uri.parse(urlString);
+
+
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     try {
@@ -117,13 +104,10 @@ class RequestService {
       String token, String requestID) async {
     // var url = Uri.https(
     //     dotenv.env['DOMAIN'] ?? '', '/album-invite', {"id": requestID});
-    Uri url = Uri(
-      scheme: dotenv.env['SCHEME'],
-      host: dotenv.env['DOMAIN'],
-      port: int.parse(dotenv.env['PORT']!),
-      path: '/album-invite',
-      queryParameters: {"id": requestID},
-    );
+    String urlString = "${dotenv.env['URL']}/album-invite?id=$requestID";
+    Uri url = Uri.parse(urlString);
+
+
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     try {
@@ -143,13 +127,11 @@ class RequestService {
   static Future<bool> acceptAlbumInvite(String token, String requestID) async {
     // var url = Uri.https(
     //     dotenv.env['DOMAIN'] ?? '', '/album-invite', {"request_id": requestID});
-    Uri url = Uri(
-      scheme: dotenv.env['SCHEME'],
-      host: dotenv.env['DOMAIN'],
-      port: int.parse(dotenv.env['PORT']!),
-      path: '/album-invite',
-      queryParameters: {"request_id": requestID},
-    );
+    String urlString =
+        "${dotenv.env['URL']}/album-invite?request_id=$requestID";
+    Uri url = Uri.parse(urlString);
+
+
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     try {
@@ -168,13 +150,11 @@ class RequestService {
   static Future<bool> denyAlbumInvite(String token, String requestID) async {
     // var url = Uri.https(
     //     dotenv.env['DOMAIN'] ?? '', '/album-invite', {"request_id": requestID});
-    Uri url = Uri(
-      scheme: dotenv.env['SCHEME'],
-      host: dotenv.env['DOMAIN'],
-      port: int.parse(dotenv.env['PORT']!),
-      path: '/album-invite',
-      queryParameters: {"request_id": requestID},
-    );
+    String urlString =
+        "${dotenv.env['URL']}/album-invite?request_id=$requestID";
+    Uri url = Uri.parse(urlString);
+
+
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     try {

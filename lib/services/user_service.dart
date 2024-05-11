@@ -17,12 +17,9 @@ class UserService {
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     // var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/user');
-    Uri url = Uri(
-      scheme: dotenv.env['SCHEME'],
-      host: dotenv.env['DOMAIN'],
-      port: int.parse(dotenv.env['PORT']!),
-      path: '/user',
-    );
+    String urlString = "${dotenv.env['URL']}/user";
+    Uri url = Uri.parse(urlString);
+
     try {
       final response =
           await http.post(url, headers: headers, body: encodedBody);
@@ -44,12 +41,9 @@ class UserService {
     final List<Friend> friends = [];
 
     // var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/user/friend');
-    Uri url = Uri(
-      scheme: dotenv.env['SCHEME'],
-      host: dotenv.env['DOMAIN'],
-      port: int.parse(dotenv.env['PORT']!),
-      path: '/user/friend',
-    );
+    String urlString = "${dotenv.env['URL']}/user/friend";
+    Uri url = Uri.parse(urlString);
+
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
     final response = await http.get(url, headers: headers);
 
@@ -75,13 +69,9 @@ class UserService {
   static Future<AnonymousFriend> getSearchedUser(
       String token, String uid) async {
     // var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/user/id', {'id': uid});
-    Uri url = Uri(
-      scheme: dotenv.env['SCHEME'],
-      host: dotenv.env['DOMAIN'],
-      port: int.parse(dotenv.env['PORT']!),
-      path: '/user/friend',
-      queryParameters: {'id': uid},
-    );
+    String urlString = "${dotenv.env['URL']}/user/id'?id=$uid";
+    Uri url = Uri.parse(urlString);
+
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     try {

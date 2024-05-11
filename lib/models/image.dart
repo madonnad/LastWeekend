@@ -97,7 +97,7 @@ class Image {
   }
 
   String get avatarReq {
-    String requestUrl = "${dotenv.env['URL']}image?id=$owner";
+    String requestUrl = "${dotenv.env['URL']}/image?id=$owner";
 
     return requestUrl;
   }
