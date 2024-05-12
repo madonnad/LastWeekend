@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
+import 'package:shared_photo/bloc/cubit/app_frame_cubit.dart';
 import 'package:shared_photo/bloc/cubit/friend_profile_cubit.dart';
 import 'package:shared_photo/bloc/cubit/settings_cubit.dart';
 import 'package:shared_photo/models/arguments.dart';
@@ -26,12 +27,19 @@ Route onGenerateRoute(RouteSettings settings) {
       return PageRouteBuilder(
         transitionDuration: const Duration(milliseconds: 300),
         reverseTransitionDuration: const Duration(milliseconds: 150),
-        pageBuilder: (context, _, __) => BlocProvider(
-          create: (context) => AlbumFrameCubit(
-            albumID: arguments.albumID,
-            dataRepository: context.read<DataRepository>(),
-            realtimeRepository: context.read<RealtimeRepository>(),
-          ),
+        pageBuilder: (context, _, __) => MultiBlocProvider(
+          providers: [
+            BlocProvider.value(
+              value: AppFrameCubit(),
+            ),
+            BlocProvider(
+              create: (context) => AlbumFrameCubit(
+                albumID: arguments.albumID,
+                dataRepository: context.read<DataRepository>(),
+                realtimeRepository: context.read<RealtimeRepository>(),
+              ),
+            ),
+          ],
           child: AlbumFrame(arguments: arguments),
         ),
         transitionsBuilder: (context, a, b, c) {

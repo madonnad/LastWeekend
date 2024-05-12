@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:camera/camera.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,14 +13,9 @@ import 'package:shared_photo/router/generate_route.dart';
 import 'package:shared_photo/screens/auth_frame.dart';
 import 'package:shared_photo/screens/loading.dart';
 import 'package:shared_photo/screens/app_frame.dart';
-import 'package:shared_photo/utils/dev_http_overrides.dart';
 
 void main() async {
   await dotenv.load(fileName: ".env");
-
-  if (kDebugMode) {
-    HttpOverrides.global = new DevHttpOverrides();
-  }
 
   WidgetsFlutterBinding.ensureInitialized();
 

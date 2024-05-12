@@ -9,6 +9,7 @@ extension FriendRequestRepo on NotificationRepository {
         _notificationController.add((StreamOperation.add, request));
       case RequestStatus.accepted:
         friendRequestMap[request.notificationID] = request;
+        print("friend request handler - repo");
         _notificationController.add((StreamOperation.update, request));
 
       case RequestStatus.denied:
