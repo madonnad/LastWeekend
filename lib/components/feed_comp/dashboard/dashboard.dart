@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/dashboard_bloc.dart';
 
 import 'package:shared_photo/components/app_comp/section_header_small.dart';
@@ -39,20 +40,28 @@ class Dashboard extends StatelessWidget {
                     },
                   ),
                 ),
-                const Expanded(
+                Expanded(
                   flex: 2,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
+                      const Padding(
                         padding: EdgeInsets.only(top: 25.0, bottom: 5),
                         child: SectionHeaderSmall("notifications"),
                       ),
                       Expanded(
                         child: Card(
-                          color: Color.fromRGBO(19, 19, 19, 1),
-                          child: SizedBox(
-                            width: 375,
+                          color: const Color.fromRGBO(19, 19, 19, 1),
+                          child: Container(
+                            alignment: Alignment.centerLeft,
+                            padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
+                            child: Text(
+                              'No new notifications',
+                              style: GoogleFonts.josefinSans(
+                                color: Colors.white70,
+                                fontSize: 18,
+                              ),
+                            ),
                           ),
                         ),
                       )

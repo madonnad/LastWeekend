@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -21,11 +20,13 @@ class SearchListItem extends StatelessWidget {
       children: [
         CircleAvatar(
           radius: 25,
-          backgroundColor: const Color.fromRGBO(19, 19, 19, 1),
-          backgroundImage: CachedNetworkImageProvider(
+          backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
+          backgroundImage: const AssetImage("lib/assets/default.png"),
+          foregroundImage: NetworkImage(
             friend.imageReq,
             headers: context.read<AppBloc>().state.user.headers,
           ),
+          onForegroundImageError: (_, __) {},
         ),
         Expanded(
           child: Padding(
