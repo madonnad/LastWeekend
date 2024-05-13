@@ -85,7 +85,7 @@ class CreateFriendAddPage extends StatelessWidget {
                   child: AddedFriendsListView(),
                 );
               } else {
-                return SizedBox(height: 0);
+                return const SizedBox(height: 0);
               }
             },
           ),

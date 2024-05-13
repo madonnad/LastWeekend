@@ -6,7 +6,7 @@ import 'package:shared_photo/models/comment.dart';
 import 'package:shared_photo/models/engager.dart';
 
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-class Image {
+class Photo {
   String imageId;
   String owner;
   String firstName;
@@ -21,7 +21,7 @@ class Image {
   List<Engager> likesUID;
   List<Engager> upvotesUID;
 
-  Image({
+  Photo({
     required this.imageId,
     required this.owner,
     required this.firstName,
@@ -50,8 +50,8 @@ class Image {
     };
   }
 
-  factory Image.fromMap(Map<String, dynamic> map) {
-    return Image(
+  factory Photo.fromMap(Map<String, dynamic> map) {
+    return Photo(
       imageId: map['image_id'] as String,
       owner: map['image_owner'] as String,
       firstName: map['first_name'],
@@ -68,8 +68,8 @@ class Image {
     );
   }
 
-  factory Image.from(Image image) {
-    return Image(
+  factory Photo.from(Photo image) {
+    return Photo(
       imageId: image.imageId,
       owner: image.owner,
       firstName: image.firstName,
@@ -122,6 +122,6 @@ class Image {
 
   String toJson() => json.encode(toMap());
 
-  factory Image.fromJson(String source) =>
-      Image.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory Photo.fromJson(String source) =>
+      Photo.fromMap(json.decode(source) as Map<String, dynamic>);
 }

@@ -4,12 +4,12 @@ import 'dart:typed_data';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_photo/models/captured_image.dart';
-import 'package:shared_photo/models/image.dart';
+import 'package:shared_photo/models/photo.dart';
 import 'package:http/http.dart' as http;
 
 class ImageService {
-  static Future<List<Image>> getUserImages(String token) async {
-    final List<Image> images = [];
+  static Future<List<Photo>> getUserImages(String token) async {
+    final List<Photo> images = [];
     // var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/user/image');
 
     String urlString = "${dotenv.env['URL']}/user/image";
@@ -27,7 +27,7 @@ class ImageService {
       }
 
       for (var item in jsonData) {
-        Image image = Image.fromMap(item);
+        Photo image = Photo.fromMap(item);
         images.add(image);
       }
       //print(images);
@@ -39,9 +39,9 @@ class ImageService {
     return images;
   }
 
-  static Future<List<Image>> getAlbumImages(
+  static Future<List<Photo>> getAlbumImages(
       String token, String albumID) async {
-    final List<Image> images = [];
+    final List<Photo> images = [];
 
     // var url = Uri.https(
     //     dotenv.env['DOMAIN'] ?? '', '/album/images', {'album_id': albumID});
@@ -61,7 +61,7 @@ class ImageService {
       }
 
       for (var item in jsonData) {
-        Image image = Image.fromMap(item);
+        Photo image = Photo.fromMap(item);
         images.add(image);
       }
       //print(images);
@@ -81,7 +81,6 @@ class ImageService {
     // var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/upload', {'id': imageId});
     String urlString = "${dotenv.env['URL']}/upload?id=$imageId";
     Uri url = Uri.parse(urlString);
-
 
     final Map<String, String> headers = {
       "Content-Type": "application/json",
@@ -129,7 +128,6 @@ class ImageService {
     String urlString = "${dotenv.env['URL']}/upload?id=$userID";
     Uri url = Uri.parse(urlString);
 
-
     final Map<String, String> headers = {
       "Content-Type": "application/json",
       'Authorization': 'Bearer $token'
@@ -172,7 +170,6 @@ class ImageService {
     // var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/user/image');
     String urlString = "${dotenv.env['URL']}/user/image";
     Uri url = Uri.parse(urlString);
-
 
     final Map<String, String> headers = {
       "Content-Type": "application/json",
@@ -225,7 +222,6 @@ class ImageService {
     //     Uri.https(dotenv.env['DOMAIN'] ?? '', '/user/recap', {'id': imageId});
     String urlString = "${dotenv.env['URL']}/user/recap?id=imageId";
     Uri url = Uri.parse(urlString);
-
 
     final Map<String, String> headers = {
       "Content-Type": "application/json",

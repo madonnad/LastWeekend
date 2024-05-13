@@ -37,13 +37,13 @@ extension AlbumDataRepo on DataRepository {
 
   // Initializer Functions
 
-  Future<Map<String, Image>> getAlbumImages(String albumID) async {
-    List<Image> imageList =
+  Future<Map<String, Photo>> getAlbumImages(String albumID) async {
+    List<Photo> imageList =
         await ImageService.getAlbumImages(user.token, albumID);
 
-    Map<String, Image> imageMap = {};
+    Map<String, Photo> imageMap = {};
 
-    for (Image image in imageList) {
+    for (Photo image in imageList) {
       imageMap.putIfAbsent(image.imageId, () => image);
     }
 

@@ -8,7 +8,7 @@ class CameraLockedScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-        color: Color.fromRGBO(16, 16, 16, 1),
+        color: const Color.fromRGBO(16, 16, 16, 1),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

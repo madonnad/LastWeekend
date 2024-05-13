@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/friend.dart';
-import 'package:shared_photo/models/image.dart';
+import 'package:shared_photo/models/photo.dart';
 import 'package:shared_photo/models/image_change.dart';
 import 'package:shared_photo/models/notification.dart';
 import 'package:shared_photo/models/user.dart';
@@ -77,7 +77,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
       String albumID = event.imageChange.albumID;
       String imageID = event.imageChange.imageID;
-      Image image = event.imageChange.image;
+      Photo image = event.imageChange.image;
 
       albumMap[albumID]?.imageMap.update(imageID, (value) => image);
 

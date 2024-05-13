@@ -37,7 +37,7 @@ extension ImageDataRepo on DataRepository {
     if (postedComment == null) return postedComment;
 
     if (albumMap[albumID]?.imageMap[imageID] != null) {
-      Image image = albumMap[albumID]!.imageMap[imageID]!;
+      Photo image = albumMap[albumID]!.imageMap[imageID]!;
 
       image.commentMap[postedComment.id] = postedComment;
     }
@@ -51,7 +51,7 @@ extension ImageDataRepo on DataRepository {
     late int newCount;
 
     if (albumMap[albumID]?.imageMap[imageID] != null) {
-      Image image;
+      Photo image;
       if (currentStatus) {
         newCount = await EngagementService.unlikePhoto(user.token, imageID);
         userLiked = false;
@@ -85,7 +85,7 @@ extension ImageDataRepo on DataRepository {
     late int newCount;
 
     if (albumMap[albumID]?.imageMap[imageID] != null) {
-      Image image;
+      Photo image;
       if (currentStatus) {
         newCount =
             await EngagementService.removeUpvoteFromPhoto(user.token, imageID);
@@ -123,7 +123,7 @@ extension ImageDataRepo on DataRepository {
         String imageID = notification.notificationMediaID;
 
         if (albumMap[albumID]?.imageMap[imageID] != null) {
-          Image image = albumMap[albumID]!.imageMap[imageID]!;
+          Photo image = albumMap[albumID]!.imageMap[imageID]!;
 
           image.commentMap[comment.id] = comment;
 
@@ -148,7 +148,7 @@ extension ImageDataRepo on DataRepository {
 
         if (albumMap[albumID]?.imageMap[imageID] == null) return;
 
-        Image image = albumMap[albumID]!.imageMap[imageID]!;
+        Photo image = albumMap[albumID]!.imageMap[imageID]!;
 
         switch (operation) {
           case EngageOperation.add:
@@ -198,7 +198,7 @@ extension ImageDataRepo on DataRepository {
 
         if (albumMap[albumID]?.imageMap[imageID] == null) return;
 
-        Image image = albumMap[albumID]!.imageMap[imageID]!;
+        Photo image = albumMap[albumID]!.imageMap[imageID]!;
 
         switch (operation) {
           case EngageOperation.add:

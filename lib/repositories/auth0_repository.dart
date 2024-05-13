@@ -112,6 +112,8 @@ Future<User> getInternalUserInformation(
   String urlString = "${dotenv.env['URL']}/user";
   Uri url = Uri.parse(urlString);
 
+  print(urlString);
+
   final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
   final response = await http.get(url, headers: headers);
