@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_photo/models/album.dart';
-import 'package:shared_photo/models/image.dart' as img;
+import 'package:shared_photo/models/photo.dart' as img;
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 
 part 'feed_slideshow_state.dart';
@@ -37,10 +37,10 @@ class FeedSlideshowCubit extends Cubit<FeedSlideshowState> {
     // });
   }
 
-  void updateImageInAlbum(String imageID, img.Image image) {
+  void updateImageInAlbum(String imageID, img.Photo image) {
     if (state.album.imageMap.containsKey(imageID)) {
       Album album = Album.from(state.album);
-      Map<String, img.Image> newImageMap = Map.from(state.album.imageMap);
+      Map<String, img.Photo> newImageMap = Map.from(state.album.imageMap);
       newImageMap[imageID] = image;
       album.imageMap = newImageMap;
       emit(state.copyWith(album: album));
@@ -50,7 +50,7 @@ class FeedSlideshowCubit extends Cubit<FeedSlideshowState> {
   }
 
   Future<void> setAlbumImages() async {
-    Map<String, img.Image> images =
+    Map<String, img.Photo> images =
         await dataRepository.getAlbumImages(album.albumId);
     album.imageMap = images;
 
@@ -60,8 +60,8 @@ class FeedSlideshowCubit extends Cubit<FeedSlideshowState> {
   }
 
   void setTopThreeImages() {
-    List<img.Image> rankedImages = List.from(state.album.images);
-    List<img.Image> topThreeImages = [];
+    List<img.Photo> rankedImages = List.from(state.album.images);
+    List<img.Photo> topThreeImages = [];
 
     // Set Ranked
     rankedImages.sort((a, b) {

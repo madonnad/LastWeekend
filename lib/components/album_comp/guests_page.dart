@@ -28,75 +28,88 @@ class GuestsPage extends StatelessWidget {
                   int imagesToShow =
                       min(3, state.imagesGroupedByGuest[index].length);
 
-                  return SizedBox(
-                    height: 200,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 16.0, right: 16, bottom: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  CircleAvatar(
-                                    foregroundImage: CachedNetworkImageProvider(
-                                      state.imagesGroupedByGuest[index][0]
-                                          .avatarReq,
-                                      headers: headers,
+                  Map<String, dynamic> argMap = {
+                    'albumFrameCubit': context.read<AlbumFrameCubit>(),
+                    'guestID': state.imagesGroupedByGuest[index][0].owner,
+                  };
+
+                  return GestureDetector(
+                    onTap: () => Navigator.of(context)
+                        .pushNamed('/guest', arguments: argMap),
+                    child: Container(
+                      height: 200,
+                      color: Colors.black,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 16.0, right: 16, bottom: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    CircleAvatar(
+                                      foregroundImage:
+                                          CachedNetworkImageProvider(
+                                        state.imagesGroupedByGuest[index][0]
+                                            .avatarReq,
+                                        headers: headers,
+                                      ),
+                                      radius: 20,
                                     ),
-                                    radius: 20,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 10.0),
-                                    child: Text(
-                                      state.imagesGroupedByGuest[index][0]
-                                          .fullName,
-                                      style: GoogleFonts.josefinSans(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 16,
-                                        color: Colors.white,
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(left: 10.0),
+                                      child: Text(
+                                        state.imagesGroupedByGuest[index][0]
+                                            .fullName,
+                                        style: GoogleFonts.josefinSans(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16,
+                                          color: Colors.white,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                              const Icon(
-                                Icons.arrow_forward_ios,
-                                color: Colors.white,
-                                size: 15,
-                              )
-                            ],
+                                  ],
+                                ),
+                                const Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: Colors.white,
+                                  size: 15,
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          child: ListView.separated(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: imagesToShow,
-                            itemBuilder: (context, item) {
-                              if (item == 0) {
-                                return Padding(
-                                  padding: const EdgeInsets.only(left: 16.0),
-                                  child: GuestItemComponent(
-                                    image: state.imagesGroupedByGuest[index]
-                                        [item],
-                                    headers: headers,
-                                  ),
+                          Expanded(
+                            child: ListView.separated(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: imagesToShow,
+                              itemBuilder: (context, item) {
+                                if (item == 0) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(left: 16.0),
+                                    child: GuestItemComponent(
+                                      image: state.imagesGroupedByGuest[index]
+                                          [item],
+                                      headers: headers,
+                                    ),
+                                  );
+                                }
+                                return GuestItemComponent(
+                                  image: state.imagesGroupedByGuest[index]
+                                      [item],
+                                  headers: headers,
                                 );
-                              }
-                              return GuestItemComponent(
-                                image: state.imagesGroupedByGuest[index][item],
-                                headers: headers,
-                              );
-                            },
-                            separatorBuilder: (context, index) {
-                              return const SizedBox(width: 10);
-                            },
+                              },
+                              separatorBuilder: (context, index) {
+                                return const SizedBox(width: 10);
+                              },
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   );
                 },

@@ -24,16 +24,7 @@ class AlbumFrame extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: Colors.black,
-        automaticallyImplyLeading: false,
-        title: BlocBuilder<AlbumFrameCubit, AlbumFrameState>(
-          builder: (context, state) {
-            return AlbumAppBarTitle(album: state.album);
-          },
-        ),
-      ),
+      appBar: const AlbumAppBarTitle(),
       body: BlocListener<AlbumFrameCubit, AlbumFrameState>(
         listenWhen: (previous, current) =>
             previous.album.imageMap != current.album.imageMap,

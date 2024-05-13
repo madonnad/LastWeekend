@@ -1,9 +1,9 @@
-import 'package:shared_photo/models/image.dart';
+import 'package:shared_photo/models/photo.dart';
 
 class ImageChange {
   String albumID;
   String imageID;
-  Image image;
+  Photo image;
 
   ImageChange({
     required this.albumID,

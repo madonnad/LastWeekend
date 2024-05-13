@@ -5,10 +5,10 @@ enum AlbumViewMode { popular, guests, timeline }
 class AlbumFrameState extends Equatable {
   final Album album;
   final PageController pageController;
-  final img.Image? selectedImage;
-  final List<img.Image> rankedImages;
-  final List<img.Image> topThreeImages;
-  final List<img.Image> remainingRankedImages;
+  final Photo? selectedImage;
+  final List<Photo> rankedImages;
+  final List<Photo> topThreeImages;
+  final List<Photo> remainingRankedImages;
   final AlbumViewMode viewMode;
   final List<String> filterList = ["Popular", "Guests", "Timeline"];
   final bool loading;
@@ -27,10 +27,10 @@ class AlbumFrameState extends Equatable {
   AlbumFrameState copyWith({
     Album? album,
     PageController? pageController,
-    img.Image? selectedImage,
-    List<img.Image>? rankedImages,
-    List<img.Image>? topThreeImages,
-    List<img.Image>? remainingRankedImages,
+    Photo? selectedImage,
+    List<Photo>? rankedImages,
+    List<Photo>? topThreeImages,
+    List<Photo>? remainingRankedImages,
     AlbumViewMode? viewMode,
     bool? loading,
   }) {
@@ -47,22 +47,22 @@ class AlbumFrameState extends Equatable {
     );
   }
 
-  List<img.Image> get selectedModeImages {
+  List<Photo> get selectedModeImages {
     switch (viewMode) {
       case AlbumViewMode.popular:
         return rankedImages;
       case AlbumViewMode.guests:
-        List<img.Image> ungroupedGuests = [];
-        for (List<img.Image> list in imagesGroupedByGuest) {
-          for (img.Image image in list) {
+        List<Photo> ungroupedGuests = [];
+        for (List<Photo> list in imagesGroupedByGuest) {
+          for (Photo image in list) {
             ungroupedGuests.add(image);
           }
         }
         return ungroupedGuests;
       case AlbumViewMode.timeline:
-        List<img.Image> ungroupedTimeline = [];
-        for (List<img.Image> list in imagesGroupedSortedByDate) {
-          for (img.Image image in list) {
+        List<Photo> ungroupedTimeline = [];
+        for (List<Photo> list in imagesGroupedSortedByDate) {
+          for (Photo image in list) {
             ungroupedTimeline.add(image);
           }
         }
@@ -70,13 +70,13 @@ class AlbumFrameState extends Equatable {
     }
   }
 
-  List<img.Image> get images {
+  List<Photo> get images {
     return album.imageMap.values.toList();
   }
 
-  List<List<img.Image>> get imagesGroupedByGuest {
-    Map<String, List<img.Image>> mapImages = {};
-    List<List<img.Image>> listImages = [];
+  List<List<Photo>> get imagesGroupedByGuest {
+    Map<String, List<Photo>> mapImages = {};
+    List<List<Photo>> listImages = [];
 
     for (var item in images) {
       if (!mapImages.containsKey(item.owner)) {
@@ -98,9 +98,9 @@ class AlbumFrameState extends Equatable {
     return listImages;
   }
 
-  List<List<img.Image>> get imagesGroupedSortedByDate {
-    Map<String, List<img.Image>> mapImages = {};
-    List<List<img.Image>> listImages = [];
+  List<List<Photo>> get imagesGroupedSortedByDate {
+    Map<String, List<Photo>> mapImages = {};
+    List<List<Photo>> listImages = [];
 
     for (var item in images) {
       if (!mapImages.containsKey(item.dateString)) {
@@ -122,10 +122,10 @@ class AlbumFrameState extends Equatable {
     return listImages;
   }
 
-  List<img.Image> get imageFrameTimelineList {
-    List<img.Image> ungroupedTimeline = [];
-    for (List<img.Image> list in imagesGroupedSortedByDate) {
-      for (img.Image image in list) {
+  List<Photo> get imageFrameTimelineList {
+    List<Photo> ungroupedTimeline = [];
+    for (List<Photo> list in imagesGroupedSortedByDate) {
+      for (Photo image in list) {
         ungroupedTimeline.add(image);
       }
     }

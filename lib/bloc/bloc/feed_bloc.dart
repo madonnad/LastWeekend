@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:shared_photo/models/album.dart';
-import 'package:shared_photo/models/image.dart';
+import 'package:shared_photo/models/photo.dart';
 import 'package:shared_photo/models/image_change.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 
@@ -35,7 +35,7 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
 
         String albumID = event.imageChange.albumID;
         String imageID = event.imageChange.imageID;
-        Image image = event.imageChange.image;
+        Photo image = event.imageChange.image;
 
         feedAlbumMap[albumID]?.imageMap.update(imageID, (value) => image);
 
