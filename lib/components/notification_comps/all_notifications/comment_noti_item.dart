@@ -19,7 +19,7 @@ class CommentNotiItem extends StatelessWidget {
       onTap: () =>
           Navigator.of(context).pushNamed('/album', arguments: arguments),
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+        margin: const EdgeInsets.symmetric(vertical: 8),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 14),
         height: 75,
         decoration: BoxDecoration(

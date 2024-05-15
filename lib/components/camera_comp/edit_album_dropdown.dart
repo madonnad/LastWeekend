@@ -13,6 +13,8 @@ class EditAlbumDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<CameraCubit, CameraState>(
       builder: (context, state) {
+        int index = state.selectedAlbumIndex;
+
         return Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
@@ -23,15 +25,14 @@ class EditAlbumDropdown extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: DropdownButtonHideUnderline(
               child: DropdownButton2<Album>(
-                value: state.selectedAlbum,
+                value: state.unlockedAlbums[index],
                 style: GoogleFonts.josefinSans(
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
                   color: Colors.black,
                 ),
                 iconStyleData: const IconStyleData(iconSize: 0),
-                items: state.mapOfAlbumImages.keys
-                    .toList()
+                items: state.unlockedAlbums
                     .map(
                       (e) => DropdownMenuItem<Album>(
                         value: e,

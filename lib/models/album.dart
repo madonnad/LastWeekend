@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_photo/models/notification.dart';
@@ -9,24 +10,24 @@ enum Visibility { private, public, friends }
 
 enum AlbumPhases { invite, unlock, lock, reveal }
 
-class Album {
-  String albumId;
-  String albumName;
-  String albumOwner;
-  String ownerFirst;
-  String ownerLast;
-  String albumCoverId;
-  Map<String, Photo> imageMap;
-  Map<String, Guest> guestMap;
-  DateTime creationDateTime;
-  DateTime lockDateTime;
-  DateTime unlockDateTime;
-  DateTime revealDateTime;
-  String? albumCoverUrl;
-  Visibility visibility;
-  AlbumPhases phase;
+class Album extends Equatable {
+  final String albumId;
+  final String albumName;
+  final String albumOwner;
+  final String ownerFirst;
+  final String ownerLast;
+  final String albumCoverId;
+  final Map<String, Photo> imageMap;
+  final Map<String, Guest> guestMap;
+  final DateTime creationDateTime;
+  final DateTime lockDateTime;
+  final DateTime unlockDateTime;
+  final DateTime revealDateTime;
+  final String? albumCoverUrl;
+  final Visibility visibility;
+  final AlbumPhases phase;
 
-  Album({
+  const Album({
     required this.albumId,
     required this.albumName,
     required this.albumOwner,
@@ -91,6 +92,27 @@ class Album {
       albumCoverUrl: album.albumCoverUrl,
       visibility: album.visibility,
       phase: album.phase,
+    );
+  }
+
+  Album copyWith({
+    Map<String, Photo>? imageMap,
+  }) {
+    return Album(
+      albumId: albumId,
+      albumName: albumName,
+      albumOwner: albumOwner,
+      ownerFirst: ownerFirst,
+      ownerLast: ownerLast,
+      creationDateTime: creationDateTime,
+      lockDateTime: lockDateTime,
+      unlockDateTime: unlockDateTime,
+      revealDateTime: revealDateTime,
+      visibility: visibility,
+      phase: phase,
+      imageMap: imageMap ?? this.imageMap,
+      guestMap: guestMap,
+      albumCoverId: albumCoverId,
     );
   }
 
@@ -323,15 +345,23 @@ class Album {
     return sortedGuests;
   }
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Album &&
-          runtimeType == other.runtimeType &&
-          albumId == other.albumId &&
-          mapEquals(guestMap, other.guestMap) &&
-          mapEquals(imageMap, other.imageMap);
+  // @override
+  // bool operator ==(Object other) =>
+  //     identical(this, other) ||
+  //     other is Album &&
+  //         runtimeType == other.runtimeType &&
+  //         albumId == other.albumId &&
+  //         mapEquals(guestMap, other.guestMap) &&
+  //         mapEquals(imageMap, other.imageMap) &&
+  //         albumOwner == other.albumOwner;
+
+  // @override
+  // int get hashCode =>
+  //     albumId.hashCode ^
+  //     guestMap.hashCode ^
+  //     imageMap.hashCode ^
+  //     albumOwner.hashCode;
 
   @override
-  int get hashCode => albumId.hashCode ^ guestMap.hashCode ^ imageMap.hashCode;
+  List<Object?> get props => [albumId, guestMap, imageMap, albumOwner];
 }

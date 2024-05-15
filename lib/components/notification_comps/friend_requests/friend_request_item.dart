@@ -25,7 +25,7 @@ class FriendRequestItem extends StatelessWidget {
   Widget build(BuildContext context) {
     String lastLetter = lastName[0];
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
+      margin: const EdgeInsets.symmetric(vertical: 8),
       padding: const EdgeInsets.symmetric(horizontal: 10),
       height: 75,
       decoration: BoxDecoration(
