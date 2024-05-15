@@ -8,6 +8,7 @@ import 'package:shared_photo/components/camera_comp/active_album_dropdown.dart';
 import 'package:shared_photo/components/camera_comp/captured_preview_listview.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/captured_image.dart';
+import 'package:shared_photo/models/photo.dart';
 
 class CameraScreen extends StatefulWidget {
   final List<CameraDescription> cameras;
@@ -93,9 +94,17 @@ class _CameraScreenState extends State<CameraScreen> {
     Future<void> addPhotoToCubit(XFile picture) async {
       CapturedImage capImage;
       if (selectedAlbum != null) {
-        capImage = CapturedImage(imageXFile: picture, album: selectedAlbum);
+        capImage = CapturedImage(
+          imageXFile: picture,
+          album: selectedAlbum,
+          type: UploadType.snap,
+        );
       } else {
-        capImage = CapturedImage(imageXFile: picture, addToRecap: true);
+        capImage = CapturedImage(
+          imageXFile: picture,
+          addToRecap: true,
+          type: UploadType.snap,
+        );
       }
       context.read<CameraCubit>().addPhotoToList(capImage);
     }

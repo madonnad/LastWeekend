@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/captured_image.dart';
+import 'package:shared_photo/models/photo.dart';
 import 'package:shared_photo/models/user.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 import 'package:shared_photo/services/image_service.dart';
@@ -134,10 +135,11 @@ class CameraCubit extends Cubit<CameraState> {
     emit(state.copyWith(photosTaken: photosTaken));
   }
 
-  void addListOfPhotosToList(List<XFile> imageList) {
+  void addListOfPhotosToList(List<XFile> imageList, UploadType type) {
     List<CapturedImage> images = List.from(state.photosTaken);
     for (XFile file in imageList) {
-      CapturedImage image = CapturedImage(imageXFile: file, album: album);
+      CapturedImage image =
+          CapturedImage(imageXFile: file, album: album, type: type);
       images.add(image);
     }
 

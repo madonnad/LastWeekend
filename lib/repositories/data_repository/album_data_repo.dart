@@ -52,6 +52,8 @@ extension AlbumDataRepo on DataRepository {
     Album newAlbum = albumMap[albumID]!.copyWith(imageMap: imageMap);
     //albumMap[albumID]!.imageMap = imageMap;
 
+    albumMap[albumID] = newAlbum;
+
     if (albumMap.containsKey(albumID) &&
         albumMap[albumID]!.imageMap.isNotEmpty) {
       return albumMap[albumID]!.imageMap;
@@ -97,7 +99,7 @@ extension AlbumDataRepo on DataRepository {
         throw const FormatException("No image path was provided to upload");
       }
 
-      bool success = await ImageService.postAlbumCoverImage(
+      bool success = await ImageService.uploadPhoto(
           user.token, albumCoverPath, album.albumCoverId);
       if (success == false) {
         throw const FormatException("Image upload failed");

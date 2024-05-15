@@ -7,6 +7,8 @@ import 'package:shared_photo/models/engager.dart';
 
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+enum UploadType { snap, forgotShot }
+
 class Photo {
   String imageId;
   String owner;
@@ -21,6 +23,7 @@ class Photo {
   Map<String, Comment> commentMap;
   List<Engager> likesUID;
   List<Engager> upvotesUID;
+  UploadType type;
 
   Photo({
     required this.imageId,
@@ -36,6 +39,7 @@ class Photo {
     required this.commentMap,
     required this.likesUID,
     required this.upvotesUID,
+    required this.type,
   });
 
   @override
@@ -52,6 +56,12 @@ class Photo {
   }
 
   factory Photo.fromMap(Map<String, dynamic> map) {
+    UploadType type = UploadType.snap;
+
+    if (map['upload_type'] == 'forgot_shot') {
+      type = UploadType.forgotShot;
+    }
+
     return Photo(
       imageId: map['image_id'] as String,
       owner: map['image_owner'] as String,
@@ -66,6 +76,7 @@ class Photo {
       likesUID: [],
       upvotesUID: [],
       commentMap: {},
+      type: type,
     );
   }
 
@@ -84,6 +95,7 @@ class Photo {
       commentMap: image.commentMap,
       likesUID: image.likesUID,
       upvotesUID: image.upvotesUID,
+      type: image.type,
     );
   }
 
@@ -122,7 +134,4 @@ class Photo {
   }
 
   String toJson() => json.encode(toMap());
-
-  factory Photo.fromJson(String source) =>
-      Photo.fromMap(json.decode(source) as Map<String, dynamic>);
 }
