@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_photo/bloc/cubit/camera_cubit.dart';
 import 'package:shared_photo/components/camera_comp/edit_screen_comp/submit_image_button.dart';
+import 'package:shared_photo/models/photo.dart';
 
 class EmptyEditView extends StatelessWidget {
   const EmptyEditView({super.key});
@@ -16,7 +17,9 @@ class EmptyEditView extends StatelessWidget {
     void addListPhotos(List<XFile>? selectedImages) {
       if (selectedImages == null) return;
 
-      context.read<CameraCubit>().addListOfPhotosToList(selectedImages);
+      context
+          .read<CameraCubit>()
+          .addListOfPhotosToList(selectedImages, UploadType.forgotShot);
     }
 
     return SafeArea(

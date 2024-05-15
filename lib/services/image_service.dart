@@ -73,7 +73,7 @@ class ImageService {
     return images;
   }
 
-  static Future<bool> postAlbumCoverImage(
+  static Future<bool> uploadPhoto(
       //Used to be uploadByImageId
       String token,
       String imagePath,
@@ -189,8 +189,7 @@ class ImageService {
         imageId = body['image_id'];
 
         // ignore: unused_local_variable
-        bool upload =
-            await postAlbumCoverImage(token, image.imageXFile.path, imageId);
+        bool upload = await uploadPhoto(token, image.imageXFile.path, imageId);
         if (upload = false) {
           //need to handle removing the information from the DB that failed or try uploading the image again later
           throw "Upload failed";
