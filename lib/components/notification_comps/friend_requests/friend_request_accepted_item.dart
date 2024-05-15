@@ -17,7 +17,7 @@ class FriendRequestAcceptedItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+      margin: const EdgeInsets.symmetric(vertical: 8),
       padding: const EdgeInsets.only(left: 10, right: 15),
       height: 50,
       decoration: BoxDecoration(

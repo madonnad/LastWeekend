@@ -49,7 +49,8 @@ extension AlbumDataRepo on DataRepository {
 
     if (albumMap[albumID] == null) return imageMap;
 
-    albumMap[albumID]!.imageMap = imageMap;
+    Album newAlbum = albumMap[albumID]!.copyWith(imageMap: imageMap);
+    //albumMap[albumID]!.imageMap = imageMap;
 
     if (albumMap.containsKey(albumID) &&
         albumMap[albumID]!.imageMap.isNotEmpty) {

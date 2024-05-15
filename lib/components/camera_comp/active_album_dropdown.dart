@@ -14,6 +14,8 @@ class ActiveAlbumDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<CameraCubit, CameraState>(
       builder: (context, state) {
+        int index = state.selectedAlbumIndex;
+        print(index);
         return Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
@@ -24,7 +26,7 @@ class ActiveAlbumDropdown extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: DropdownButtonHideUnderline(
               child: DropdownButton2<Album>(
-                value: state.selectedAlbum,
+                value: state.unlockedAlbums[index],
                 style: GoogleFonts.josefinSans(
                   fontSize: 18,
                   fontWeight: FontWeight.w700,

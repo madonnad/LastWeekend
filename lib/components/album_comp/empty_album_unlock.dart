@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_photo/bloc/bloc/app_bloc.dart';
+import 'package:shared_photo/bloc/cubit/camera_cubit.dart';
+import 'package:shared_photo/components/camera_comp/edit_screen_comp/captured_edit_screen.dart';
+import 'package:shared_photo/models/album.dart';
+import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 
 class EmptyAlbumView extends StatelessWidget {
   final bool isUnlockPhase;
-  const EmptyAlbumView({super.key, required this.isUnlockPhase});
+  final Album album;
+
+  const EmptyAlbumView(
+      {super.key, required this.isUnlockPhase, required this.album});
 
   @override
   Widget build(BuildContext context) {
@@ -69,20 +78,38 @@ class EmptyAlbumView extends StatelessWidget {
                 ],
               )
             : const Gap(0),
-        Container(
-          height: 50,
-          margin: const EdgeInsets.symmetric(horizontal: 70),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: const Color.fromRGBO(44, 44, 44, 1),
+        GestureDetector(
+          onTap: () => showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            useSafeArea: true,
+            builder: (ctx) {
+              return BlocProvider(
+                create: (context) => CameraCubit(
+                  dataRepository: context.read<DataRepository>(),
+                  user: context.read<AppBloc>().state.user,
+                  mode: UploadMode.singleAlbum,
+                  album: album,
+                ),
+                child: const CapturedEditScreen(),
+              );
+            },
           ),
-          child: Center(
-            child: Text(
-              "Add Forgot Shot",
-              style: GoogleFonts.montserrat(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
+          child: Container(
+            height: 50,
+            margin: const EdgeInsets.symmetric(horizontal: 70),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: const Color.fromRGBO(44, 44, 44, 1),
+            ),
+            child: Center(
+              child: Text(
+                "Add Forgot Shot",
+                style: GoogleFonts.montserrat(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
           ),

@@ -42,7 +42,10 @@ class AlbumLockTabView extends StatelessWidget {
                     ],
                   ),
                 )
-              : const EmptyAlbumView(isUnlockPhase: false);
+              : EmptyAlbumView(
+                  isUnlockPhase: false,
+                  album: state.album,
+                );
         },
       ),
     );

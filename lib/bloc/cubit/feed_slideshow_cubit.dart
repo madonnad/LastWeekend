@@ -42,8 +42,9 @@ class FeedSlideshowCubit extends Cubit<FeedSlideshowState> {
       Album album = Album.from(state.album);
       Map<String, img.Photo> newImageMap = Map.from(state.album.imageMap);
       newImageMap[imageID] = image;
-      album.imageMap = newImageMap;
-      emit(state.copyWith(album: album));
+      Album newAlbum = album.copyWith(imageMap: newImageMap);
+
+      emit(state.copyWith(album: newAlbum));
 
       setTopThreeImages();
     }
@@ -52,9 +53,10 @@ class FeedSlideshowCubit extends Cubit<FeedSlideshowState> {
   Future<void> setAlbumImages() async {
     Map<String, img.Photo> images =
         await dataRepository.getAlbumImages(album.albumId);
-    album.imageMap = images;
+    //album.imageMap = images;
+    Album newAlbum = album.copyWith(imageMap: images);
 
-    emit(state.copyWith(album: album));
+    emit(state.copyWith(album: newAlbum));
 
     setTopThreeImages();
   }

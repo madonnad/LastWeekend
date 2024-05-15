@@ -89,6 +89,7 @@ class _AppFrameState extends State<AppFrame> with WidgetsBindingObserver {
           create: (context) => CameraCubit(
             user: context.read<AppBloc>().state.user,
             dataRepository: context.read<DataRepository>(),
+            mode: UploadMode.unlockedAlbums,
           ),
         ),
         BlocProvider(
