@@ -3,6 +3,54 @@ part of './data_repository.dart';
 enum ImageChangeKey { userLikedUpdate, likeCountUpdate }
 
 extension ImageDataRepo on DataRepository {
+  Future<List<CapturedImage>> addImageToAlbum(
+      List<CapturedImage> imagesToUpload) async {
+    List<CapturedImage> failedUploads = [];
+
+    for (int i = 0; i < imagesToUpload.length; i++) {
+      CapturedImage image = imagesToUpload[i];
+
+      if (image.album == null) {
+        failedUploads.add(image);
+        continue;
+      }
+
+      if (albumMap[image.album!.albumId] == null) {
+        failedUploads.add(image);
+        continue;
+      }
+
+      String albumID = image.album!.albumId;
+
+      try {
+        Photo? uploadedImage =
+            await ImageService.postCapturedImage(user.token, image);
+        if (uploadedImage == null) {
+          throw false;
+        }
+
+        imagesToUpload.removeAt(i);
+
+        Map<String, Photo> albumImages = albumMap[albumID]!.imageMap;
+        albumImages[uploadedImage.imageId] = uploadedImage;
+
+        ImageChange change = ImageChange(
+          albumID: albumID,
+          imageID: uploadedImage.imageId,
+          image: uploadedImage,
+        );
+
+        _imageController.add(change);
+
+        i--;
+      } catch (e) {
+        failedUploads.add(image);
+        continue;
+      }
+    }
+    return failedUploads;
+  }
+
   // Initalize and Coordinate Storage of Comments
   Future<Map<String, Comment>> initalizeCommentsAndStore(
       String albumID, String imageID) async {

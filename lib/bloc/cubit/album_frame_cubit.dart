@@ -68,12 +68,13 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
   }
 
   void updateImageInAlbum(String imageID, Photo image) {
-    if (state.album.imageMap.containsKey(imageID)) {
-      Album album = Album.from(state.album);
-      album.imageMap[imageID] = image;
-      emit(state.copyWith(album: album));
-      setRankedImages();
-    }
+    Map<String, Photo> newImageMap = Map.from(state.album.imageMap);
+    newImageMap.update(imageID, (value) => image, ifAbsent: () => image);
+
+    Album updatedAlbum = state.album.copyWith(imageMap: newImageMap);
+
+    emit(state.copyWith(album: updatedAlbum));
+    setRankedImages();
   }
 
   void setRankedImages() {

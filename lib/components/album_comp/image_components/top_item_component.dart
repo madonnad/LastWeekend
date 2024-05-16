@@ -63,10 +63,11 @@ class TopItemComponent extends StatelessWidget {
                 color: const Color.fromRGBO(44, 44, 44, .75),
                 borderRadius: BorderRadius.circular(10),
                 image: DecorationImage(
-                  image: CachedNetworkImageProvider(
+                  image: NetworkImage(
                     image.imageReq,
                     headers: headers,
                   ),
+                  onError: (_, __) {},
                   fit: BoxFit.cover,
                 ),
               ),

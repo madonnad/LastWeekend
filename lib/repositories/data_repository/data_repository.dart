@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:shared_photo/bloc/cubit/create_album_cubit.dart';
 import 'package:shared_photo/models/album.dart';
+import 'package:shared_photo/models/captured_image.dart';
 import 'package:shared_photo/models/engager.dart';
 import 'package:shared_photo/models/photo.dart';
 import 'package:shared_photo/models/comment.dart';
