@@ -4,9 +4,12 @@ import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
+import 'package:shared_photo/bloc/cubit/camera_cubit.dart';
 import 'package:shared_photo/components/album_comp/image_components/guest_item_component.dart';
 import 'package:shared_photo/components/app_comp/section_header_small.dart';
+import 'package:shared_photo/components/camera_comp/edit_screen_comp/captured_edit_screen.dart';
 import 'package:shared_photo/models/photo.dart';
+import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 
 class ProfileGuestFrame extends StatelessWidget {
   final String guestID;
@@ -193,8 +196,24 @@ class ProfileGuestFrame extends StatelessWidget {
                 ),
                 isLoggedUser
                     ? SliverToBoxAdapter(
-                        child: GestureDetector(
-                          onTap: () {},
+                        child: InkWell(
+                          onTap: () => showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            useSafeArea: true,
+                            builder: (ctx) {
+                              return BlocProvider(
+                                create: (context) => CameraCubit(
+                                  dataRepository:
+                                      context.read<DataRepository>(),
+                                  user: context.read<AppBloc>().state.user,
+                                  mode: UploadMode.singleAlbum,
+                                  album: state.album,
+                                ),
+                                child: const CapturedEditScreen(),
+                              );
+                            },
+                          ),
                           child: Container(
                             height: 40,
                             alignment: Alignment.center,

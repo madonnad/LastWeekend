@@ -120,11 +120,18 @@ class CameraCubit extends Cubit<CameraState> {
 
   void changeEditAlbum(Album? album) {
     emit(state.copyWith(selectedAlbum: album));
-    emit(state.copyWith(
-      selectedImage: state.selectedAlbumImageList[0],
-      captionTextController:
-          TextEditingController(text: state.selectedAlbumImageList[0].caption),
-    ));
+    if (state.selectedAlbumImageList.isNotEmpty) {
+      emit(state.copyWith(
+        selectedImage: state.selectedAlbumImageList[0],
+        captionTextController: TextEditingController(
+            text: state.selectedAlbumImageList[0].caption),
+      ));
+    } else {
+      emit(state.copyWith(
+        selectedImage: null,
+        captionTextController: TextEditingController(text: null),
+      ));
+    }
   }
 
   void addPhotoToList(CapturedImage capturedImage) {
@@ -137,9 +144,13 @@ class CameraCubit extends Cubit<CameraState> {
 
   void addListOfPhotosToList(List<XFile> imageList, UploadType type) {
     List<CapturedImage> images = List.from(state.photosTaken);
+
+    if (state.selectedAlbum == null && album == null) return;
+    Album newAlbum = album == null ? state.selectedAlbum! : album!;
+
     for (XFile file in imageList) {
       CapturedImage image =
-          CapturedImage(imageXFile: file, album: album, type: type);
+          CapturedImage(imageXFile: file, album: newAlbum, type: type);
       images.add(image);
     }
 
@@ -174,7 +185,7 @@ class CameraCubit extends Cubit<CameraState> {
     int selectedAlbumMaxIndex;
 
     if (photosTaken.length == 1) {
-      Navigator.of(context).pop();
+      // Navigator.of(context).pop();
       emit(state.copyWith(
           photosTaken: [],
           selectedImage: null,
@@ -227,11 +238,5 @@ class CameraCubit extends Cubit<CameraState> {
           captionTextController:
               TextEditingController(text: selectedImage.caption)),
     );
-  }
-
-  @override
-  Future<void> close() {
-    print("Closing Cubit for $mode");
-    return super.close();
   }
 }
