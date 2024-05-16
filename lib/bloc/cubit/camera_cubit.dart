@@ -10,7 +10,6 @@ import 'package:shared_photo/models/captured_image.dart';
 import 'package:shared_photo/models/photo.dart';
 import 'package:shared_photo/models/user.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
-import 'package:shared_photo/services/image_service.dart';
 
 part 'camera_state.dart';
 
@@ -82,29 +81,13 @@ class CameraCubit extends Cubit<CameraState> {
 
   Future<void> uploadImagesToAlbums(String token) async {
     List<CapturedImage> photosTaken = List.from(state.photosTaken);
-    List<CapturedImage> failedUploads = [];
 
     emit(state.copyWith(loading: true));
 
-    for (int i = 0; i < photosTaken.length; i++) {
-      CapturedImage image = photosTaken[i];
-      try {
-        bool uploadSucceeded =
-            await ImageService.postCapturedImage(token, image);
-        if (!uploadSucceeded) {
-          throw false;
-        }
+    List<CapturedImage> failedUploads =
+        await dataRepository.addImageToAlbum(photosTaken);
 
-        photosTaken.removeAt(i);
-        emit(state.copyWith(photosTaken: photosTaken));
-        i--;
-      } catch (e) {
-        failedUploads.add(image);
-        continue;
-      }
-    }
-    emit(state
-        .copyWith(photosTaken: failedUploads, loading: false, uploadList: []));
+    emit(state.copyWith(photosTaken: failedUploads, loading: false));
   }
 
   void updateSelectedImage(CapturedImage image) {

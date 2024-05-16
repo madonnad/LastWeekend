@@ -164,7 +164,7 @@ class ImageService {
     }
   }
 
-  static Future<bool> postCapturedImage(
+  static Future<Photo?> postCapturedImage(
       String token, CapturedImage image) async {
     //used to be postNewImage
     // var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/user/image');
@@ -186,14 +186,16 @@ class ImageService {
 
       if (response.statusCode == 200) {
         Map<String, dynamic> body = json.decode(response.body);
-        imageId = body['image_id'];
+        Photo newImage = Photo.fromMap(body);
 
         // ignore: unused_local_variable
-        bool upload = await uploadPhoto(token, image.imageXFile.path, imageId);
+        bool upload =
+            await uploadPhoto(token, image.imageXFile.path, newImage.imageId);
         if (upload = false) {
-          //need to handle removing the information from the DB that failed or try uploading the image again later
+          //TODO: need to handle removing the information from the DB that failed or try uploading the image again later
           throw "Upload failed";
         }
+        return newImage;
       } else {
         print('Request failed with status: ${response.statusCode}');
         print('Response body: #${response.body}');
@@ -201,19 +203,8 @@ class ImageService {
       }
     } catch (e) {
       print(e);
-      return false;
+      return null;
     }
-
-    if (image.addToRecap) {
-      bool addImage = await addImageToRecap(token, imageId);
-
-      if (addImage == false) {
-        print("failed to add to recap");
-        return false;
-      }
-    }
-
-    return true;
   }
 
   static Future<bool> addImageToRecap(String token, String imageId) async {

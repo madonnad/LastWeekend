@@ -4,7 +4,6 @@ enum UploadMode { unlockedAlbums, singleAlbum }
 
 class CameraState extends Equatable {
   final List<CapturedImage> photosTaken;
-  final List<CapturedImage> uploadList;
   final int? selectedIndex;
   final CapturedImage? selectedImage;
   final Map<String, Album> albumMap;
@@ -14,7 +13,6 @@ class CameraState extends Equatable {
   final UploadMode mode;
   const CameraState({
     required this.photosTaken,
-    required this.uploadList,
     required this.selectedIndex,
     required this.selectedImage,
     required this.albumMap,
@@ -27,7 +25,6 @@ class CameraState extends Equatable {
   factory CameraState.empty() {
     return CameraState(
       photosTaken: const [],
-      uploadList: const [],
       selectedIndex: null,
       selectedImage: null,
       selectedAlbum: null,
@@ -40,7 +37,6 @@ class CameraState extends Equatable {
 
   CameraState copyWith({
     List<CapturedImage>? photosTaken,
-    List<CapturedImage>? uploadList,
     int? selectedIndex,
     CapturedImage? selectedImage,
     Map<String, Album>? albumMap,
@@ -51,7 +47,6 @@ class CameraState extends Equatable {
   }) {
     return CameraState(
       photosTaken: photosTaken ?? this.photosTaken,
-      uploadList: uploadList ?? this.uploadList,
       selectedIndex: selectedIndex ?? this.selectedIndex,
       selectedImage: selectedImage ?? this.selectedImage,
       selectedAlbum: selectedAlbum ?? this.selectedAlbum,
@@ -103,7 +98,6 @@ class CameraState extends Equatable {
   @override
   List<Object?> get props => [
         photosTaken,
-        uploadList,
         selectedIndex,
         selectedAlbum,
         albumMap,
