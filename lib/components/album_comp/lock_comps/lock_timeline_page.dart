@@ -39,6 +39,7 @@ class LockTimelinePage extends StatelessWidget {
                         crossAxisCount: 3,
                         mainAxisSpacing: 8,
                         crossAxisSpacing: 8,
+                        childAspectRatio: 4 / 5,
                       ),
                       itemBuilder: (context, item) {
                         if (album

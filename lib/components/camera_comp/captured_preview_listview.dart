@@ -11,7 +11,6 @@ class CapturedPreviewListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<CameraCubit, CameraState>(
       builder: (context, state) {
-        state.selectedAlbumImageList;
         return ListView.builder(
           scrollDirection: Axis.vertical,
           itemCount: state.selectedAlbumImageList.length,
