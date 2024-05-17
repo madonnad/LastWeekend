@@ -95,7 +95,7 @@ class Auth0Repository {
         throw Exception("Failed to store credentials");
       }
     } catch (e) {
-      print(e);
+      throw Exception("Failed to login");
     }
   }
 
@@ -103,44 +103,49 @@ class Auth0Repository {
     await auth0.credentialsManager.clearCredentials();
     userStream();
   }
-}
 
-Future<User> getInternalUserInformation(
-    String token, String email, bool newAccount) async {
-  //String domain = dotenv.env['DOMAIN'] ?? '';
-  //var url = Uri.https(domain, '/user');
-  String urlString = "${dotenv.env['URL']}/user";
-  Uri url = Uri.parse(urlString);
+  Future<User> getInternalUserInformation(
+      String token, String email, bool newAccount) async {
+    //String domain = dotenv.env['DOMAIN'] ?? '';
+    //var url = Uri.https(domain, '/user');
+    String urlString = "${dotenv.env['URL']}/user";
+    Uri url = Uri.parse(urlString);
 
-  print(urlString);
+    print(urlString);
 
-  final Map<String, String> headers = {'Authorization': 'Bearer $token'};
+    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
-  final response = await http.get(url, headers: headers);
+    final response = await http.get(url, headers: headers);
 
-  if (response.statusCode == 200) {
-    final responseBody = response.body;
+    if (response.statusCode == 200) {
+      final responseBody = response.body;
 
-    final jsonData = json.decode(responseBody);
-    if (jsonData == null) {
-      throw const HttpException("No user exists with the provided token");
+      final jsonData = json.decode(responseBody);
+      if (jsonData == null) {
+        throw const HttpException("No user exists with the provided token");
+      }
+
+      String userId = jsonData["user_id"];
+      String first = jsonData["first_name"];
+      String last = jsonData["last_name"];
+      DateTime createdDateTime = DateTime.parse(jsonData["created_at"]);
+
+      return User(
+        id: userId,
+        email: email,
+        firstName: first,
+        lastName: last,
+        token: token,
+        createdDateTime: createdDateTime,
+        newAccount: newAccount,
+      );
     }
 
-    String userId = jsonData["user_id"];
-    String first = jsonData["first_name"];
-    String last = jsonData["last_name"];
-    DateTime createdDateTime = DateTime.parse(jsonData["created_at"]);
+    logout();
 
-    return User(
-      id: userId,
-      email: email,
-      firstName: first,
-      lastName: last,
-      token: token,
-      createdDateTime: createdDateTime,
-      newAccount: newAccount,
-    );
+    return User.empty;
+
+    // throw HttpException(
+    //     "Failed to get users information with status: ${response.statusCode}");
   }
-  throw HttpException(
-      "Failed to get users information with status: ${response.statusCode}");
 }
