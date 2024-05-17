@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/components/image_page_comp/image_frame_appbar.dart';
+import 'package:shared_photo/models/album.dart';
 
 class ImageFrame extends StatelessWidget {
   const ImageFrame({super.key});
@@ -49,7 +50,15 @@ class ImageFrame extends StatelessWidget {
                         child: ImageFrameControlBar(),
                       ),
                       SliverToBoxAdapter(
-                        child: ImageFrameCaption(headers: headers),
+                        child: BlocBuilder<AlbumFrameCubit, AlbumFrameState>(
+                          builder: (context, albumState) {
+                            return ImageFrameCaption(
+                              headers: headers,
+                              selectedImage: albumState.selectedImage,
+                              phase: albumState.album.phase,
+                            );
+                          },
+                        ),
                       ),
                       SliverList(
                         delegate: SliverChildBuilderDelegate(
@@ -71,13 +80,19 @@ class ImageFrame extends StatelessWidget {
                   ),
                 ),
               ),
-              Positioned(
-                left: 15,
-                right: 15,
-                bottom: MediaQuery.of(context).padding.bottom,
-                child: FloatingCommentContainer(
-                  headers: headers,
-                ),
+              BlocBuilder<AlbumFrameCubit, AlbumFrameState>(
+                builder: (context, albumState) {
+                  return albumState.album.phase == AlbumPhases.reveal
+                      ? Positioned(
+                          left: 15,
+                          right: 15,
+                          bottom: MediaQuery.of(context).padding.bottom,
+                          child: FloatingCommentContainer(
+                            headers: headers,
+                          ),
+                        )
+                      : const SizedBox.shrink();
+                },
               ),
             ],
           );

@@ -5,6 +5,8 @@ import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
 import 'package:shared_photo/components/image_page_comp/image_frame_appbar.dart';
 import 'package:shared_photo/components/image_page_comp/image_frame_dialog/dialog_image_row.dart';
+import 'package:shared_photo/models/album.dart';
+import 'package:shared_photo/models/photo.dart';
 
 class ImageFrameDialog extends StatelessWidget {
   const ImageFrameDialog({super.key});
@@ -35,13 +37,14 @@ class ImageFrameDialog extends StatelessWidget {
                       String listText = '';
                       listText =
                           "${state.imageFrameTimelineList[index].dateString} ${state.imageFrameTimelineList[index].timeString}";
-                      // if (index != 0) {
-                      //   String previousText =
-                      //       state.selectedModeImages[index - 1].dateString;
-                      //   if (listText == previousText) {
-                      //     listText = '';
-                      //   }
-                      // }
+
+                      String userID = context.read<AppBloc>().state.user.id;
+
+                      bool showImage = false;
+                      Photo image = state.imageFrameTimelineList[index];
+
+                      showImage = state.album.phase == AlbumPhases.reveal ||
+                          image.owner == userID;
 
                       return GestureDetector(
                         onTap: () {
@@ -59,6 +62,7 @@ class ImageFrameDialog extends StatelessWidget {
                               url: state.imageFrameTimelineList[index].imageReq,
                               headers: headers,
                               listText: listText,
+                              showImage: showImage,
                             ),
                           ),
                         ),

@@ -43,7 +43,7 @@ class UnlockTimelinePage extends StatelessWidget {
                       ),
                       itemBuilder: (context, item) {
                         if (album
-                                .imagesGroupedSortedByDate[index][item].owner ==
+                                .imagesGroupedSortedByDate[index][item].owner !=
                             userID) {
                           return TopItemComponent(
                             image: album.imagesGroupedSortedByDate[index][item],
@@ -52,6 +52,7 @@ class UnlockTimelinePage extends StatelessWidget {
                           );
                         } else {
                           return BlankItemComponent(
+                            image: album.imagesGroupedSortedByDate[index][item],
                             url: album.imagesGroupedSortedByDate[index][item]
                                 .avatarReq,
                             headers: header,

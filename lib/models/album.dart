@@ -211,7 +211,13 @@ class Album extends Equatable {
 
   List<Photo> get rankedImages {
     List<Photo> rankedImages = List.from(images);
-    rankedImages.sort((a, b) => b.upvotes.compareTo(a.upvotes));
+    rankedImages.sort((a, b) {
+      if (a.upvotes == b.upvotes) {
+        return a.uploadDateTime.compareTo(b.uploadDateTime);
+      } else {
+        return b.upvotes.compareTo(a.upvotes);
+      }
+    });
 
     return rankedImages;
   }
