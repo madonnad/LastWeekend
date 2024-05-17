@@ -1,32 +1,32 @@
-import 'package:flutter/foundation.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_photo/models/notification.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:shared_photo/models/guest.dart';
-import 'package:shared_photo/models/image.dart';
+import 'package:shared_photo/models/photo.dart';
 
 enum Visibility { private, public, friends }
 
 enum AlbumPhases { invite, unlock, lock, reveal }
 
-class Album {
-  String albumId;
-  String albumName;
-  String albumOwner;
-  String ownerFirst;
-  String ownerLast;
-  String albumCoverId;
-  Map<String, Image> imageMap;
-  Map<String, Guest> guestMap;
-  DateTime creationDateTime;
-  DateTime lockDateTime;
-  DateTime unlockDateTime;
-  DateTime revealDateTime;
-  String? albumCoverUrl;
-  Visibility visibility;
-  AlbumPhases phase;
+class Album extends Equatable {
+  final String albumId;
+  final String albumName;
+  final String albumOwner;
+  final String ownerFirst;
+  final String ownerLast;
+  final String albumCoverId;
+  final Map<String, Photo> imageMap;
+  final Map<String, Guest> guestMap;
+  final DateTime creationDateTime;
+  final DateTime lockDateTime;
+  final DateTime unlockDateTime;
+  final DateTime revealDateTime;
+  final String? albumCoverUrl;
+  final Visibility visibility;
+  final AlbumPhases phase;
 
-  Album({
+  const Album({
     required this.albumId,
     required this.albumName,
     required this.albumOwner,
@@ -94,8 +94,29 @@ class Album {
     );
   }
 
+  Album copyWith({
+    Map<String, Photo>? imageMap,
+  }) {
+    return Album(
+      albumId: albumId,
+      albumName: albumName,
+      albumOwner: albumOwner,
+      ownerFirst: ownerFirst,
+      ownerLast: ownerLast,
+      creationDateTime: creationDateTime,
+      lockDateTime: lockDateTime,
+      unlockDateTime: unlockDateTime,
+      revealDateTime: revealDateTime,
+      visibility: visibility,
+      phase: phase,
+      imageMap: imageMap ?? this.imageMap,
+      guestMap: guestMap,
+      albumCoverId: albumCoverId,
+    );
+  }
+
   factory Album.fromMap(Map<String, dynamic> map) {
-    Map<String, Image> images = {};
+    Map<String, Photo> images = {};
     Map<String, Guest> guests = {};
     Visibility visibility;
     AlbumPhases phase;
@@ -104,7 +125,7 @@ class Album {
 
     if (jsonImages != null) {
       for (var item in jsonImages) {
-        Image image = Image.fromMap(item);
+        Photo image = Photo.fromMap(item);
 
         images.putIfAbsent(image.imageId, () => image);
       }
@@ -161,15 +182,13 @@ class Album {
   }
 
   String get coverReq {
-    String requestUrl =
-        "${dotenv.env['URL']}/image?id=$albumCoverId";
+    String requestUrl = "${dotenv.env['URL']}/image?id=$albumCoverId";
 
     return requestUrl;
   }
 
   String get ownerImageURl {
-    String requestUrl =
-        "${dotenv.env['URL']}/image?id=$albumOwner";
+    String requestUrl = "${dotenv.env['URL']}/image?id=$albumOwner";
 
     return requestUrl;
   }
@@ -186,19 +205,25 @@ class Album {
     return timeago.format(revealDateTime);
   }
 
-  List<Image> get images {
+  List<Photo> get images {
     return imageMap.values.toList();
   }
 
-  List<Image> get rankedImages {
-    List<Image> rankedImages = List.from(images);
-    rankedImages.sort((a, b) => b.upvotes.compareTo(a.upvotes));
+  List<Photo> get rankedImages {
+    List<Photo> rankedImages = List.from(images);
+    rankedImages.sort((a, b) {
+      if (a.upvotes == b.upvotes) {
+        return a.uploadDateTime.compareTo(b.uploadDateTime);
+      } else {
+        return b.upvotes.compareTo(a.upvotes);
+      }
+    });
 
     return rankedImages;
   }
 
-  List<Image> get topThreeImages {
-    List<Image> images = List.from(rankedImages);
+  List<Photo> get topThreeImages {
+    List<Photo> images = List.from(rankedImages);
     if (rankedImages.length > 3) {
       return images.getRange(0, 3).toList();
     } else if (rankedImages.isNotEmpty) {
@@ -208,8 +233,8 @@ class Album {
     }
   }
 
-  List<Image> get remainingRankedImages {
-    List<Image> images = List.from(rankedImages);
+  List<Photo> get remainingRankedImages {
+    List<Photo> images = List.from(rankedImages);
     if (rankedImages.length > 3) {
       images.removeRange(0, 3);
       return images;
@@ -218,9 +243,9 @@ class Album {
     }
   }
 
-  List<List<Image>> get imagesGroupedByGuest {
-    Map<String, List<Image>> mapImages = {};
-    List<List<Image>> listImages = [];
+  List<List<Photo>> get imagesGroupedByGuest {
+    Map<String, List<Photo>> mapImages = {};
+    List<List<Photo>> listImages = [];
 
     for (var item in images) {
       if (!mapImages.containsKey(item.owner)) {
@@ -242,9 +267,49 @@ class Album {
     return listImages;
   }
 
-  List<List<Image>> get imagesGroupedSortedByDate {
-    Map<String, List<Image>> mapImages = {};
-    List<List<Image>> listImages = [];
+  Map<String, int> get imageCountByGuestMap {
+    Map<String, int> countMap = {};
+    for (Photo item in images) {
+      if (countMap.containsKey(item.owner)) {
+        countMap[item.owner] = countMap[item.owner]! + 1;
+      } else {
+        countMap[item.owner] = 1;
+      }
+    }
+    return countMap;
+  }
+
+  Map<String, List<List<Photo>>> get imagesGroupByGuestMap {
+    Map<String, Map<String, List<Photo>>> mapImages = {};
+    Map<String, List<List<Photo>>> dateSortedMap = {};
+
+    for (var item in images) {
+      if (mapImages[item.owner] == null) {
+        mapImages[item.owner] = {
+          item.dateString: [item]
+        };
+      } else {
+        if (mapImages[item.owner]?[item.dateString] != null) {
+          mapImages[item.owner]![item.dateString]!.add(item);
+        } else {
+          mapImages[item.owner]?[item.dateString] = [item];
+        }
+      }
+    }
+
+    mapImages.forEach((userID, dateMap) {
+      dateMap.forEach((dateString, imageList) {
+        imageList.sort((a, b) => a.uploadDateTime.compareTo(b.uploadDateTime));
+      });
+      dateSortedMap[userID] = List.from(dateMap.values);
+    });
+
+    return dateSortedMap;
+  }
+
+  List<List<Photo>> get imagesGroupedSortedByDate {
+    Map<String, List<Photo>> mapImages = {};
+    List<List<Photo>> listImages = [];
 
     for (var item in images) {
       if (!mapImages.containsKey(item.dateString)) {
@@ -285,15 +350,23 @@ class Album {
     return sortedGuests;
   }
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Album &&
-          runtimeType == other.runtimeType &&
-          albumId == other.albumId &&
-          mapEquals(guestMap, other.guestMap) &&
-          mapEquals(imageMap, other.imageMap);
+  // @override
+  // bool operator ==(Object other) =>
+  //     identical(this, other) ||
+  //     other is Album &&
+  //         runtimeType == other.runtimeType &&
+  //         albumId == other.albumId &&
+  //         mapEquals(guestMap, other.guestMap) &&
+  //         mapEquals(imageMap, other.imageMap) &&
+  //         albumOwner == other.albumOwner;
+
+  // @override
+  // int get hashCode =>
+  //     albumId.hashCode ^
+  //     guestMap.hashCode ^
+  //     imageMap.hashCode ^
+  //     albumOwner.hashCode;
 
   @override
-  int get hashCode => albumId.hashCode ^ guestMap.hashCode ^ imageMap.hashCode;
+  List<Object?> get props => [albumId, guestMap, imageMap, albumOwner];
 }

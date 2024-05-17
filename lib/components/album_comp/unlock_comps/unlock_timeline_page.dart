@@ -39,6 +39,7 @@ class UnlockTimelinePage extends StatelessWidget {
                         crossAxisCount: 3,
                         mainAxisSpacing: 8,
                         crossAxisSpacing: 8,
+                        childAspectRatio: 4 / 5,
                       ),
                       itemBuilder: (context, item) {
                         if (album
@@ -46,11 +47,12 @@ class UnlockTimelinePage extends StatelessWidget {
                             userID) {
                           return TopItemComponent(
                             image: album.imagesGroupedSortedByDate[index][item],
-                            radius: 12,
                             headers: header,
+                            showCount: false,
                           );
                         } else {
                           return BlankItemComponent(
+                            image: album.imagesGroupedSortedByDate[index][item],
                             url: album.imagesGroupedSortedByDate[index][item]
                                 .avatarReq,
                             headers: header,

@@ -29,7 +29,7 @@ class EditProfileFrame extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
         child: ListView(
           physics: const ClampingScrollPhysics(),
-          children: [],
+          children: const [],
         ),
       ),
     );

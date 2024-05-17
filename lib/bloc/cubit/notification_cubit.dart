@@ -227,7 +227,7 @@ class NotificationCubit extends Cubit<NotificationState> {
             friendRequestCopy[request.notificationID] = request;
             emit(state.copyWith(
               friendRequestMap: friendRequestCopy,
-              unseenFriendRequests: !request.notificationSeen,
+              unseenFriendRequests: true,
             ));
         }
       case RequestStatus.denied:

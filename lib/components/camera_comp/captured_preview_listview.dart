@@ -1,9 +1,8 @@
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/cubit/camera_cubit.dart';
-import 'package:shared_photo/components/camera_comp/captured_edit_screen.dart';
+import 'package:shared_photo/components/camera_comp/edit_screen_comp/captured_edit_screen.dart';
 
 class CapturedPreviewListView extends StatelessWidget {
   const CapturedPreviewListView({super.key});

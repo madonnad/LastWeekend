@@ -86,7 +86,7 @@ class _AnimatedNotificationState extends State<AnimatedNotification>
         //       );
         //   }
         // }
-        return SizedBox.shrink();
+        return const SizedBox.shrink();
       },
     );
   }

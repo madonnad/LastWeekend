@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
 import 'package:shared_photo/bloc/cubit/image_frame_cubit.dart';
+import 'package:shared_photo/components/album_comp/empty_album_unlock.dart';
 import 'package:shared_photo/components/album_comp/reveal_comps/album_reveal_tab_bar.dart';
 import 'package:shared_photo/components/album_comp/reveal_comps/reveal_timeline_page.dart';
 import 'package:shared_photo/components/album_comp/guests_page.dart';
@@ -59,35 +60,44 @@ class AlbumRevealTabView extends StatelessWidget {
         }
       },
       child: Expanded(
-        child: DefaultTabController(
-          length: 3,
-          animationDuration: const Duration(milliseconds: 1),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const Padding(
-                padding: EdgeInsets.only(left: 16),
-                child: AlbumRevealTabBar(),
-              ),
-              Expanded(
-                child: GestureDetector(
-                  onHorizontalDragUpdate: (details) {
-                    if (details.delta.dx > 7) {
-                      Navigator.of(context).pop();
-                    }
-                  },
-                  child: const TabBarView(
-                    physics: NeverScrollableScrollPhysics(),
-                    children: <Widget>[
-                      PopularPage(),
-                      GuestsPage(),
-                      RevealTimelinePage(),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
+        child: BlocBuilder<AlbumFrameCubit, AlbumFrameState>(
+          builder: (context, state) {
+            return state.images.isNotEmpty
+                ? DefaultTabController(
+                    length: 3,
+                    animationDuration: const Duration(milliseconds: 1),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        const Padding(
+                          padding: EdgeInsets.only(left: 16),
+                          child: AlbumRevealTabBar(),
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            onHorizontalDragUpdate: (details) {
+                              if (details.delta.dx > 7) {
+                                Navigator.of(context).pop();
+                              }
+                            },
+                            child: const TabBarView(
+                              physics: NeverScrollableScrollPhysics(),
+                              children: <Widget>[
+                                PopularPage(),
+                                GuestsPage(),
+                                RevealTimelinePage(),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : EmptyAlbumView(
+                    isUnlockPhase: false,
+                    album: state.album,
+                  );
+          },
         ),
       ),
     );

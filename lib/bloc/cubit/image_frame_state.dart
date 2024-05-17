@@ -1,7 +1,7 @@
 part of 'image_frame_cubit.dart';
 
 class ImageFrameState extends Equatable {
-  final img.Image image;
+  final img.Photo image;
   final TextEditingController commentController;
   final bool loading;
   final bool likeLoading;
@@ -21,7 +21,7 @@ class ImageFrameState extends Equatable {
   });
 
   ImageFrameState copyWith({
-    img.Image? image,
+    img.Photo? image,
     TextEditingController? commentController,
     bool? loading,
     bool? likeLoading,

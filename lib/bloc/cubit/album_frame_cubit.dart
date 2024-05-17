@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_photo/models/album.dart';
-import 'package:shared_photo/models/image.dart' as img;
+import 'package:shared_photo/models/photo.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 import 'package:shared_photo/repositories/realtime_repository.dart';
 
@@ -34,7 +34,7 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
     //checkGuestListChange();
 
     imageStreamSubscription = dataRepository.imageStream.listen((event) {
-      img.Image newImage = event.image;
+      Photo newImage = event.image;
       String imageID = event.imageID;
 
       if (albumID == event.albumID) {
@@ -67,18 +67,19 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
     }
   }
 
-  void updateImageInAlbum(String imageID, img.Image image) {
-    if (state.album.imageMap.containsKey(imageID)) {
-      Album album = Album.from(state.album);
-      album.imageMap[imageID] = image;
-      emit(state.copyWith(album: album));
-      setRankedImages();
-    }
+  void updateImageInAlbum(String imageID, Photo image) {
+    Map<String, Photo> newImageMap = Map.from(state.album.imageMap);
+    newImageMap.update(imageID, (value) => image, ifAbsent: () => image);
+
+    Album updatedAlbum = state.album.copyWith(imageMap: newImageMap);
+
+    emit(state.copyWith(album: updatedAlbum));
+    setRankedImages();
   }
 
   void setRankedImages() {
-    List<img.Image> rankedImages = List.from(state.album.images);
-    List<img.Image> topThreeImages = [];
+    List<Photo> rankedImages = List.from(state.album.images);
+    List<Photo> topThreeImages = [];
 
     // Set Ranked
     rankedImages.sort((a, b) {
@@ -89,7 +90,7 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
       }
     });
 
-    List<img.Image> remainingRankedImages = List.from(rankedImages);
+    List<Photo> remainingRankedImages = List.from(rankedImages);
 
     // Set Top Three Images
     if (rankedImages.length > 3) {
@@ -138,7 +139,7 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
 
   void initalizeImageFrameWithSelectedImage(int selectedIndex) {
     PageController pageController = PageController(initialPage: selectedIndex);
-    img.Image image = state.imageFrameTimelineList[selectedIndex];
+    Photo image = state.imageFrameTimelineList[selectedIndex];
     emit(state.copyWith(selectedImage: image, pageController: pageController));
   }
 

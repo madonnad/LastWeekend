@@ -8,7 +8,7 @@ class EmptyFeed extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
       child: Container(
-        padding: const EdgeInsets.only(top: 30, left: 12, right: 12),
+        padding: const EdgeInsets.only(top: 100, left: 12, right: 12),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

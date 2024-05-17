@@ -3,6 +3,7 @@ part of 'notification_repository.dart';
 extension AllNotiRepo on NotificationRepository {
   void _engagementHandler(EngagementNotification notification) {
     if (user.id != notification.receiverID) return;
+    if (user.id == notification.notifierID) return;
     if (notification.operation == EngageOperation.remove) return;
 
     late ConsolidatedNotification consolNoti;

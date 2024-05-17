@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:shared_photo/models/album.dart';
-import 'package:shared_photo/models/image.dart';
+import 'package:shared_photo/models/photo.dart';
 import 'package:shared_photo/models/image_change.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 
@@ -35,9 +35,15 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
 
         String albumID = event.imageChange.albumID;
         String imageID = event.imageChange.imageID;
-        Image image = event.imageChange.image;
+        Photo image = event.imageChange.image;
+        Album album = feedAlbumMap[albumID]!;
 
-        feedAlbumMap[albumID]?.imageMap.update(imageID, (value) => image);
+        Map<String, Photo> newImageMap = Map.from(album.imageMap);
+
+        newImageMap.update(imageID, (value) => image, ifAbsent: () => image);
+
+        Album newAlbum = album.copyWith(imageMap: newImageMap);
+        feedAlbumMap[albumID] = newAlbum;
 
         emit(state.copyWith(feedAlbumMap: feedAlbumMap));
       },
@@ -59,7 +65,12 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
     );
 
     dataRepository.imageStream.listen((event) {
-      add(UpdateAlbumImageInFeed(imageChange: event));
+      String albumID = event.albumID;
+      Album? album = state.feedAlbumMap[albumID];
+
+      if (album != null) {
+        add(UpdateAlbumImageInFeed(imageChange: event));
+      }
     });
   }
 }

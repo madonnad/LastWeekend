@@ -14,4 +14,9 @@ class AppFrameCubit extends Cubit<AppFrameState> {
     HapticFeedback.mediumImpact();
     emit(state.copyWith(index: index));
   }
+
+  // void changePageFromPassedRoute(BuildContext context, int index) {
+  //   Navigator.of(context).
+  //   state.pageController.jumpToPage(index);
+  // }
 }

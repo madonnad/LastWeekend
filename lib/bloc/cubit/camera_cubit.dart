@@ -1,45 +1,64 @@
+import 'dart:async';
 import 'dart:collection';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/captured_image.dart';
+import 'package:shared_photo/models/photo.dart';
 import 'package:shared_photo/models/user.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
-import 'package:shared_photo/services/image_service.dart';
 
 part 'camera_state.dart';
 
 class CameraCubit extends Cubit<CameraState> {
   DataRepository dataRepository;
   User user;
+  UploadMode mode;
+  Album? album;
 
-  CameraCubit({required this.dataRepository, required this.user})
+  CameraCubit(
+      {required this.dataRepository,
+      required this.user,
+      required this.mode,
+      this.album})
       : super(CameraState.empty()) {
-    dataRepository.albumStream.listen((event) {
-      StreamOperation streamOperation = event.$1;
-      Album album = event.$2;
+    if (mode == UploadMode.unlockedAlbums) {
+      dataRepository.albumStream.listen((event) {
+        StreamOperation streamOperation = event.$1;
+        Album album = event.$2;
 
-      // Check if user is in the album that was passed
-      bool userIsGuest = album.guests.any((guest) => guest.uid == user.id);
+        // Check if user is in the album that was passed
+        bool userIsGuest = album.guests.any((guest) => guest.uid == user.id);
 
-      // Only allow album through if it passes these qualities
-      if (userIsGuest && album.phase == AlbumPhases.unlock) {
-        switch (streamOperation) {
-          case StreamOperation.add:
-            addUnlockedAlbums(album);
-          case StreamOperation.update:
-          case StreamOperation.delete:
+        // Only allow album through if it passes these qualities
+        if (userIsGuest && album.phase == AlbumPhases.unlock) {
+          switch (streamOperation) {
+            case StreamOperation.add:
+              addUnlockedAlbums(album);
+            case StreamOperation.update:
+            case StreamOperation.delete:
+          }
         }
+      });
+      // Initialize Unlocked Album Map
+      _initializeUnlockedAlbums();
+    } else if (mode == UploadMode.singleAlbum) {
+      if (album != null) {
+        Map<String, Album> albumMap = {album!.albumId: album!};
+        emit(state.copyWith(
+          albumMap: albumMap,
+          selectedAlbum: album!,
+          mode: mode,
+        ));
       }
-    });
-    // Initalize Unlocked Album Map
-    _initalizeUnlockedAlbums();
+    }
   }
 
   void addUnlockedAlbums(Album album) {
-    Map<String, Album> albumMap = Map.from(state.unlockedAlbumMap);
+    Map<String, Album> albumMap = Map.from(state.albumMap);
 
     String key = album.albumId;
 
@@ -48,44 +67,27 @@ class CameraCubit extends Cubit<CameraState> {
 
       if (albumMap.length == 1) {
         emit(state.copyWith(
-            unlockedAlbumMap: albumMap,
-            selectedAlbum: albumMap.entries.first.value));
+            albumMap: albumMap, selectedAlbum: albumMap.entries.first.value));
         return;
       }
-      emit(state.copyWith(unlockedAlbumMap: albumMap));
+      emit(state.copyWith(albumMap: albumMap));
     }
   }
 
-  void _initalizeUnlockedAlbums() {
+  void _initializeUnlockedAlbums() {
     Map<String, Album> unlockedMap = Map.from(dataRepository.unlockedAlbums());
-    emit(state.copyWith(unlockedAlbumMap: unlockedMap));
+    emit(state.copyWith(albumMap: unlockedMap));
   }
 
   Future<void> uploadImagesToAlbums(String token) async {
     List<CapturedImage> photosTaken = List.from(state.photosTaken);
-    List<CapturedImage> failedUploads = [];
 
     emit(state.copyWith(loading: true));
 
-    for (int i = 0; i < photosTaken.length; i++) {
-      CapturedImage image = photosTaken[i];
-      try {
-        bool uploadSucceeded =
-            await ImageService.postCapturedImage(token, image);
-        if (!uploadSucceeded) {
-          throw false;
-        }
+    List<CapturedImage> failedUploads =
+        await dataRepository.addImageToAlbum(photosTaken);
 
-        photosTaken.removeAt(i);
-        emit(state.copyWith(photosTaken: photosTaken));
-        i--;
-      } catch (e) {
-        failedUploads.add(image);
-        continue;
-      }
-    }
-    emit(state
-        .copyWith(photosTaken: failedUploads, loading: false, uploadList: []));
+    emit(state.copyWith(photosTaken: failedUploads, loading: false));
   }
 
   void updateSelectedImage(CapturedImage image) {
@@ -101,11 +103,18 @@ class CameraCubit extends Cubit<CameraState> {
 
   void changeEditAlbum(Album? album) {
     emit(state.copyWith(selectedAlbum: album));
-    emit(state.copyWith(
-      selectedImage: state.selectedAlbumImageList[0],
-      captionTextController:
-          TextEditingController(text: state.selectedAlbumImageList[0].caption),
-    ));
+    if (state.selectedAlbumImageList.isNotEmpty) {
+      emit(state.copyWith(
+        selectedImage: state.selectedAlbumImageList[0],
+        captionTextController: TextEditingController(
+            text: state.selectedAlbumImageList[0].caption),
+      ));
+    } else {
+      emit(state.copyWith(
+        selectedImage: null,
+        captionTextController: TextEditingController(text: null),
+      ));
+    }
   }
 
   void addPhotoToList(CapturedImage capturedImage) {
@@ -114,6 +123,21 @@ class CameraCubit extends Cubit<CameraState> {
     photosTaken.add(capturedImage);
 
     emit(state.copyWith(photosTaken: photosTaken));
+  }
+
+  void addListOfPhotosToList(List<XFile> imageList, UploadType type) {
+    List<CapturedImage> images = List.from(state.photosTaken);
+
+    if (state.selectedAlbum == null && album == null) return;
+    Album newAlbum = album == null ? state.selectedAlbum! : album!;
+
+    for (XFile file in imageList) {
+      CapturedImage image =
+          CapturedImage(imageXFile: file, album: newAlbum, type: type);
+      images.add(image);
+    }
+
+    emit(state.copyWith(photosTaken: images));
   }
 
   void updateImageCaption(CapturedImage capturedImage) {
@@ -144,7 +168,7 @@ class CameraCubit extends Cubit<CameraState> {
     int selectedAlbumMaxIndex;
 
     if (photosTaken.length == 1) {
-      Navigator.of(context).pop();
+      // Navigator.of(context).pop();
       emit(state.copyWith(
           photosTaken: [],
           selectedImage: null,

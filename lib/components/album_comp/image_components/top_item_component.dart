@@ -1,20 +1,25 @@
+import 'dart:ui';
+import 'dart:math' as math;
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/cubit/image_frame_cubit.dart';
 import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
-import 'package:shared_photo/models/image.dart' as img;
+import 'package:shared_photo/models/photo.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 import 'package:shared_photo/screens/image_frame.dart';
 
 class TopItemComponent extends StatelessWidget {
-  final double radius;
-  final img.Image image;
+  final Photo image;
+  final bool showCount;
   final Map<String, String> headers;
   const TopItemComponent({
     super.key,
     required this.image,
-    required this.radius,
+    required this.showCount,
     required this.headers,
   });
 
@@ -63,28 +68,97 @@ class TopItemComponent extends StatelessWidget {
                 color: const Color.fromRGBO(44, 44, 44, .75),
                 borderRadius: BorderRadius.circular(10),
                 image: DecorationImage(
-                  image: CachedNetworkImageProvider(
+                  image: NetworkImage(
                     image.imageReq,
                     headers: headers,
                   ),
+                  onError: (_, __) {},
                   fit: BoxFit.cover,
                 ),
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Material(
-              borderRadius: BorderRadius.circular(radius),
-              elevation: 2,
-              child: CircleAvatar(
-                backgroundColor: const Color.fromRGBO(16, 16, 16, 1),
-                foregroundImage: CachedNetworkImageProvider(
-                  image.avatarReq,
-                  headers: headers,
+          Align(
+            alignment: Alignment.bottomLeft,
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 5,
+                    vertical: 5,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.6),
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(10),
+                      topRight: Radius.circular(10),
+                    ),
+                  ),
+                  child: showCount
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CircleAvatar(
+                              backgroundColor:
+                                  const Color.fromRGBO(16, 16, 16, 1),
+                              foregroundImage: CachedNetworkImageProvider(
+                                image.avatarReq,
+                                headers: headers,
+                              ),
+                              radius: 10,
+                            ),
+                            const Gap(5),
+                            Container(
+                              width: 1.5,
+                              height: 25,
+                              decoration: const BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Color.fromRGBO(255, 205, 178, 1),
+                                    Color.fromRGBO(255, 180, 162, 1),
+                                    Color.fromRGBO(229, 152, 155, 1),
+                                    Color.fromRGBO(181, 131, 141, 1),
+                                    Color.fromRGBO(109, 104, 117, 1),
+                                  ],
+                                  begin: Alignment.bottomCenter,
+                                  end: Alignment.topCenter,
+                                ),
+                              ),
+                            ),
+                            const Gap(5),
+                            Row(
+                              children: [
+                                Text(
+                                  image.upvotes.toString(),
+                                  style: GoogleFonts.montserrat(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                Transform.rotate(
+                                  angle: (270 * math.pi) / 180,
+                                  child: const Icon(
+                                    Icons.label_important,
+                                    color: Colors.white,
+                                    size: 10,
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
+                        )
+                      : CircleAvatar(
+                          backgroundColor: const Color.fromRGBO(16, 16, 16, 1),
+                          foregroundImage: CachedNetworkImageProvider(
+                            image.avatarReq,
+                            headers: headers,
+                          ),
+                          radius: 9,
+                        ),
                 ),
-                radius: radius,
-              ),
+                const Expanded(child: SizedBox.shrink())
+              ],
             ),
           ),
         ],

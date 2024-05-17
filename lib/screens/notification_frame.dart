@@ -39,13 +39,16 @@ class NotificationFrame extends StatelessWidget {
                     ),
                   ),
                   const Expanded(
-                    child: TabBarView(
-                      physics: NeverScrollableScrollPhysics(),
-                      children: <Widget>[
-                        AllNotisList(),
-                        AlbumRequestsList(),
-                        FriendRequestList(),
-                      ],
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: TabBarView(
+                        physics: NeverScrollableScrollPhysics(),
+                        children: <Widget>[
+                          AllNotisList(),
+                          AlbumRequestsList(),
+                          FriendRequestList(),
+                        ],
+                      ),
                     ),
                   )
                 ],

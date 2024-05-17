@@ -37,19 +37,22 @@ extension AlbumDataRepo on DataRepository {
 
   // Initializer Functions
 
-  Future<Map<String, Image>> getAlbumImages(String albumID) async {
-    List<Image> imageList =
+  Future<Map<String, Photo>> getAlbumImages(String albumID) async {
+    List<Photo> imageList =
         await ImageService.getAlbumImages(user.token, albumID);
 
-    Map<String, Image> imageMap = {};
+    Map<String, Photo> imageMap = {};
 
-    for (Image image in imageList) {
+    for (Photo image in imageList) {
       imageMap.putIfAbsent(image.imageId, () => image);
     }
 
     if (albumMap[albumID] == null) return imageMap;
 
-    albumMap[albumID]!.imageMap = imageMap;
+    Album newAlbum = albumMap[albumID]!.copyWith(imageMap: imageMap);
+    //albumMap[albumID]!.imageMap = imageMap;
+
+    albumMap[albumID] = newAlbum;
 
     if (albumMap.containsKey(albumID) &&
         albumMap[albumID]!.imageMap.isNotEmpty) {
@@ -96,7 +99,7 @@ extension AlbumDataRepo on DataRepository {
         throw const FormatException("No image path was provided to upload");
       }
 
-      bool success = await ImageService.postAlbumCoverImage(
+      bool success = await ImageService.uploadPhoto(
           user.token, albumCoverPath, album.albumCoverId);
       if (success == false) {
         throw const FormatException("Image upload failed");

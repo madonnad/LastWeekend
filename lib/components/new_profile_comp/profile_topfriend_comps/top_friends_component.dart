@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
@@ -30,16 +29,19 @@ class TopFriendsComponent extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: List.generate(
-                    state.myFriends.length,
+                    state.myFriends.length > 5 ? 5 : state.myFriends.length,
                     (index) => Padding(
                       padding: const EdgeInsets.symmetric(vertical: 20.0),
                       child: CircleAvatar(
                         radius: 30,
-                        backgroundImage: CachedNetworkImageProvider(
-                            state.myFriends[index].imageReq,
-                            headers: headers,
-                            errorListener: (_) =>
-                                Image.asset("/asset/default.png")),
+                        backgroundColor: const Color.fromRGBO(19, 19, 19, 1),
+                        backgroundImage:
+                            const AssetImage("lib/assets/default.png"),
+                        foregroundImage: NetworkImage(
+                          state.myFriends[index].imageReq,
+                          headers: headers,
+                        ),
+                        onForegroundImageError: (_, __) {},
                       ),
                     ),
                   ),

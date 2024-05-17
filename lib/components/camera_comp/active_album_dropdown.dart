@@ -16,35 +16,44 @@ class ActiveAlbumDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<CameraCubit, CameraState>(
       builder: (context, state) {
+        int index = state.selectedAlbumIndex;
         return Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: Colors.white.withOpacity(opacity),
           ),
           height: 40,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4.0),
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton2<Album>(
-                value: state.selectedAlbum,
-                style: GoogleFonts.josefinSans(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black,
+          clipBehavior: Clip.hardEdge,
+          child: ClipRect(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 15.0, sigmaY: 15.0),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4.0),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton2<Album>(
+                    value: state.unlockedAlbums.isNotEmpty
+                        ? state.unlockedAlbums[index]
+                        : null,
+                    style: GoogleFonts.josefinSans(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.black,
+                    ),
+                    iconStyleData: const IconStyleData(iconSize: 0),
+                    items: state.unlockedAlbums
+                        .map(
+                          (e) => DropdownMenuItem<Album>(
+                            value: e,
+                            child: Text(
+                              e.albumName,
+                            ),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: (album) =>
+                        context.read<CameraCubit>().changeSelectedAlbum(album),
+                  ),
                 ),
-                iconStyleData: const IconStyleData(iconSize: 0),
-                items: state.unlockedAlbums
-                    .map(
-                      (e) => DropdownMenuItem<Album>(
-                        value: e,
-                        child: Text(
-                          e.albumName,
-                        ),
-                      ),
-                    )
-                    .toList(),
-                onChanged: (album) =>
-                    context.read<CameraCubit>().changeSelectedAlbum(album),
               ),
             ),
           ),

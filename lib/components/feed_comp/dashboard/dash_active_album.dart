@@ -19,6 +19,7 @@ class AlbumHorizontalListView extends StatelessWidget {
               child: SectionHeaderSmall("active albums"),
             ),
             HorizontalAlbumList(
+              showCreateAlbum: true,
               albumList: state.sortActiveAlbumList,
             ),
           ],

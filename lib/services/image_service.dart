@@ -4,12 +4,12 @@ import 'dart:typed_data';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_photo/models/captured_image.dart';
-import 'package:shared_photo/models/image.dart';
+import 'package:shared_photo/models/photo.dart';
 import 'package:http/http.dart' as http;
 
 class ImageService {
-  static Future<List<Image>> getUserImages(String token) async {
-    final List<Image> images = [];
+  static Future<List<Photo>> getUserImages(String token) async {
+    final List<Photo> images = [];
     // var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/user/image');
 
     String urlString = "${dotenv.env['URL']}/user/image";
@@ -27,7 +27,7 @@ class ImageService {
       }
 
       for (var item in jsonData) {
-        Image image = Image.fromMap(item);
+        Photo image = Photo.fromMap(item);
         images.add(image);
       }
       //print(images);
@@ -39,9 +39,9 @@ class ImageService {
     return images;
   }
 
-  static Future<List<Image>> getAlbumImages(
+  static Future<List<Photo>> getAlbumImages(
       String token, String albumID) async {
-    final List<Image> images = [];
+    final List<Photo> images = [];
 
     // var url = Uri.https(
     //     dotenv.env['DOMAIN'] ?? '', '/album/images', {'album_id': albumID});
@@ -61,7 +61,7 @@ class ImageService {
       }
 
       for (var item in jsonData) {
-        Image image = Image.fromMap(item);
+        Photo image = Photo.fromMap(item);
         images.add(image);
       }
       //print(images);
@@ -73,7 +73,7 @@ class ImageService {
     return images;
   }
 
-  static Future<bool> postAlbumCoverImage(
+  static Future<bool> uploadPhoto(
       //Used to be uploadByImageId
       String token,
       String imagePath,
@@ -81,7 +81,6 @@ class ImageService {
     // var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/upload', {'id': imageId});
     String urlString = "${dotenv.env['URL']}/upload?id=$imageId";
     Uri url = Uri.parse(urlString);
-
 
     final Map<String, String> headers = {
       "Content-Type": "application/json",
@@ -129,7 +128,6 @@ class ImageService {
     String urlString = "${dotenv.env['URL']}/upload?id=$userID";
     Uri url = Uri.parse(urlString);
 
-
     final Map<String, String> headers = {
       "Content-Type": "application/json",
       'Authorization': 'Bearer $token'
@@ -166,20 +164,18 @@ class ImageService {
     }
   }
 
-  static Future<bool> postCapturedImage(
+  static Future<Photo?> postCapturedImage(
       String token, CapturedImage image) async {
     //used to be postNewImage
     // var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/user/image');
     String urlString = "${dotenv.env['URL']}/user/image";
     Uri url = Uri.parse(urlString);
 
-
     final Map<String, String> headers = {
       "Content-Type": "application/json",
       'Authorization': 'Bearer $token'
     };
 
-    String imageId;
     Map<String, dynamic> capturedImageData = image.toJson();
     String encodedBody = json.encode(capturedImageData);
 
@@ -189,15 +185,16 @@ class ImageService {
 
       if (response.statusCode == 200) {
         Map<String, dynamic> body = json.decode(response.body);
-        imageId = body['image_id'];
+        Photo newImage = Photo.fromMap(body);
 
         // ignore: unused_local_variable
         bool upload =
-            await postAlbumCoverImage(token, image.imageXFile.path, imageId);
+            await uploadPhoto(token, image.imageXFile.path, newImage.imageId);
         if (upload = false) {
-          //need to handle removing the information from the DB that failed or try uploading the image again later
+          //TODO: need to handle removing the information from the DB that failed or try uploading the image again later
           throw "Upload failed";
         }
+        return newImage;
       } else {
         print('Request failed with status: ${response.statusCode}');
         print('Response body: #${response.body}');
@@ -205,19 +202,8 @@ class ImageService {
       }
     } catch (e) {
       print(e);
-      return false;
+      return null;
     }
-
-    if (image.addToRecap) {
-      bool addImage = await addImageToRecap(token, imageId);
-
-      if (addImage == false) {
-        print("failed to add to recap");
-        return false;
-      }
-    }
-
-    return true;
   }
 
   static Future<bool> addImageToRecap(String token, String imageId) async {
@@ -225,7 +211,6 @@ class ImageService {
     //     Uri.https(dotenv.env['DOMAIN'] ?? '', '/user/recap', {'id': imageId});
     String urlString = "${dotenv.env['URL']}/user/recap?id=imageId";
     Uri url = Uri.parse(urlString);
-
 
     final Map<String, String> headers = {
       "Content-Type": "application/json",

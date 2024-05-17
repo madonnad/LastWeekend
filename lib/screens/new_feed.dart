@@ -99,7 +99,7 @@ class _NewFeedState extends State<NewFeed> {
         ),
         BlocBuilder<FeedBloc, FeedState>(
           builder: (context, state) {
-            if (state.feedAlbumList.isNotEmpty) {
+            if (state.revealedFeedAlbumList.isNotEmpty) {
               return const FeedList();
             } else {
               return const EmptyFeed();

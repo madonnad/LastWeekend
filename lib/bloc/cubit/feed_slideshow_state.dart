@@ -5,7 +5,7 @@ class FeedSlideshowState extends Equatable {
   final PageController pageController;
   final int currentPage;
   final Album album;
-  final List<img.Image> topThreeImages;
+  final List<Photo> topThreeImages;
   final String avatarUrl;
   final String imageOwnerName;
 
@@ -21,7 +21,7 @@ class FeedSlideshowState extends Equatable {
   FeedSlideshowState copyWith({
     PageController? pageController,
     Album? album,
-    List<img.Image>? topThreeImages,
+    List<Photo>? topThreeImages,
     int? currentPage,
     String? avatarUrl,
     String? imageOwnerName,

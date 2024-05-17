@@ -69,7 +69,7 @@ class UserService {
   static Future<AnonymousFriend> getSearchedUser(
       String token, String uid) async {
     // var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/user/id', {'id': uid});
-    String urlString = "${dotenv.env['URL']}/user/id'?id=$uid";
+    String urlString = "${dotenv.env['URL']}/user/id?id=$uid";
     Uri url = Uri.parse(urlString);
 
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
@@ -88,7 +88,6 @@ class UserService {
       print('Response body: #${response.body}');
       return AnonymousFriend.empty;
     } catch (e) {
-      print(e);
       return AnonymousFriend.empty;
     }
   }
