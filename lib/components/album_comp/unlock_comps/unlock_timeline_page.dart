@@ -52,6 +52,7 @@ class UnlockTimelinePage extends StatelessWidget {
                           );
                         } else {
                           return BlankItemComponent(
+                            image: album.imagesGroupedSortedByDate[index][item],
                             url: album.imagesGroupedSortedByDate[index][item]
                                 .avatarReq,
                             headers: header,
