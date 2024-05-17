@@ -109,7 +109,7 @@ class MainAppView extends StatelessWidget {
           if (state is AuthenticatedState) {
             return const AppFrame();
           } else if (state is LoadingState) {
-            return const AuthFrame();
+            return const LoadingScreen();
           } else {
             return const AuthFrame();
           }
