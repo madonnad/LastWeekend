@@ -43,7 +43,7 @@ class UnlockTimelinePage extends StatelessWidget {
                       ),
                       itemBuilder: (context, item) {
                         if (album
-                                .imagesGroupedSortedByDate[index][item].owner !=
+                                .imagesGroupedSortedByDate[index][item].owner ==
                             userID) {
                           return TopItemComponent(
                             image: album.imagesGroupedSortedByDate[index][item],
