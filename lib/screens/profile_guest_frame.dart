@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -172,7 +173,7 @@ class ProfileGuestFrame extends StatelessWidget {
                           GridView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
-                            padding: const EdgeInsets.only(top: 10, bottom: 50),
+                            padding: const EdgeInsets.only(top: 16, bottom: 16),
                             gridDelegate:
                                 const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 3,
@@ -195,41 +196,45 @@ class ProfileGuestFrame extends StatelessWidget {
                   ),
                 ),
                 isLoggedUser
-                    ? SliverToBoxAdapter(
-                        child: InkWell(
-                          onTap: () => showModalBottomSheet(
-                            context: context,
-                            isScrollControlled: true,
-                            useSafeArea: true,
-                            builder: (ctx) {
-                              return BlocProvider(
-                                create: (context) => CameraCubit(
-                                  dataRepository:
-                                      context.read<DataRepository>(),
-                                  user: context.read<AppBloc>().state.user,
-                                  mode: UploadMode.singleAlbum,
-                                  album: state.album,
-                                ),
-                                child: const CapturedEditScreen(),
-                              );
-                            },
-                          ),
-                          child: Container(
-                            height: 40,
-                            alignment: Alignment.center,
-                            margin: const EdgeInsets.symmetric(horizontal: 50),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 25, vertical: 10),
-                            decoration: BoxDecoration(
-                              color: const Color.fromRGBO(44, 44, 44, 1),
-                              borderRadius: BorderRadius.circular(10),
+                    ? SliverPadding(
+                        padding: const EdgeInsets.only(top: 8),
+                        sliver: SliverToBoxAdapter(
+                          child: InkWell(
+                            onTap: () => showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              useSafeArea: true,
+                              builder: (ctx) {
+                                return BlocProvider(
+                                  create: (context) => CameraCubit(
+                                    dataRepository:
+                                        context.read<DataRepository>(),
+                                    user: context.read<AppBloc>().state.user,
+                                    mode: UploadMode.singleAlbum,
+                                    album: state.album,
+                                  ),
+                                  child: const CapturedEditScreen(),
+                                );
+                              },
                             ),
-                            child: Text(
-                              "Add Forgot Shot",
-                              style: GoogleFonts.josefinSans(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
+                            child: Container(
+                              height: 40,
+                              alignment: Alignment.center,
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 50),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 25, vertical: 10),
+                              decoration: BoxDecoration(
+                                color: const Color.fromRGBO(44, 44, 44, 1),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Text(
+                                "Add Forgot Shot",
+                                style: GoogleFonts.josefinSans(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ),
                           ),

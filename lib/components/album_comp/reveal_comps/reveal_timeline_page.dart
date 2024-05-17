@@ -45,8 +45,8 @@ class RevealTimelinePage extends StatelessWidget {
                             return TopItemComponent(
                               image: state.imagesGroupedSortedByDate[index]
                                   [item],
-                              radius: 12,
                               headers: header,
+                              showCount: false,
                             );
                           },
                         ),

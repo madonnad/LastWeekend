@@ -47,8 +47,8 @@ class UnlockTimelinePage extends StatelessWidget {
                             userID) {
                           return TopItemComponent(
                             image: album.imagesGroupedSortedByDate[index][item],
-                            radius: 12,
                             headers: header,
+                            showCount: false,
                           );
                         } else {
                           return BlankItemComponent(
