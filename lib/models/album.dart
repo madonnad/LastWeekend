@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_photo/models/notification.dart';
@@ -163,10 +165,13 @@ class Album extends Equatable {
         visibility = Visibility.private;
     }
 
+    List<int> bytes = map['album_name'].toString().codeUnits;
+    String albumName = utf8.decode(bytes);
+
     return Album(
       albumId: map['album_id'] as String,
       albumCoverId: map['album_cover_id'] as String,
-      albumName: map['album_name'] as String,
+      albumName: albumName,
       albumOwner: map['album_owner'] as String,
       ownerFirst: map['owner_first'],
       ownerLast: map['owner_last'],

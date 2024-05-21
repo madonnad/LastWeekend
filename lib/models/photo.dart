@@ -62,12 +62,15 @@ class Photo {
       type = UploadType.forgotShot;
     }
 
+    List<int> bytes = map['caption'].toString().codeUnits;
+    String caption = utf8.decode(bytes);
+
     return Photo(
       imageId: map['image_id'] as String,
       owner: map['image_owner'] as String,
       firstName: map['first_name'],
       lastName: map['last_name'],
-      imageCaption: map['caption'] != null ? map['caption'] as String : '',
+      imageCaption: caption,
       uploadDateTime: DateTime.parse(map['created_at']),
       likes: map['likes'],
       upvotes: map['upvotes'],

@@ -27,9 +27,9 @@ class AlbumFrame extends StatelessWidget {
       appBar: const AlbumAppBarTitle(),
       body: BlocListener<AlbumFrameCubit, AlbumFrameState>(
         listenWhen: (previous, current) =>
-            previous.album.imageMap != current.album.imageMap,
+            previous.album.albumId != current.album.albumId,
         listener: (context, state) {
-          pushImageFrameIfPassed(context, state, arguments);
+          pushImageFrameIfPassed(context, arguments);
         },
         child: GestureDetector(
           onHorizontalDragUpdate: (details) {
@@ -111,14 +111,15 @@ class AlbumFrame extends StatelessWidget {
   }
 }
 
-void pushImageFrameIfPassed(
-    BuildContext context, AlbumFrameState state, Arguments arguments) {
+void pushImageFrameIfPassed(BuildContext context, Arguments arguments) {
   if (arguments.imageID != null) {
     int selectedIndex = context
         .read<AlbumFrameCubit>()
         .state
         .imageFrameTimelineList
         .indexWhere((element) => element.imageId == arguments.imageID);
+
+    arguments.imageID = null;
 
     context
         .read<AlbumFrameCubit>()
