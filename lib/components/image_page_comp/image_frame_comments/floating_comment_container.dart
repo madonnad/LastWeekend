@@ -46,17 +46,17 @@ class FloatingCommentContainer extends StatelessWidget {
                       onChanged: (_) =>
                           context.read<ImageFrameCubit>().commentTextChange(),
                       maxLines: null,
-                      style: GoogleFonts.josefinSans(
+                      style: GoogleFonts.montserrat(
                         color: Colors.white,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
                       ),
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: "Add Comment",
-                        hintStyle: GoogleFonts.josefinSans(
+                        hintStyle: GoogleFonts.montserrat(
                           color: Colors.white70,
-                          fontSize: 15,
+                          fontSize: 14,
                           fontWeight: FontWeight.w600,
                         ),
                       ),

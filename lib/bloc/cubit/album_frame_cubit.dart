@@ -43,16 +43,6 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
     });
   }
 
-  /*void checkGuestListChange() async {
-
-    emit(state.copyWith(loading: true));
-
-    Album album = Album.from(state.album);
-    album.guests = await dataRepository.updateAlbumsGuests(state.album.albumId);
-
-    emit(state.copyWith(album: album, loading: false));
-  }*/
-
   void initializeAlbum() async {
     emit(state.copyWith(loading: true));
 

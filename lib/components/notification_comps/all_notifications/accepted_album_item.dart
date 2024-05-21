@@ -47,27 +47,26 @@ class AcceptedAlbumItem extends StatelessWidget {
             const SizedBox(width: 10),
             Expanded(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: Text(
-                      "$firstName accepted your invite to",
-                      style: GoogleFonts.josefinSans(
-                        color: Colors.white60,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                      ),
+                  Text(
+                    "$firstName accepted your invite to",
+                    style: GoogleFonts.josefinSans(
+                      color: Colors.white60,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
                   Text(
                     albumName,
-                    style: GoogleFonts.josefinSans(
+                    style: GoogleFonts.montserrat(
                       color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
+                  const Spacer(),
                 ],
               ),
             ),
