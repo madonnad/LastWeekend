@@ -40,10 +40,6 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-    <string>This app requires access to your camera</string>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>This app requires access to your microphone</string>
-	<key>NSCameraUsageDescription</key>
 	<string>This app requires access to your camera</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>This app requires access to your microphone</string>
@@ -51,6 +47,10 @@
 	<string>This app requires access to your image library</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
