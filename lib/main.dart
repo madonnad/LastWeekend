@@ -1,9 +1,12 @@
 import 'package:camera/camera.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
+import 'package:shared_photo/firebase_options.dart';
 import 'package:shared_photo/repositories/auth0_repository.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 import 'package:shared_photo/repositories/notification_repository/notification_repository.dart';
@@ -13,9 +16,26 @@ import 'package:shared_photo/router/generate_route.dart';
 import 'package:shared_photo/screens/auth_frame.dart';
 import 'package:shared_photo/screens/loading.dart';
 import 'package:shared_photo/screens/app_frame.dart';
+import 'dart:io' show Platform;
 
 void main() async {
   await dotenv.load(fileName: ".env");
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  await FirebaseMessaging.instance.setAutoInitEnabled(true);
+
+  await FirebaseMessaging.instance.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
 
   WidgetsFlutterBinding.ensureInitialized();
 
