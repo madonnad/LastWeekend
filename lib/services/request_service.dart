@@ -9,7 +9,6 @@ class RequestService {
     String urlString = "${dotenv.env['URL']}/friend-request?id=$uid";
     Uri url = Uri.parse(urlString);
 
-
     final Map<String, String> headers = {
       "Content-Type": "application/json",
       'Authorization': 'Bearer $token'
@@ -38,7 +37,6 @@ class RequestService {
         "${dotenv.env['URL']}/friend-request?id=$senderID&request_id=$requestID";
     Uri url = Uri.parse(urlString);
 
-
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     try {
@@ -60,7 +58,6 @@ class RequestService {
     //     dotenv.env['DOMAIN'] ?? '', '/friend-request', {"id": requestID});
     String urlString = "${dotenv.env['URL']}/friend-request?id=$requestID";
     Uri url = Uri.parse(urlString);
-
 
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
@@ -84,7 +81,6 @@ class RequestService {
     String urlString = "${dotenv.env['URL']}/friend-request?id=$requestID";
     Uri url = Uri.parse(urlString);
 
-
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     try {
@@ -106,7 +102,6 @@ class RequestService {
     //     dotenv.env['DOMAIN'] ?? '', '/album-invite', {"id": requestID});
     String urlString = "${dotenv.env['URL']}/album-invite?id=$requestID";
     Uri url = Uri.parse(urlString);
-
 
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
@@ -131,7 +126,6 @@ class RequestService {
         "${dotenv.env['URL']}/album-invite?request_id=$requestID";
     Uri url = Uri.parse(urlString);
 
-
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     try {
@@ -153,7 +147,6 @@ class RequestService {
     String urlString =
         "${dotenv.env['URL']}/album-invite?request_id=$requestID";
     Uri url = Uri.parse(urlString);
-
 
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 

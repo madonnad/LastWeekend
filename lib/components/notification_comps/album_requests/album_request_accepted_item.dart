@@ -71,13 +71,14 @@ class AlbumRequestAcceptedItem extends StatelessWidget {
                   fit: BoxFit.scaleDown,
                   child: Text(
                     albumName,
-                    style: GoogleFonts.josefinSans(
+                    style: GoogleFonts.montserrat(
                       color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
+                const Gap(5),
                 Row(
                   children: [
                     NotificationButton(
@@ -89,14 +90,19 @@ class AlbumRequestAcceptedItem extends StatelessWidget {
                           .acceptAlbumInvite(requestID: requestID),
                     ),
                     const Gap(10),
-                    Text(
-                      "Unlocks in $timeUntil",
-                      style: GoogleFonts.josefinSans(
-                        color: const Color.fromRGBO(181, 131, 141, 1),
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
+                    Expanded(
+                      child: FittedBox(
+                        child: Text(
+                          "Unlocks in $timeUntil",
+                          style: GoogleFonts.josefinSans(
+                            color: const Color.fromRGBO(181, 131, 141, 1),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
                       ),
                     ),
+                    const Gap(10),
                   ],
                 ),
               ],
