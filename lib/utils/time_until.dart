@@ -14,7 +14,7 @@ class TimeUntil {
     final num years = days / 365;
 
     if (seconds < 60) {
-      return "less than 1 minute";
+      return "<1 minute";
     } else if (minutes < 60) {
       return "${minutes.floor()} minutes";
     } else if (hours < 24) {

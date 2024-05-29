@@ -100,13 +100,16 @@ class AlbumInviteNotification extends Notification {
         break;
     }
 
+    List<int> bytes = map['album_name'].toString().codeUnits;
+    String albumName = utf8.decode(bytes);
+
     return AlbumInviteNotification(
       notificationID: map['request_id'],
       receivedDateTime: DateTime.parse(map['received_at']),
       notificationMediaID: map['album_cover_id'],
       notificationSeen: map['invite_seen'],
       albumID: map['album_id'],
-      albumName: map['album_name'],
+      albumName: albumName,
       albumOwner: map['album_owner'],
       ownerFirst: map['owner_first'],
       ownerLast: map['owner_last'],

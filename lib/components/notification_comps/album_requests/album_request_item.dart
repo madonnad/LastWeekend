@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/notification_cubit.dart';
@@ -68,13 +69,14 @@ class AlbumRequestItem extends StatelessWidget {
                   fit: BoxFit.scaleDown,
                   child: Text(
                     albumName,
-                    style: GoogleFonts.josefinSans(
+                    style: GoogleFonts.montserrat(
                       color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
+                const Gap(5),
                 Row(
                   children: [
                     NotificationButton(
