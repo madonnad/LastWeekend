@@ -51,6 +51,7 @@ class Auth0Repository {
       _userController.sink.add(user);
       return;
     }
+
     _userController.sink.add(User.empty);
   }
 

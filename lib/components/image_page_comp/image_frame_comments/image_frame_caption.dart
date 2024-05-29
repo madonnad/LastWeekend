@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -55,16 +53,16 @@ class ImageFrameCaption extends StatelessWidget {
           const SizedBox(
             width: 10,
           ),
-          Expanded(
-            child: BlocBuilder<ImageFrameCubit, ImageFrameState>(
-              builder: (context, state) {
-                bool captionPresent = true;
+          BlocBuilder<ImageFrameCubit, ImageFrameState>(
+            builder: (context, state) {
+              bool captionPresent = true;
 
-                if (state.image.imageCaption.isEmpty) {
-                  captionPresent = false;
-                }
+              if (state.image.imageCaption.isEmpty) {
+                captionPresent = false;
+              }
 
-                return Column(
+              return Expanded(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     captionPresent ? const Gap(0) : const Gap(10),
@@ -77,55 +75,29 @@ class ImageFrameCaption extends StatelessWidget {
                       ),
                     ),
                     captionPresent
-                        ? Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: Stack(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text(
-                                          state.image.imageCaption,
-                                          style: GoogleFonts.josefinSans(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w800,
-                                            fontStyle: FontStyle.normal,
-                                            fontSize: 14,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    showCaption
-                                        ? const SizedBox.shrink()
-                                        : Container(
-                                            decoration: const BoxDecoration(
-                                                color: Colors.transparent),
-                                            height: 20,
-                                            child: ClipRect(
-                                              child: BackdropFilter(
-                                                filter: ImageFilter.blur(
-                                                    sigmaX: 2, sigmaY: 3),
-                                                child: Container(
-                                                  height: 20,
-                                                  decoration:
-                                                      const BoxDecoration(
-                                                    color: Colors.transparent,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          )
-                                  ],
+                        ? showCaption
+                            ? Text(
+                                state.image.imageCaption,
+                                style: GoogleFonts.montserrat(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
                                 ),
-                              ),
-                            ],
-                          )
+                              )
+                            : Text(
+                                state.image.imageCaption,
+                                style: GoogleFonts.redactedScript(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700,
+                                  fontStyle: FontStyle.normal,
+                                  fontSize: 14,
+                                ),
+                              )
                         : const SizedBox(height: 0)
                   ],
-                );
-              },
-            ),
+                ),
+              );
+            },
           ),
         ],
       ),

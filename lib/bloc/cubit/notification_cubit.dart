@@ -45,26 +45,29 @@ class NotificationCubit extends Cubit<NotificationState> {
     switch (index) {
       case 0:
         for (Notification notification in state.allNotifications) {
-          if (notification.notificationSeen == false) {
-            switch (notification.runtimeType) {
-              case AlbumInviteNotification:
-                notification as AlbumInviteNotification;
+          switch (notification.runtimeType) {
+            case AlbumInviteNotification:
+              notification as AlbumInviteNotification;
+              if (notification.notificationSeen == false ||
+                  notification.responseSeen == false) {
                 RequestService.markAlbumInviteResponsetAsSeen(
                     user.token, notification.notificationID);
-              case ConsolidatedNotification:
-                notification as ConsolidatedNotification;
-                for (EngagementNotification noti
-                    in notification.notificationMap.values) {
-                  if (noti.notificationSeen == false) {
-                    EngagementService.markNotificationSeen(
-                        user.token, noti.notificationID);
-                  }
+              }
+            case ConsolidatedNotification:
+              notification as ConsolidatedNotification;
+              for (EngagementNotification noti
+                  in notification.notificationMap.values) {
+                if (noti.notificationSeen == false) {
+                  EngagementService.markNotificationSeen(
+                      user.token, noti.notificationID);
                 }
-              case CommentNotification:
+              }
+            case CommentNotification:
+              if (notification.notificationSeen == false) {
                 notification as CommentNotification;
                 EngagementService.markCommentSeen(
                     user.token, notification.notificationID);
-            }
+              }
           }
         }
         emit(state.copyWith(unseenGenericNoti: false));

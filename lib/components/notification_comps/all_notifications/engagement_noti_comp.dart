@@ -43,7 +43,7 @@ class EngagementNotiComp extends StatelessWidget {
                         text: "${notification.fullNotifierName} ",
                         style: GoogleFonts.josefinSans(
                           color: Colors.white,
-                          fontSize: 16,
+                          fontSize: 15,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -51,7 +51,7 @@ class EngagementNotiComp extends StatelessWidget {
                         text: notification.notificationText,
                         style: GoogleFonts.josefinSans(
                           color: Colors.white60,
-                          fontSize: 16,
+                          fontSize: 15,
                           fontWeight: FontWeight.w400,
                         ),
                       ),

@@ -1,7 +1,7 @@
 name: shared_photo
 description: Create memories that last with the people that matter.
 publish_to: 'none'
-version: 1.0.0+3-alpha
+version: 1.0.0+4-alpha
 
 environment:
   sdk: '>=3.0.5 <4.0.0'
@@ -27,6 +27,9 @@ dependencies:
   timeago: ^3.6.0
   gap: ^3.0.1
   flutter_dotenv: ^5.1.0
+  firebase_core: ^2.31.1
+  firebase_messaging: ^14.9.3
+  flutter_udid: ^3.0.0
 
 dev_dependencies:
   flutter_lints: ^2.0.0

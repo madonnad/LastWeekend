@@ -75,6 +75,8 @@ class NotificationRepository {
                 _notificationController.add((StreamOperation.add, noti));
               }
               if (noti.albumOwner == user.id) {
+                print("${noti.albumName} ${noti.responseSeen}");
+
                 allNotificationMap.putIfAbsent(noti.notificationID, () => noti);
                 _notificationController.add((StreamOperation.add, noti));
               }

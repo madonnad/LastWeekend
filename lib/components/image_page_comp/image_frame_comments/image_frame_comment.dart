@@ -50,13 +50,10 @@ class ImageFrameComment extends StatelessWidget {
                       style: GoogleFonts.josefinSans(
                         color: Colors.white54,
                         fontWeight: FontWeight.w600,
-                        fontSize: 12,
+                        fontSize: 13,
                       ),
                     ),
                   ],
-                ),
-                const SizedBox(
-                  height: 5,
                 ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,7 +61,7 @@ class ImageFrameComment extends StatelessWidget {
                     Expanded(
                       child: Text(
                         comment.comment,
-                        style: GoogleFonts.josefinSans(
+                        style: GoogleFonts.montserrat(
                           color: Colors.white,
                           fontWeight: FontWeight.w500,
                           fontSize: 14,

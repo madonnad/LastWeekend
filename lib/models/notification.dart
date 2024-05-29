@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -98,13 +100,16 @@ class AlbumInviteNotification extends Notification {
         break;
     }
 
+    List<int> bytes = map['album_name'].toString().codeUnits;
+    String albumName = utf8.decode(bytes);
+
     return AlbumInviteNotification(
       notificationID: map['request_id'],
       receivedDateTime: DateTime.parse(map['received_at']),
       notificationMediaID: map['album_cover_id'],
       notificationSeen: map['invite_seen'],
       albumID: map['album_id'],
-      albumName: map['album_name'],
+      albumName: albumName,
       albumOwner: map['album_owner'],
       ownerFirst: map['owner_first'],
       ownerLast: map['owner_last'],
@@ -363,8 +368,8 @@ class CommentNotification extends Notification {
         EngageOperation.update;
     }
 
-    // List<int> bytes = map['comment'].toString().codeUnits;
-    // String comment = utf8.decode(bytes);
+    List<int> bytes = map['comment'].toString().codeUnits;
+    String comment = utf8.decode(bytes);
 
     return CommentNotification(
       notificationID: map['id'],
@@ -375,7 +380,7 @@ class CommentNotification extends Notification {
       notifierID: map['user_id'],
       notifierFirst: map['first_name'],
       notifierLast: map['last_name'],
-      comment: map['comment'],
+      comment: comment,
       receivedDateTime: DateTime.parse(map['created_at']),
       notificationSeen: map['seen'],
       updatedDateTime:

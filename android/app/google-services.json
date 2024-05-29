@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "833732196444",
+    "project_id": "lastweekend",
+    "storage_bucket": "lastweekend.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:833732196444:android:97b7921582015e435fce99",
+        "android_client_info": {
+          "package_name": "com.example.shared_photo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHpiQbM0MzpDpnW9C3-JxTRjWNYSK4EZ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
