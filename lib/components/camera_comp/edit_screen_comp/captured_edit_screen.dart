@@ -1,9 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_photo/bloc/cubit/camera_cubit.dart';
 import 'package:shared_photo/components/camera_comp/edit_album_dropdown.dart';
+import 'package:shared_photo/components/camera_comp/edit_screen_comp/download_image_button.dart';
 import 'package:shared_photo/components/camera_comp/edit_screen_comp/edit_caption_field.dart';
 import 'package:shared_photo/components/camera_comp/edit_screen_comp/edit_image_preview.dart';
 import 'package:shared_photo/components/camera_comp/edit_screen_comp/empty_edit_view.dart';
@@ -88,7 +90,7 @@ class CapturedEditScreen extends StatelessWidget {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    const SizedBox(width: 60),
+                                    const DownloadImageButton(),
                                     const Gap(10),
                                     const SubmitImageButton(),
                                     const Gap(10),

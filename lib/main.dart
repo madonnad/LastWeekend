@@ -17,7 +17,6 @@ import 'package:shared_photo/router/generate_route.dart';
 import 'package:shared_photo/screens/auth_frame.dart';
 import 'package:shared_photo/screens/loading.dart';
 import 'package:shared_photo/screens/app_frame.dart';
-import 'dart:io' show Platform;
 
 void main() async {
   await dotenv.load(fileName: ".env");

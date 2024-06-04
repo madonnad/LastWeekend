@@ -1,9 +1,13 @@
 import 'dart:async';
 import 'dart:collection';
+import 'dart:io' show Platform;
+import 'dart:typed_data';
 
+import 'package:image/image.dart' as img;
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/captured_image.dart';
@@ -77,6 +81,14 @@ class CameraCubit extends Cubit<CameraState> {
   void _initializeUnlockedAlbums() {
     Map<String, Album> unlockedMap = Map.from(dataRepository.unlockedAlbums());
     emit(state.copyWith(albumMap: unlockedMap));
+  }
+
+  Future<void> downloadImageToDevice() async {
+    if (state.selectedImage?.imageXFile == null) return;
+    String imagePath = state.selectedImage!.imageXFile.path;
+
+    ImageGallerySaver.saveFile(imagePath, isReturnPathOfIOS: Platform.isIOS);
+    return;
   }
 
   Future<void> uploadImagesToAlbums(String token) async {
