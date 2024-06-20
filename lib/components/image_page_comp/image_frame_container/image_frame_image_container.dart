@@ -13,15 +13,6 @@ class ImageFrameImageContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AlbumFrameCubit, AlbumFrameState>(
       builder: (context, state) {
-        String userID = context.read<AppBloc>().state.user.id;
-
-        bool showImage = false;
-
-        if (state.selectedImage != null) {
-          showImage = state.album.phase == AlbumPhases.reveal ||
-              (state.selectedImage!.owner == userID);
-        }
-
         Map<String, String> headers =
             context.read<AppBloc>().state.user.headers;
         return Container(
@@ -47,37 +38,48 @@ class ImageFrameImageContainer extends StatelessWidget {
                       .initalizeImageFrameWithSelectedImage(index),
                   itemCount: state.imageFrameTimelineList.length,
                   itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: AspectRatio(
-                        aspectRatio: 4 / 5,
-                        child: showImage
-                            ? Container(
-                                decoration: BoxDecoration(
-                                  color: const Color.fromRGBO(19, 19, 19, 1),
-                                  image: DecorationImage(
-                                      image: CachedNetworkImageProvider(
-                                        state.imageFrameTimelineList[index]
-                                            .imageReq,
-                                        headers: headers,
-                                      ),
-                                      fit: BoxFit.cover),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              )
-                            : Container(
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: const Color.fromRGBO(44, 44, 44, .75),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: const Text(
-                                  "🫣",
-                                  style: TextStyle(fontSize: 55),
-                                ),
+                    bool showImage = false;
+                    String userID = context.read<AppBloc>().state.user.id;
+                    showImage = state.album.phase == AlbumPhases.reveal ||
+                        (state.imageFrameTimelineList[index].owner == userID);
+                    if (showImage) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: AspectRatio(
+                            aspectRatio: 4 / 5,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: const Color.fromRGBO(19, 19, 19, 1),
+                                image: DecorationImage(
+                                    image: CachedNetworkImageProvider(
+                                      state.imageFrameTimelineList[index]
+                                          .imageReq,
+                                      headers: headers,
+                                    ),
+                                    fit: BoxFit.cover),
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                      ),
-                    );
+                            )),
+                      );
+                    } else {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: AspectRatio(
+                          aspectRatio: 4 / 5,
+                          child: Container(
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: const Color.fromRGBO(44, 44, 44, .75),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: const Text(
+                              "🫣",
+                              style: TextStyle(fontSize: 55),
+                            ),
+                          ),
+                        ),
+                      );
+                    }
                   },
                 ),
               ),

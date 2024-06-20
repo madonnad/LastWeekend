@@ -1,19 +1,12 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/cubit/camera_cubit.dart';
 import 'package:shared_photo/components/camera_comp/active_album_dropdown.dart';
 import 'package:shared_photo/components/camera_comp/camera_utils/camera_controls.dart';
 import 'package:shared_photo/components/camera_comp/camera_utils/no_albums_overlay.dart';
 import 'package:shared_photo/components/camera_comp/captured_preview_listview.dart';
-import 'package:shared_photo/components/camera_comp/edit_screen_comp/captured_edit_screen.dart';
-import 'package:shared_photo/models/album.dart';
-import 'package:shared_photo/models/captured_image.dart';
-import 'package:shared_photo/models/photo.dart';
 
 class CameraScreen extends StatefulWidget {
   final List<CameraDescription> cameras;
