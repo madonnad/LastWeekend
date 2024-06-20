@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/image_frame_cubit.dart';
 import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
 import 'package:shared_photo/models/photo.dart';
@@ -50,6 +51,7 @@ class TopItemComponent extends StatelessWidget {
                     BlocProvider(
                       create: (context) => ImageFrameCubit(
                         dataRepository: context.read<DataRepository>(),
+                        user: context.read<AppBloc>().state.user,
                         image: image,
                         albumID: albumID,
                       ),

@@ -207,7 +207,7 @@ class Album extends Equatable {
   List<Guest> get guests => guestMap.values.toList();
 
   String get timeSince {
-    return timeago.format(revealDateTime);
+    return "${timeago.format(revealDateTime, locale: 'en_short')} ago";
   }
 
   List<Photo> get images {

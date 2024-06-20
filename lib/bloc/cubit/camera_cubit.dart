@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:io' show Platform;
-import 'dart:typed_data';
 
-import 'package:image/image.dart' as img;
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
