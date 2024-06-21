@@ -32,7 +32,7 @@ class _MoveAlbumModalState extends State<MoveAlbumModal> {
           ),
           titleTextStyle: GoogleFonts.montserrat(
             color: Colors.white.withOpacity(.75),
-            fontSize: 18,
+            fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
           backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
@@ -40,11 +40,12 @@ class _MoveAlbumModalState extends State<MoveAlbumModal> {
             state.unlockedAlbums.length + 1,
             (int index) {
               if (index == state.unlockedAlbums.length) {
-                int current = state.unlockedAlbums
-                    .indexWhere((album) => album == state.selectedAlbum);
+                int current = state.unlockedAlbums.indexWhere(
+                    (album) => album.albumId == state.selectedAlbum?.albumId);
 
                 bool allowSwap =
                     selectedIndex != null && selectedIndex != current;
+                print(allowSwap);
                 return SimpleDialogOption(
                   child: GestureDetector(
                     onTap: () {

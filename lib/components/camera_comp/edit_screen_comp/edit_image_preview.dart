@@ -21,6 +21,7 @@ class EditImagePreview extends StatelessWidget {
       padding: const EdgeInsets.only(left: 20, right: 20, top: 25),
       child: BlocBuilder<CameraCubit, CameraState>(
         builder: (context, state) {
+          int albumCount = state.unlockedAlbums.length;
           return Container(
             height: MediaQuery.of(context).size.height * .5,
             decoration: BoxDecoration(
@@ -65,35 +66,37 @@ class EditImagePreview extends StatelessWidget {
                       ),
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (ctx) {
-                          return BlocProvider.value(
-                            value: context.read<CameraCubit>(),
-                            child: const MoveAlbumModal(),
-                          );
-                        },
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Container(
-                        height: 35,
-                        width: 35,
-                        decoration: BoxDecoration(
-                          color: Colors.black45,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: const Icon(
-                          Icons.swap_horizontal_circle,
-                          color: Colors.white,
-                          size: 30,
-                        ),
-                      ),
-                    ),
-                  ),
+                  albumCount > 1
+                      ? GestureDetector(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (ctx) {
+                                return BlocProvider.value(
+                                  value: context.read<CameraCubit>(),
+                                  child: const MoveAlbumModal(),
+                                );
+                              },
+                            );
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: Container(
+                              height: 35,
+                              width: 35,
+                              decoration: BoxDecoration(
+                                color: Colors.black45,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: const Icon(
+                                Icons.swap_horizontal_circle,
+                                color: Colors.white,
+                                size: 30,
+                              ),
+                            ),
+                          ),
+                        )
+                      : const SizedBox.shrink(),
                 ],
               ),
             ),

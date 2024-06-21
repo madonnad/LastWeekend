@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
+import 'package:shared_photo/bloc/bloc/dashboard_bloc.dart';
 import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
 import 'package:shared_photo/bloc/cubit/image_frame_cubit.dart';
 import 'package:shared_photo/components/album_comp/invite_comps/invite_page.dart';
@@ -28,7 +29,8 @@ class AlbumFrame extends StatelessWidget {
       appBar: const AlbumAppBarTitle(),
       body: BlocListener<AlbumFrameCubit, AlbumFrameState>(
         listenWhen: (previous, current) =>
-            previous.album.albumId != current.album.albumId,
+            previous.album.albumId != current.album.albumId ||
+            previous.album.images != current.album.images,
         listener: (context, state) {
           pushImageFrameIfPassed(context, arguments);
         },
