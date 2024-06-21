@@ -7,6 +7,7 @@ import 'package:shared_photo/components/camera_comp/active_album_dropdown.dart';
 import 'package:shared_photo/components/camera_comp/camera_utils/camera_controls.dart';
 import 'package:shared_photo/components/camera_comp/camera_utils/no_albums_overlay.dart';
 import 'package:shared_photo/components/camera_comp/captured_preview_listview.dart';
+import 'package:shared_photo/components/camera_comp/custom_cam_preview.dart';
 
 class CameraScreen extends StatefulWidget {
   final List<CameraDescription> cameras;
@@ -25,13 +26,6 @@ class _CameraScreenState extends State<CameraScreen> {
 
   @override
   void initState() {
-    super.initState();
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
     CameraDescription camera = widget.cameras.isNotEmpty
         ? widget.cameras[0]
         : const CameraDescription(
@@ -44,8 +38,6 @@ class _CameraScreenState extends State<CameraScreen> {
       ResolutionPreset.max,
       imageFormatGroup: ImageFormatGroup.yuv420,
     );
-
-    controller.unlockCaptureOrientation();
 
     controller.initialize().then((_) {
       if (!mounted) {
@@ -64,6 +56,12 @@ class _CameraScreenState extends State<CameraScreen> {
         }
       }
     });
+    lockOrientation();
+    super.initState();
+  }
+
+  void lockOrientation() async {
+    await controller.lockCaptureOrientation();
   }
 
   @override
@@ -99,24 +97,12 @@ class _CameraScreenState extends State<CameraScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
     return BlocBuilder<CameraCubit, CameraState>(
       builder: (context, state) {
         return Stack(
           children: [
             (controller.value.isInitialized)
-                ? SizedBox(
-                    width: size.width,
-                    height: size.height,
-                    child: FittedBox(
-                      fit: BoxFit.cover,
-                      child: SizedBox(
-                        width: 100,
-                        child: CameraPreview(controller),
-                      ),
-                    ),
-                  )
+                ? CustomCamPreview(controller: controller)
                 : Container(
                     color: Colors.black,
                     child: const Center(
