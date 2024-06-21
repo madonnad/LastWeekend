@@ -51,6 +51,28 @@ extension ImageDataRepo on DataRepository {
     return failedUploads;
   }
 
+  Future<void> moveImageToAlbum(
+      String imageID, String newAlbum, String oldAlbum) async {
+    if (albumMap[oldAlbum] == null || albumMap[newAlbum] == null) return;
+
+    bool success =
+        await ImageService.moveImageToAlbum(user.token, imageID, newAlbum);
+
+    if (success) {
+      Photo foundImage = albumMap[oldAlbum]!
+          .images
+          .firstWhere((image) => image.imageId == imageID);
+
+      // Remove Image from Old Album
+      albumMap[oldAlbum]!.imageMap.remove(foundImage.imageId);
+
+      // Add Image to New Album
+      albumMap[newAlbum]!.imageMap[foundImage.imageId] = foundImage;
+      _albumController.add((StreamOperation.update, albumMap[oldAlbum]!));
+      _albumController.add((StreamOperation.update, albumMap[newAlbum]!));
+    }
+  }
+
   // Initalize and Coordinate Storage of Comments
   Future<Map<String, Comment>> initalizeCommentsAndStore(
       String albumID, String imageID) async {

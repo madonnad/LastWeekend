@@ -13,9 +13,9 @@ part 'album_frame_state.dart';
 class AlbumFrameCubit extends Cubit<AlbumFrameState> {
   RealtimeRepository realtimeRepository;
   DataRepository dataRepository;
-  //Album album;
   String albumID;
   late StreamSubscription imageStreamSubscription;
+  late StreamSubscription albumStreamSubscription;
   AlbumFrameCubit({
     required this.albumID,
     required this.dataRepository,
@@ -39,6 +39,23 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
 
       if (albumID == event.albumID) {
         updateImageInAlbum(imageID, newImage);
+      }
+    });
+
+    albumStreamSubscription = dataRepository.albumStream.listen((event) {
+      StreamOperation operation = event.$1;
+      Album album = event.$2;
+      if (album.albumId == albumID) {
+        switch (operation) {
+          case StreamOperation.add:
+          case StreamOperation.update:
+            emit(state.copyWith(album: album));
+            setRankedImages();
+            if (state.images.isNotEmpty) {
+              emit(state.copyWith(selectedImage: state.images[0]));
+            }
+          case StreamOperation.delete:
+        }
       }
     });
   }
@@ -147,6 +164,7 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
   Future<void> close() {
     realtimeRepository.closeAlbumChannelWebSocket();
     imageStreamSubscription.cancel();
+    albumStreamSubscription.cancel();
     return super.close();
   }
 }

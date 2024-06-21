@@ -23,8 +23,16 @@ class Auth0Repository {
   Future<void> userStream() async {
     bool hasCreds = await auth0.credentialsManager.hasValidCredentials();
 
-    if (hasCreds) {
-      Credentials creds = await auth0.credentialsManager.credentials();
+    bool expired = false;
+    late Credentials creds;
+    try {
+      creds = await auth0.credentialsManager.credentials();
+      expired = creds.expiresAt.isBefore(DateTime.now());
+    } catch (e) {
+      expired = true;
+    }
+
+    if (hasCreds && !expired) {
       UserProfile userProfile = creds.user;
 
       String email = userProfile.email != null ? userProfile.email! : 'email';
@@ -51,6 +59,8 @@ class Auth0Repository {
       _userController.sink.add(user);
       return;
     }
+
+    await auth0.credentialsManager.clearCredentials();
 
     _userController.sink.add(User.empty);
   }
@@ -111,8 +121,6 @@ class Auth0Repository {
     //var url = Uri.https(domain, '/user');
     String urlString = "${dotenv.env['URL']}/user";
     Uri url = Uri.parse(urlString);
-
-    print(urlString);
 
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 

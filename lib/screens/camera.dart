@@ -1,17 +1,12 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/cubit/camera_cubit.dart';
 import 'package:shared_photo/components/camera_comp/active_album_dropdown.dart';
+import 'package:shared_photo/components/camera_comp/camera_utils/camera_controls.dart';
+import 'package:shared_photo/components/camera_comp/camera_utils/no_albums_overlay.dart';
 import 'package:shared_photo/components/camera_comp/captured_preview_listview.dart';
-import 'package:shared_photo/components/camera_comp/edit_screen_comp/captured_edit_screen.dart';
-import 'package:shared_photo/models/album.dart';
-import 'package:shared_photo/models/captured_image.dart';
-import 'package:shared_photo/models/photo.dart';
 
 class CameraScreen extends StatefulWidget {
   final List<CameraDescription> cameras;
@@ -31,6 +26,12 @@ class _CameraScreenState extends State<CameraScreen> {
   @override
   void initState() {
     super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     CameraDescription camera = widget.cameras.isNotEmpty
         ? widget.cameras[0]
         : const CameraDescription(
@@ -66,6 +67,9 @@ class _CameraScreenState extends State<CameraScreen> {
   @override
   void dispose() {
     controller.dispose();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     super.dispose();
   }
 
@@ -97,27 +101,6 @@ class _CameraScreenState extends State<CameraScreen> {
 
     return BlocBuilder<CameraCubit, CameraState>(
       builder: (context, state) {
-        Album? selectedAlbum = state.selectedAlbum;
-
-        Future<void> addPhotoToCubit(XFile picture) async {
-          CapturedImage capImage;
-
-          if (selectedAlbum != null) {
-            capImage = CapturedImage(
-              imageXFile: picture,
-              album: selectedAlbum,
-              type: UploadType.snap,
-            );
-          } else {
-            capImage = CapturedImage(
-              imageXFile: picture,
-              addToRecap: true,
-              type: UploadType.snap,
-            );
-          }
-          context.read<CameraCubit>().addPhotoToList(capImage);
-        }
-
         return Stack(
           children: [
             (controller.value.isInitialized)
@@ -156,163 +139,17 @@ class _CameraScreenState extends State<CameraScreen> {
               ),
             ),
             Positioned(
-              bottom: 125, //MediaQuery.of(context).size.height * .75,
-              left: 0,
-              right: 0,
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      const Spacer(),
-                      GestureDetector(
-                        onTap: () => changeCameraDirection(),
-                        child: const Icon(
-                          Icons.flip_camera_ios_sharp,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 15.0,
-                          vertical: 15,
-                        ),
-                        child: InkWell(
-                          onTap: selectedAlbum != null
-                              ? () async {
-                                  HapticFeedback.heavyImpact();
-                                  XFile picture =
-                                      await controller.takePicture();
-
-                                  addPhotoToCubit(picture);
-                                }
-                              : null,
-                          child: Container(
-                            width: 85,
-                            height: 85,
-                            clipBehavior: Clip.hardEdge,
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(.5),
-                              borderRadius: BorderRadius.circular(85),
-                              border: Border.all(
-                                color: Colors.black,
-                                width: 5,
-                                strokeAlign: BorderSide.strokeAlignOutside,
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.25),
-                                  offset: const Offset(0, 4),
-                                  blurRadius: 10,
-                                  spreadRadius: 1,
-                                ),
-                              ],
-                            ),
-                            child: ClipOval(
-                              child: BackdropFilter(
-                                filter:
-                                    ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-                                child: Container(),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {},
-                        child: const Icon(
-                          Icons.flash_off,
-                          color: Colors.white,
-                        ),
-                      ),
-                      const Spacer(),
-                    ],
-                  ),
-                  GestureDetector(
-                    onTap: () => showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      useSafeArea: true,
-                      enableDrag: false,
-                      builder: (ctx) {
-                        return BlocProvider.value(
-                          value: context.read<CameraCubit>(),
-                          child: const CapturedEditScreen(),
-                        );
-                      },
-                    ),
-                    child: const Text(
-                      "😅",
-                      style: TextStyle(fontSize: 24),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            selectedAlbum == null
-                ? Container(
-                    width: size.width,
-                    height: size.height,
-                    color: Colors.black87,
-                    child: SafeArea(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text(
-                              "😔",
-                              style: TextStyle(fontSize: 50),
-                            ),
-                            const SizedBox(height: 25),
-                            Text(
-                              "No Albums Currently Unlocked!",
-                              style: GoogleFonts.josefinSans(
-                                fontSize: 26,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 25),
-                            Text(
-                              "Once an album reaches the unlock state - then the camera will be available",
-                              style: GoogleFonts.josefinSans(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  )
-                : const SizedBox.shrink(),
+                bottom: 125, //MediaQuery.of(context).size.height * .75,
+                left: 0,
+                right: 0,
+                child: CameraControls(
+                  controller: controller,
+                  flipCamera: changeCameraDirection,
+                )),
+            const NoAlbumsOverlay(),
           ],
         );
       },
     );
   }
 }
-
-/*
-
- child: ClipOval(
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                        child: Container(
-                          color: Colors.white.withOpacity(0.25),
-                        ),
-                      ),
-                    ),
-
-(!controller.value.isInitialized)
-? Container(color: Colors.black)
-    : Stack(
-alignment: Alignment.center,
-children: [
-Container(child: CameraPreview(controller)),
-Icon(Icons.flip_camera_ios_sharp),
-],
-);*/
