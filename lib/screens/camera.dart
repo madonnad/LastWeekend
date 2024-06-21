@@ -45,6 +45,8 @@ class _CameraScreenState extends State<CameraScreen> {
       imageFormatGroup: ImageFormatGroup.yuv420,
     );
 
+    controller.unlockCaptureOrientation();
+
     controller.initialize().then((_) {
       if (!mounted) {
         return;
