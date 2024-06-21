@@ -32,10 +32,12 @@ class EditAlbumDropdown extends StatelessWidget {
                   color: Colors.black,
                 ),
                 iconStyleData: const IconStyleData(iconSize: 0),
+                alignment: Alignment.center,
                 items: state.unlockedAlbums
                     .map(
                       (e) => DropdownMenuItem<Album>(
                         value: e,
+                        alignment: Alignment.center,
                         child: Text(
                           e.albumName,
                         ),
