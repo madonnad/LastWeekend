@@ -169,6 +169,16 @@ class CameraCubit extends Cubit<CameraState> {
         photosTaken: photosTaken, selectedImage: photosTaken[index]));
   }
 
+  void changeImageAlbum(Album album) {
+    List<CapturedImage> photosTaken = List.from(state.photosTaken);
+    if (state.selectedImage == null) return;
+    int index = photosTaken.indexOf(state.selectedImage!);
+
+    photosTaken[index].album = album;
+
+    emit(state.copyWith(photosTaken: photosTaken, selectedAlbum: album));
+  }
+
   void removePhotoFromList(BuildContext context, CapturedImage image) {
     List<CapturedImage> photosTaken = state.photosTaken;
     CapturedImage selectedImage = image;
