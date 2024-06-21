@@ -73,12 +73,28 @@ class ImageService {
     return images;
   }
 
+  static Future<bool> moveImageToAlbum(
+      String token, String imageID, String newAlbum) async {
+    String urlString =
+        "${dotenv.env['URL']}/user/image?image_id=$imageID&album_id=$newAlbum";
+    Uri url = Uri.parse(urlString);
+
+    final Map<String, String> headers = {
+      "Content-Type": "application/json",
+      'Authorization': 'Bearer $token'
+    };
+
+    final response = await http.patch(url, headers: headers);
+
+    if (response.statusCode == 200) {
+      return true;
+    }
+
+    return false;
+  }
+
   static Future<bool> uploadPhoto(
-      //Used to be uploadByImageId
-      String token,
-      String imagePath,
-      String imageId) async {
-    // var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/upload', {'id': imageId});
+      String token, String imagePath, String imageId) async {
     String urlString = "${dotenv.env['URL']}/upload?id=$imageId";
     Uri url = Uri.parse(urlString);
 
@@ -98,8 +114,6 @@ class ImageService {
 
       if (response.statusCode == 200) {
         final gcpSignedUrl = Uri.parse(response.body);
-        // final secureUrl = Uri.https(gcpSignedUrl.authority, gcpSignedUrl.path,
-        //     gcpSignedUrl.queryParameters);
 
         final uploadResponse =
             await http.put(gcpSignedUrl, headers: gcpHeader, body: imageBytes);
