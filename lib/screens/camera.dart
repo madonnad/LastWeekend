@@ -56,11 +56,13 @@ class _CameraScreenState extends State<CameraScreen> {
         }
       }
     });
-    lockOrientation();
     super.initState();
+    Future.microtask(() async {
+      await lockOrientation();
+    });
   }
 
-  void lockOrientation() async {
+  Future<void> lockOrientation() async {
     await controller.lockCaptureOrientation();
   }
 

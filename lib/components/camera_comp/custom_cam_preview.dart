@@ -1,6 +1,5 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class CustomCamPreview extends StatefulWidget {
   final CameraController controller;
@@ -27,11 +26,7 @@ class _CustomCamPreviewState extends State<CustomCamPreview> {
         fit: BoxFit.cover,
         child: SizedBox(
           width: 100,
-          child: RotatedBox(
-            quarterTurns:
-                1 - widget.controller.description.sensorOrientation ~/ 90,
-            child: CameraPreview(widget.controller),
-          ),
+          child: CameraPreview(widget.controller),
         ),
       ),
     );
