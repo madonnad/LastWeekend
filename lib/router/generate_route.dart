@@ -10,6 +10,7 @@ import 'package:shared_photo/models/arguments.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 import 'package:shared_photo/repositories/realtime_repository.dart';
 import 'package:shared_photo/screens/album_create/album_create_modal.dart';
+import 'package:shared_photo/screens/album_detail_frame.dart';
 import 'package:shared_photo/screens/auth.dart';
 import 'package:shared_photo/screens/album_frame.dart';
 import 'package:shared_photo/screens/friend_profile_frame.dart';
@@ -31,9 +32,9 @@ Route onGenerateRoute(RouteSettings settings) {
         reverseTransitionDuration: const Duration(milliseconds: 150),
         pageBuilder: (context, _, __) => MultiBlocProvider(
           providers: [
-            BlocProvider.value(
-              value: AppFrameCubit(),
-            ),
+            // BlocProvider.value(
+            //   value: AppFrameCubit(),
+            // ),
             BlocProvider(
               create: (context) => AlbumFrameCubit(
                 albumID: arguments.albumID,
@@ -43,6 +44,34 @@ Route onGenerateRoute(RouteSettings settings) {
             ),
           ],
           child: AlbumFrame(arguments: arguments),
+        ),
+        transitionsBuilder: (context, a, b, c) {
+          var begin = const Offset(1.0, 0.0);
+          var end = Offset.zero;
+          var curve = Curves.ease;
+          var tween = Tween(begin: begin, end: end).chain(
+            CurveTween(curve: curve),
+          );
+
+          return SlideTransition(
+            position: a.drive(tween),
+            child: c,
+          );
+        },
+      );
+    case '/album-detail':
+      AlbumFrameCubit albumFrameCubit = settings.arguments as AlbumFrameCubit;
+
+      return PageRouteBuilder(
+        transitionDuration: const Duration(milliseconds: 300),
+        reverseTransitionDuration: const Duration(milliseconds: 150),
+        pageBuilder: (context, _, __) => MultiBlocProvider(
+          providers: [
+            BlocProvider.value(
+              value: albumFrameCubit,
+            ),
+          ],
+          child: const AlbumDetailFrame(),
         ),
         transitionsBuilder: (context, a, b, c) {
           var begin = const Offset(1.0, 0.0);
