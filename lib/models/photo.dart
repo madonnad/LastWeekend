@@ -112,6 +112,12 @@ class Photo {
     return requestUrl;
   }
 
+  String get imageReqMedSize {
+    String requestUrl = "${dotenv.env['URL']}/image?id=$imageId&height=350";
+
+    return requestUrl;
+  }
+
   String get avatarReq {
     String requestUrl = "${dotenv.env['URL']}/image?id=$owner";
 
