@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
@@ -9,6 +10,7 @@ class AlbumDetailFrame extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
     return BlocBuilder<AlbumFrameCubit, AlbumFrameState>(
       builder: (context, state) {
         bool isOwner =
@@ -27,7 +29,7 @@ class AlbumDetailFrame extends StatelessWidget {
             title: Text(
               state.album.albumName,
               style: GoogleFonts.josefinSans(
-                color: Colors.white,
+                color: Colors.white70,
                 fontWeight: FontWeight.w600,
                 fontSize: 24,
               ),
@@ -44,8 +46,98 @@ class AlbumDetailFrame extends StatelessWidget {
                   : const SizedBox.shrink(),
             ],
           ),
+          body: Center(
+            child: Column(
+              children: [
+                const Gap(45),
+                SizedBox(
+                  height: height * .25,
+                  child: AspectRatio(
+                    aspectRatio: 4 / 5,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: const Color.fromRGBO(19, 19, 19, 1),
+                        image: DecorationImage(
+                          image: NetworkImage(state.album.coverReq,
+                              headers:
+                                  context.read<AppBloc>().state.user.headers),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const Gap(60),
+                DetailItem(
+                  itemTitle: "Edit Timeline",
+                  backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
+                  onTap: () => print('Edit Timeline'),
+                ),
+                DetailItem(
+                  itemTitle: "Invite List",
+                  backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
+                  onTap: () => showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    builder: (context) {
+                      return Container();
+                    },
+                  ),
+                ),
+                DetailItem(
+                  itemTitle: "Edit Visibility",
+                  backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
+                  onTap: () => print('visibility'),
+                ),
+              ],
+            ),
+          ),
         );
       },
+    );
+  }
+}
+
+class DetailItem extends StatelessWidget {
+  final String itemTitle;
+  final Color backgroundColor;
+  final VoidCallback onTap;
+  const DetailItem({
+    super.key,
+    required this.itemTitle,
+    required this.backgroundColor,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 60,
+        margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Row(
+          children: [
+            Text(
+              itemTitle,
+              style: GoogleFonts.montserrat(
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+                fontSize: 16,
+              ),
+            ),
+            const Flex(
+              direction: Axis.horizontal,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
