@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class Arguments {
   String albumID;
   String? imageID;

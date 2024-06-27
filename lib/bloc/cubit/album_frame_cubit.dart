@@ -160,6 +160,14 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
         duration: const Duration(milliseconds: 250), curve: Curves.easeIn);
   }
 
+  void sendInviteToFriends(
+      String guestID, String guestFirst, String guestLast) async {
+    emit(state.copyWith(loading: true));
+    await dataRepository.inviteUserToAlbum(
+        state.album.albumId, guestID, guestFirst, guestLast);
+    emit(state.copyWith(loading: false));
+  }
+
   @override
   Future<void> close() {
     realtimeRepository.closeAlbumChannelWebSocket();

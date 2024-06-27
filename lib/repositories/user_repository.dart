@@ -28,6 +28,7 @@ class UserRepository {
 
     for (Friend friend in fetchedFriends) {
       friendMap.putIfAbsent(friend.uid, () => friend);
+
       _friendController.add((StreamOperation.add, friend));
     }
   }

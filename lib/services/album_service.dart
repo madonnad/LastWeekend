@@ -105,7 +105,7 @@ class AlbumService {
     //var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/feed');
     String urlString = "${dotenv.env['URL']}/feed";
     Uri url = Uri.parse(urlString);
- 
+
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     final response = await http.get(url, headers: headers);
@@ -131,11 +131,9 @@ class AlbumService {
 
   static Future<Album> getAlbumByID(String token, String albumID) async {
     Album album = Album.empty;
-    // var url =
-    //     Uri.https(dotenv.env['DOMAIN'] ?? '', '/album', {'album_id': albumID});
+
     String urlString = "${dotenv.env['URL']}/album?album_id=$albumID";
     Uri url = Uri.parse(urlString);
-
 
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
@@ -157,15 +155,33 @@ class AlbumService {
         "Failed to get album by ID with status: ${response.statusCode}");
   }
 
+  static Future<bool> postSingleAlbumRequest(
+      String token, String albumID, String guestID) async {
+    String urlString =
+        "${dotenv.env['URL']}/album/guests?album_id=$albumID&guest_id=$guestID";
+    Uri url = Uri.parse(urlString);
+
+    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
+
+    try {
+      final response = await http.post(url, headers: headers);
+
+      if (response.statusCode == 200) {
+        return true;
+      }
+      return false;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
   static Future<List<Guest>> updateGuestList(
       String token, String albumID) async {
     List<Guest> guests = [];
 
-    // var url = Uri.https(
-    //     dotenv.env['DOMAIN'] ?? '', '/album/guests', {"album_id": albumID});
     String urlString = "${dotenv.env['URL']}/album/guests?album_id=$albumID";
     Uri url = Uri.parse(urlString);
-    
 
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 

@@ -1,5 +1,4 @@
 import 'package:camera/camera.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class CustomCamPreview extends StatefulWidget {

@@ -137,6 +137,32 @@ extension AlbumDataRepo on DataRepository {
     return albums;
   }
 
+  Future<bool> inviteUserToAlbum(String albumID, String guestID,
+      String guestFirst, String guestLast) async {
+    bool albumExists = albumMap.containsKey(albumID);
+
+    if (!albumExists) return false;
+
+    Album album = Album.from(albumMap[albumID]!);
+
+    bool requestSent =
+        await AlbumService.postSingleAlbumRequest(user.token, albumID, guestID);
+
+    if (!requestSent) return false;
+
+    Guest addedGuest = Guest(
+      uid: guestID,
+      firstName: guestFirst,
+      lastName: guestLast,
+      status: RequestStatus.pending,
+    );
+
+    album.guestMap[guestID] = addedGuest;
+
+    _albumController.add((StreamOperation.update, album));
+    return true;
+  }
+
   // Future<List<Guest>> updateAlbumsGuests(String albumID) async {
   //   List<Guest> fetchedGuests =
   //       await AlbumService.updateGuestList(user.token, albumID);
