@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_photo/bloc/bloc/dashboard_bloc.dart';
 import 'package:shared_photo/bloc/bloc/feed_bloc.dart';
 import 'package:shared_photo/components/app_comp/standard_logo.dart';
 import 'package:shared_photo/components/feed_comp/dashboard/dashboard.dart';

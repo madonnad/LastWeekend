@@ -34,6 +34,14 @@ class BaseFriend extends Equatable {
     return "${dotenv.env['URL']}/image?id=$uid";
   }
 
+  String get imageReqSmall {
+    return "${dotenv.env['URL']}/image?id=$uid&height=150";
+  }
+
+  String get fullName {
+    return "$firstName $lastName";
+  }
+
   @override
   List<Object?> get props => [uid];
 }

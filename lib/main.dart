@@ -111,6 +111,7 @@ class MainApp extends StatelessWidget {
                       ),
                     ),
                     RepositoryProvider(
+                      lazy: false,
                       create: (context) => UserRepository(
                         user: context.read<AppBloc>().state.user,
                       ),

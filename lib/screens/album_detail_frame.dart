@@ -4,6 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
+import 'package:shared_photo/components/album_comp/album_detail_comps/invite_list_detail/invite_list_main.dart';
 
 class AlbumDetailFrame extends StatelessWidget {
   const AlbumDetailFrame({super.key});
@@ -29,22 +30,22 @@ class AlbumDetailFrame extends StatelessWidget {
             title: Text(
               state.album.albumName,
               style: GoogleFonts.josefinSans(
-                color: Colors.white70,
+                color: Colors.white,
                 fontWeight: FontWeight.w600,
                 fontSize: 24,
               ),
             ),
-            actions: [
-              isOwner
-                  ? GestureDetector(
-                      onTap: () {},
-                      child: const Icon(
-                        Icons.edit,
-                        color: Colors.white,
-                      ),
-                    )
-                  : const SizedBox.shrink(),
-            ],
+            // actions: [
+            //   isOwner
+            //       ? GestureDetector(
+            //           onTap: () {},
+            //           child: const Icon(
+            //             Icons.edit,
+            //             color: Colors.white,
+            //           ),
+            //         )
+            //       : const SizedBox.shrink(),
+            // ],
           ),
           body: Center(
             child: Column(
@@ -69,27 +70,32 @@ class AlbumDetailFrame extends StatelessWidget {
                   ),
                 ),
                 const Gap(60),
-                DetailItem(
-                  itemTitle: "Edit Timeline",
-                  backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
-                  onTap: () => print('Edit Timeline'),
-                ),
+                // DetailItem(
+                //   itemTitle: "Edit Timeline",
+                //   backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
+                //   onTap: () => print('Edit Timeline'),
+                // ),
                 DetailItem(
                   itemTitle: "Invite List",
                   backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
                   onTap: () => showModalBottomSheet(
                     context: context,
                     isScrollControlled: true,
-                    builder: (context) {
-                      return Container();
+                    useSafeArea: true,
+                    backgroundColor: Colors.black,
+                    builder: (ctx) {
+                      return BlocProvider.value(
+                        value: context.read<AlbumFrameCubit>(),
+                        child: const InviteListMain(),
+                      );
                     },
                   ),
                 ),
-                DetailItem(
-                  itemTitle: "Edit Visibility",
-                  backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
-                  onTap: () => print('visibility'),
-                ),
+                // DetailItem(
+                //   itemTitle: "Edit Visibility",
+                //   backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
+                //   onTap: () => print('visibility'),
+                // ),
               ],
             ),
           ),
