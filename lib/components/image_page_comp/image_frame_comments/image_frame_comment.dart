@@ -14,7 +14,7 @@ class ImageFrameComment extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 15.0,
-        vertical: 5,
+        vertical: 10,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,7 +25,7 @@ class ImageFrameComment extends StatelessWidget {
               comment.avatarReq,
               headers: headers,
             ),
-            radius: 20,
+            radius: 14,
           ),
           const SizedBox(
             width: 10,
@@ -62,7 +62,7 @@ class ImageFrameComment extends StatelessWidget {
                       child: Text(
                         comment.comment,
                         style: GoogleFonts.montserrat(
-                          color: Colors.white,
+                          color: Colors.white.withOpacity(.9),
                           fontWeight: FontWeight.w500,
                           fontSize: 14,
                         ),

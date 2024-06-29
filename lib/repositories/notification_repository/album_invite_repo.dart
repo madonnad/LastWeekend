@@ -7,6 +7,7 @@ extension AlbumInviteRepo on NotificationRepository {
         if (invite.guestID == user.id) {
           albumInviteMap.putIfAbsent(invite.notificationID, () => invite);
         }
+        print('notification repo');
         _notificationController.add((StreamOperation.add, invite));
       case RequestStatus.accepted:
         if (invite.albumOwner == user.id) {

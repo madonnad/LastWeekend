@@ -8,7 +8,7 @@ import 'package:shared_photo/components/image_page_comp/image_frame_control_bar.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
-import 'package:shared_photo/components/image_page_comp/image_frame_appbar.dart';
+import 'package:shared_photo/components/image_page_comp/image_frame_dialog/image_frame_dialog.dart';
 import 'package:shared_photo/models/album.dart';
 
 class ImageFrame extends StatelessWidget {
@@ -29,72 +29,107 @@ class ImageFrame extends StatelessWidget {
         builder: (context, state) {
           Map<String, String> headers =
               context.read<AppBloc>().state.user.headers;
-          return Stack(
-            children: [
-              SizedBox(
-                height: double.infinity,
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).padding.top,
-                    left: 10,
-                    right: 10,
-                    bottom: MediaQuery.of(context).padding.bottom,
-                  ),
-                  child: CustomScrollView(
-                    slivers: [
-                      const SliverToBoxAdapter(child: ImageFrameAppBar()),
-                      const SliverToBoxAdapter(
-                        child: ImageFrameImageContainer(),
-                      ),
-                      const SliverToBoxAdapter(
-                        child: ImageFrameControlBar(),
-                      ),
-                      SliverToBoxAdapter(
-                        child: BlocBuilder<AlbumFrameCubit, AlbumFrameState>(
-                          builder: (context, albumState) {
-                            return ImageFrameCaption(
-                              headers: headers,
-                              selectedImage: albumState.selectedImage,
-                              phase: albumState.album.phase,
-                            );
-                          },
-                        ),
-                      ),
-                      SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          (context, item) {
-                            return ImageFrameComment(
-                              headers: headers,
-                              comment: state.comments[item],
-                            );
-                          },
-                          childCount: state.comments.length,
-                        ),
-                      ),
-                      SliverToBoxAdapter(
-                        child: SizedBox(
-                          height: MediaQuery.of(context).padding.bottom + 100,
-                        ),
-                      ),
-                    ],
+          return SizedBox(
+            width: double.infinity,
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              children: [
+                const Expanded(
+                  child: AspectRatio(
+                    aspectRatio: 9 / 16,
+                    child: ImageFrameImageContainer(),
                   ),
                 ),
-              ),
-              BlocBuilder<AlbumFrameCubit, AlbumFrameState>(
-                builder: (context, albumState) {
-                  return albumState.album.phase == AlbumPhases.reveal
-                      ? Positioned(
-                          left: 15,
-                          right: 15,
-                          bottom: MediaQuery.of(context).padding.bottom,
-                          child: FloatingCommentContainer(
-                            headers: headers,
+                BlocBuilder<AlbumFrameCubit, AlbumFrameState>(
+                  builder: (context, albumState) {
+                    return Container(
+                      height: MediaQuery.of(context).size.height * .08,
+                      margin: const EdgeInsets.only(top: 15, bottom: 15),
+                      child: Stack(
+                        children: [
+                          PageView.builder(
+                            controller: albumState.miniMapController,
+                            itemCount: albumState.imageFrameTimelineList.length,
+                            itemBuilder: (context, index) {
+                              bool isImage =
+                                  albumState.selectedImage?.imageId ==
+                                      albumState.imageFrameTimelineList[index]
+                                          .imageId;
+                              return GestureDetector(
+                                onTap: () {
+                                  context
+                                      .read<AlbumFrameCubit>()
+                                      .updateImageFrameWithSelectedImage(
+                                        index,
+                                        changeMiniMap: true,
+                                        changeMainPage: true,
+                                      );
+                                },
+                                child: Container(
+                                  margin: const EdgeInsets.symmetric(
+                                    horizontal: 5,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: const Color.fromRGBO(19, 19, 19, 1),
+                                    image: DecorationImage(
+                                      image: NetworkImage(
+                                        albumState.imageFrameTimelineList[index]
+                                            .imageReqSmallSize,
+                                        headers: context
+                                            .read<AppBloc>()
+                                            .state
+                                            .user
+                                            .headers,
+                                      ),
+                                      fit: BoxFit.cover,
+                                    ),
+                                    borderRadius: BorderRadius.circular(5),
+                                    border: Border.all(
+                                      color: isImage
+                                          ? const Color.fromRGBO(
+                                              255, 205, 178, 1)
+                                          : Colors.transparent,
+                                      width: 2,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
                           ),
-                        )
-                      : const SizedBox.shrink();
-                },
-              ),
-            ],
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: Container(
+                              height: MediaQuery.of(context).size.height * .08,
+                              padding: const EdgeInsets.only(left: 8),
+                              color: Colors.black,
+                              child: GestureDetector(
+                                onTap: () => showDialog(
+                                  context: context,
+                                  barrierColor: Colors.black87,
+                                  builder: (ctx) => BlocProvider.value(
+                                    value: BlocProvider.of<AlbumFrameCubit>(
+                                        context),
+                                    child: const ImageFrameDialog(),
+                                  ),
+                                ),
+                                child: const Icon(
+                                  Icons.view_timeline,
+                                  size: 30,
+                                  color: Color.fromRGBO(225, 225, 225, 1),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).padding.bottom,
+                ),
+              ],
+            ),
           );
         },
       ),

@@ -92,6 +92,7 @@ class RealtimeRepository {
         return;
       case "album-invite":
         wsAlbumInviteMessageHandler(jsonData['operation'], jsonData['payload']);
+        print('realtime repo');
         return;
       case "upvote":
         wsEngagementMessageHandler(jsonData['operation'], jsonData['payload']);

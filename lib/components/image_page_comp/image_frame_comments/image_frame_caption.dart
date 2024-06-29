@@ -46,7 +46,7 @@ class ImageFrameCaption extends StatelessWidget {
                   state.image.avatarReq,
                   headers: headers,
                 ),
-                radius: 20,
+                radius: 14,
               );
             },
           ),
@@ -80,7 +80,7 @@ class ImageFrameCaption extends StatelessWidget {
                                 state.image.imageCaption,
                                 style: GoogleFonts.montserrat(
                                   color: Colors.white,
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: FontWeight.w700,
                                   fontSize: 14,
                                 ),
                               )
@@ -93,7 +93,7 @@ class ImageFrameCaption extends StatelessWidget {
                                   fontSize: 14,
                                 ),
                               )
-                        : const SizedBox(height: 0)
+                        : const SizedBox(height: 0),
                   ],
                 ),
               );
