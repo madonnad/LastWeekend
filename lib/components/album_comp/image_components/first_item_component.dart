@@ -58,125 +58,18 @@ class FirstItemComponent extends StatelessWidget {
         aspectRatio: 4 / 5,
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 15),
-          child: Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: const Color.fromRGBO(19, 19, 19, 1),
-                  borderRadius: BorderRadius.circular(10),
-                  image: DecorationImage(
-                    image: NetworkImage(
-                      image.imageReq,
-                      headers: headers,
-                    ),
-                    fit: BoxFit.cover,
-                  ),
+          child: Container(
+            decoration: BoxDecoration(
+              color: const Color.fromRGBO(19, 19, 19, 1),
+              borderRadius: BorderRadius.circular(10),
+              image: DecorationImage(
+                image: NetworkImage(
+                  image.imageReq,
+                  headers: headers,
                 ),
+                fit: BoxFit.cover,
               ),
-              Container(
-                height: 75,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
-                decoration: BoxDecoration(
-                  //color: Colors.black.withOpacity(.6),
-                  gradient: LinearGradient(
-                    colors: [
-                      Colors.black.withOpacity(.85),
-                      Colors.black.withOpacity(.5),
-                    ],
-                  ),
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(10),
-                    bottomRight: Radius.circular(10),
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 2.5,
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Color.fromRGBO(255, 205, 178, 1),
-                            Color.fromRGBO(255, 180, 162, 1),
-                            Color.fromRGBO(229, 152, 155, 1),
-                            Color.fromRGBO(181, 131, 141, 1),
-                            Color.fromRGBO(109, 104, 117, 1),
-                          ],
-                          begin: Alignment.bottomCenter,
-                          end: Alignment.topCenter,
-                        ),
-                      ),
-                    ),
-                    const Gap(12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              image.imageCaption,
-                              style: GoogleFonts.josefinSans(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                              ),
-                              overflow: TextOverflow.fade,
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              CircleAvatar(
-                                radius: 10,
-                                backgroundColor:
-                                    const Color.fromRGBO(44, 44, 44, 1),
-                                foregroundImage: NetworkImage(
-                                  image.avatarReq,
-                                  headers: headers,
-                                ),
-                                onForegroundImageError: (_, __) {},
-                              ),
-                              const Gap(5),
-                              Text(
-                                image.fullName,
-                                style: GoogleFonts.josefinSans(
-                                  color: Colors.white70,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          image.upvotes.toString(),
-                          style: GoogleFonts.montserrat(
-                            color: Colors.white,
-                            fontSize: 28,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        Transform.rotate(
-                          angle: (270 * math.pi) / 180,
-                          child: const Icon(
-                            Icons.label_important,
-                            color: Colors.white,
-                            size: 20,
-                          ),
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              )
-            ],
+            ),
           ),
         ),
       ),
