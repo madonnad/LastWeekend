@@ -50,8 +50,9 @@ class ImageFrameDialog extends StatelessWidget {
                         onTap: () {
                           context
                               .read<AlbumFrameCubit>()
-                              .initalizeImageFrameWithSelectedImage(index);
-                          state.pageController.jumpToPage(index);
+                              .updateImageFrameWithSelectedImage(index,
+                                  changeMiniMap: false, changeMainPage: true);
+
                           Navigator.of(context).pop();
                         },
                         child: Padding(

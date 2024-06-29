@@ -25,6 +25,7 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
             album: Album.empty,
             viewMode: AlbumViewMode.popular,
             pageController: PageController(),
+            miniMapController: PageController(viewportFraction: 1 / 6),
           ),
         ) {
     // Fetch Album to Initalize
@@ -146,8 +147,32 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
 
   void initalizeImageFrameWithSelectedImage(int selectedIndex) {
     PageController pageController = PageController(initialPage: selectedIndex);
+    PageController miniMapController =
+        PageController(initialPage: selectedIndex, viewportFraction: 1 / 6);
     Photo image = state.imageFrameTimelineList[selectedIndex];
-    emit(state.copyWith(selectedImage: image, pageController: pageController));
+    emit(state.copyWith(
+      selectedImage: image,
+      pageController: pageController,
+      miniMapController: miniMapController,
+    ));
+  }
+
+  void updateImageFrameWithSelectedImage(int selectedIndex,
+      {required bool changeMainPage, required bool changeMiniMap}) {
+    Photo image = state.imageFrameTimelineList[selectedIndex];
+    emit(state.copyWith(selectedImage: image));
+
+    if (changeMainPage) {
+      state.pageController.jumpToPage(selectedIndex);
+    }
+
+    if (changeMiniMap) {
+      state.miniMapController.animateToPage(
+        selectedIndex,
+        duration: const Duration(milliseconds: 250),
+        curve: Curves.decelerate,
+      );
+    }
   }
 
   void nextImage() {

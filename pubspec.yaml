@@ -32,6 +32,7 @@ dependencies:
   flutter_udid: ^3.0.0
   image_gallery_saver: ^2.0.3
   image: ^4.2.0
+  icon_decoration: ^2.0.2
 
 dev_dependencies:
   flutter_lints: ^2.0.0

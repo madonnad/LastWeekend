@@ -98,7 +98,6 @@ class EngagementService {
     String urlString = "${dotenv.env['URL']}/notifications?id=$notificationID";
     Uri url = Uri.parse(urlString);
 
-
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     try {
@@ -119,7 +118,6 @@ class EngagementService {
     //     dotenv.env['DOMAIN'] ?? '', '/image/like', {"image_id": imageID});
     String urlString = "${dotenv.env['URL']}/image/like?image_id=$imageID";
     Uri url = Uri.parse(urlString);
-
 
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
@@ -146,7 +144,6 @@ class EngagementService {
     String urlString = "${dotenv.env['URL']}/image/like?image_id=$imageID";
     Uri url = Uri.parse(urlString);
 
-
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     final response = await http.delete(url, headers: headers);
@@ -172,7 +169,6 @@ class EngagementService {
     String urlString = "${dotenv.env['URL']}/image/upvote?image_id=$imageID";
     Uri url = Uri.parse(urlString);
 
-
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     final response = await http.post(url, headers: headers);
@@ -197,7 +193,6 @@ class EngagementService {
     //     dotenv.env['DOMAIN'] ?? '', '/image/upvote', {"image_id": imageID});
     String urlString = "${dotenv.env['URL']}/image/upvote?image_id=$imageID";
     Uri url = Uri.parse(urlString);
-
 
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
