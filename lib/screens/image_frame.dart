@@ -27,8 +27,6 @@ class ImageFrame extends StatelessWidget {
       },
       child: BlocBuilder<ImageFrameCubit, ImageFrameState>(
         builder: (context, state) {
-          Map<String, String> headers =
-              context.read<AppBloc>().state.user.headers;
           return SizedBox(
             width: double.infinity,
             height: MediaQuery.of(context).size.height,
@@ -55,6 +53,14 @@ class ImageFrame extends StatelessWidget {
                                   albumState.selectedImage?.imageId ==
                                       albumState.imageFrameTimelineList[index]
                                           .imageId;
+                              bool showImage = false;
+                              String userID =
+                                  context.read<AppBloc>().state.user.id;
+                              showImage = albumState.album.phase ==
+                                      AlbumPhases.reveal ||
+                                  (albumState.imageFrameTimelineList[index]
+                                          .owner ==
+                                      userID);
                               return GestureDetector(
                                 onTap: () {
                                   context
@@ -65,34 +71,62 @@ class ImageFrame extends StatelessWidget {
                                         changeMainPage: true,
                                       );
                                 },
-                                child: Container(
-                                  margin: const EdgeInsets.symmetric(
-                                    horizontal: 5,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: const Color.fromRGBO(19, 19, 19, 1),
-                                    image: DecorationImage(
-                                      image: NetworkImage(
-                                        albumState.imageFrameTimelineList[index]
-                                            .imageReqSmallSize,
-                                        headers: context
-                                            .read<AppBloc>()
-                                            .state
-                                            .user
-                                            .headers,
+                                child: showImage
+                                    ? Container(
+                                        margin: const EdgeInsets.symmetric(
+                                          horizontal: 5,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: const Color.fromRGBO(
+                                              19, 19, 19, 1),
+                                          image: DecorationImage(
+                                            image: NetworkImage(
+                                              albumState
+                                                  .imageFrameTimelineList[index]
+                                                  .imageReq,
+                                              headers: context
+                                                  .read<AppBloc>()
+                                                  .state
+                                                  .user
+                                                  .headers,
+                                            ),
+                                            fit: BoxFit.cover,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          border: Border.all(
+                                            color: isImage
+                                                ? const Color.fromRGBO(
+                                                    255, 205, 178, 1)
+                                                : Colors.transparent,
+                                            width: 2,
+                                          ),
+                                        ),
+                                      )
+                                    : Container(
+                                        margin: const EdgeInsets.symmetric(
+                                          horizontal: 5,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: const Color.fromRGBO(
+                                              44, 44, 44, 1),
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          border: Border.all(
+                                            color: isImage
+                                                ? const Color.fromRGBO(
+                                                    255, 205, 178, 1)
+                                                : Colors.transparent,
+                                            width: 2,
+                                          ),
+                                        ),
+                                        child: const Center(
+                                          child: Text(
+                                            "🫣",
+                                            style: TextStyle(fontSize: 20),
+                                          ),
+                                        ),
                                       ),
-                                      fit: BoxFit.cover,
-                                    ),
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(
-                                      color: isImage
-                                          ? const Color.fromRGBO(
-                                              255, 205, 178, 1)
-                                          : Colors.transparent,
-                                      width: 2,
-                                    ),
-                                  ),
-                                ),
                               );
                             },
                           ),

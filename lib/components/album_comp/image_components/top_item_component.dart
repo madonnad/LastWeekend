@@ -65,7 +65,7 @@ class TopItemComponent extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 image: DecorationImage(
                   image: NetworkImage(
-                    image.imageReqMedSize,
+                    image.imageReq,
                     headers: headers,
                   ),
                   onError: (_, __) {},
