@@ -50,7 +50,9 @@ class ProfileState extends Equatable {
   }
 
   List<Album> get myAlbums {
-    return myAlbumsMap.values.toList();
+    List<Album> albumList = myAlbumsMap.values.toList();
+    albumList.sort((a, b) => b.creationDateTime.compareTo(a.creationDateTime));
+    return albumList;
   }
 
   List<Friend> get myFriends {

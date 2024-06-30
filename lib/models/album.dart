@@ -333,6 +333,9 @@ class Album extends Equatable {
       listImages.add(value);
     });
 
+    listImages
+        .sort((a, b) => b[0].uploadDateTime.compareTo(a[0].uploadDateTime));
+
     return listImages;
   }
 

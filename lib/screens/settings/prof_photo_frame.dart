@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -42,7 +43,7 @@ class ProfPhotoFrame extends StatelessWidget {
               String filePath = settingsState.profileImageToUpload?.path ?? '';
               ImageProvider image = settingsState.profileImageToUpload != null
                   ? FileImage(File(filePath)) as ImageProvider
-                  : NetworkImage(
+                  : CachedNetworkImageProvider(
                       state.user.avatarUrl,
                       headers: state.user.headers,
                     );

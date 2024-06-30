@@ -43,17 +43,14 @@ class _CustomCamPreviewState extends State<CustomCamPreview> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return GestureDetector(
-      onDoubleTap: () => print("double tap"),
-      child: SizedBox(
-        width: size.width,
-        height: size.height,
-        child: FittedBox(
-          fit: BoxFit.cover,
-          child: SizedBox(
-            width: 100,
-            child: CameraPreview(widget.controller),
-          ),
+    return SizedBox(
+      width: size.width,
+      height: size.height,
+      child: FittedBox(
+        fit: BoxFit.cover,
+        child: SizedBox(
+          width: 100,
+          child: CameraPreview(widget.controller),
         ),
       ),
     );

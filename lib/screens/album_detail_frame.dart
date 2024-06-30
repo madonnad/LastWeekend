@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -60,9 +61,10 @@ class AlbumDetailFrame extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                         color: const Color.fromRGBO(19, 19, 19, 1),
                         image: DecorationImage(
-                          image: NetworkImage(state.album.coverReq,
-                              headers:
-                                  context.read<AppBloc>().state.user.headers),
+                          image: CachedNetworkImageProvider(
+                            state.album.coverReq,
+                            headers: context.read<AppBloc>().state.user.headers,
+                          ),
                           fit: BoxFit.cover,
                         ),
                       ),

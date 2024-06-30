@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/components/album_comp/image_components/blank_item_component.dart';
@@ -45,17 +46,25 @@ class UnlockTimelinePage extends StatelessWidget {
                         if (album
                                 .imagesGroupedSortedByDate[index][item].owner ==
                             userID) {
-                          return TopItemComponent(
-                            image: album.imagesGroupedSortedByDate[index][item],
-                            headers: header,
-                            showCount: false,
+                          return SizedBox(
+                            height: 100,
+                            child: TopItemComponent(
+                              image: album.imagesGroupedSortedByDate[index]
+                                  [item],
+                              headers: header,
+                              showCount: false,
+                            ),
                           );
                         } else {
-                          return BlankItemComponent(
-                            image: album.imagesGroupedSortedByDate[index][item],
-                            url: album.imagesGroupedSortedByDate[index][item]
-                                .avatarReq,
-                            headers: header,
+                          return SizedBox(
+                            height: 100,
+                            child: BlankItemComponent(
+                              image: album.imagesGroupedSortedByDate[index]
+                                  [item],
+                              url: album.imagesGroupedSortedByDate[index][item]
+                                  .imageReqSmallSize,
+                              headers: header,
+                            ),
                           );
                         }
                       },
