@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -35,7 +36,7 @@ class CommentNotiItem extends StatelessWidget {
                   color: const Color.fromRGBO(44, 44, 44, 1),
                   borderRadius: BorderRadius.circular(10),
                   image: DecorationImage(
-                    image: NetworkImage(
+                    image: CachedNetworkImageProvider(
                       notification.imageURL,
                       headers: context.read<AppBloc>().state.user.headers,
                     ),

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
 import 'package:shared_photo/bloc/cubit/image_frame_cubit.dart';
 import 'package:shared_photo/components/image_page_comp/image_frame_comments/floating_comment_container.dart';
@@ -80,7 +81,7 @@ class ImageFrame extends StatelessWidget {
                                           color: const Color.fromRGBO(
                                               19, 19, 19, 1),
                                           image: DecorationImage(
-                                            image: NetworkImage(
+                                            image: CachedNetworkImageProvider(
                                               albumState
                                                   .imageFrameTimelineList[index]
                                                   .imageReq,

@@ -23,6 +23,9 @@ class CameraScreen extends StatefulWidget {
 class _CameraScreenState extends State<CameraScreen> {
   late CameraController controller;
   bool isCameraBack = false;
+  double minZoom = 0;
+  double maxZoom = 1;
+  double currentZoom = 0;
 
   @override
   void initState() {
@@ -39,31 +42,61 @@ class _CameraScreenState extends State<CameraScreen> {
       imageFormatGroup: ImageFormatGroup.yuv420,
     );
 
-    controller.initialize().then((_) {
-      if (!mounted) {
-        return;
-      }
-      setState(() {});
-    }).catchError((Object e) {
-      if (e is CameraException) {
-        switch (e.code) {
-          case 'CameraAccessDenied':
-            break;
-          case 'Cannot Record':
-            break;
-          default:
-            break;
-        }
-      }
-    });
+    // controller.initialize().then((_) {
+    //   if (!mounted) {
+    //     return;
+    //   }
+    //   setState(() {});
+    // }).catchError((Object e) {
+    //   if (e is CameraException) {
+    //     switch (e.code) {
+    //       case 'CameraAccessDenied':
+    //         break;
+    //       case 'Cannot Record':
+    //         break;
+    //       default:
+    //         break;
+    //     }
+    //   }
+    // });
+
+    // controller.addListener(() {
+    //   if (mounted) {
+    //     setState(() {});
+    //   }
+    //   if (controller.value.hasError) {}
+    // });
+
     super.initState();
     Future.microtask(() async {
-      await lockOrientation();
+      await initializeCameraController();
     });
+  }
+
+  Future<void> initializeCameraController() async {
+    await controller.initialize();
+    await lockOrientation();
+    await setZoomValues();
+    await controller.setFlashMode(FlashMode.auto);
   }
 
   Future<void> lockOrientation() async {
     await controller.lockCaptureOrientation();
+  }
+
+  Future<void> setZoomValues() async {
+    await controller.getMinZoomLevel().then((value) => setState(() {
+          minZoom = value;
+          currentZoom = value;
+        }));
+    await controller.getMaxZoomLevel().then((value) => setState(() {
+          maxZoom = value.floor().toDouble();
+          if (maxZoom > 6) {
+            maxZoom = 6;
+          }
+        }));
+
+    await controller.setZoomLevel(currentZoom);
   }
 
   @override
@@ -88,23 +121,26 @@ class _CameraScreenState extends State<CameraScreen> {
       imageFormatGroup: ImageFormatGroup.yuv420,
     );
 
-    await controller.initialize();
-
     if (mounted) {
-      setState(() {
-        controller;
+      Future.microtask(() async {
+        await initializeCameraController();
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    bool minMaxSame =
+        maxZoom < minZoom || currentZoom < minZoom || currentZoom > maxZoom;
     return BlocBuilder<CameraCubit, CameraState>(
       builder: (context, state) {
         return Stack(
           children: [
             (controller.value.isInitialized)
-                ? CustomCamPreview(controller: controller)
+                ? GestureDetector(
+                    onDoubleTap: () => changeCameraDirection(),
+                    child: CustomCamPreview(controller: controller),
+                  )
                 : Container(
                     color: Colors.black,
                     child: const Center(
@@ -126,6 +162,31 @@ class _CameraScreenState extends State<CameraScreen> {
                 child: ActiveAlbumDropdown(
                   opacity: .25,
                 ),
+              ),
+            ),
+            Positioned(
+              left: 0,
+              bottom: MediaQuery.of(context).size.height * .45,
+              child: RotatedBox(
+                quarterTurns: 3,
+                child: minMaxSame
+                    ? const SizedBox.shrink()
+                    : SizedBox(
+                        width: MediaQuery.of(context).size.height * .25,
+                        child: Slider(
+                          value: currentZoom,
+                          min: minZoom,
+                          max: maxZoom,
+                          divisions: (maxZoom).toInt(),
+                          label: (currentZoom - 1).round().toString(),
+                          onChanged: (value) {
+                            setState(() {
+                              currentZoom = value;
+                              controller.setZoomLevel(value);
+                            });
+                          },
+                        ),
+                      ),
               ),
             ),
             Positioned(

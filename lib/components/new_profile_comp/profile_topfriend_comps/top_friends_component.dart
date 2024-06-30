@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
@@ -37,7 +38,7 @@ class TopFriendsComponent extends StatelessWidget {
                         backgroundColor: const Color.fromRGBO(19, 19, 19, 1),
                         backgroundImage:
                             const AssetImage("lib/assets/default.png"),
-                        foregroundImage: NetworkImage(
+                        foregroundImage: CachedNetworkImageProvider(
                           state.myFriends[index].imageReq,
                           headers: headers,
                         ),

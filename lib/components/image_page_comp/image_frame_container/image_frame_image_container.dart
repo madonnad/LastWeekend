@@ -115,251 +115,263 @@ class ImageFrameImageContainer extends StatelessWidget {
                           String numComments = state
                               .imageFrameTimelineList[index].comments.length
                               .toString();
-                          return Positioned(
-                            bottom: 16,
-                            right: 12,
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 6.0,
-                                  ),
+                          return state.album.phase == AlbumPhases.reveal
+                              ? Positioned(
+                                  bottom: 16,
+                                  right: 12,
                                   child: Column(
                                     children: [
-                                      Transform.rotate(
-                                        angle: (270 * math.pi) / 180,
-                                        child: GestureDetector(
-                                          onTap: imageState.upvoteLoading
-                                              ? null
-                                              : () => context
-                                                  .read<ImageFrameCubit>()
-                                                  .toggleUpvote(),
-                                          child: DecoratedIcon(
-                                            icon: userUpvoted
-                                                ? const Icon(
-                                                    Icons.label_important,
-                                                    size: 35,
-                                                    color: Colors.white,
-                                                    shadows: [
-                                                      Shadow(
-                                                        offset:
-                                                            Offset(0.0, 0.0),
-                                                        blurRadius: 10.0,
-                                                        color: Colors.black,
-                                                      ),
-                                                    ],
-                                                  )
-                                                : const Icon(
-                                                    Icons
-                                                        .label_important_outline,
-                                                    size: 35,
-                                                    color: Colors.white,
-                                                    shadows: [
-                                                      Shadow(
-                                                        offset:
-                                                            Offset(0.0, 0.0),
-                                                        blurRadius: 15.0,
-                                                        color: Colors.black54,
-                                                      ),
-                                                    ],
-                                                  ),
-                                          ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 6.0,
                                         ),
-                                      ),
-                                      Text(
-                                        "${state.imageFrameTimelineList[index].upvotes}",
-                                        style: GoogleFonts.montserrat(
-                                          color: Colors.white,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w600,
-                                          shadows: [
-                                            const Shadow(
-                                              offset: Offset(0.0, 0.0),
-                                              blurRadius: 10.0,
-                                              color: Colors.black87,
+                                        child: Column(
+                                          children: [
+                                            Transform.rotate(
+                                              angle: (270 * math.pi) / 180,
+                                              child: GestureDetector(
+                                                onTap: imageState.upvoteLoading
+                                                    ? null
+                                                    : () => context
+                                                        .read<ImageFrameCubit>()
+                                                        .toggleUpvote(),
+                                                child: DecoratedIcon(
+                                                  icon: userUpvoted
+                                                      ? const Icon(
+                                                          Icons.label_important,
+                                                          size: 35,
+                                                          color: Colors.white,
+                                                          shadows: [
+                                                            Shadow(
+                                                              offset: Offset(
+                                                                  0.0, 0.0),
+                                                              blurRadius: 10.0,
+                                                              color:
+                                                                  Colors.black,
+                                                            ),
+                                                          ],
+                                                        )
+                                                      : const Icon(
+                                                          Icons
+                                                              .label_important_outline,
+                                                          size: 35,
+                                                          color: Colors.white,
+                                                          shadows: [
+                                                            Shadow(
+                                                              offset: Offset(
+                                                                  0.0, 0.0),
+                                                              blurRadius: 15.0,
+                                                              color: Colors
+                                                                  .black54,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                ),
+                                              ),
+                                            ),
+                                            Text(
+                                              "${state.imageFrameTimelineList[index].upvotes}",
+                                              style: GoogleFonts.montserrat(
+                                                color: Colors.white,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w600,
+                                                shadows: [
+                                                  const Shadow(
+                                                    offset: Offset(0.0, 0.0),
+                                                    blurRadius: 10.0,
+                                                    color: Colors.black87,
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ],
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 6.0,
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      GestureDetector(
-                                        onTap: imageState.likeLoading
-                                            ? null
-                                            : () => context
-                                                .read<ImageFrameCubit>()
-                                                .toggleLike(),
-                                        child: DecoratedIcon(
-                                          icon: userLiked
-                                              ? const Icon(
-                                                  Icons.favorite,
-                                                  color: Colors.white,
-                                                  size: 35,
-                                                  shadows: [
-                                                    Shadow(
-                                                      offset: Offset(0.0, 0.0),
-                                                      blurRadius: 10.0,
-                                                      color: Colors.black54,
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 6.0,
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            GestureDetector(
+                                              onTap: imageState.likeLoading
+                                                  ? null
+                                                  : () => context
+                                                      .read<ImageFrameCubit>()
+                                                      .toggleLike(),
+                                              child: DecoratedIcon(
+                                                icon: userLiked
+                                                    ? const Icon(
+                                                        Icons.favorite,
+                                                        color: Colors.white,
+                                                        size: 35,
+                                                        shadows: [
+                                                          Shadow(
+                                                            offset: Offset(
+                                                                0.0, 0.0),
+                                                            blurRadius: 10.0,
+                                                            color:
+                                                                Colors.black54,
+                                                          ),
+                                                        ],
+                                                      )
+                                                    : const Icon(
+                                                        Icons.favorite_outline,
+                                                        color: Colors.white,
+                                                        size: 35,
+                                                        shadows: [
+                                                          Shadow(
+                                                            offset: Offset(
+                                                                0.0, 0.0),
+                                                            blurRadius: 10.0,
+                                                            color:
+                                                                Colors.black54,
+                                                          ),
+                                                        ],
+                                                      ),
+                                              ),
+                                            ),
+                                            Text(
+                                              "${state.imageFrameTimelineList[index].likes}",
+                                              style: GoogleFonts.montserrat(
+                                                color: Colors.white,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w600,
+                                                shadows: [
+                                                  const Shadow(
+                                                    offset: Offset(0.0, 0.0),
+                                                    blurRadius: 10.0,
+                                                    color: Colors.black87,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 6.0,
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () => showModalBottomSheet(
+                                                context: context,
+                                                isScrollControlled: true,
+                                                builder: (ctx) =>
+                                                    MultiBlocProvider(
+                                                  providers: [
+                                                    BlocProvider.value(
+                                                      value: context.read<
+                                                          AlbumFrameCubit>(),
+                                                    ),
+                                                    BlocProvider.value(
+                                                      value: context.read<
+                                                          ImageFrameCubit>(),
                                                     ),
                                                   ],
-                                                )
-                                              : const Icon(
-                                                  Icons.favorite_outline,
+                                                  child: Container(
+                                                    padding:
+                                                        EdgeInsets.fromLTRB(
+                                                      8,
+                                                      20,
+                                                      8,
+                                                      MediaQuery.of(context)
+                                                          .viewInsets
+                                                          .bottom,
+                                                    ),
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            .75,
+                                                    child: BlocBuilder<
+                                                        AlbumFrameCubit,
+                                                        AlbumFrameState>(
+                                                      builder:
+                                                          (context, state) {
+                                                        return Column(
+                                                          children: [
+                                                            ImageFrameCaption(
+                                                              headers: headers,
+                                                              selectedImage: state
+                                                                  .selectedImage,
+                                                              phase: state
+                                                                  .album.phase,
+                                                            ),
+                                                            BlocBuilder<
+                                                                ImageFrameCubit,
+                                                                ImageFrameState>(
+                                                              builder: (context,
+                                                                  state) {
+                                                                return Expanded(
+                                                                  child: ListView
+                                                                      .builder(
+                                                                    itemCount: state
+                                                                        .comments
+                                                                        .length,
+                                                                    itemBuilder:
+                                                                        (context,
+                                                                            item) {
+                                                                      return ImageFrameComment(
+                                                                        headers:
+                                                                            headers,
+                                                                        comment:
+                                                                            state.comments[item],
+                                                                      );
+                                                                    },
+                                                                  ),
+                                                                );
+                                                              },
+                                                            ),
+                                                            FloatingCommentContainer(
+                                                                headers:
+                                                                    headers),
+                                                          ],
+                                                        );
+                                                      },
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              child: const DecoratedIcon(
+                                                icon: Icon(
+                                                  Icons.comment,
                                                   color: Colors.white,
                                                   size: 35,
                                                   shadows: [
-                                                    Shadow(
+                                                    const Shadow(
                                                       offset: Offset(0.0, 0.0),
                                                       blurRadius: 10.0,
                                                       color: Colors.black54,
                                                     ),
                                                   ],
                                                 ),
-                                        ),
-                                      ),
-                                      Text(
-                                        "${state.imageFrameTimelineList[index].likes}",
-                                        style: GoogleFonts.montserrat(
-                                          color: Colors.white,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w600,
-                                          shadows: [
-                                            const Shadow(
-                                              offset: Offset(0.0, 0.0),
-                                              blurRadius: 10.0,
-                                              color: Colors.black87,
+                                              ),
+                                            ),
+                                            Text(
+                                              numComments,
+                                              style: GoogleFonts.montserrat(
+                                                color: Colors.white,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w600,
+                                                shadows: [
+                                                  const Shadow(
+                                                    offset: Offset(0.0, 0.0),
+                                                    blurRadius: 10.0,
+                                                    color: Colors.black87,
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ],
                                         ),
                                       ),
                                     ],
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 6.0,
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () => showModalBottomSheet(
-                                          context: context,
-                                          isScrollControlled: true,
-                                          builder: (ctx) => MultiBlocProvider(
-                                            providers: [
-                                              BlocProvider.value(
-                                                value: context
-                                                    .read<AlbumFrameCubit>(),
-                                              ),
-                                              BlocProvider.value(
-                                                value: context
-                                                    .read<ImageFrameCubit>(),
-                                              ),
-                                            ],
-                                            child: Container(
-                                              padding: EdgeInsets.fromLTRB(
-                                                8,
-                                                20,
-                                                8,
-                                                MediaQuery.of(context)
-                                                    .viewInsets
-                                                    .bottom,
-                                              ),
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  .75,
-                                              child: BlocBuilder<
-                                                  AlbumFrameCubit,
-                                                  AlbumFrameState>(
-                                                builder: (context, state) {
-                                                  return Column(
-                                                    children: [
-                                                      ImageFrameCaption(
-                                                        headers: headers,
-                                                        selectedImage:
-                                                            state.selectedImage,
-                                                        phase:
-                                                            state.album.phase,
-                                                      ),
-                                                      BlocBuilder<
-                                                          ImageFrameCubit,
-                                                          ImageFrameState>(
-                                                        builder:
-                                                            (context, state) {
-                                                          return Expanded(
-                                                            child: ListView
-                                                                .builder(
-                                                              itemCount: state
-                                                                  .comments
-                                                                  .length,
-                                                              itemBuilder:
-                                                                  (context,
-                                                                      item) {
-                                                                return ImageFrameComment(
-                                                                  headers:
-                                                                      headers,
-                                                                  comment: state
-                                                                          .comments[
-                                                                      item],
-                                                                );
-                                                              },
-                                                            ),
-                                                          );
-                                                        },
-                                                      ),
-                                                      FloatingCommentContainer(
-                                                          headers: headers),
-                                                    ],
-                                                  );
-                                                },
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        child: const DecoratedIcon(
-                                          icon: Icon(
-                                            Icons.comment,
-                                            color: Colors.white,
-                                            size: 35,
-                                            shadows: [
-                                              const Shadow(
-                                                offset: Offset(0.0, 0.0),
-                                                blurRadius: 10.0,
-                                                color: Colors.black54,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      Text(
-                                        numComments,
-                                        style: GoogleFonts.montserrat(
-                                          color: Colors.white,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w600,
-                                          shadows: [
-                                            const Shadow(
-                                              offset: Offset(0.0, 0.0),
-                                              blurRadius: 10.0,
-                                              color: Colors.black87,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
+                                )
+                              : const SizedBox.shrink();
                         },
                       ),
                     ],
