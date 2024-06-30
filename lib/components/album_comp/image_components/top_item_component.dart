@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
@@ -64,7 +65,7 @@ class TopItemComponent extends StatelessWidget {
                 color: const Color.fromRGBO(44, 44, 44, .75),
                 borderRadius: BorderRadius.circular(10),
                 image: DecorationImage(
-                  image: NetworkImage(
+                  image: CachedNetworkImageProvider(
                     image.imageReq,
                     headers: headers,
                   ),

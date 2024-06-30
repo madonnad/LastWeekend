@@ -121,7 +121,7 @@ class FeedSlideshowInset extends StatelessWidget {
                           child: CircleAvatar(
                             backgroundImage:
                                 const AssetImage("lib/assets/default.png"),
-                            foregroundImage: NetworkImage(
+                            foregroundImage: CachedNetworkImageProvider(
                               state.avatarUrl,
                               headers: headers,
                             ),
