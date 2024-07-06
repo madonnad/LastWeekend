@@ -14,6 +14,7 @@ final class AuthState extends Equatable {
   final TextEditingController? confirmPassController;
   final TextEditingController? firstNameController;
   final TextEditingController? lastNameController;
+  final CustomException exception;
 
   const AuthState({
     required this.isLoading,
@@ -29,6 +30,7 @@ final class AuthState extends Equatable {
     this.firstNameController,
     this.lastNameController,
     this.errorMessage = '',
+    this.exception = CustomException.empty,
   });
 
   @override
@@ -46,11 +48,11 @@ final class AuthState extends Equatable {
         lastNameController,
         firstNameValid,
         lastNameValid,
+        exception,
       ];
 
   AuthState copyWith({
     bool? isLoading,
-    String? errorMessage,
     bool? emailValid,
     bool? passwordValid,
     bool? confirmPassValid,
@@ -62,11 +64,11 @@ final class AuthState extends Equatable {
     TextEditingController? lastNameController,
     bool? firstNameValid,
     bool? lastNameValid,
+    CustomException? exception,
   }) {
     return AuthState(
       isLoading: isLoading ?? this.isLoading,
       accountCreateMode: accountCreateMode ?? this.accountCreateMode,
-      errorMessage: errorMessage ?? this.errorMessage,
       emailValid: emailValid ?? this.emailValid,
       confirmPassValid: confirmPassValid ?? this.confirmPassValid,
       passwordValid: passwordValid ?? this.passwordValid,
@@ -78,6 +80,7 @@ final class AuthState extends Equatable {
       lastNameController: lastNameController ?? this.lastNameController,
       firstNameValid: firstNameValid ?? this.firstNameValid,
       lastNameValid: lastNameValid ?? this.lastNameValid,
+      exception: exception ?? this.exception,
     );
   }
 }

@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:auth0_flutter/auth0_flutter.dart';
+import 'package:shared_photo/models/custom_exception.dart';
 import 'package:shared_photo/models/user.dart';
 import 'package:shared_photo/services/user_service.dart';
 
@@ -16,9 +17,9 @@ class Auth0Repository {
   final String connection = "Username-Password-Authentication";
   bool newAccount = false;
 
-  final _userController = StreamController<User>();
+  final _userController = StreamController<(User, CustomException)>();
 
-  Stream<User> get user => _userController.stream;
+  Stream<(User, CustomException)> get user => _userController.stream;
 
   Future<void> userStream() async {
     bool hasCreds = await auth0.credentialsManager.hasValidCredentials();
@@ -42,11 +43,16 @@ class Auth0Repository {
             userProfile.givenName != null ? userProfile.givenName! : 'first';
         String lastName =
             userProfile.familyName != null ? userProfile.familyName! : 'last';
-        bool creationStatus = await UserService.createUserEntry(
+        (int, String?) creationStatus = await UserService.createUserEntry(
             creds.accessToken, firstName, lastName, email);
 
-        if (!creationStatus) {
-          _userController.sink.add(User.empty);
+        if (creationStatus.$1 != 200) {
+          _userController.sink.add((
+            User.empty,
+            CustomException(
+              errorString: creationStatus.$2,
+            )
+          ));
           return;
         }
       }
@@ -56,13 +62,13 @@ class Auth0Repository {
 
       newAccount = false;
 
-      _userController.sink.add(user);
+      _userController.sink.add((user, CustomException.empty));
       return;
     }
 
     await auth0.credentialsManager.clearCredentials();
 
-    _userController.sink.add(User.empty);
+    _userController.sink.add((User.empty, CustomException.empty));
   }
 
   Future<void> createAccountWithEmailAndPassword({
@@ -83,7 +89,7 @@ class Auth0Repository {
 
       loginWithEmailAndPassword(email: user.email, password: password);
     } catch (e) {
-      print(e);
+      rethrow;
     }
   }
 
@@ -106,8 +112,12 @@ class Auth0Repository {
         throw Exception("Failed to store credentials");
       }
     } catch (e) {
-      throw Exception("Failed to login");
+      rethrow;
     }
+  }
+
+  Future<void> resetPassword({required String email}) async {
+    await auth0.api.resetPassword(email: email, connection: connection);
   }
 
   Future<void> logout() async {

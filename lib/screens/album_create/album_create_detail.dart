@@ -19,10 +19,10 @@ class AlbumCreateDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<CreateAlbumCubit, CreateAlbumState>(
       listener: (context, state) {
-        if (state.exception != null) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(state.exception?.errorMessage ?? "Error")));
-        }
+        // if (state.exception != null) {
+        //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        //       content: Text(state.exception?.errorMessage ?? "Error")));
+        // }
       },
       builder: (context, state) {
         return Container(

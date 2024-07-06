@@ -26,7 +26,6 @@ final class CreateAlbumState extends Equatable {
   final FriendState friendState;
   final String modalTextString;
   final bool loading;
-  final ExceptionBase? exception;
 
   const CreateAlbumState({
     required this.albumName,
@@ -49,7 +48,6 @@ final class CreateAlbumState extends Equatable {
     this.friendState = FriendState.empty,
     this.modalTextString = '',
     this.loading = false,
-    this.exception,
   });
 
   CreateAlbumState copyWith({
@@ -70,7 +68,6 @@ final class CreateAlbumState extends Equatable {
     FriendState? friendState,
     String? modalTextString,
     bool? loading,
-    ExceptionBase? exception,
   }) {
     return CreateAlbumState(
       albumName: albumName ?? this.albumName,
@@ -89,7 +86,6 @@ final class CreateAlbumState extends Equatable {
       friendState: friendState ?? this.friendState,
       modalTextString: modalTextString ?? this.modalTextString,
       loading: loading ?? this.loading,
-      exception: exception ?? this.exception,
     );
   }
 
@@ -113,7 +109,6 @@ final class CreateAlbumState extends Equatable {
       friendState: friendState,
       modalTextString: modalTextString,
       loading: loading,
-      exception: exception,
     );
   }
 
@@ -135,7 +130,6 @@ final class CreateAlbumState extends Equatable {
       friendState: friendState,
       modalTextString: modalTextString,
       loading: loading,
-      exception: exception,
     );
   }
 
@@ -158,7 +152,6 @@ final class CreateAlbumState extends Equatable {
         friendState,
         modalTextString,
         loading,
-        exception,
       ];
 
   bool get canContinue {

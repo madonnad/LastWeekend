@@ -12,8 +12,9 @@ final class AppLogoutRequested extends AppEvent {
 
 final class AppUserChanged extends AppEvent {
   final User user;
+  final CustomException exception;
 
-  const AppUserChanged(this.user);
+  const AppUserChanged(this.user, this.exception);
 }
 
 final class ChangeNewAccountEvent extends AppEvent {

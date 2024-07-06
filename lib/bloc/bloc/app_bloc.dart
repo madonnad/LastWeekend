@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:camera/camera.dart';
 import 'package:equatable/equatable.dart';
+import 'package:shared_photo/models/custom_exception.dart';
 import 'package:shared_photo/models/user.dart';
 import 'package:shared_photo/repositories/auth0_repository.dart';
 
@@ -21,7 +22,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         if (event.user != User.empty) {
           emit(AuthenticatedState(event.user, cameras: cameras));
         } else {
-          emit(const UnauthenticatedState());
+          emit(UnauthenticatedState(event.exception));
         }
       },
     );
@@ -38,7 +39,8 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     );
     _auth0repository.userStream();
 
-    _auth0repository.user.listen((user) => add(AppUserChanged(user)));
+    _auth0repository.user
+        .listen((user) => add(AppUserChanged(user.$1, user.$2)));
   }
 
   @override

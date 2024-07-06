@@ -5,7 +5,7 @@ import 'package:shared_photo/models/friend.dart';
 import 'package:http/http.dart' as http;
 
 class UserService {
-  static Future<bool> createUserEntry(
+  static Future<(int, String?)> createUserEntry(
       String token, String firstName, String lastName, String email) async {
     final Map<String, String> requestBodyJson = {
       'first_name': firstName,
@@ -25,15 +25,12 @@ class UserService {
           await http.post(url, headers: headers, body: encodedBody);
 
       if (response.statusCode == 200) {
-        return true;
+        return (response.statusCode, null);
       } else {
-        print('Request failed with status: ${response.statusCode}');
-        print('Response body: #${response.body}');
-        return false;
+        return (response.statusCode, response.body);
       }
     } catch (e) {
-      print(e);
-      return false;
+      return (401, e.toString());
     }
   }
 
