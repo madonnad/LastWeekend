@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/cubit/auth_cubit.dart';
 import 'package:shared_photo/components/new_auth/auth_input_field.dart';
 import 'package:shared_photo/components/new_auth/forgot_password.dart';
-import 'package:shared_photo/repositories/auth0_repository.dart';
 import 'package:shared_photo/utils/text_validators.dart';
 
 class LoginForm extends StatelessWidget {

@@ -54,13 +54,30 @@ class _MoveAlbumFromImageModalState extends State<MoveAlbumFromImageModal> {
               child: GestureDetector(
                 onTap: () {
                   if (canMove) {
-                    context.read<DataRepository>().moveImageToAlbum(
+                    context
+                        .read<DataRepository>()
+                        .moveImageToAlbum(
                           widget.imageID,
                           activeAlbums[selectedIndex!].albumId,
                           widget.albumID,
+                        )
+                        .then((value) {
+                      bool success = value.$1;
+                      String? error = value.$2;
+
+                      if (success) {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+                      } else {
+                        String errorString = "$error";
+                        SnackBar snackBar = SnackBar(
+                          backgroundColor: const Color.fromRGBO(19, 19, 19, 1),
+                          content: Text(errorString),
                         );
-                    Navigator.of(context).pop();
-                    Navigator.of(context).pop();
+
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      }
+                    });
                   }
                 },
                 child: Container(
