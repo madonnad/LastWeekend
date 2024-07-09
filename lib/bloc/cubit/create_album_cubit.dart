@@ -115,9 +115,9 @@ class CreateAlbumCubit extends Cubit<CreateAlbumState> {
       emit(state.copyWith(loading: false));
       return success;
     } else {
-      emit(state.copyWith(
-        loading: false,
-      ));
+      CustomException exception = CustomException(errorString: error);
+      emit(state.copyWith(loading: false, exception: exception));
+      emit(state.copyWith(loading: false, exception: CustomException.empty));
 
       return success;
     }

@@ -86,31 +86,28 @@ extension AlbumDataRepo on DataRepository {
   }
 
   // Create New Album
-
   Future<(bool, String?)> createAlbum({required CreateAlbumState state}) async {
-    try {
-      Album? album = await AlbumService.postNewAlbum(user.token, state);
-      if (album == null) {
-        throw const FormatException("Failed creating new image");
-      }
+    bool success = false;
+    String? error;
 
-      String? albumCoverPath = state.albumCoverImagePath;
-      if (albumCoverPath == null) {
-        throw const FormatException("No image path was provided to upload");
-      }
-
-      bool success = await ImageService.uploadPhoto(
-          user.token, albumCoverPath, album.albumCoverId);
-      if (success == false) {
-        throw const FormatException("Image upload failed");
-      }
-
-      _albumController.add((StreamOperation.add, album));
-      return (true, null);
-    } catch (e) {
-      print(e);
-      return (false, e.toString());
+    Album? album = await AlbumService.postNewAlbum(user.token, state);
+    if (album == null) {
+      return (false, "Failed creating new image");
     }
+
+    String? albumCoverPath = state.albumCoverImagePath;
+    if (albumCoverPath == null) {
+      return (false, "No image path was provided to upload");
+    }
+
+    (success, error) = await ImageService.uploadPhoto(
+        user.token, albumCoverPath, album.albumCoverId);
+    if (success == false) {
+      return (false, error);
+    }
+
+    _albumController.add((StreamOperation.add, album));
+    return (true, null);
   }
 
   Future<List<Album>> getRevealedAlbumsByAlbumID(List<String> albumIDs) async {

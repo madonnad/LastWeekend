@@ -30,7 +30,7 @@ class ImageService {
         Photo image = Photo.fromMap(item);
         images.add(image);
       }
-      //print(images);
+
       return images;
     }
 
@@ -43,8 +43,6 @@ class ImageService {
       String token, String albumID) async {
     final List<Photo> images = [];
 
-    // var url = Uri.https(
-    //     dotenv.env['DOMAIN'] ?? '', '/album/images', {'album_id': albumID});
     String urlString = "${dotenv.env['URL']}/album/images?album_id=$albumID";
     Uri url = Uri.parse(urlString);
 
@@ -64,7 +62,6 @@ class ImageService {
         Photo image = Photo.fromMap(item);
         images.add(image);
       }
-      //print(images);
       return images;
     }
 
@@ -73,7 +70,7 @@ class ImageService {
     return images;
   }
 
-  static Future<bool> moveImageToAlbum(
+  static Future<(bool, String?)> moveImageToAlbum(
       String token, String imageID, String newAlbum) async {
     String urlString =
         "${dotenv.env['URL']}/user/image?image_id=$imageID&album_id=$newAlbum";
@@ -84,16 +81,20 @@ class ImageService {
       'Authorization': 'Bearer $token'
     };
 
-    final response = await http.patch(url, headers: headers);
+    try {
+      final response = await http.patch(url, headers: headers);
 
-    if (response.statusCode == 200) {
-      return true;
+      if (response.statusCode == 200) {
+        return (true, null);
+      }
+
+      return (false, "Image could not be moved to album");
+    } catch (e) {
+      return (false, e.toString());
     }
-
-    return false;
   }
 
-  static Future<bool> uploadPhoto(
+  static Future<(bool, String?)> uploadPhoto(
       String token, String imagePath, String imageId) async {
     String urlString = "${dotenv.env['URL']}/upload?id=$imageId";
     Uri url = Uri.parse(urlString);
@@ -119,26 +120,22 @@ class ImageService {
             await http.put(gcpSignedUrl, headers: gcpHeader, body: imageBytes);
 
         if (uploadResponse.statusCode == 200) {
-          return true;
+          return (true, null);
         }
         response = uploadResponse;
       }
 
-      print('Request failed with status: ${response.statusCode}');
-      print('Response body: #${response.body}');
-      return false;
+      String code = response.statusCode.toString();
+      String body = response.body;
+
+      return (false, "$code: $body");
     } catch (e) {
-      print(e);
-      return false;
+      return (false, e.toString());
     }
   }
 
-  static Future<bool> postProfilePicture(
-      //Used to be uploadByImageId
-      String token,
-      String imagePath,
-      String userID) async {
-    // var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/upload', {'id': userID});
+  static Future<(bool, String?)> postProfilePicture(
+      String token, String imagePath, String userID) async {
     String urlString = "${dotenv.env['URL']}/upload?id=$userID";
     Uri url = Uri.parse(urlString);
 
@@ -158,30 +155,27 @@ class ImageService {
 
       if (response.statusCode == 200) {
         final gcpSignedUrl = Uri.parse(response.body);
-        // final secureUrl = Uri.https(gcpSignedUrl.authority, gcpSignedUrl.path,
-        //     gcpSignedUrl.queryParameters);
+
         final uploadResponse =
             await http.put(gcpSignedUrl, headers: gcpHeader, body: imageBytes);
 
         if (uploadResponse.statusCode == 200) {
-          return true;
+          return (true, null);
         }
         response = uploadResponse;
       }
 
-      print('Request failed with status: ${response.statusCode}');
-      print('Response body: #${response.body}');
-      return false;
+      String code = response.statusCode.toString();
+      String body = response.body;
+
+      return (false, "$code: $body");
     } catch (e) {
-      print(e);
-      return false;
+      return (false, e.toString());
     }
   }
 
-  static Future<Photo?> postCapturedImage(
+  static Future<(Photo?, String?)> postCapturedImage(
       String token, CapturedImage image) async {
-    //used to be postNewImage
-    // var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/user/image');
     String urlString = "${dotenv.env['URL']}/user/image";
     Uri url = Uri.parse(urlString);
 
@@ -201,28 +195,27 @@ class ImageService {
         Map<String, dynamic> body = json.decode(response.body);
         Photo newImage = Photo.fromMap(body);
 
-        // ignore: unused_local_variable
-        bool upload =
+        bool upload;
+        String? error;
+        (upload, error) =
             await uploadPhoto(token, image.imageXFile.path, newImage.imageId);
-        if (upload = false) {
-          //TODO: need to handle removing the information from the DB that failed or try uploading the image again later
-          throw "Upload failed";
+        if (upload == false) {
+          return (null, error);
         }
-        return newImage;
+
+        return (newImage, null);
       } else {
-        print('Request failed with status: ${response.statusCode}');
-        print('Response body: #${response.body}');
-        throw "status code not 200";
+        String code = response.statusCode.toString();
+        String body = response.body;
+
+        return (null, "$code: $body");
       }
     } catch (e) {
-      print(e);
-      return null;
+      return (null, e.toString());
     }
   }
 
   static Future<bool> addImageToRecap(String token, String imageId) async {
-    // var url =
-    //     Uri.https(dotenv.env['DOMAIN'] ?? '', '/user/recap', {'id': imageId});
     String urlString = "${dotenv.env['URL']}/user/recap?id=imageId";
     Uri url = Uri.parse(urlString);
 

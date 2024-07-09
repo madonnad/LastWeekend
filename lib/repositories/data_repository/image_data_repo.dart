@@ -22,40 +22,42 @@ extension ImageDataRepo on DataRepository {
 
       String albumID = image.album!.albumId;
 
-      try {
-        Photo? uploadedImage =
-            await ImageService.postCapturedImage(user.token, image);
-        if (uploadedImage == null) {
-          throw false;
-        }
-
-        imagesToUpload.removeAt(i);
-
-        Map<String, Photo> albumImages = albumMap[albumID]!.imageMap;
-        albumImages[uploadedImage.imageId] = uploadedImage;
-
-        ImageChange change = ImageChange(
-          albumID: albumID,
-          imageID: uploadedImage.imageId,
-          image: uploadedImage,
-        );
-
-        _imageController.add(change);
-
-        i--;
-      } catch (e) {
+      Photo? uploadedImage;
+      (uploadedImage, _) =
+          await ImageService.postCapturedImage(user.token, image);
+      if (uploadedImage == null) {
         failedUploads.add(image);
         continue;
       }
+
+      imagesToUpload.removeAt(i);
+
+      Map<String, Photo> albumImages = albumMap[albumID]!.imageMap;
+      albumImages[uploadedImage.imageId] = uploadedImage;
+
+      ImageChange change = ImageChange(
+        albumID: albumID,
+        imageID: uploadedImage.imageId,
+        image: uploadedImage,
+      );
+
+      _imageController.add(change);
+
+      i--;
     }
     return failedUploads;
   }
 
-  Future<void> moveImageToAlbum(
+  Future<(bool, String?)> moveImageToAlbum(
       String imageID, String newAlbum, String oldAlbum) async {
-    if (albumMap[oldAlbum] == null || albumMap[newAlbum] == null) return;
+    if (albumMap[oldAlbum] == null || albumMap[newAlbum] == null) {
+      return (false, "Could not find albums");
+    }
 
-    bool success =
+    bool success;
+    String? error;
+
+    (success, error) =
         await ImageService.moveImageToAlbum(user.token, imageID, newAlbum);
 
     if (success) {
@@ -70,6 +72,9 @@ extension ImageDataRepo on DataRepository {
       albumMap[newAlbum]!.imageMap[foundImage.imageId] = foundImage;
       _albumController.add((StreamOperation.update, albumMap[oldAlbum]!));
       _albumController.add((StreamOperation.update, albumMap[newAlbum]!));
+      return (true, null);
+    } else {
+      return (false, error);
     }
   }
 

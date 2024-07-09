@@ -15,8 +15,8 @@ class AlbumDetailFrame extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
     return BlocBuilder<AlbumFrameCubit, AlbumFrameState>(
       builder: (context, state) {
-        bool isOwner =
-            context.read<AppBloc>().state.user.id == state.album.albumOwner;
+        // bool isOwner =
+        //     context.read<AppBloc>().state.user.id == state.album.albumOwner;
         return Scaffold(
           backgroundColor: Colors.black,
           appBar: AppBar(
