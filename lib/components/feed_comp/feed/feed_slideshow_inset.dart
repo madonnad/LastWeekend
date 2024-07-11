@@ -80,7 +80,7 @@ class FeedSlideshowInset extends StatelessWidget {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceAround,
                                     children: List.generate(
-                                      3,
+                                      state.topThreeImages.length,
                                       (index) {
                                         return Text(
                                           (index + 1).toString(),

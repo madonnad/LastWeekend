@@ -77,7 +77,7 @@ class FeedSlideshowCubit extends Cubit<FeedSlideshowState> {
       topThreeImages.addAll(rankedImages.getRange(0, 3).toList());
     } else if (rankedImages.isNotEmpty) {
       topThreeImages
-          .addAll(rankedImages.getRange(0, rankedImages.length - 1).toList());
+          .addAll(rankedImages.getRange(0, rankedImages.length).toList());
     } else {
       topThreeImages = [];
     }

@@ -1,10 +1,9 @@
 import 'package:camera/camera.dart';
-import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/photo.dart';
 
 class CapturedImage {
   XFile imageXFile;
-  Album? album;
+  String? albumID;
   String? caption;
   bool addToRecap;
   UploadType type;
@@ -12,7 +11,7 @@ class CapturedImage {
   CapturedImage({
     required this.imageXFile,
     required this.type,
-    this.album,
+    this.albumID,
     this.addToRecap = false,
     this.caption,
   });
@@ -21,7 +20,7 @@ class CapturedImage {
     return CapturedImage(
       imageXFile: imageXFile,
       type: type,
-      album: album,
+      albumID: albumID,
       caption: caption,
       addToRecap: newValue,
     );
@@ -35,7 +34,36 @@ class CapturedImage {
     }
 
     return {
-      "album_id": album?.albumId ?? '',
+      "image_xfile": imageXFile.path,
+      "album_id": albumID ?? '',
+      "caption": caption,
+      "upload_type": typeString,
+    };
+  }
+
+  static CapturedImage fromJson(Map<String, dynamic> json) {
+    UploadType type = UploadType.snap;
+    if (json['upload_type'] == 'forgot_shot') {
+      type = UploadType.forgotShot;
+    }
+
+    return CapturedImage(
+      imageXFile: XFile(json['image_xfile']),
+      albumID: json['album_id'],
+      caption: json['caption'],
+      type: type,
+    );
+  }
+
+  Map<String, dynamic> uploadJson() {
+    String typeString = 'snap';
+
+    if (type == UploadType.forgotShot) {
+      typeString = 'forgot_shot';
+    }
+
+    return {
+      "album_id": albumID ?? '',
       "caption": caption,
       "upload_type": typeString,
     };

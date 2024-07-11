@@ -26,7 +26,7 @@ class ShutterButton extends StatelessWidget {
           if (selectedAlbum != null) {
             capImage = CapturedImage(
               imageXFile: picture,
-              album: selectedAlbum,
+              albumID: selectedAlbum.albumId,
               type: UploadType.snap,
             );
           } else {
