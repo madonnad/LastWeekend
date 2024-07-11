@@ -184,7 +184,7 @@ class ImageService {
       'Authorization': 'Bearer $token'
     };
 
-    Map<String, dynamic> capturedImageData = image.toJson();
+    Map<String, dynamic> capturedImageData = image.uploadJson();
     String encodedBody = json.encode(capturedImageData);
 
     try {

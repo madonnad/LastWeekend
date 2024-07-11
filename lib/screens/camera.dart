@@ -177,8 +177,8 @@ class _CameraScreenState extends State<CameraScreen> {
                           value: currentZoom,
                           min: minZoom,
                           max: maxZoom,
-                          divisions: (maxZoom).toInt(),
-                          label: (currentZoom - 1).round().toString(),
+                          // divisions: (maxZoom).toInt(),
+                          // label: (currentZoom - 1).round().toString(),
                           onChanged: (value) {
                             setState(() {
                               currentZoom = value;

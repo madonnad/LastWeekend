@@ -67,6 +67,7 @@ class Album extends Equatable {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      
       'album_cover_id': albumCoverId,
       'album_name': albumName,
       'album_owner': albumOwner,

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer' as developer;
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -104,8 +105,10 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
     if (rankedImages.length > 3) {
       topThreeImages.addAll(rankedImages.getRange(0, 3).toList());
     } else if (rankedImages.isNotEmpty) {
+      developer.log("inside top three");
       topThreeImages
-          .addAll(rankedImages.getRange(0, rankedImages.length - 1).toList());
+          .addAll(rankedImages.getRange(0, rankedImages.length).toList());
+      developer.log(rankedImages.length.toString());
     } else {
       topThreeImages = [];
     }

@@ -10,17 +10,17 @@ extension ImageDataRepo on DataRepository {
     for (int i = 0; i < imagesToUpload.length; i++) {
       CapturedImage image = imagesToUpload[i];
 
-      if (image.album == null) {
+      if (image.albumID == null) {
         failedUploads.add(image);
         continue;
       }
 
-      if (albumMap[image.album!.albumId] == null) {
+      if (albumMap[image.albumID!] == null) {
         failedUploads.add(image);
         continue;
       }
 
-      String albumID = image.album!.albumId;
+      String albumID = image.albumID!;
 
       Photo? uploadedImage;
       (uploadedImage, _) =
