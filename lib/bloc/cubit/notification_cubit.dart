@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:shared_photo/models/custom_exception.dart';
 import 'package:shared_photo/models/notification.dart';
 import 'package:shared_photo/models/user.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
@@ -94,51 +95,65 @@ class NotificationCubit extends Cubit<NotificationState> {
   // Friend Request Functions
   Future<bool> acceptFriendRequest(
       {required String requestID, required String senderID}) async {
-    bool success =
+    bool success;
+    String? error;
+    (success, error) =
         await notificationRepository.acceptFriendRequest(requestID, senderID);
 
     if (success) {
       return true;
     } else {
-      emit(state.copyWith(exception: "Failed to accept friend request"));
-      emit(state.copyWith(exception: ""));
+      CustomException customException = CustomException(errorString: error);
+      emit(state.copyWith(exception: customException));
+      emit(state.copyWith(exception: CustomException.empty));
       return false;
     }
   }
 
   Future<bool> denyFriendRequest(String requestID) async {
-    bool success = await notificationRepository.denyFriendRequest(requestID);
+    bool success;
+    String? error;
+    (success, error) =
+        await notificationRepository.denyFriendRequest(requestID);
 
     if (success) {
       return true;
     } else {
-      emit(state.copyWith(exception: "Failed to deny friend request"));
-      emit(state.copyWith(exception: ""));
+      CustomException customException = CustomException(errorString: error);
+      emit(state.copyWith(exception: customException));
+      emit(state.copyWith(exception: CustomException.empty));
       return false;
     }
   }
 
 // Album Invite Functions
   Future<bool> acceptAlbumInvite({required String requestID}) async {
-    bool success = await notificationRepository.acceptAlbumInvite(requestID);
+    bool success;
+    String? error;
+    (success, error) =
+        await notificationRepository.acceptAlbumInvite(requestID);
 
     if (success) {
       return true;
     } else {
-      emit(state.copyWith(exception: "Failed to accept friend request"));
-      emit(state.copyWith(exception: ""));
+      CustomException customException = CustomException(errorString: error);
+      emit(state.copyWith(exception: customException));
+      emit(state.copyWith(exception: CustomException.empty));
       return false;
     }
   }
 
   Future<bool> denyAlbumInvite({required String requestID}) async {
-    bool success = await notificationRepository.denyAlbumInvite(requestID);
+    bool success;
+    String? error;
+    (success, error) = await notificationRepository.denyAlbumInvite(requestID);
 
     if (success) {
       return true;
     } else {
-      emit(state.copyWith(exception: "Failed to accept friend request"));
-      emit(state.copyWith(exception: ""));
+      CustomException customException = CustomException(errorString: error);
+      emit(state.copyWith(exception: customException));
+      emit(state.copyWith(exception: CustomException.empty));
       return false;
     }
   }

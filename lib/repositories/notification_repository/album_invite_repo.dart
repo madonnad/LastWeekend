@@ -23,8 +23,10 @@ extension AlbumInviteRepo on NotificationRepository {
     }
   }
 
-  Future<bool> acceptAlbumInvite(String requestID) async {
-    bool success =
+  Future<(bool, String?)> acceptAlbumInvite(String requestID) async {
+    bool success;
+    String? error;
+    (success, error) =
         await RequestService.acceptAlbumInvite(user.token, requestID);
 
     if (success) {
@@ -34,13 +36,16 @@ extension AlbumInviteRepo on NotificationRepository {
       // Notify Listeners Locally - This will add album to data repo
       _notificationController
           .add((StreamOperation.update, albumInviteMap[requestID]!));
-      return true;
+      return (true, null);
     }
-    return false;
+    return (false, error);
   }
 
-  Future<bool> denyAlbumInvite(String requestID) async {
-    bool success = await RequestService.denyAlbumInvite(user.token, requestID);
+  Future<(bool, String?)> denyAlbumInvite(String requestID) async {
+    bool success;
+    String? error;
+    (success, error) =
+        await RequestService.denyAlbumInvite(user.token, requestID);
     if (success) {
       // Update Source of Truth
       AlbumInviteNotification request =
@@ -49,8 +54,8 @@ extension AlbumInviteRepo on NotificationRepository {
       albumInviteMap.removeWhere((key, value) => key == requestID);
       // Notify Listeners Locally
       _notificationController.add((StreamOperation.delete, request));
-      return true;
+      return (true, null);
     }
-    return false;
+    return (false, error);
   }
 }
