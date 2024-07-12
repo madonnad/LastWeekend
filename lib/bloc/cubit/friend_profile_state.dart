@@ -6,15 +6,16 @@ class FriendProfileState extends Equatable {
   final bool loading;
   final bool friendStatusLoading;
   final User user;
-  final String exception;
+  final CustomException exception;
 
-  const FriendProfileState(
-      {required this.anonymousFriend,
-      required this.albumList,
-      required this.loading,
-      required this.friendStatusLoading,
-      required this.user,
-      required this.exception});
+  const FriendProfileState({
+    required this.anonymousFriend,
+    required this.albumList,
+    required this.loading,
+    required this.friendStatusLoading,
+    required this.user,
+    this.exception = CustomException.empty,
+  });
 
   static FriendProfileState empty(User user) => FriendProfileState(
         anonymousFriend: AnonymousFriend.empty,
@@ -22,7 +23,7 @@ class FriendProfileState extends Equatable {
         loading: false,
         friendStatusLoading: false,
         user: user,
-        exception: "",
+        exception: CustomException.empty
       );
 
   FriendProfileState copyWith({
@@ -30,7 +31,7 @@ class FriendProfileState extends Equatable {
     List<Album>? albumList,
     bool? loading,
     bool? friendStatusLoading,
-    String? exception,
+    CustomException? exception,
   }) {
     return FriendProfileState(
       anonymousFriend: anonymousFriend ?? this.anonymousFriend,

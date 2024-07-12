@@ -5,7 +5,7 @@ class NotificationState extends Equatable {
   final Map<String, FriendRequestNotification> friendRequestMap;
   final Map<String, AlbumInviteNotification> albumInviteMap;
   final Map<String, Notification> allNotificationMap;
-  final String exception;
+  final CustomException exception;
   final bool unseenFriendRequests;
   final bool unseenAlbumInvites;
   final bool unseenGenericNoti;
@@ -15,7 +15,7 @@ class NotificationState extends Equatable {
     this.friendRequestMap = const {},
     this.albumInviteMap = const {},
     this.allNotificationMap = const {},
-    this.exception = '',
+    this.exception = CustomException.empty,
     this.unseenFriendRequests = false,
     this.unseenAlbumInvites = false,
     this.unseenGenericNoti = false,
@@ -26,7 +26,7 @@ class NotificationState extends Equatable {
     Map<String, FriendRequestNotification>? friendRequestMap,
     Map<String, AlbumInviteNotification>? albumInviteMap,
     Map<String, Notification>? allNotificationMap,
-    String? exception,
+    CustomException? exception,
     bool? unseenFriendRequests,
     bool? unseenAlbumInvites,
     bool? unseenGenericNoti,

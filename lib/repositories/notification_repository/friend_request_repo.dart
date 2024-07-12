@@ -15,8 +15,11 @@ extension FriendRequestRepo on NotificationRepository {
     }
   }
 
-  Future<bool> acceptFriendRequest(String requestID, String senderID) async {
-    bool success = await RequestService.acceptFriendRequest(
+  Future<(bool, String?)> acceptFriendRequest(
+      String requestID, String senderID) async {
+    bool success;
+    String? error;
+    (success, error) = await RequestService.acceptFriendRequest(
       user.token,
       senderID,
       requestID,
@@ -29,13 +32,16 @@ extension FriendRequestRepo on NotificationRepository {
       // Notify Listeners
       _notificationController
           .add((StreamOperation.update, friendRequestMap[requestID]!));
-      return true;
+      return (true, null);
     }
-    return false;
+    return (false, error);
   }
 
-  Future<bool> denyFriendRequest(String requestID) async {
-    bool success =
+  Future<(bool, String?)> denyFriendRequest(String requestID) async {
+    bool success;
+    String? error;
+
+    (success, error) =
         await RequestService.deleteFriendRequest(user.token, requestID);
 
     if (success) {
@@ -46,9 +52,9 @@ extension FriendRequestRepo on NotificationRepository {
       friendRequestMap.removeWhere((key, value) => key == requestID);
       // Notify Listeners
       _notificationController.add((StreamOperation.delete, request));
-      return true;
+      return (true, null);
     }
-    return false;
+    return (false, error);
   }
 
   Future<bool> markFriendRequestSeen(String requestID) async {
@@ -70,7 +76,8 @@ extension FriendRequestRepo on NotificationRepository {
   void removeFriendRequestAccepted(
       bool canDelete, String notificationID) async {
     if (canDelete) {
-      bool success =
+      bool success;
+      (success, _) =
           await RequestService.deleteFriendRequest(user.token, notificationID);
       if (!success) return;
     }
