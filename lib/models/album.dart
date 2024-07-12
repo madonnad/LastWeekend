@@ -7,7 +7,7 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'package:shared_photo/models/guest.dart';
 import 'package:shared_photo/models/photo.dart';
 
-enum Visibility { private, public, friends }
+enum AlbumVisibility { private, public, friends }
 
 enum AlbumPhases { invite, unlock, lock, reveal }
 
@@ -25,7 +25,7 @@ class Album extends Equatable {
   final DateTime unlockDateTime;
   final DateTime revealDateTime;
   final String? albumCoverUrl;
-  final Visibility visibility;
+  final AlbumVisibility visibility;
   final AlbumPhases phase;
 
   const Album({
@@ -61,13 +61,12 @@ class Album extends Equatable {
     lockDateTime: DateTime.utc(1900),
     unlockDateTime: DateTime.utc(1900),
     revealDateTime: DateTime.utc(1900),
-    visibility: Visibility.public,
+    visibility: AlbumVisibility.public,
     phase: AlbumPhases.invite,
   );
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      
       'album_cover_id': albumCoverId,
       'album_name': albumName,
       'album_owner': albumOwner,
@@ -121,7 +120,7 @@ class Album extends Equatable {
   factory Album.fromMap(Map<String, dynamic> map) {
     Map<String, Photo> images = {};
     Map<String, Guest> guests = {};
-    Visibility visibility;
+    AlbumVisibility visibility;
     AlbumPhases phase;
     dynamic jsonImages = map['images'];
     dynamic jsonGuests = map['invite_list'];
@@ -157,13 +156,13 @@ class Album extends Equatable {
 
     switch (map['visibility']) {
       case 'private':
-        visibility = Visibility.private;
+        visibility = AlbumVisibility.private;
       case 'friends':
-        visibility = Visibility.friends;
+        visibility = AlbumVisibility.friends;
       case 'public':
-        visibility = Visibility.public;
+        visibility = AlbumVisibility.public;
       default:
-        visibility = Visibility.private;
+        visibility = AlbumVisibility.private;
     }
 
     List<int> bytes = map['album_name'].toString().codeUnits;
