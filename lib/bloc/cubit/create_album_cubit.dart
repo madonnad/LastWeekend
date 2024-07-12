@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/custom_exception.dart';
 import 'package:shared_photo/models/friend.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
@@ -166,6 +167,10 @@ class CreateAlbumCubit extends Cubit<CreateAlbumState> {
 
   void setRevealTime(TimeOfDay time) {
     emit(state.copyWith(revealTimeOfDay: time));
+  }
+
+  void setVisibilityMode(AlbumVisibility visibility) {
+    emit(state.copyWith(visibility: visibility));
   }
 
   void initializeCubit() {

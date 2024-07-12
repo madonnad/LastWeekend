@@ -10,6 +10,7 @@ final class CreateAlbumState extends Equatable {
   final TextEditingController? friendSearch;
   final String? albumCoverImagePath;
   final String? albumUID;
+  final AlbumVisibility visibility;
   // Unlock Date Variables
   final DateTime? unlockDateTime;
   final TimeOfDay? unlockTimeOfDay;
@@ -49,6 +50,7 @@ final class CreateAlbumState extends Equatable {
     this.friendState = FriendState.empty,
     this.modalTextString = '',
     this.loading = false,
+    this.visibility = AlbumVisibility.public,
     this.exception = CustomException.empty,
   });
 
@@ -70,6 +72,7 @@ final class CreateAlbumState extends Equatable {
     FriendState? friendState,
     String? modalTextString,
     bool? loading,
+    AlbumVisibility? visibility,
     CustomException? exception,
   }) {
     return CreateAlbumState(
@@ -89,6 +92,7 @@ final class CreateAlbumState extends Equatable {
       friendState: friendState ?? this.friendState,
       modalTextString: modalTextString ?? this.modalTextString,
       loading: loading ?? this.loading,
+      visibility: visibility ?? this.visibility,
       exception: exception ?? this.exception,
     );
   }
@@ -113,6 +117,7 @@ final class CreateAlbumState extends Equatable {
       friendState: friendState,
       modalTextString: modalTextString,
       loading: loading,
+      visibility: visibility,
       exception: exception,
     );
   }
@@ -135,6 +140,7 @@ final class CreateAlbumState extends Equatable {
       friendState: friendState,
       modalTextString: modalTextString,
       loading: loading,
+      visibility: visibility,
       exception: exception,
     );
   }
@@ -158,6 +164,7 @@ final class CreateAlbumState extends Equatable {
         friendState,
         modalTextString,
         loading,
+        visibility,
         exception,
       ];
 
@@ -333,12 +340,24 @@ final class CreateAlbumState extends Equatable {
   Map<String, dynamic> toJson() {
     List<Map<String, dynamic>> inviteJson =
         invitedFriends.map((e) => e.toJson()).toList();
+    String visibilityString;
+
+    switch (visibility) {
+      case AlbumVisibility.public:
+        visibilityString = "public";
+      case AlbumVisibility.private:
+        visibilityString = "private";
+      case AlbumVisibility.friends:
+        visibilityString = "friends";
+    }
+
     return {
       "album_name": albumName.text,
       "invite_list": inviteJson,
       "unlocked_at": finalUnlockDateTime.toUtc().toIso8601String(),
       "locked_at": finalLockDateTime.toUtc().toIso8601String(),
       "revealed_at": finalRevealDateTime.toUtc().toIso8601String(),
+      "visibility": visibilityString,
     };
   }
 }

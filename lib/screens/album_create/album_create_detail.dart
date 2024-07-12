@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 import 'package:shared_photo/bloc/cubit/create_album_cubit.dart';
 import 'package:shared_photo/components/create_album_comp/create_album_info_comp/album_cover_select.dart';
 import 'package:shared_photo/components/create_album_comp/create_album_info_comp/album_title_field.dart';
@@ -8,6 +9,7 @@ import 'package:shared_photo/components/app_comp/section_header_small.dart';
 import 'package:shared_photo/components/create_album_comp/create_album_friend_comp/add_friends_info_list.dart';
 import 'package:shared_photo/components/create_album_comp/create_album_info_comp/create_album_button.dart';
 import 'package:shared_photo/components/create_album_comp/create_album_info_comp/date_time_section.dart';
+import 'package:shared_photo/components/create_album_comp/create_album_info_comp/visibility_toggle_switch.dart';
 
 class AlbumCreateDetail extends StatelessWidget {
   final PageController createAlbumController;
@@ -57,20 +59,23 @@ class AlbumCreateDetail extends StatelessWidget {
                     ),
                   ),
                   const Padding(
-                    padding: EdgeInsets.only(top: 10.0, bottom: 8),
+                    padding: EdgeInsets.only(top: 10.0, bottom: 0),
                     child: SectionHeaderSmall('Duration'),
                   ),
                   const DateTimeSection(),
                   const Padding(
-                    padding: EdgeInsets.only(top: 10.0, bottom: 10),
+                    padding: EdgeInsets.only(top: 10.0, bottom: 8),
+                    child: SectionHeaderSmall('Visibility'),
+                  ),
+                  const VisibilityToggleSwitch(),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 10.0, bottom: 8),
                     child: SectionHeaderSmall('Friends'),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 25.0),
-                    child: AddFriendsInfoList(
-                      pageController: createAlbumController,
-                    ),
+                  AddFriendsInfoList(
+                    pageController: createAlbumController,
                   ),
+                  const Gap(25),
                   BlocBuilder<CreateAlbumCubit, CreateAlbumState>(
                     builder: (context, state) {
                       return Align(
