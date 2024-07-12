@@ -6,6 +6,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_photo/models/captured_image.dart';
 import 'package:shared_photo/models/photo.dart';
 import 'package:http/http.dart' as http;
+import 'dart:developer' as developer;
 
 class ImageService {
   static Future<List<Photo>> getUserImages(String token) async {
@@ -34,8 +35,9 @@ class ImageService {
       return images;
     }
 
-    print('Request failed with status: ${response.statusCode}');
-    print('Response body: #${response.body}');
+    String code = response.statusCode.toString();
+    String body = response.body;
+    developer.log("$code: $body");
     return images;
   }
 
@@ -65,8 +67,9 @@ class ImageService {
       return images;
     }
 
-    print('Request failed with status: ${response.statusCode}');
-    print('Response body: #${response.body}');
+    String code = response.statusCode.toString();
+    String body = response.body;
+    developer.log("$code: $body");
     return images;
   }
 
@@ -230,11 +233,12 @@ class ImageService {
       if (response.statusCode == 200) {
         return true;
       }
-      print('Request failed with status: ${response.statusCode}');
-      print('Response body: #${response.body}');
+      String code = response.statusCode.toString();
+      String body = response.body;
+      developer.log("$code: $body");
       return false;
     } catch (e) {
-      print(e);
+      developer.log(e.toString());
       return false;
     }
   }

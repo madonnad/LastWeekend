@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer' as developer;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_photo/models/notification.dart';
 import 'package:shared_photo/models/user.dart';
@@ -33,7 +34,7 @@ class RealtimeRepository {
         IOWebSocketChannel.connect(wsURL, headers: headers, pingInterval: null);
 
     if (connection.closeCode == null) {
-      print("WebSocket Connection Opened");
+      developer.log("WebSocket Connection Opened");
     }
 
     connection.stream.listen(
@@ -42,7 +43,7 @@ class RealtimeRepository {
         connection.sink.add("received");
       },
       onDone: () {
-        print("WebSocket Connection Closed");
+        developer.log("WebSocket Connection Closed");
       },
     );
 
@@ -56,12 +57,12 @@ class RealtimeRepository {
     //final wsURL = Uri.parse('wss://$domain/ws/album?channel=$albumID');
     String urlString = "${dotenv.env['WS_URL']}/ws/album?channel=$albumID";
     Uri wsURL = Uri.parse(urlString);
-  
+
     var connection =
         IOWebSocketChannel.connect(wsURL, headers: headers, pingInterval: null);
 
     if (connection.closeCode == null) {
-      print("Album $albumID WebSocket Connection Opened");
+      developer.log("Album $albumID WebSocket Connection Opened");
     }
 
     connection.stream.listen(
@@ -70,7 +71,7 @@ class RealtimeRepository {
         connection.sink.add("received");
       },
       onDone: () {
-        print("Album WebSocket Connection Closed");
+        developer.log("Album WebSocket Connection Closed");
       },
     );
 
@@ -92,7 +93,7 @@ class RealtimeRepository {
         return;
       case "album-invite":
         wsAlbumInviteMessageHandler(jsonData['operation'], jsonData['payload']);
-        print('realtime repo');
+
         return;
       case "upvote":
         wsEngagementMessageHandler(jsonData['operation'], jsonData['payload']);
@@ -144,14 +145,14 @@ class RealtimeRepository {
 
   void closeAlbumChannelWebSocket() {
     if (_albumWebSocketChannel.closeCode == null) {
-      print('Closing Album WebSocket Normally');
+      developer.log('Closing Album WebSocket Normally');
       _albumWebSocketChannel.sink.close(1000);
     }
   }
 
   void closeWebSocket() {
     if (_webSocketChannel.closeCode == null) {
-      print('Closing WebSocket Normally');
+      developer.log('Closing WebSocket Normally');
       _webSocketChannel.sink.close(1000);
     }
   }

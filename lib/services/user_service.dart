@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'dart:developer' as developer;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_photo/models/friend.dart';
 import 'package:http/http.dart' as http;
@@ -37,7 +37,6 @@ class UserService {
   static Future<List<Friend>> getFriendsList(String token) async {
     final List<Friend> friends = [];
 
-    // var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/user/friend');
     String urlString = "${dotenv.env['URL']}/user/friend";
     Uri url = Uri.parse(urlString);
 
@@ -58,8 +57,9 @@ class UserService {
       //print(friends);
       return friends;
     }
-    print('Request failed with status: ${response.statusCode}');
-    print('Response body: #${response.body}');
+    String code = response.statusCode.toString();
+    String body = response.body;
+    developer.log("$code: $body");
     return friends;
   }
 
@@ -81,8 +81,9 @@ class UserService {
 
         return AnonymousFriend.fromJson(jsonData);
       }
-      print('Request failed with status: ${response.statusCode}');
-      print('Response body: #${response.body}');
+      String code = response.statusCode.toString();
+      String body = response.body;
+      developer.log("$code: $body");
       return AnonymousFriend.empty;
     } catch (e) {
       return AnonymousFriend.empty;
