@@ -17,7 +17,18 @@ class AuthFrame extends StatelessWidget {
       create: (context) => AuthCubit(
         context.read<Auth0Repository>(),
       ),
-      child: BlocBuilder<AuthCubit, AuthState>(
+      child: BlocConsumer<AuthCubit, AuthState>(
+        listenWhen: (previous, current) =>
+            current.exception.errorString != null,
+        listener: (context, state) {
+          String errorString = "${state.exception.errorString} ";
+          SnackBar snackBar = SnackBar(
+            backgroundColor:  const Color.fromRGBO(19, 19, 19, 1),
+            content: Text(errorString),
+          );
+
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        },
         builder: (context, state) {
           return Scaffold(
             resizeToAvoidBottomInset: false,

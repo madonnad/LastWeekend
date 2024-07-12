@@ -86,31 +86,28 @@ extension AlbumDataRepo on DataRepository {
   }
 
   // Create New Album
-
   Future<(bool, String?)> createAlbum({required CreateAlbumState state}) async {
-    try {
-      Album? album = await AlbumService.postNewAlbum(user.token, state);
-      if (album == null) {
-        throw const FormatException("Failed creating new image");
-      }
-
-      String? albumCoverPath = state.albumCoverImagePath;
-      if (albumCoverPath == null) {
-        throw const FormatException("No image path was provided to upload");
-      }
-
-      bool success = await ImageService.uploadPhoto(
-          user.token, albumCoverPath, album.albumCoverId);
-      if (success == false) {
-        throw const FormatException("Image upload failed");
-      }
-
-      _albumController.add((StreamOperation.add, album));
-      return (true, null);
-    } catch (e) {
-      print(e);
-      return (false, e.toString());
+    bool success = false;
+    String? error;
+    Album? album;
+    (album, error) = await AlbumService.postNewAlbum(user.token, state);
+    if (album == null) {
+      return (false, error);
     }
+
+    String? albumCoverPath = state.albumCoverImagePath;
+    if (albumCoverPath == null) {
+      return (false, "No image path was provided to upload");
+    }
+
+    (success, error) = await ImageService.uploadPhoto(
+        user.token, albumCoverPath, album.albumCoverId);
+    if (success == false) {
+      return (false, error);
+    }
+
+    _albumController.add((StreamOperation.add, album));
+    return (true, null);
   }
 
   Future<List<Album>> getRevealedAlbumsByAlbumID(List<String> albumIDs) async {
@@ -137,18 +134,21 @@ extension AlbumDataRepo on DataRepository {
     return albums;
   }
 
-  Future<bool> inviteUserToAlbum(String albumID, String guestID,
+  Future<(bool, String?)> inviteUserToAlbum(String albumID, String guestID,
       String guestFirst, String guestLast) async {
     bool albumExists = albumMap.containsKey(albumID);
 
-    if (!albumExists) return false;
+    if (!albumExists) return (false, "Album does not exist");
 
     Album album = Album.from(albumMap[albumID]!);
 
-    bool requestSent =
+    bool requestSent;
+    String? error;
+
+    (requestSent, error) =
         await AlbumService.postSingleAlbumRequest(user.token, albumID, guestID);
 
-    if (!requestSent) return false;
+    if (!requestSent) return (false, error);
 
     Guest addedGuest = Guest(
       uid: guestID,
@@ -160,7 +160,7 @@ extension AlbumDataRepo on DataRepository {
     album.guestMap[guestID] = addedGuest;
 
     _albumController.add((StreamOperation.update, album));
-    return true;
+    return (true, null);
   }
 
   // Future<List<Guest>> updateAlbumsGuests(String albumID) async {

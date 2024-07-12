@@ -13,14 +13,21 @@ sealed class AppState extends Equatable {
 }
 
 class UnauthenticatedState extends AppState {
-  const UnauthenticatedState()
-      : super(status: AppStatus.unauthenticated, user: User.empty);
+  final CustomException? exception;
+  const UnauthenticatedState(this.exception)
+      : super(
+          status: AppStatus.unauthenticated,
+          user: User.empty,
+        );
 }
 
 class AuthenticatedState extends AppState {
   final List<CameraDescription> cameras;
   const AuthenticatedState(User user, {required this.cameras})
-      : super(status: AppStatus.authenticated, user: user);
+      : super(
+          status: AppStatus.authenticated,
+          user: user,
+        );
 }
 
 class CachedAuthenticatedState extends AppState {
@@ -34,4 +41,13 @@ class LoadingState extends AppState {
           status: AppStatus.unauthenticated,
           user: User.empty,
         );
+}
+
+class ErrorState extends AppState {
+  final CustomException exception;
+  const ErrorState({
+    required this.exception,
+    required super.user,
+    required super.status,
+  });
 }

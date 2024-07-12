@@ -8,7 +8,7 @@ class ImageFrameState extends Equatable {
   final bool upvoteLoading;
   final bool commentLoading;
   final bool canAddComment;
-  final String exception;
+  final CustomException exception;
   const ImageFrameState({
     required this.image,
     required this.commentController,
@@ -17,7 +17,7 @@ class ImageFrameState extends Equatable {
     this.upvoteLoading = false,
     this.commentLoading = false,
     this.canAddComment = false,
-    this.exception = '',
+    this.exception = CustomException.empty,
   });
 
   ImageFrameState copyWith({
@@ -28,7 +28,7 @@ class ImageFrameState extends Equatable {
     bool? upvoteLoading,
     bool? commentLoading,
     bool? canAddComment,
-    String? exception,
+    CustomException? exception,
   }) {
     return ImageFrameState(
       image: image ?? this.image,

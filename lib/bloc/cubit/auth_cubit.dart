@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_photo/models/custom_exception.dart';
 import 'package:shared_photo/repositories/auth0_repository.dart';
 
 part 'auth_state.dart';
@@ -76,10 +77,10 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       await _auth0repository.loginWithEmailAndPassword(
           email: email, password: password);
-      //emit(state.copyWith(isLoading: false));
     } catch (e) {
-      emit(state.copyWith(errorMessage: e.toString(), isLoading: false));
-      emit(state.copyWith(isLoading: false, errorMessage: ''));
+      CustomException exception = CustomException(errorString: e.toString());
+      emit(state.copyWith(exception: exception, isLoading: false));
+      emit(state.copyWith(isLoading: false, exception: CustomException.empty));
     }
   }
 
@@ -99,8 +100,12 @@ class AuthCubit extends Cubit<AuthState> {
 
       emit(state.copyWith(isLoading: false));
     } catch (e) {
-      emit(state.copyWith(errorMessage: e.toString(), isLoading: false));
-      emit(state.copyWith(isLoading: false, errorMessage: ''));
+      CustomException exception = CustomException(errorString: e.toString());
+      emit(state.copyWith(exception: exception, isLoading: false));
+      emit(state.copyWith(
+        isLoading: false,
+        exception: CustomException.empty,
+      ));
     }
   }
 }

@@ -10,6 +10,7 @@ import 'package:shared_photo/bloc/cubit/image_frame_cubit.dart';
 import 'package:shared_photo/components/image_page_comp/image_frame_comments/floating_comment_container.dart';
 import 'package:shared_photo/components/image_page_comp/image_frame_comments/image_frame_caption.dart';
 import 'package:shared_photo/components/image_page_comp/image_frame_comments/image_frame_comment.dart';
+import 'package:shared_photo/components/image_page_comp/image_frame_dialog/more_img_opts_dialog.dart';
 import 'package:shared_photo/models/album.dart';
 import 'dart:math' as math;
 
@@ -41,6 +42,11 @@ class ImageFrameImageContainer extends StatelessWidget {
                 String userID = context.read<AppBloc>().state.user.id;
                 showImage = state.album.phase == AlbumPhases.reveal ||
                     (state.imageFrameTimelineList[index].owner == userID);
+
+                bool canSave = (state.album.phase != AlbumPhases.reveal &&
+                        context.read<AppBloc>().state.user.id ==
+                            state.selectedImage!.owner) ||
+                    state.album.phase == AlbumPhases.reveal;
 
                 if (showImage) {
                   return Stack(
@@ -341,7 +347,7 @@ class ImageFrameImageContainer extends StatelessWidget {
                                                   color: Colors.white,
                                                   size: 35,
                                                   shadows: [
-                                                    const Shadow(
+                                                    Shadow(
                                                       offset: Offset(0.0, 0.0),
                                                       blurRadius: 10.0,
                                                       color: Colors.black54,
@@ -365,13 +371,111 @@ class ImageFrameImageContainer extends StatelessWidget {
                                                 ],
                                               ),
                                             ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                vertical: 6.0,
+                                              ),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (ctx) {
+                                                      return MultiBlocProvider(
+                                                        providers: [
+                                                          BlocProvider.value(
+                                                            value: context.read<
+                                                                AlbumFrameCubit>(),
+                                                          ),
+                                                          BlocProvider.value(
+                                                            value: context.read<
+                                                                ImageFrameCubit>(),
+                                                          ),
+                                                        ],
+                                                        child:
+                                                            MoreImageOptsDialog(
+                                                          canSave: canSave,
+                                                        ),
+                                                      );
+                                                    },
+                                                  );
+                                                },
+                                                child: Transform.rotate(
+                                                  angle: (270 * math.pi) / 180,
+                                                  child: const DecoratedIcon(
+                                                    icon: Icon(
+                                                      Icons.more_horiz,
+                                                      color: Colors.white,
+                                                      size: 35,
+                                                      shadows: [
+                                                        Shadow(
+                                                          offset:
+                                                              Offset(0.0, 0.0),
+                                                          blurRadius: 10.0,
+                                                          color: Colors.black54,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
                                           ],
                                         ),
                                       ),
                                     ],
                                   ),
                                 )
-                              : const SizedBox.shrink();
+                              : Positioned(
+                                  bottom: 16,
+                                  right: 12,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 6.0,
+                                    ),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (ctx) {
+                                            return MultiBlocProvider(
+                                              providers: [
+                                                BlocProvider.value(
+                                                  value: context
+                                                      .read<AlbumFrameCubit>(),
+                                                ),
+                                                BlocProvider.value(
+                                                  value: context
+                                                      .read<ImageFrameCubit>(),
+                                                ),
+                                              ],
+                                              child: MoreImageOptsDialog(
+                                                canSave: canSave,
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      },
+                                      child: Transform.rotate(
+                                        angle: (270 * math.pi) / 180,
+                                        child: const DecoratedIcon(
+                                          icon: Icon(
+                                            Icons.more_horiz,
+                                            color: Colors.white,
+                                            size: 35,
+                                            shadows: [
+                                              Shadow(
+                                                offset: Offset(0.0, 0.0),
+                                                blurRadius: 10.0,
+                                                color: Colors.black54,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
                         },
                       ),
                     ],

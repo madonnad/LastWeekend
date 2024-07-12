@@ -29,7 +29,18 @@ class FriendProfileFrame extends StatelessWidget {
           ),
         ),
       ),
-      body: BlocBuilder<FriendProfileCubit, FriendProfileState>(
+      body: BlocConsumer<FriendProfileCubit, FriendProfileState>(
+        listenWhen: (previous, current) =>
+            current.exception.errorString != null,
+        listener: (context, state) {
+          String errorString = "${state.exception.errorString} ";
+          SnackBar snackBar = SnackBar(
+            backgroundColor: const Color.fromRGBO(19, 19, 19, 1),
+            content: Text(errorString),
+          );
+
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        },
         builder: (context, state) {
           return state.loading
               ? const Center(child: CircularProgressIndicator())

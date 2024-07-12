@@ -1,11 +1,11 @@
 import 'dart:convert';
-
+import 'dart:developer' as developer;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_photo/models/friend.dart';
 import 'package:http/http.dart' as http;
 
 class UserService {
-  static Future<bool> createUserEntry(
+  static Future<(int, String?)> createUserEntry(
       String token, String firstName, String lastName, String email) async {
     final Map<String, String> requestBodyJson = {
       'first_name': firstName,
@@ -25,22 +25,18 @@ class UserService {
           await http.post(url, headers: headers, body: encodedBody);
 
       if (response.statusCode == 200) {
-        return true;
+        return (response.statusCode, null);
       } else {
-        print('Request failed with status: ${response.statusCode}');
-        print('Response body: #${response.body}');
-        return false;
+        return (response.statusCode, response.body);
       }
     } catch (e) {
-      print(e);
-      return false;
+      return (401, e.toString());
     }
   }
 
   static Future<List<Friend>> getFriendsList(String token) async {
     final List<Friend> friends = [];
 
-    // var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/user/friend');
     String urlString = "${dotenv.env['URL']}/user/friend";
     Uri url = Uri.parse(urlString);
 
@@ -61,8 +57,9 @@ class UserService {
       //print(friends);
       return friends;
     }
-    print('Request failed with status: ${response.statusCode}');
-    print('Response body: #${response.body}');
+    String code = response.statusCode.toString();
+    String body = response.body;
+    developer.log("$code: $body");
     return friends;
   }
 
@@ -84,8 +81,9 @@ class UserService {
 
         return AnonymousFriend.fromJson(jsonData);
       }
-      print('Request failed with status: ${response.statusCode}');
-      print('Response body: #${response.body}');
+      String code = response.statusCode.toString();
+      String body = response.body;
+      developer.log("$code: $body");
       return AnonymousFriend.empty;
     } catch (e) {
       return AnonymousFriend.empty;

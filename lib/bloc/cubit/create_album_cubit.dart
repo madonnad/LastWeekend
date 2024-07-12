@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_photo/models/exception.dart';
+import 'package:shared_photo/models/custom_exception.dart';
 import 'package:shared_photo/models/friend.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 import 'package:shared_photo/repositories/user_repository.dart';
@@ -115,9 +115,10 @@ class CreateAlbumCubit extends Cubit<CreateAlbumState> {
       emit(state.copyWith(loading: false));
       return success;
     } else {
-      emit(state.copyWith(
-          loading: false, exception: ExceptionBase(errorMessage: error ?? '')));
-      emit(state.copyWith(exception: null));
+      CustomException exception = CustomException(errorString: error);
+      emit(state.copyWith(loading: false, exception: exception));
+      emit(state.copyWith(loading: false, exception: CustomException.empty));
+
       return success;
     }
   }

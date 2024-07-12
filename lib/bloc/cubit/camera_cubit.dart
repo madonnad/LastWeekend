@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:io' show Platform;
 
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_photo/models/album.dart';
@@ -15,11 +15,12 @@ import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 
 part 'camera_state.dart';
 
-class CameraCubit extends Cubit<CameraState> {
+class CameraCubit extends HydratedCubit<CameraState> {
   DataRepository dataRepository;
   User user;
   UploadMode mode;
   Album? album;
+  late StreamSubscription? albumStreamSubscription;
 
   CameraCubit(
       {required this.dataRepository,
@@ -28,7 +29,8 @@ class CameraCubit extends Cubit<CameraState> {
       this.album})
       : super(CameraState.empty()) {
     if (mode == UploadMode.unlockedAlbums) {
-      dataRepository.albumStream.listen((event) {
+      hydrate();
+      albumStreamSubscription = dataRepository.albumStream.listen((event) {
         StreamOperation streamOperation = event.$1;
         Album album = event.$2;
 
@@ -78,7 +80,12 @@ class CameraCubit extends Cubit<CameraState> {
 
   void _initializeUnlockedAlbums() {
     Map<String, Album> unlockedMap = Map.from(dataRepository.unlockedAlbums());
-    emit(state.copyWith(albumMap: unlockedMap));
+    Album? selectedAlbum;
+    if (unlockedMap.isNotEmpty) {
+      selectedAlbum = unlockedMap.values.toList()[0];
+    }
+
+    emit(state.copyWith(albumMap: unlockedMap, selectedAlbum: selectedAlbum));
   }
 
   Future<void> downloadImageToDevice() async {
@@ -142,8 +149,8 @@ class CameraCubit extends Cubit<CameraState> {
     Album newAlbum = album == null ? state.selectedAlbum! : album!;
 
     for (XFile file in imageList) {
-      CapturedImage image =
-          CapturedImage(imageXFile: file, album: newAlbum, type: type);
+      CapturedImage image = CapturedImage(
+          imageXFile: file, albumID: newAlbum.albumId, type: type);
       images.add(image);
     }
 
@@ -169,12 +176,12 @@ class CameraCubit extends Cubit<CameraState> {
         photosTaken: photosTaken, selectedImage: photosTaken[index]));
   }
 
-  void changeImageAlbum(Album album) {
+  void changeImageAlbum(Album album, String albumID) {
     List<CapturedImage> photosTaken = List.from(state.photosTaken);
     if (state.selectedImage == null) return;
     int index = photosTaken.indexOf(state.selectedImage!);
 
-    photosTaken[index].album = album;
+    photosTaken[index].albumID = albumID;
 
     emit(state.copyWith(photosTaken: photosTaken, selectedAlbum: album));
   }
@@ -241,5 +248,42 @@ class CameraCubit extends Cubit<CameraState> {
           captionTextController:
               TextEditingController(text: selectedImage.caption)),
     );
+  }
+
+  @override
+  CameraState? fromJson(Map<String, dynamic> json) {
+    List<CapturedImage> photosTaken = [];
+
+    dynamic capturedImages = json['photos_taken'];
+
+    for (var item in capturedImages) {
+      CapturedImage image = CapturedImage.fromJson(item);
+      photosTaken.add(image);
+    }
+
+    CameraState empty = CameraState.empty();
+
+    return empty.copyWith(photosTaken: photosTaken);
+  }
+
+  @override
+  Map<String, dynamic>? toJson(CameraState state) {
+    Map<String, dynamic> hydratedCache = {};
+
+    //jsonify photos taken
+    List<Map<String, dynamic>> photosTakenJson = [];
+    for (CapturedImage photo in state.photosTaken) {
+      photosTakenJson.add(photo.toJson());
+    }
+    hydratedCache['photos_taken'] = photosTakenJson;
+
+    return hydratedCache;
+  }
+
+  @override
+  Future<void> close() {
+    albumStreamSubscription?.cancel();
+
+    return super.close();
   }
 }

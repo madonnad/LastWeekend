@@ -3,14 +3,13 @@ import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_photo/models/comment.dart';
 import 'package:http/http.dart' as http;
+import 'dart:developer' as developer;
 
 class EngagementService {
-  static Future<List<Comment>> getImageComments(
+  static Future<(List<Comment>, String?)> getImageComments(
       String token, String imageId) async {
     List<Comment> commentList = [];
-
-    // var url = Uri.https(
-    //     dotenv.env['DOMAIN'] ?? '', '/image/comment', {'image_id': imageId});
+    String? error;
 
     String urlString = "${dotenv.env['URL']}/image/comment?image_id=$imageId";
     Uri url = Uri.parse(urlString);
@@ -31,22 +30,21 @@ class EngagementService {
             commentList.add(Comment.fromJson(item));
           }
         }
-      } else {
-        print('Request failed with status: ${response.statusCode}');
-        print('Response body: #${response.body}');
+        return (commentList, error);
       }
+      String code = response.statusCode.toString();
+      String body = response.body;
+      return (commentList, "$code: $body");
     } catch (e) {
-      print(e);
+      return (commentList, e.toString());
     }
-    return commentList;
   }
 
-  static Future<Comment?> postNewComment(
+  static Future<(Comment?, String?)> postNewComment(
       String token, String imageID, String comment) async {
     Map<String, dynamic> body = {'image_id': imageID, 'comment': comment};
     String encodedBody = jsonEncode(body);
 
-    //var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/image/comment');
     String urlString = "${dotenv.env['URL']}/image/comment";
     Uri url = Uri.parse(urlString);
 
@@ -61,18 +59,17 @@ class EngagementService {
 
       if (response.statusCode == 200) {
         final body = json.decode(response.body);
-        return Comment.fromJson(body);
+        return (Comment.fromJson(body), null);
       }
-      return null;
+      String code = response.statusCode.toString();
+      String body = response.body;
+      return (null, "$code: $body");
     } catch (e) {
-      print(e);
-      return null;
+      return (null, e.toString());
     }
   }
 
   static Future<bool> markCommentSeen(String token, String commentID) async {
-    // var url = Uri.https(
-    //     dotenv.env['DOMAIN'] ?? '', '/image/comment/seen', {"id": commentID});
     String urlString = "${dotenv.env['URL']}/image/comment/seen?id=$commentID";
     Uri url = Uri.parse(urlString);
 
@@ -86,15 +83,13 @@ class EngagementService {
       }
       return false;
     } catch (e) {
-      print(e.toString());
+      developer.log(e.toString());
       return false;
     }
   }
 
   static Future<bool> markNotificationSeen(
       String token, String notificationID) async {
-    // var url = Uri.https(
-    //     dotenv.env['DOMAIN'] ?? '', '/notifications', {"id": notificationID});
     String urlString = "${dotenv.env['URL']}/notifications?id=$notificationID";
     Uri url = Uri.parse(urlString);
 
@@ -108,14 +103,12 @@ class EngagementService {
       }
       return false;
     } catch (e) {
-      print(e.toString());
+      developer.log(e.toString());
       return false;
     }
   }
 
-  static Future<int> likePhoto(String token, String imageID) async {
-    // var url = Uri.https(
-    //     dotenv.env['DOMAIN'] ?? '', '/image/like', {"image_id": imageID});
+  static Future<(int, String?)> likePhoto(String token, String imageID) async {
     String urlString = "${dotenv.env['URL']}/image/like?image_id=$imageID";
     Uri url = Uri.parse(urlString);
 
@@ -127,20 +120,18 @@ class EngagementService {
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
         int count = jsonData;
-        return count;
+        return (count, null);
       }
-      print('Request failed with status: ${response.statusCode}');
-      print('Response body: #${response.body}');
-      return 0;
+      String code = response.statusCode.toString();
+      String body = response.body;
+      return (0, "$code: $body");
     } catch (e) {
-      print(e);
-      return 0;
+      return (0, e.toString());
     }
   }
 
-  static Future<int> unlikePhoto(String token, String imageID) async {
-    // var url = Uri.https(
-    //     dotenv.env['DOMAIN'] ?? '', '/image/like', {"image_id": imageID});
+  static Future<(int, String?)> unlikePhoto(
+      String token, String imageID) async {
     String urlString = "${dotenv.env['URL']}/image/like?image_id=$imageID";
     Uri url = Uri.parse(urlString);
 
@@ -152,20 +143,18 @@ class EngagementService {
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
         int count = jsonData['new_count'];
-        return count;
+        return (count, null);
       }
-      print('Request failed with status: ${response.statusCode}');
-      print('Response body: #${response.body}');
-      return 0;
+      String code = response.statusCode.toString();
+      String body = response.body;
+      return (0, "$code: $body");
     } catch (e) {
-      print(e);
-      return 0;
+      return (0, e.toString());
     }
   }
 
-  static Future<int> upvotePhoto(String token, String imageID) async {
-    // var url = Uri.https(
-    //     dotenv.env['DOMAIN'] ?? '', '/image/upvote', {"image_id": imageID});
+  static Future<(int, String?)> upvotePhoto(
+      String token, String imageID) async {
     String urlString = "${dotenv.env['URL']}/image/upvote?image_id=$imageID";
     Uri url = Uri.parse(urlString);
 
@@ -177,20 +166,18 @@ class EngagementService {
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
         int count = jsonData;
-        return count;
+        return (count, null);
       }
-      print('Request failed with status: ${response.statusCode}');
-      print('Response body: #${response.body}');
-      return 0;
+      String code = response.statusCode.toString();
+      String body = response.body;
+      return (0, "$code: $body");
     } catch (e) {
-      print(e);
-      return 0;
+      return (0, e.toString());
     }
   }
 
-  static Future<int> removeUpvoteFromPhoto(String token, String imageID) async {
-    // var url = Uri.https(
-    //     dotenv.env['DOMAIN'] ?? '', '/image/upvote', {"image_id": imageID});
+  static Future<(int, String?)> removeUpvoteFromPhoto(
+      String token, String imageID) async {
     String urlString = "${dotenv.env['URL']}/image/upvote?image_id=$imageID";
     Uri url = Uri.parse(urlString);
 
@@ -202,14 +189,13 @@ class EngagementService {
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
         int count = jsonData["new_count"];
-        return count;
+        return (count, null);
       }
-      print('Request failed with status: ${response.statusCode}');
-      print('Response body: #${response.body}');
-      return 0;
+      String code = response.statusCode.toString();
+      String body = response.body;
+      return (0, "$code: $body");
     } catch (e) {
-      print(e);
-      return 0;
+      return (0, e.toString());
     }
   }
 }

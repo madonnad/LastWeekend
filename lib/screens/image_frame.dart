@@ -1,11 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
 import 'package:shared_photo/bloc/cubit/image_frame_cubit.dart';
-import 'package:shared_photo/components/image_page_comp/image_frame_comments/floating_comment_container.dart';
-import 'package:shared_photo/components/image_page_comp/image_frame_comments/image_frame_caption.dart';
-import 'package:shared_photo/components/image_page_comp/image_frame_comments/image_frame_comment.dart';
+
 import 'package:shared_photo/components/image_page_comp/image_frame_container/image_frame_image_container.dart';
-import 'package:shared_photo/components/image_page_comp/image_frame_control_bar.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';

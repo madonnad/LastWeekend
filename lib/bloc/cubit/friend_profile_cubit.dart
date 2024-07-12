@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_photo/models/album.dart';
+import 'package:shared_photo/models/custom_exception.dart';
 import 'package:shared_photo/models/friend.dart';
 import 'package:shared_photo/models/user.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
@@ -36,7 +37,9 @@ class FriendProfileCubit extends Cubit<FriendProfileState> {
 
   void sendFriendRequest() async {
     emit(state.copyWith(friendStatusLoading: true));
-    RequestService.sendFriendRequest(user.token, lookupUid).then((success) {
+    RequestService.sendFriendRequest(user.token, lookupUid).then((result) {
+      bool success = result.$1;
+      String? exception = result.$2;
       if (success) {
         AnonymousFriend updatedFriend = state.anonymousFriend.copyWith(
           friendStatus: FriendStatus.pending,
@@ -44,11 +47,13 @@ class FriendProfileCubit extends Cubit<FriendProfileState> {
         emit(state.copyWith(
             anonymousFriend: updatedFriend, friendStatusLoading: false));
       } else {
+        CustomException customException =
+            CustomException(errorString: exception);
         emit(state.copyWith(
-          exception: "Failed to send friend request",
+          exception: customException,
           friendStatusLoading: false,
         ));
-        emit(state.copyWith(exception: ""));
+        emit(state.copyWith(exception: null));
       }
     });
   }

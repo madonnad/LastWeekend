@@ -1,10 +1,12 @@
 import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/firebase_notifications_cubit.dart';
 import 'package:shared_photo/firebase_options.dart';
@@ -18,7 +20,7 @@ import 'package:shared_photo/screens/auth_frame.dart';
 import 'package:shared_photo/screens/loading.dart';
 import 'package:shared_photo/screens/app_frame.dart';
 
-void main() async {
+Future<void> main() async {
   await dotenv.load(fileName: ".env");
 
   await Firebase.initializeApp(
@@ -39,6 +41,11 @@ void main() async {
   await FirebaseMessaging.instance.setAutoInitEnabled(true);
 
   WidgetsFlutterBinding.ensureInitialized();
+
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: await getApplicationDocumentsDirectory(),
+  );
+
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,

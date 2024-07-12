@@ -26,7 +26,7 @@ final class CreateAlbumState extends Equatable {
   final FriendState friendState;
   final String modalTextString;
   final bool loading;
-  final ExceptionBase? exception;
+  final CustomException exception;
 
   const CreateAlbumState({
     required this.albumName,
@@ -49,7 +49,7 @@ final class CreateAlbumState extends Equatable {
     this.friendState = FriendState.empty,
     this.modalTextString = '',
     this.loading = false,
-    this.exception,
+    this.exception = CustomException.empty,
   });
 
   CreateAlbumState copyWith({
@@ -70,7 +70,7 @@ final class CreateAlbumState extends Equatable {
     FriendState? friendState,
     String? modalTextString,
     bool? loading,
-    ExceptionBase? exception,
+    CustomException? exception,
   }) {
     return CreateAlbumState(
       albumName: albumName ?? this.albumName,

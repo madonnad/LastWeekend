@@ -1,11 +1,11 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'dart:developer' as developer;
 
 class RequestService {
   // Friend Requests
-  static Future<bool> sendFriendRequest(String token, String uid) async {
-    // var url =
-    //     Uri.https(dotenv.env['DOMAIN'] ?? '', '/friend-request', {'id': uid});
+  static Future<(bool, String?)> sendFriendRequest(
+      String token, String uid) async {
     String urlString = "${dotenv.env['URL']}/friend-request?id=$uid";
     Uri url = Uri.parse(urlString);
 
@@ -18,21 +18,18 @@ class RequestService {
       final response = await http.post(url, headers: headers);
 
       if (response.statusCode == 200) {
-        return true;
+        return (true, null);
       }
-      return false;
+      String code = response.statusCode.toString();
+      String body = response.body;
+      return (false, "$code: $body");
     } catch (e) {
-      print(e.toString());
-      return false;
+      return (false, e.toString());
     }
   }
 
-  static Future<bool> acceptFriendRequest(
+  static Future<(bool, String?)> acceptFriendRequest(
       String token, String senderID, String requestID) async {
-    // var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/friend-request', {
-    //   "id": senderID,
-    //   "request_id": requestID,
-    // });
     String urlString =
         "${dotenv.env['URL']}/friend-request?id=$senderID&request_id=$requestID";
     Uri url = Uri.parse(urlString);
@@ -43,19 +40,18 @@ class RequestService {
       final response = await http.put(url, headers: headers);
 
       if (response.statusCode == 200) {
-        return true;
+        return (true, null);
       }
-      return false;
+      String code = response.statusCode.toString();
+      String body = response.body;
+      return (false, "$code: $body");
     } catch (e) {
-      print(e.toString());
-      return false;
+      return (false, e.toString());
     }
   }
 
-  static Future<bool> deleteFriendRequest(
+  static Future<(bool, String?)> deleteFriendRequest(
       String token, String requestID) async {
-    // var url = Uri.https(
-    //     dotenv.env['DOMAIN'] ?? '', '/friend-request', {"id": requestID});
     String urlString = "${dotenv.env['URL']}/friend-request?id=$requestID";
     Uri url = Uri.parse(urlString);
 
@@ -65,12 +61,13 @@ class RequestService {
       final response = await http.delete(url, headers: headers);
 
       if (response.statusCode == 200) {
-        return true;
+        return (true, null);
       }
-      return false;
+      String code = response.statusCode.toString();
+      String body = response.body;
+      return (false, "$code: $body");
     } catch (e) {
-      print(e.toString());
-      return false;
+      return (false, e.toString());
     }
   }
 
@@ -91,7 +88,7 @@ class RequestService {
       }
       return false;
     } catch (e) {
-      print(e.toString());
+      developer.log(e.toString());
       return false;
     }
   }
@@ -113,15 +110,14 @@ class RequestService {
       }
       return false;
     } catch (e) {
-      print(e.toString());
+      developer.log(e.toString());
       return false;
     }
   }
 
   // Album Invites
-  static Future<bool> acceptAlbumInvite(String token, String requestID) async {
-    // var url = Uri.https(
-    //     dotenv.env['DOMAIN'] ?? '', '/album-invite', {"request_id": requestID});
+  static Future<(bool, String?)> acceptAlbumInvite(
+      String token, String requestID) async {
     String urlString =
         "${dotenv.env['URL']}/album-invite?request_id=$requestID";
     Uri url = Uri.parse(urlString);
@@ -132,18 +128,19 @@ class RequestService {
       final response = await http.put(url, headers: headers);
 
       if (response.statusCode == 200) {
-        return true;
+        return (true, null);
       }
-      return false;
+
+      String code = response.statusCode.toString();
+      String body = response.body;
+      return (false, "$code: $body");
     } catch (e) {
-      print(e.toString());
-      return false;
+      return (false, e.toString());
     }
   }
 
-  static Future<bool> denyAlbumInvite(String token, String requestID) async {
-    // var url = Uri.https(
-    //     dotenv.env['DOMAIN'] ?? '', '/album-invite', {"request_id": requestID});
+  static Future<(bool, String?)> denyAlbumInvite(
+      String token, String requestID) async {
     String urlString =
         "${dotenv.env['URL']}/album-invite?request_id=$requestID";
     Uri url = Uri.parse(urlString);
@@ -154,12 +151,13 @@ class RequestService {
       final response = await http.delete(url, headers: headers);
 
       if (response.statusCode == 200) {
-        return true;
+        return (true, null);
       }
-      return false;
+      String code = response.statusCode.toString();
+      String body = response.body;
+      return (false, "$code: $body");
     } catch (e) {
-      print(e.toString());
-      return false;
+      return (false, e.toString());
     }
   }
 }

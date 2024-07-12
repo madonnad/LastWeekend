@@ -60,7 +60,7 @@ class CameraState extends Equatable {
 
   List<CapturedImage> get selectedAlbumImageList {
     return List.from(photosTaken
-        .where((element) => element.album!.albumId == selectedAlbum!.albumId));
+        .where((element) => element.albumID == selectedAlbum!.albumId));
   }
 
   List<Album> get unlockedAlbums {
@@ -75,13 +75,13 @@ class CameraState extends Equatable {
     return 0;
   }
 
-  Map<Album, List<CapturedImage>> get mapOfAlbumImages {
-    Map<Album, List<CapturedImage>> mapOfAlbImg = {};
+  Map<String, List<CapturedImage>> get mapOfAlbumImages {
+    Map<String, List<CapturedImage>> mapOfAlbImg = {};
 
     for (CapturedImage image in photosTaken) {
-      if (image.album != null) {
+      if (image.albumID != null) {
         mapOfAlbImg
-            .putIfAbsent(image.album!, () => <CapturedImage>[])
+            .putIfAbsent(image.albumID!, () => <CapturedImage>[])
             .add(image);
       }
     }

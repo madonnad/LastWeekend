@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:developer' as developer;
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_photo/models/album.dart';
+import 'package:shared_photo/models/custom_exception.dart';
 import 'package:shared_photo/models/photo.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 import 'package:shared_photo/repositories/realtime_repository.dart';
@@ -104,8 +106,10 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
     if (rankedImages.length > 3) {
       topThreeImages.addAll(rankedImages.getRange(0, 3).toList());
     } else if (rankedImages.isNotEmpty) {
+      developer.log("inside top three");
       topThreeImages
-          .addAll(rankedImages.getRange(0, rankedImages.length - 1).toList());
+          .addAll(rankedImages.getRange(0, rankedImages.length).toList());
+      developer.log(rankedImages.length.toString());
     } else {
       topThreeImages = [];
     }
@@ -187,9 +191,17 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
 
   void sendInviteToFriends(
       String guestID, String guestFirst, String guestLast) async {
+    String? error;
     emit(state.copyWith(loading: true));
-    await dataRepository.inviteUserToAlbum(
+    (_, error) = await dataRepository.inviteUserToAlbum(
         state.album.albumId, guestID, guestFirst, guestLast);
+    if (error != null) {
+      CustomException exception = CustomException(errorString: error);
+      emit(state.copyWith(loading: false, exception: exception));
+      emit(state.copyWith(exception: CustomException.empty));
+      return;
+    }
+
     emit(state.copyWith(loading: false));
   }
 

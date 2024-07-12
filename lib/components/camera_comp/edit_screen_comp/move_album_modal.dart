@@ -45,13 +45,14 @@ class _MoveAlbumModalState extends State<MoveAlbumModal> {
 
                 bool allowSwap =
                     selectedIndex != null && selectedIndex != current;
-                print(allowSwap);
                 return SimpleDialogOption(
                   child: GestureDetector(
                     onTap: () {
                       if (allowSwap) {
                         Album album = state.unlockedAlbums[selectedIndex!];
-                        context.read<CameraCubit>().changeImageAlbum(album);
+                        context
+                            .read<CameraCubit>()
+                            .changeImageAlbum(album, album.albumId);
                         Navigator.of(context).pop();
                       }
                     },
