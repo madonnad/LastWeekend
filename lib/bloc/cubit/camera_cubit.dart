@@ -257,7 +257,6 @@ class CameraCubit extends HydratedCubit<CameraState> {
     dynamic capturedImages = json['photos_taken'];
 
     for (var item in capturedImages) {
-      print("inside loop: $item");
       CapturedImage image = CapturedImage.fromJson(item);
       photosTaken.add(image);
     }

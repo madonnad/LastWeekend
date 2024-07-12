@@ -18,14 +18,14 @@ class _CustomCamPreviewState extends State<CustomCamPreview> {
   }
 
   void toggleFirstFinger() {
-    print("firstFingerPressed");
+    //print("firstFingerPressed");
     setState(() {
       firstFingerPressed = !firstFingerPressed;
     });
   }
 
   void toggleSecondFinger(TapDownDetails? details) {
-    print("secondFingerPressed");
+    //print("secondFingerPressed");
     setState(() {
       secondFingerPressed = !secondFingerPressed;
     });
@@ -34,8 +34,8 @@ class _CustomCamPreviewState extends State<CustomCamPreview> {
   void printMoveUpdate(LongPressMoveUpdateDetails details) {
     setState(() {
       if (firstFingerPressed && secondFingerPressed) {
-        print('something');
-        print(details.localPosition);
+       // print('something');
+        //print(details.localPosition);
       }
     });
   }

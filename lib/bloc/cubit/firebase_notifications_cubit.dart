@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_udid/flutter_udid.dart';
 import 'package:shared_photo/models/user.dart';
 import 'package:shared_photo/services/firebase_service.dart';
+import 'dart:developer' as developer;
 
 part 'firebase_notifications_state.dart';
 
@@ -28,7 +29,7 @@ class FirebaseNotificationsCubit extends Cubit<FirebaseNotificationsState> {
     if (message == null) return;
 
     // handle logic for messages - push to notification page or content
-    print('message handled');
+    developer.log('message handled');
   }
 
   Future<void> _updateDBToken() async {

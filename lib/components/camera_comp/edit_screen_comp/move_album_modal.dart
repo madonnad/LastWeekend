@@ -45,7 +45,6 @@ class _MoveAlbumModalState extends State<MoveAlbumModal> {
 
                 bool allowSwap =
                     selectedIndex != null && selectedIndex != current;
-                print(allowSwap);
                 return SimpleDialogOption(
                   child: GestureDetector(
                     onTap: () {

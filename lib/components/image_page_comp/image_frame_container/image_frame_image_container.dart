@@ -347,7 +347,7 @@ class ImageFrameImageContainer extends StatelessWidget {
                                                   color: Colors.white,
                                                   size: 35,
                                                   shadows: [
-                                                    const Shadow(
+                                                    Shadow(
                                                       offset: Offset(0.0, 0.0),
                                                       blurRadius: 10.0,
                                                       color: Colors.black54,

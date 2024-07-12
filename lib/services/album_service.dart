@@ -6,15 +6,14 @@ import 'package:shared_photo/bloc/cubit/create_album_cubit.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/guest.dart';
 import 'package:http/http.dart' as http;
+import 'dart:developer' as developer;
 
 class AlbumService {
-  static Future<Album?> postNewAlbum(
+  static Future<(Album?, String?)> postNewAlbum(
       String token, CreateAlbumState state) async {
-    // print(state.toJson());
     Map<String, dynamic> albumInformation = state.toJson();
     String encodedBody = json.encode(albumInformation);
 
-    //var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/user/album');
     String urlString = "${dotenv.env['URL']}/user/album";
     Uri url = Uri.parse(urlString);
 
@@ -29,20 +28,19 @@ class AlbumService {
 
       if (response.statusCode == 200) {
         Map<String, dynamic> body = json.decode(response.body);
-        return Album.fromMap(body);
+        return (Album.fromMap(body), null);
       }
-      print('Request failed with status: ${response.statusCode}');
-      print('Response body: #${response.body}');
-      return null;
+      String code = response.statusCode.toString();
+      String body = response.body;
+      return (null, "$code: $body");
     } catch (e) {
-      print(e);
-      return null;
+      return (null, e.toString());
     }
   }
 
   static Future<List<Album>> getAuthUsersAlbums(String token) async {
     final List<Album> albums = [];
-    //var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/user/album');
+
     String urlString = "${dotenv.env['URL']}/user/album";
     Uri url = Uri.parse(urlString);
 
@@ -73,7 +71,6 @@ class AlbumService {
       String token, List<String> albumIds) async {
     final List<Album> albums = [];
 
-    //var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/album/revealed');
     String urlString = "${dotenv.env['URL']}/album/revealed'";
     Uri url = Uri.parse(urlString);
 
@@ -95,14 +92,13 @@ class AlbumService {
       }
       return albums;
     } catch (e) {
-      print(e);
+      developer.log(e.toString());
       return albums;
     }
   }
 
   static Future<List<Album>> getFeedAlbums(String token) async {
     final List<Album> albums = [];
-    //var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/feed');
     String urlString = "${dotenv.env['URL']}/feed";
     Uri url = Uri.parse(urlString);
 
@@ -124,8 +120,9 @@ class AlbumService {
     if (response.statusCode == 204) {
       return albums;
     }
-    print('Request failed with status: ${response.statusCode}');
-    print('Response body: #${response.body}');
+    String code = response.statusCode.toString();
+    String body = response.body;
+    developer.log("$code: $body");
     return albums;
   }
 
@@ -155,7 +152,7 @@ class AlbumService {
         "Failed to get album by ID with status: ${response.statusCode}");
   }
 
-  static Future<bool> postSingleAlbumRequest(
+  static Future<(bool, String?)> postSingleAlbumRequest(
       String token, String albumID, String guestID) async {
     String urlString =
         "${dotenv.env['URL']}/album/guests?album_id=$albumID&guest_id=$guestID";
@@ -167,12 +164,13 @@ class AlbumService {
       final response = await http.post(url, headers: headers);
 
       if (response.statusCode == 200) {
-        return true;
+        return (true, null);
       }
-      return false;
+      String code = response.statusCode.toString();
+      String body = response.body;
+      return (false, "$code: $body");
     } catch (e) {
-      print(e);
-      return false;
+      return (false, e.toString());
     }
   }
 
@@ -198,7 +196,7 @@ class AlbumService {
       }
       return guests;
     } catch (e) {
-      print(e);
+      developer.log(e.toString());
       return guests;
     }
   }

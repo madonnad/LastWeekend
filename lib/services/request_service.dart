@@ -1,5 +1,6 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'dart:developer' as developer;
 
 class RequestService {
   // Friend Requests
@@ -87,7 +88,7 @@ class RequestService {
       }
       return false;
     } catch (e) {
-      print(e.toString());
+      developer.log(e.toString());
       return false;
     }
   }
@@ -109,7 +110,7 @@ class RequestService {
       }
       return false;
     } catch (e) {
-      print(e.toString());
+      developer.log(e.toString());
       return false;
     }
   }

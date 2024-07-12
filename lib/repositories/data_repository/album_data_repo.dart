@@ -89,10 +89,10 @@ extension AlbumDataRepo on DataRepository {
   Future<(bool, String?)> createAlbum({required CreateAlbumState state}) async {
     bool success = false;
     String? error;
-
-    Album? album = await AlbumService.postNewAlbum(user.token, state);
+    Album? album;
+    (album, error) = await AlbumService.postNewAlbum(user.token, state);
     if (album == null) {
-      return (false, "Failed creating new image");
+      return (false, error);
     }
 
     String? albumCoverPath = state.albumCoverImagePath;
@@ -134,18 +134,21 @@ extension AlbumDataRepo on DataRepository {
     return albums;
   }
 
-  Future<bool> inviteUserToAlbum(String albumID, String guestID,
+  Future<(bool, String?)> inviteUserToAlbum(String albumID, String guestID,
       String guestFirst, String guestLast) async {
     bool albumExists = albumMap.containsKey(albumID);
 
-    if (!albumExists) return false;
+    if (!albumExists) return (false, "Album does not exist");
 
     Album album = Album.from(albumMap[albumID]!);
 
-    bool requestSent =
+    bool requestSent;
+    String? error;
+
+    (requestSent, error) =
         await AlbumService.postSingleAlbumRequest(user.token, albumID, guestID);
 
-    if (!requestSent) return false;
+    if (!requestSent) return (false, error);
 
     Guest addedGuest = Guest(
       uid: guestID,
@@ -157,7 +160,7 @@ extension AlbumDataRepo on DataRepository {
     album.guestMap[guestID] = addedGuest;
 
     _albumController.add((StreamOperation.update, album));
-    return true;
+    return (true, null);
   }
 
   // Future<List<Guest>> updateAlbumsGuests(String albumID) async {

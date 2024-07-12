@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_photo/models/notification.dart';
 import 'package:http/http.dart' as http;
+import 'dart:developer' as developer;
 
 class NotificationService {
   Future<List<Notification>> getNotifications(String token) async {
@@ -11,7 +12,6 @@ class NotificationService {
     //var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/notifications');
     String urlString = "${dotenv.env['URL']}/notifications";
     Uri url = Uri.parse(urlString);
-
 
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
@@ -53,8 +53,9 @@ class NotificationService {
 
       return notificationList;
     }
-    print('Request failed with status: ${response.statusCode}');
-    print('Response body: #${response.body}');
+    String code = response.statusCode.toString();
+    String body = response.body;
+    developer.log("$code: $body");
 
     return notificationList;
   }
