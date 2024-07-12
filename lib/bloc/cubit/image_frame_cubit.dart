@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:image/image.dart' as img;
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:shared_photo/models/comment.dart';
+import 'package:shared_photo/models/custom_exception.dart';
 import 'package:shared_photo/models/photo.dart';
 import 'package:shared_photo/models/user.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
@@ -44,9 +45,17 @@ class ImageFrameCubit extends Cubit<ImageFrameState> {
 
     late bool userLiked;
     late int count;
+    String? error;
 
-    (userLiked, count) = await dataRepository.toggleImageLike(
+    (userLiked, count, error) = await dataRepository.toggleImageLike(
         albumID, image.imageId, image.userLiked);
+
+    if (error != null) {
+      CustomException exception = CustomException(errorString: error);
+      emit(state.copyWith(likeLoading: false, exception: exception));
+      emit(state.copyWith(exception: CustomException.empty));
+      return;
+    }
 
     image.userLiked = userLiked;
     image.likes = count;
@@ -60,9 +69,17 @@ class ImageFrameCubit extends Cubit<ImageFrameState> {
 
     late bool userUpvoted;
     late int count;
+    String? error;
 
-    (userUpvoted, count) = await dataRepository.toggleImageUpvote(
+    (userUpvoted, count, error) = await dataRepository.toggleImageUpvote(
         albumID, image.imageId, image.userUpvoted);
+
+    if (error != null) {
+      CustomException exception = CustomException(errorString: error);
+      emit(state.copyWith(likeLoading: false, exception: exception));
+      emit(state.copyWith(exception: CustomException.empty));
+      return;
+    }
 
     image.userUpvoted = userUpvoted;
     image.upvotes = count;
@@ -72,10 +89,21 @@ class ImageFrameCubit extends Cubit<ImageFrameState> {
 
   Future<void> initializeComments(Photo image) async {
     Photo internalImage = Photo.from(image);
+    Map<String, Comment> fetchedComments = {};
+    String? error;
     emit(state.copyWith(loading: true, image: image));
-    internalImage.commentMap =
+
+    (fetchedComments, error) =
         await dataRepository.initalizeCommentsAndStore(albumID, image.imageId);
 
+    if (error != null) {
+      CustomException exception = CustomException(errorString: error);
+      emit(state.copyWith(loading: false, exception: exception));
+      emit(state.copyWith(exception: CustomException.empty));
+      return;
+    }
+
+    internalImage.commentMap = fetchedComments;
     emit(state.copyWith(loading: false, image: internalImage));
   }
 
@@ -92,14 +120,15 @@ class ImageFrameCubit extends Cubit<ImageFrameState> {
 
     emit(state.copyWith(commentLoading: true));
 
-    Comment? comment = await dataRepository.addCommentToImage(
+    Comment? comment;
+    String? error;
+    (comment, error) = await dataRepository.addCommentToImage(
         albumID, state.image.imageId, commentText);
 
     if (comment == null) {
-      emit(state.copyWith(
-          commentLoading: false,
-          exception: "Error adding comment to image - try again"));
-      emit(state.copyWith(exception: ''));
+      CustomException exception = CustomException(errorString: error);
+      emit(state.copyWith(commentLoading: false, exception: exception));
+      emit(state.copyWith(exception: CustomException.empty));
       return;
     }
 
