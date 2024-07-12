@@ -79,14 +79,17 @@ extension ImageDataRepo on DataRepository {
   }
 
   // Initalize and Coordinate Storage of Comments
-  Future<Map<String, Comment>> initalizeCommentsAndStore(
+  Future<(Map<String, Comment>, String?)> initalizeCommentsAndStore(
       String albumID, String imageID) async {
     Map<String, Comment> commentMap = {};
+    String? error;
 
     if (albumMap[albumID]?.imageMap[imageID] != null) {
       if (albumMap[albumID]!.imageMap[imageID]!.commentMap.isEmpty) {
         // Fetch List from Service
-        List<Comment> imageComments =
+        List<Comment> imageComments = [];
+
+        (imageComments, error) =
             await EngagementService.getImageComments(user.token, imageID);
 
         // Transform List to Map
@@ -96,20 +99,23 @@ extension ImageDataRepo on DataRepository {
 
         albumMap[albumID]!.imageMap[imageID]!.commentMap = commentMap;
 
-        return commentMap;
+        return (commentMap, error);
       } else {
-        return albumMap[albumID]!.imageMap[imageID]!.commentMap;
+        return (albumMap[albumID]!.imageMap[imageID]!.commentMap, error);
       }
     }
-    return commentMap;
+    return (commentMap, error);
   }
 
-  Future<Comment?> addCommentToImage(
+  Future<(Comment?, String?)> addCommentToImage(
       String albumID, String imageID, String comment) async {
-    Comment? postedComment =
+    Comment? postedComment;
+    String? error;
+
+    (postedComment, error) =
         await EngagementService.postNewComment(user.token, imageID, comment);
 
-    if (postedComment == null) return postedComment;
+    if (postedComment == null) return (postedComment, error);
 
     if (albumMap[albumID]?.imageMap[imageID] != null) {
       Photo image = albumMap[albumID]!.imageMap[imageID]!;
@@ -117,22 +123,29 @@ extension ImageDataRepo on DataRepository {
       image.commentMap[postedComment.id] = postedComment;
     }
 
-    return postedComment;
+    return (postedComment, error);
   }
 
-  Future<(bool, int)> toggleImageLike(
+  Future<(bool, int, String?)> toggleImageLike(
       String albumID, String imageID, bool currentStatus) async {
     late bool userLiked;
     late int newCount;
+    String? error;
 
     if (albumMap[albumID]?.imageMap[imageID] != null) {
       Photo image;
       if (currentStatus) {
-        newCount = await EngagementService.unlikePhoto(user.token, imageID);
+        (newCount, error) =
+            await EngagementService.unlikePhoto(user.token, imageID);
         userLiked = false;
       } else {
-        newCount = await EngagementService.likePhoto(user.token, imageID);
+        (newCount, error) =
+            await EngagementService.likePhoto(user.token, imageID);
         userLiked = true;
+      }
+
+      if (error != null) {
+        return (false, 0, error);
       }
 
       // Update Repo Store
@@ -145,29 +158,35 @@ extension ImageDataRepo on DataRepository {
       ImageChange imageChange =
           ImageChange(albumID: albumID, imageID: imageID, image: image);
       _imageController.add(imageChange);
-      return (userLiked, newCount);
+      return (userLiked, newCount, error);
     }
 
     //Return to Image Cubit
     newCount = 0;
     userLiked = false;
-    return (userLiked, newCount);
+    return (userLiked, newCount, error);
   }
 
-  Future<(bool, int)> toggleImageUpvote(
+  Future<(bool, int, String?)> toggleImageUpvote(
       String albumID, String imageID, bool currentStatus) async {
     late bool userUpvoted;
     late int newCount;
+    String? error;
 
     if (albumMap[albumID]?.imageMap[imageID] != null) {
       Photo image;
       if (currentStatus) {
-        newCount =
+        (newCount, error) =
             await EngagementService.removeUpvoteFromPhoto(user.token, imageID);
         userUpvoted = false;
       } else {
-        newCount = await EngagementService.upvotePhoto(user.token, imageID);
+        (newCount, error) =
+            await EngagementService.upvotePhoto(user.token, imageID);
         userUpvoted = true;
+      }
+
+      if (error != null) {
+        return (false, 0, error);
       }
 
       // Update Repo Store
@@ -180,13 +199,13 @@ extension ImageDataRepo on DataRepository {
       ImageChange imageChange =
           ImageChange(albumID: albumID, imageID: imageID, image: image);
       _imageController.add(imageChange);
-      return (userUpvoted, newCount);
+      return (userUpvoted, newCount, error);
     }
 
     //Return to Image Cubit
     newCount = 0;
     userUpvoted = false;
-    return (userUpvoted, newCount);
+    return (userUpvoted, newCount, error);
   }
 
   void _handleImageComment(CommentNotification notification) {
