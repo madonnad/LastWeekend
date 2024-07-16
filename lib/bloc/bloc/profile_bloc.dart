@@ -21,7 +21,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     required this.userRepository,
     required this.dataRepository,
     required this.user,
-  }) : super(ProfileState.empty) {
+  }) : super(ProfileState.createWithUser(user: user)) {
     // Event Handlers
     on<InitializeProfile>(
       (event, emit) {
@@ -90,6 +90,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(state.copyWith(myAlbumsMap: profileAlbumMap));
     });
 
+    on<UpdateUser>((event, emit) {
+      User user = event.user;
+
+      emit(state.copyWith(user: user));
+    });
+
     // Stream Listeners
     userRepository.friendStream.listen((event) {
       StreamOperation type = event.$1;
@@ -99,6 +105,18 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         case StreamOperation.add:
           add(AddFriendToList(friend: friend));
         case StreamOperation.update:
+        case StreamOperation.delete:
+      }
+    });
+
+    userRepository.userStream.listen((event) {
+      StreamOperation type = event.$1;
+      User user = event.$2;
+
+      switch (type) {
+        case StreamOperation.add:
+        case StreamOperation.update:
+          add(UpdateUser(user: user));
         case StreamOperation.delete:
       }
     });

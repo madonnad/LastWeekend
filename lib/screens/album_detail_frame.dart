@@ -48,57 +48,61 @@ class AlbumDetailFrame extends StatelessWidget {
             //       : const SizedBox.shrink(),
             // ],
           ),
-          body: Center(
-            child: Column(
-              children: [
-                const Gap(45),
-                SizedBox(
-                  height: height * .25,
-                  child: AspectRatio(
-                    aspectRatio: 4 / 5,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: const Color.fromRGBO(19, 19, 19, 1),
-                        image: DecorationImage(
-                          image: CachedNetworkImageProvider(
-                            state.album.coverReq,
-                            headers: context.read<AppBloc>().state.user.headers,
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: Center(
+              child: Column(
+                children: [
+                  const Gap(45),
+                  SizedBox(
+                    height: height * .25,
+                    child: AspectRatio(
+                      aspectRatio: 4 / 5,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: const Color.fromRGBO(19, 19, 19, 1),
+                          image: DecorationImage(
+                            image: CachedNetworkImageProvider(
+                              state.album.coverReq,
+                              headers:
+                                  context.read<AppBloc>().state.user.headers,
+                            ),
+                            fit: BoxFit.cover,
                           ),
-                          fit: BoxFit.cover,
                         ),
                       ),
                     ),
                   ),
-                ),
-                const Gap(60),
-                // DetailItem(
-                //   itemTitle: "Edit Timeline",
-                //   backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
-                //   onTap: () => print('Edit Timeline'),
-                // ),
-                DetailItem(
-                  itemTitle: "Invite List",
-                  backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
-                  onTap: () => showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    useSafeArea: true,
-                    backgroundColor: Colors.black,
-                    builder: (ctx) {
-                      return BlocProvider.value(
-                        value: context.read<AlbumFrameCubit>(),
-                        child: const InviteListMain(),
-                      );
-                    },
+                  const Gap(60),
+                  // DetailItem(
+                  //   itemTitle: "Edit Timeline",
+                  //   backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
+                  //   onTap: () => print('Edit Timeline'),
+                  // ),
+                  DetailItem(
+                    itemTitle: "Invite List",
+                    backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
+                    onTap: () => showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      useSafeArea: true,
+                      backgroundColor: Colors.black,
+                      builder: (ctx) {
+                        return BlocProvider.value(
+                          value: context.read<AlbumFrameCubit>(),
+                          child: const InviteListMain(),
+                        );
+                      },
+                    ),
                   ),
-                ),
-                // DetailItem(
-                //   itemTitle: "Edit Visibility",
-                //   backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
-                //   onTap: () => print('visibility'),
-                // ),
-              ],
+                  // DetailItem(
+                  //   itemTitle: "Edit Visibility",
+                  //   backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
+                  //   onTap: () => print('visibility'),
+                  // ),
+                ],
+              ),
             ),
           ),
         );
@@ -123,8 +127,8 @@ class DetailItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 60,
-        margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 4),
+        height: 50,
+        //margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 4),
         padding: const EdgeInsets.symmetric(horizontal: 15),
         decoration: BoxDecoration(
           color: backgroundColor,
@@ -140,9 +144,9 @@ class DetailItem extends StatelessWidget {
                 fontSize: 16,
               ),
             ),
-            const Flex(
-              direction: Axis.horizontal,
-            ),
+            // const Flex(
+            //   direction: Axis.horizontal,
+            // ),
           ],
         ),
       ),
