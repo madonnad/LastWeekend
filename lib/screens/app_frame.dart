@@ -67,6 +67,7 @@ class _AppFrameState extends State<AppFrame> with WidgetsBindingObserver {
           create: (context) => AppFrameCubit(),
         ),
         BlocProvider(
+          lazy: false,
           create: (context) => ProfileBloc(
             userRepository: context.read<UserRepository>(),
             dataRepository: context.read<DataRepository>(),

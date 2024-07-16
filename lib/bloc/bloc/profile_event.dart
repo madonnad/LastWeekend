@@ -99,6 +99,14 @@ class AlbumRequestEvent extends ProfileEvent {
   List<Object?> get props => [action, albumID];
 }
 
+class UpdateUser extends ProfileEvent {
+  final User user;
+  const UpdateUser({required this.user});
+
+  @override
+  List<Object?> get props => [user];
+}
+
 class UpdateStateEvent extends ProfileEvent {
   final NotificationType notificationType;
   final ProfileState updatedStateClass;

@@ -1,6 +1,7 @@
 part of 'profile_bloc.dart';
 
 class ProfileState extends Equatable {
+  final User user;
   final Map<String, Album> myAlbumsMap;
   final List<Photo> myImages;
   final Map<String, Friend> myFriendsMap;
@@ -10,6 +11,7 @@ class ProfileState extends Equatable {
   final String? error;
 
   const ProfileState({
+    required this.user,
     required this.myAlbumsMap,
     required this.myImages,
     required this.myFriendsMap,
@@ -20,6 +22,7 @@ class ProfileState extends Equatable {
   });
 
   static const empty = ProfileState(
+    user: User.empty,
     myAlbumsMap: {},
     myImages: [],
     myFriendsMap: {},
@@ -29,7 +32,21 @@ class ProfileState extends Equatable {
     error: '',
   );
 
+  static ProfileState createWithUser({required User user}) {
+    return ProfileState(
+      user: user,
+      myAlbumsMap: {},
+      myImages: [],
+      myFriendsMap: {},
+      myNotifications: [],
+      showNotification: false,
+      isLoading: false,
+      error: '',
+    );
+  }
+
   ProfileState copyWith({
+    User? user,
     Map<String, Album>? myAlbumsMap,
     List<Photo>? myImages,
     Map<String, Friend>? myFriendsMap,
@@ -39,6 +56,7 @@ class ProfileState extends Equatable {
     String? error,
   }) {
     return ProfileState(
+      user: user ?? this.user,
       myAlbumsMap: myAlbumsMap ?? this.myAlbumsMap,
       myImages: myImages ?? this.myImages,
       myFriendsMap: myFriendsMap ?? this.myFriendsMap,
@@ -61,6 +79,7 @@ class ProfileState extends Equatable {
 
   @override
   List<Object?> get props => [
+        user,
         myAlbumsMap,
         myImages,
         myAlbumsMap,
