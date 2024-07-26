@@ -36,27 +36,39 @@ class FeedSlideshowInset extends StatelessWidget {
                   clipBehavior: Clip.hardEdge,
                   child: Stack(
                     children: [
-                      PageView.builder(
-                        onPageChanged: (index) => context
-                            .read<FeedSlideshowCubit>()
-                            .updatePage(index),
-                        controller: state.pageController,
-                        itemCount: state.topThreeImages.length,
-                        allowImplicitScrolling: true,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: CachedNetworkImageProvider(
-                                  state.topThreeImages[index].imageReq,
-                                  headers: headers,
+                      state.topThreeImages.isNotEmpty
+                          ? PageView.builder(
+                              onPageChanged: (index) => context
+                                  .read<FeedSlideshowCubit>()
+                                  .updatePage(index),
+                              controller: state.pageController,
+                              itemCount: state.topThreeImages.length,
+                              allowImplicitScrolling: true,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: CachedNetworkImageProvider(
+                                        state.topThreeImages[index].imageReq,
+                                        headers: headers,
+                                      ),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                );
+                              },
+                            )
+                          : Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: CachedNetworkImageProvider(
+                                    state.album.coverReq,
+                                    headers: headers,
+                                  ),
+                                  fit: BoxFit.cover,
                                 ),
-                                fit: BoxFit.cover,
                               ),
                             ),
-                          );
-                        },
-                      ),
                       Align(
                         alignment: Alignment.bottomCenter,
                         child: Padding(

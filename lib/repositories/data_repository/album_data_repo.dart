@@ -163,6 +163,26 @@ extension AlbumDataRepo on DataRepository {
     return (true, null);
   }
 
+  Future<(bool, String?)> updateAlbumVisibility(String albumID,
+      String visibilityString, AlbumVisibility visibility) async {
+    bool success = false;
+    String? error;
+
+    if (albumMap[albumID] == null) return (false, "Album Does Not Exist");
+
+    (success, error) = await AlbumService.updateAlbumVisibility(
+        user.token, albumID, visibilityString);
+
+    if (!success) return (success, error);
+
+    Album album = albumMap[albumID]!.copyWith(visibility: visibility);
+
+    albumMap[albumID] = album;
+
+    _albumController.add((StreamOperation.update, album));
+    return (true, null);
+  }
+
   // Future<List<Guest>> updateAlbumsGuests(String albumID) async {
   //   List<Guest> fetchedGuests =
   //       await AlbumService.updateGuestList(user.token, albumID);

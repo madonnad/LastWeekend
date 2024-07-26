@@ -200,4 +200,27 @@ class AlbumService {
       return guests;
     }
   }
+
+  static Future<(bool, String?)> updateAlbumVisibility(
+      String token, String albumID, String visibility) async {
+    String urlString =
+        "${dotenv.env['URL']}/album/visibility?album_id=$albumID&visibility=$visibility";
+    Uri url = Uri.parse(urlString);
+
+    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
+
+    try {
+      final response = await http.patch(url, headers: headers);
+
+      if (response.statusCode == 200) {
+        return (true, null);
+      }
+      String code = response.statusCode.toString();
+      String body = response.body;
+      return (false, "$code: $body");
+    } catch (e) {
+      developer.log(e.toString());
+      return (false, e.toString());
+    }
+  }
 }
