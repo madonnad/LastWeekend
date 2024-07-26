@@ -16,7 +16,6 @@ class UserService {
 
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
-    // var url = Uri.https(dotenv.env['DOMAIN'] ?? '', '/user');
     String urlString = "${dotenv.env['URL']}/user";
     Uri url = Uri.parse(urlString);
 
@@ -31,6 +30,29 @@ class UserService {
       }
     } catch (e) {
       return (401, e.toString());
+    }
+  }
+
+  static Future<(String?, String?, String?)> updateUsersName(
+      String token, String firstName, String lastName) async {
+    String urlString =
+        "${dotenv.env['URL']}/user?first=$firstName&last=$lastName";
+    Uri url = Uri.parse(urlString);
+
+    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
+
+    try {
+      final response = await http.patch(url, headers: headers);
+
+      if (response.statusCode == 200) {
+        return (firstName, lastName, null);
+      } else {
+        String code = response.statusCode.toString();
+        String body = response.body;
+        return (null, null, '$code: $body');
+      }
+    } catch (e) {
+      return (null, null, e.toString());
     }
   }
 

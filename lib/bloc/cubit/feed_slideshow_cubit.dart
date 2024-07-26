@@ -13,15 +13,18 @@ class FeedSlideshowCubit extends Cubit<FeedSlideshowState> {
   final Album album;
   final DataRepository dataRepository;
   late StreamSubscription imageStreamSubscription;
-  //late Timer _timer;
 
   FeedSlideshowCubit({required this.album, required this.dataRepository})
       : super(
           FeedSlideshowState(
             pageController: PageController(),
             album: album,
-            avatarUrl: album.rankedImages[0].avatarReq,
-            imageOwnerName: album.rankedImages[0].fullName,
+            avatarUrl: album.rankedImages.isNotEmpty
+                ? album.rankedImages[0].avatarReq
+                : album.ownerImageURl,
+            imageOwnerName: album.rankedImages.isNotEmpty
+                ? album.rankedImages[0].fullName
+                : album.fullName,
           ),
         ) {
     setAlbumImages();
@@ -31,10 +34,6 @@ class FeedSlideshowCubit extends Cubit<FeedSlideshowState> {
         updateImageInAlbum(event.imageID, event.image);
       }
     });
-
-    // _timer = Timer.periodic(const Duration(seconds: 30), (timer) {
-    //   setAlbumImages();
-    // });
   }
 
   void updateImageInAlbum(String imageID, Photo image) {
@@ -54,6 +53,9 @@ class FeedSlideshowCubit extends Cubit<FeedSlideshowState> {
     //album.imageMap = images;
     Album newAlbum = album.copyWith(imageMap: images);
 
+    if (super.isClosed) {
+      return;
+    }
     emit(state.copyWith(album: newAlbum));
 
     setTopThreeImages();
@@ -98,7 +100,6 @@ class FeedSlideshowCubit extends Cubit<FeedSlideshowState> {
 
   @override
   Future<void> close() {
-    //_timer.cancel();
     imageStreamSubscription.cancel();
     return super.close();
   }

@@ -18,13 +18,12 @@ class FriendProfileState extends Equatable {
   });
 
   static FriendProfileState empty(User user) => FriendProfileState(
-        anonymousFriend: AnonymousFriend.empty,
-        albumList: const [],
-        loading: false,
-        friendStatusLoading: false,
-        user: user,
-        exception: CustomException.empty
-      );
+      anonymousFriend: AnonymousFriend.empty,
+      albumList: const [],
+      loading: false,
+      friendStatusLoading: false,
+      user: user,
+      exception: CustomException.empty);
 
   FriendProfileState copyWith({
     AnonymousFriend? anonymousFriend,
@@ -45,15 +44,15 @@ class FriendProfileState extends Equatable {
 
   List<Album> get publicVisAlbumList {
     return albumList
-        .where((album) => album.visibility == Visibility.public)
+        .where((album) => album.visibility == AlbumVisibility.public)
         .toList();
   }
 
   List<Album> get pubAndFriendVizAlbumsNotJoint {
     return albumList
         .where((album) =>
-            (album.visibility == Visibility.friends ||
-                album.visibility == Visibility.public) &&
+            (album.visibility == AlbumVisibility.friends ||
+                album.visibility == AlbumVisibility.public) &&
             !album.guests.any((guest) => guest.uid == user.id))
         .toList();
   }

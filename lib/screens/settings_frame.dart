@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,7 +5,7 @@ import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/settings_cubit.dart';
 import 'package:shared_photo/components/app_comp/section_header_small.dart';
 import 'package:shared_photo/components/settings_comp/logout_modal.dart';
-import 'package:shared_photo/components/settings_comp/setting_list_item.dart';
+import 'package:shared_photo/screens/album_detail_frame.dart';
 import 'package:shared_photo/screens/settings/prof_photo_frame.dart';
 
 class SettingsFrame extends StatelessWidget {
@@ -29,7 +28,7 @@ class SettingsFrame extends StatelessWidget {
           style: GoogleFonts.josefinSans(
             color: Colors.white,
             fontWeight: FontWeight.w600,
-            fontSize: 28,
+            fontSize: 24,
           ),
         ),
       ),
@@ -63,7 +62,7 @@ class SettingsFrame extends StatelessWidget {
                             backgroundColor: Colors.white54,
                             backgroundImage:
                                 const AssetImage("lib/assets/default.png"),
-                            foregroundImage: CachedNetworkImageProvider(
+                            foregroundImage: NetworkImage(
                               state.user.avatarUrl,
                               headers: state.user.headers,
                             ),
@@ -89,17 +88,22 @@ class SettingsFrame extends StatelessWidget {
                 ),
                 const SectionHeaderSmall("Account Settings"),
                 const SizedBox(height: 10),
-                SettingListItem(
-                  backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
-                  text: "Edit Profile",
-                  navigator: () =>
-                      Navigator.of(context).pushNamed('/edit_profile'),
+                DetailItem(
+                  itemTitle: "Edit Profile",
+                  backgroundColor: const Color.fromRGBO(19, 19, 19, 1),
+                  onTap: () {
+                    Map<String, dynamic> argMap = {
+                      'settingsCubit': context.read<SettingsCubit>(),
+                    };
+                    Navigator.of(context)
+                        .pushNamed('/edit_profile', arguments: argMap);
+                  },
                 ),
                 const SizedBox(height: 10),
-                SettingListItem(
-                  backgroundColor: const Color.fromRGBO(19, 19, 19, 1),
-                  text: "Logout",
-                  navigator: () => showDialog(
+                DetailItem(
+                  itemTitle: "Logout",
+                  backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
+                  onTap: () => showDialog(
                     barrierColor: Colors.black87,
                     context: context,
                     builder: (context) => const LogoutModal(),

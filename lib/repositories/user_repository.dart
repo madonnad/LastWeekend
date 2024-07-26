@@ -12,10 +12,12 @@ class UserRepository {
   // Controllers
   final _friendController =
       StreamController<(StreamOperation, Friend)>.broadcast();
+  final _userController = StreamController<(StreamOperation, User)>();
 
   // Stream Getters
   Stream<(StreamOperation, Friend)> get friendStream =>
       _friendController.stream;
+  Stream<(StreamOperation, User)> get userStream => _userController.stream;
 
   // Initializer
   UserRepository({required this.user}) {
@@ -31,5 +33,26 @@ class UserRepository {
 
       _friendController.add((StreamOperation.add, friend));
     }
+  }
+
+  Future<(String?, String?, String?)> updateUsersFirstLast(
+      String first, String last) async {
+    String? firstName;
+    String? lastName;
+    String? error;
+    (firstName, lastName, error) =
+        await UserService.updateUsersName(user.token, first, last);
+
+    if (error != null) {
+      return (first, last, error);
+    }
+
+    User updatedUser = user.copyWith(firstName: firstName, lastName: lastName);
+
+    user = updatedUser;
+
+    _userController.add((StreamOperation.update, updatedUser));
+
+    return (firstName, lastName, error);
   }
 }

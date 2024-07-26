@@ -1,8 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_photo/bloc/bloc/app_bloc.dart';
+import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
 import 'package:shared_photo/components/new_profile_comp/profile_header_comps/profile_header_details.dart';
 
 class ProfileHeader extends StatelessWidget {
@@ -10,7 +9,7 @@ class ProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AppBloc, AppState>(
+    return BlocBuilder<ProfileBloc, ProfileState>(
       builder: (context, state) {
         double devWidth = MediaQuery.of(context).size.width;
         double circleDiameter = devWidth * .25;
@@ -22,7 +21,13 @@ class ProfileHeader extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   GestureDetector(
-                    onTap: () => Navigator.of(context).pushNamed('/settings'),
+                    onTap: () {
+                      Map<String, dynamic> argMap = {
+                        'profileBloc': context.read<ProfileBloc>(),
+                      };
+                      Navigator.of(context)
+                          .pushNamed('/settings', arguments: argMap);
+                    },
                     child: const Icon(
                       Icons.settings,
                       color: Colors.white70,
@@ -35,7 +40,7 @@ class ProfileHeader extends StatelessWidget {
               radius: circleDiameter,
               backgroundColor: Colors.grey,
               backgroundImage: const AssetImage("lib/assets/default.png"),
-              foregroundImage: CachedNetworkImageProvider(
+              foregroundImage: NetworkImage(
                 state.user.avatarUrl,
                 headers: state.user.headers,
               ),
