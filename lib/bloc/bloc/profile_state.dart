@@ -35,10 +35,10 @@ class ProfileState extends Equatable {
   static ProfileState createWithUser({required User user}) {
     return ProfileState(
       user: user,
-      myAlbumsMap: {},
-      myImages: [],
-      myFriendsMap: {},
-      myNotifications: [],
+      myAlbumsMap: const {},
+      myImages: const [],
+      myFriendsMap: const {},
+      myNotifications: const [],
       showNotification: false,
       isLoading: false,
       error: '',

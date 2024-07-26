@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
 import 'package:shared_photo/components/album_comp/album_detail_comps/invite_list_detail/invite_list_main.dart';
+import 'package:shared_photo/components/album_comp/album_detail_comps/visibility_comps/visibility_select_modal.dart';
 
 class AlbumDetailFrame extends StatelessWidget {
   const AlbumDetailFrame({super.key});
@@ -15,8 +16,8 @@ class AlbumDetailFrame extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
     return BlocBuilder<AlbumFrameCubit, AlbumFrameState>(
       builder: (context, state) {
-        // bool isOwner =
-        //     context.read<AppBloc>().state.user.id == state.album.albumOwner;
+        bool isOwner =
+            context.read<AppBloc>().state.user.id == state.album.albumOwner;
         return Scaffold(
           backgroundColor: Colors.black,
           appBar: AppBar(
@@ -96,11 +97,20 @@ class AlbumDetailFrame extends StatelessWidget {
                       },
                     ),
                   ),
-                  // DetailItem(
-                  //   itemTitle: "Edit Visibility",
-                  //   backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
-                  //   onTap: () => print('visibility'),
-                  // ),
+                  const Gap(10),
+                  isOwner
+                      ? DetailItem(
+                          itemTitle: "Edit Visibility",
+                          backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
+                          onTap: () => showDialog(
+                            context: context,
+                            builder: (ctx) => BlocProvider.value(
+                              value: context.read<AlbumFrameCubit>(),
+                              child: const VisibilitySelectModal(),
+                            ),
+                          ),
+                        )
+                      : const SizedBox.shrink(),
                 ],
               ),
             ),

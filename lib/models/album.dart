@@ -98,6 +98,7 @@ class Album extends Equatable {
 
   Album copyWith({
     Map<String, Photo>? imageMap,
+    AlbumVisibility? visibility,
   }) {
     return Album(
       albumId: albumId,
@@ -109,7 +110,7 @@ class Album extends Equatable {
       lockDateTime: lockDateTime,
       unlockDateTime: unlockDateTime,
       revealDateTime: revealDateTime,
-      visibility: visibility,
+      visibility: visibility ?? this.visibility,
       phase: phase,
       imageMap: imageMap ?? this.imageMap,
       guestMap: guestMap,
@@ -376,5 +377,6 @@ class Album extends Equatable {
   //     albumOwner.hashCode;
 
   @override
-  List<Object?> get props => [albumId, guestMap, imageMap, albumOwner];
+  List<Object?> get props =>
+      [albumId, guestMap, imageMap, albumOwner, visibility];
 }

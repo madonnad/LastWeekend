@@ -36,8 +36,7 @@ class FeedState extends Equatable {
 
   List<Album> get revealedFeedAlbumList {
     return feedAlbumMap.values
-        .where((element) =>
-            element.phase == AlbumPhases.reveal && element.images.isNotEmpty)
+        .where((element) => element.phase == AlbumPhases.reveal)
         .toList()
       ..sort(((a, b) => b.revealDateTime.compareTo(a.revealDateTime)));
   }

@@ -19,8 +19,12 @@ class FeedSlideshowCubit extends Cubit<FeedSlideshowState> {
           FeedSlideshowState(
             pageController: PageController(),
             album: album,
-            avatarUrl: album.rankedImages[0].avatarReq,
-            imageOwnerName: album.rankedImages[0].fullName,
+            avatarUrl: album.rankedImages.isNotEmpty
+                ? album.rankedImages[0].avatarReq
+                : album.ownerImageURl,
+            imageOwnerName: album.rankedImages.isNotEmpty
+                ? album.rankedImages[0].fullName
+                : album.fullName,
           ),
         ) {
     setAlbumImages();
