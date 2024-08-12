@@ -327,7 +327,7 @@ class Album extends Equatable {
     }
 
     mapImages.forEach((key, value) {
-      value.sort((a, b) => a.uploadDateTime.compareTo(b.uploadDateTime));
+      value.sort((a, b) => b.uploadDateTime.compareTo(a.uploadDateTime));
     });
 
     mapImages.forEach((key, value) {

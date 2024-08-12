@@ -203,10 +203,10 @@ class CameraCubit extends HydratedCubit<CameraState> {
       return;
     }
 
-    if (state.mapOfAlbumImages[state.selectedAlbum] == null) {
+    if (state.mapOfAlbumImages[state.selectedAlbum!.albumId] == null) {
       return;
     } else {
-      selectedAlbumList = state.mapOfAlbumImages[state.selectedAlbum]!;
+      selectedAlbumList = state.mapOfAlbumImages[state.selectedAlbum!.albumId]!;
       selectedAlbumLength = selectedAlbumList.length;
       selectedAlbumMaxIndex = selectedAlbumLength - 1;
       index = selectedAlbumList.indexWhere((element) => element == image);
