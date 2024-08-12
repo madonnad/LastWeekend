@@ -1,7 +1,7 @@
 name: shared_photo
 description: Create memories that last with the people that matter!
 publish_to: 'none'
-version: 1.0.3
+version: 1.0.4
 
 environment:
   sdk: '>=3.0.5 <4.0.0'
@@ -36,6 +36,7 @@ dependencies:
   icon_decoration: ^2.0.2
   path_provider: ^2.1.3
   animated_toggle_switch: ^0.8.2
+  dio: ^5.5.0+1
 
 dev_dependencies:
   flutter_lints: ^2.0.0
