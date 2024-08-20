@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:camera/camera.dart';
@@ -25,16 +26,12 @@ class ShutterButton extends StatelessWidget {
 
           if (selectedAlbum != null) {
             capImage = CapturedImage(
-              imageXFile: picture,
-              albumID: selectedAlbum.albumId,
-              type: UploadType.snap,
-            );
+                imageXFile: picture,
+                albumID: selectedAlbum.albumId,
+                type: UploadType.snap);
           } else {
             capImage = CapturedImage(
-              imageXFile: picture,
-              addToRecap: true,
-              type: UploadType.snap,
-            );
+                imageXFile: picture, addToRecap: true, type: UploadType.snap);
           }
           context.read<CameraCubit>().addPhotoToList(capImage);
         }

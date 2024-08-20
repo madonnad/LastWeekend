@@ -101,7 +101,11 @@ extension AlbumDataRepo on DataRepository {
     }
 
     (success, error) = await ImageService.uploadPhoto(
-        user.token, albumCoverPath, album.albumCoverId);
+      user.token,
+      albumCoverPath,
+      album.albumCoverId,
+      StreamController<double>.broadcast(),
+    );
     if (success == false) {
       return (false, error);
     }

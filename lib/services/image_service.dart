@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
@@ -99,7 +100,11 @@ class ImageService {
   }
 
   static Future<(bool, String?)> uploadPhoto(
-      String token, String imagePath, String imageId) async {
+    String token,
+    String imagePath,
+    String imageId,
+    StreamController<double> statusController,
+  ) async {
     final dio = Dio();
     String urlString = "${dotenv.env['URL']}/upload?id=$imageId";
     Uri url = Uri.parse(urlString);
@@ -115,6 +120,11 @@ class ImageService {
 
     Uint8List imageBytes = await File(imagePath).readAsBytes();
 
+    if (statusController.isClosed) {
+      print('controller is closed');
+      return (false, "controller is closed");
+    }
+
     try {
       dynamic response = await http.get(url, headers: headers);
 
@@ -129,8 +139,17 @@ class ImageService {
           gcpSignedUrl.toString(),
           data: imageBytes,
           options: options,
-          onReceiveProgress: (int sent, int total) {
-            developer.log("$sent out of $total");
+          // onReceiveProgress: (int sent, int total) {
+          //   double statusPercent = sent / total;
+          //   print(statusPercent);
+          //   statusController.add(statusPercent);
+          // },
+          onSendProgress: (int sent, int total) {
+            double statusPercent = sent / total;
+            print(statusPercent);
+            if (statusController.isClosed == false) {
+              statusController.add(statusPercent);
+            }
           },
         );
 
@@ -147,7 +166,6 @@ class ImageService {
         }
         response = uploadResponse;
       }
-
       String code = response.statusCode.toString();
       String body = response.body;
       //developer.log("$code: $body");
@@ -200,7 +218,9 @@ class ImageService {
   }
 
   static Future<(Photo?, String?)> postCapturedImage(
-      String token, CapturedImage image) async {
+    String token,
+    CapturedImage image,
+  ) async {
     String urlString = "${dotenv.env['URL']}/user/image";
     Uri url = Uri.parse(urlString);
 
@@ -222,8 +242,12 @@ class ImageService {
 
         bool upload;
         String? error;
-        (upload, error) =
-            await uploadPhoto(token, image.imageXFile.path, newImage.imageId);
+        (upload, error) = await uploadPhoto(
+          token,
+          image.imageXFile.path,
+          newImage.imageId,
+          image.uploadStatusController,
+        );
         if (upload == false) {
           return (null, error);
         }

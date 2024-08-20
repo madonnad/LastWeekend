@@ -4,6 +4,7 @@ enum UploadMode { unlockedAlbums, singleAlbum }
 
 class CameraState extends Equatable {
   final List<CapturedImage> photosTaken;
+  final List<CapturedImage> photosSelected;
   final int? selectedIndex;
   final CapturedImage? selectedImage;
   final Map<String, Album> albumMap;
@@ -11,8 +12,10 @@ class CameraState extends Equatable {
   final TextEditingController captionTextController;
   final bool loading;
   final UploadMode mode;
+  final CustomException exception;
   const CameraState({
     required this.photosTaken,
+    required this.photosSelected,
     required this.selectedIndex,
     required this.selectedImage,
     required this.albumMap,
@@ -20,11 +23,13 @@ class CameraState extends Equatable {
     required this.captionTextController,
     required this.loading,
     required this.mode,
+    this.exception = CustomException.empty,
   });
 
   factory CameraState.empty() {
     return CameraState(
       photosTaken: const [],
+      photosSelected: const [],
       selectedIndex: null,
       selectedImage: null,
       selectedAlbum: null,
@@ -37,6 +42,7 @@ class CameraState extends Equatable {
 
   CameraState copyWith({
     List<CapturedImage>? photosTaken,
+    List<CapturedImage>? photosSelected,
     int? selectedIndex,
     CapturedImage? selectedImage,
     Map<String, Album>? albumMap,
@@ -44,9 +50,11 @@ class CameraState extends Equatable {
     TextEditingController? captionTextController,
     bool? loading,
     UploadMode? mode,
+    CustomException? exception,
   }) {
     return CameraState(
       photosTaken: photosTaken ?? this.photosTaken,
+      photosSelected: photosSelected ?? this.photosSelected,
       selectedIndex: selectedIndex ?? this.selectedIndex,
       selectedImage: selectedImage ?? this.selectedImage,
       selectedAlbum: selectedAlbum ?? this.selectedAlbum,
@@ -55,11 +63,17 @@ class CameraState extends Equatable {
           captionTextController ?? this.captionTextController,
       loading: loading ?? this.loading,
       mode: mode ?? this.mode,
+      exception: exception ?? this.exception,
     );
   }
 
   List<CapturedImage> get selectedAlbumImageList {
     return List.from(photosTaken
+        .where((element) => element.albumID == selectedAlbum!.albumId));
+  }
+
+  List<CapturedImage> get selectedAlbumSelectedImageList {
+    return List.from(photosSelected
         .where((element) => element.albumID == selectedAlbum!.albumId));
   }
 
@@ -98,6 +112,7 @@ class CameraState extends Equatable {
   @override
   List<Object?> get props => [
         photosTaken,
+        photosSelected,
         selectedIndex,
         selectedAlbum,
         albumMap,
@@ -106,5 +121,6 @@ class CameraState extends Equatable {
         captionTextController,
         loading,
         mode,
+        exception,
       ];
 }
