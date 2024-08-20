@@ -3,7 +3,7 @@ part of './data_repository.dart';
 enum ImageChangeKey { userLikedUpdate, likeCountUpdate }
 
 extension ImageDataRepo on DataRepository {
-  Future<List<CapturedImage>> addImageToAlbum(
+  Future<List<CapturedImage>> addImagesToAlbum(
       List<CapturedImage> imagesToUpload) async {
     List<CapturedImage> failedUploads = [];
 
@@ -46,6 +46,39 @@ extension ImageDataRepo on DataRepository {
       i--;
     }
     return failedUploads;
+  }
+
+  Future<(bool, String?)> addOneImageToAlbum(CapturedImage image) async {
+    if (image.albumID == null) {
+      return (false, "Image not associated to album");
+    }
+
+    if (albumMap[image.albumID!] == null) {
+      return (false, "Album does not exist");
+    }
+
+    String albumID = image.albumID!;
+
+    Photo? uploadedImage;
+    (uploadedImage, _) = await ImageService.postCapturedImage(
+      user.token,
+      image,
+    );
+    if (uploadedImage == null) {
+      return (false, "Image could not be uploaded");
+    }
+
+    Map<String, Photo> albumImages = albumMap[albumID]!.imageMap;
+    albumImages[uploadedImage.imageId] = uploadedImage;
+
+    ImageChange change = ImageChange(
+      albumID: albumID,
+      imageID: uploadedImage.imageId,
+      image: uploadedImage,
+    );
+
+    _imageController.add(change);
+    return (true, null);
   }
 
   Future<(bool, String?)> moveImageToAlbum(

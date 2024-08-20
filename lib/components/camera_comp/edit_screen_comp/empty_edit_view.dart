@@ -31,7 +31,7 @@ class EmptyEditView extends StatelessWidget {
           children: [
             Expanded(child: Container()),
             Text(
-              "No photos",
+              "No photos 😅",
               overflow: TextOverflow.visible,
               textAlign: TextAlign.center,
               style: GoogleFonts.josefinSans(
@@ -41,37 +41,37 @@ class EmptyEditView extends StatelessWidget {
               ),
             ),
             const Gap(50),
-            GestureDetector(
-              onTap: () async {
-                List<XFile>? selectedImages =
-                    await imagePicker.pickMultiImage();
-                addListPhotos(selectedImages);
-              },
-              child: IntrinsicWidth(
-                stepWidth: 65,
-                child: Container(
-                  height: 60,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                  ),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: const Color.fromRGBO(44, 44, 44, 1),
-                  ),
-                  child: Text(
-                    "Add from Gallery 😅",
-                    style: GoogleFonts.montserrat(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            // GestureDetector(
+            //   onTap: () async {
+            //     List<XFile>? selectedImages =
+            //         await imagePicker.pickMultiImage();
+            //     addListPhotos(selectedImages);
+            //   },
+            //   child: IntrinsicWidth(
+            //     stepWidth: 65,
+            //     child: Container(
+            //       height: 60,
+            //       padding: const EdgeInsets.symmetric(
+            //         horizontal: 20,
+            //       ),
+            //       alignment: Alignment.center,
+            //       decoration: BoxDecoration(
+            //         borderRadius: BorderRadius.circular(10),
+            //         color: const Color.fromRGBO(44, 44, 44, 1),
+            //       ),
+            //       child: Text(
+            //         "Add from Gallery 😅",
+            //         style: GoogleFonts.montserrat(
+            //           color: Colors.white,
+            //           fontSize: 16,
+            //           fontWeight: FontWeight.w700,
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
             const Spacer(),
-            const SubmitImageButton(),
+            // const SubmitImageButton(),
             const SizedBox(height: 35)
           ],
         ),

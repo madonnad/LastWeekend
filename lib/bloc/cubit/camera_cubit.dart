@@ -9,6 +9,7 @@ import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/captured_image.dart';
+import 'package:shared_photo/models/custom_exception.dart';
 import 'package:shared_photo/models/photo.dart';
 import 'package:shared_photo/models/user.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
@@ -78,6 +79,16 @@ class CameraCubit extends HydratedCubit<CameraState> {
     }
   }
 
+  void toggleImageInUploadList(CapturedImage image) {
+    List<CapturedImage> imageList = List.from(state.photosSelected);
+    if (imageList.contains(image)) {
+      imageList.removeWhere((listImage) => listImage == image);
+    } else {
+      imageList.add(image);
+    }
+    emit(state.copyWith(photosSelected: imageList));
+  }
+
   void _initializeUnlockedAlbums() {
     Map<String, Album> unlockedMap = Map.from(dataRepository.unlockedAlbums());
     Album? selectedAlbum;
@@ -102,7 +113,7 @@ class CameraCubit extends HydratedCubit<CameraState> {
     emit(state.copyWith(loading: true));
 
     List<CapturedImage> failedUploads =
-        await dataRepository.addImageToAlbum(photosTaken);
+        await dataRepository.addImagesToAlbum(photosTaken);
 
     emit(state.copyWith(photosTaken: failedUploads, loading: false));
   }
@@ -112,6 +123,50 @@ class CameraCubit extends HydratedCubit<CameraState> {
       selectedImage: image,
       captionTextController: TextEditingController(text: image.caption),
     ));
+  }
+
+  Future<void> uploadAllImagesToAlbum() async {
+    List<CapturedImage> photosTaken = List.from(state.photosTaken);
+    List<CapturedImage> albumList = List.from(state.selectedAlbumImageList);
+
+    print(albumList.hashCode);
+    print(state.selectedAlbumImageList.hashCode);
+
+    for (CapturedImage image in albumList) {
+      bool success = false;
+      String? error;
+      (success, error) = await dataRepository.addOneImageToAlbum(image);
+      if (error != null) {
+        CustomException exception = CustomException(errorString: error);
+        emit(state.copyWith(loading: false, exception: exception));
+        emit(state.copyWith(exception: CustomException.empty));
+        return;
+      }
+      photosTaken.removeWhere((test) => test == image);
+    }
+    emit(state.copyWith(photosTaken: photosTaken));
+  }
+
+  Future<void> uploadSelectedPhotos() async {
+    List<CapturedImage> photosSelected =
+        List.from(state.selectedAlbumSelectedImageList);
+    List<CapturedImage> photosTaken = List.from(state.photosTaken);
+
+    for (CapturedImage image in state.selectedAlbumSelectedImageList) {
+      bool success = false;
+      String? error;
+      (success, error) = await dataRepository.addOneImageToAlbum(image);
+      if (error != null) {
+        CustomException exception = CustomException(errorString: error);
+        emit(state.copyWith(loading: false, exception: exception));
+        emit(state.copyWith(exception: CustomException.empty));
+        return;
+      }
+      photosSelected.removeWhere((test) => test == image);
+      photosTaken.removeWhere((test) => test == image);
+      emit(state.copyWith(photosTaken: photosTaken));
+    }
+    emit(state.copyWith(photosSelected: photosSelected));
   }
 
   void changeSelectedAlbum(Album? album) {
@@ -150,7 +205,10 @@ class CameraCubit extends HydratedCubit<CameraState> {
 
     for (XFile file in imageList) {
       CapturedImage image = CapturedImage(
-          imageXFile: file, albumID: newAlbum.albumId, type: type);
+        imageXFile: file,
+        albumID: newAlbum.albumId,
+        type: type,
+      );
       images.add(image);
     }
 
@@ -162,6 +220,14 @@ class CameraCubit extends HydratedCubit<CameraState> {
     int index = photosTaken.indexOf(capturedImage);
 
     photosTaken[index].caption = state.captionTextController.text;
+    emit(state.copyWith(photosTaken: photosTaken));
+  }
+
+  void updateImageCaptionWithText(CapturedImage capturedImage, String text) {
+    List<CapturedImage> photosTaken = List.from(state.photosTaken);
+    int index = photosTaken.indexOf(capturedImage);
+
+    photosTaken[index].caption = text;
     emit(state.copyWith(photosTaken: photosTaken));
   }
 
@@ -248,6 +314,19 @@ class CameraCubit extends HydratedCubit<CameraState> {
           captionTextController:
               TextEditingController(text: selectedImage.caption)),
     );
+  }
+
+  void removeImageFromUploadList() {
+    List<CapturedImage> photosTaken = List.from(state.photosTaken);
+    List<CapturedImage> photosSelected = List.from(state.photosSelected);
+
+    for (CapturedImage image in state.photosSelected) {
+      photosTaken.removeWhere((test) => test == image);
+      photosSelected.removeWhere((test) => test == image);
+      emit(state.copyWith(photosTaken: photosTaken));
+    }
+
+    emit(state.copyWith(photosSelected: photosSelected));
   }
 
   @override
