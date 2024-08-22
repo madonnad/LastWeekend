@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:shared_photo/bloc/cubit/camera_cubit.dart';
-import 'package:shared_photo/components/camera_comp/edit_screen_comp/submit_image_button.dart';
-import 'package:shared_photo/models/photo.dart';
+// import 'package:image_picker/image_picker.dart';
+// import 'package:shared_photo/bloc/cubit/camera_cubit.dart';
+// import 'package:shared_photo/models/photo.dart';
 
 class EmptyEditView extends StatelessWidget {
   const EmptyEditView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final ImagePicker imagePicker = ImagePicker();
+    //final ImagePicker imagePicker = ImagePicker();
 
-    void addListPhotos(List<XFile>? selectedImages) {
-      if (selectedImages == null) return;
+    // void addListPhotos(List<XFile>? selectedImages) {
+    //   if (selectedImages == null) return;
 
-      context
-          .read<CameraCubit>()
-          .addListOfPhotosToList(selectedImages, UploadType.forgotShot);
-    }
+    //   context
+    //       .read<CameraCubit>()
+    //       .addListOfPhotosToList(selectedImages, UploadType.forgotShot);
+    // }
 
     return SafeArea(
       child: Padding(

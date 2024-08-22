@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_photo/components/camera_comp/captured_image_list_comp/captured_image_item.dart';
 import 'package:shared_photo/components/camera_comp/captured_image_list_comp/captured_list_fab.dart';
