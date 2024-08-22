@@ -74,6 +74,7 @@ class CapturedImage {
     }
 
     return {
+      "uuid": uuid,
       "album_id": albumID ?? '',
       "caption": caption,
       "upload_type": typeString,

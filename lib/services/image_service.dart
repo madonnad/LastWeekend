@@ -121,7 +121,6 @@ class ImageService {
     Uint8List imageBytes = await File(imagePath).readAsBytes();
 
     if (statusController.isClosed) {
-      print('controller is closed');
       return (false, "controller is closed");
     }
 
@@ -146,7 +145,6 @@ class ImageService {
           // },
           onSendProgress: (int sent, int total) {
             double statusPercent = sent / total;
-            print(statusPercent);
             if (statusController.isClosed == false) {
               statusController.add(statusPercent);
             }
@@ -155,12 +153,6 @@ class ImageService {
 
         developer.log("upload finished");
 
-        // final uploadResponse = await http.post(
-        //   gcpSignedUrl,
-        //   headers: gcpHeader,
-        //   body: imageBytes,
-        // );
-
         if (uploadResponse.statusCode == 200) {
           return (true, null);
         }
@@ -168,7 +160,6 @@ class ImageService {
       }
       String code = response.statusCode.toString();
       String body = response.body;
-      //developer.log("$code: $body");
 
       return (false, "$code: $body");
     } catch (e) {
@@ -217,7 +208,7 @@ class ImageService {
     }
   }
 
-  static Future<(Photo?, String?)> postCapturedImage(
+  static Future<(Photo?, String?)> postCapturedImageData(
     String token,
     CapturedImage image,
   ) async {
@@ -239,18 +230,6 @@ class ImageService {
       if (response.statusCode == 200) {
         Map<String, dynamic> body = json.decode(response.body);
         Photo newImage = Photo.fromMap(body);
-
-        bool upload;
-        String? error;
-        (upload, error) = await uploadPhoto(
-          token,
-          image.imageXFile.path,
-          newImage.imageId,
-          image.uploadStatusController,
-        );
-        if (upload == false) {
-          return (null, error);
-        }
 
         return (newImage, null);
       } else {

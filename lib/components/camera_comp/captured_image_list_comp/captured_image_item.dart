@@ -28,8 +28,6 @@ class _CapturedImageItemState extends State<CapturedImageItem> {
     super.initState();
 
     subscription = widget.image.uploadStatusController.stream.listen((onData) {
-      print("${onData} from item");
-
       setState(() {
         uploadStatus = onData;
       });
@@ -159,7 +157,10 @@ class _CapturedImageItemState extends State<CapturedImageItem> {
               uploadStatus != null
                   ? LinearProgressIndicator(
                       value: uploadStatus,
-                      backgroundColor: Colors.white,
+                      backgroundColor: Colors.transparent,
+                      valueColor: const AlwaysStoppedAnimation<Color>(
+                        Color.fromRGBO(181, 131, 141, 1),
+                      ),
                     )
                   : const Gap(0),
             ],

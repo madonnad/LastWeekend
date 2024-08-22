@@ -31,6 +31,7 @@ class CameraCubit extends HydratedCubit<CameraState> {
       : super(CameraState.empty()) {
     if (mode == UploadMode.unlockedAlbums) {
       hydrate();
+      checkFailedUploads();
       albumStreamSubscription = dataRepository.albumStream.listen((event) {
         StreamOperation streamOperation = event.$1;
         Album album = event.$2;
@@ -58,6 +59,32 @@ class CameraCubit extends HydratedCubit<CameraState> {
           selectedAlbum: album!,
           mode: mode,
         ));
+      }
+    }
+  }
+
+  void checkFailedUploads() async {
+    if (state.failedUploads.isEmpty) return;
+
+    int backoffTime = 0;
+    int backoffIterator = 1;
+
+    Map<String, CapturedImage> failedUploads = Map.from(state.failedUploads);
+
+    while (failedUploads.isNotEmpty) {
+      for (CapturedImage image in state.failedUploads.values.toList()) {
+        bool success = false;
+        //String? error;
+        (success, _) = await dataRepository.uploadFailedImage(image);
+        if (success) {
+          failedUploads.removeWhere((key, value) => key == image.uuid);
+          emit(state.copyWith(failedUploads: failedUploads));
+        } else {
+          backoffTime = 2 ^ backoffIterator;
+          await Future.delayed(Duration(seconds: backoffTime));
+          backoffIterator++;
+          if (backoffIterator > 7) return;
+        }
       }
     }
   }
@@ -128,14 +155,22 @@ class CameraCubit extends HydratedCubit<CameraState> {
   Future<void> uploadAllImagesToAlbum() async {
     List<CapturedImage> photosTaken = List.from(state.photosTaken);
     List<CapturedImage> albumList = List.from(state.selectedAlbumImageList);
-
-    print(albumList.hashCode);
-    print(state.selectedAlbumImageList.hashCode);
+    List<CapturedImage> allSelectedImages = List.from(state.photosSelected);
 
     for (CapturedImage image in albumList) {
-      bool success = false;
+      //bool success = false;
       String? error;
-      (success, error) = await dataRepository.addOneImageToAlbum(image);
+      (_, error) = await dataRepository.addOneImageToAlbum(image);
+      if (error == "Image data failed") {
+        Map<String, CapturedImage> failedImages = Map.from(state.failedUploads);
+        failedImages.putIfAbsent(image.uuid, () => image);
+
+        CustomException exception = CustomException(errorString: error);
+        emit(state.copyWith(
+            failedUploads: failedImages, loading: false, exception: exception));
+        emit(state.copyWith(exception: CustomException.empty));
+        return;
+      }
       if (error != null) {
         CustomException exception = CustomException(errorString: error);
         emit(state.copyWith(loading: false, exception: exception));
@@ -143,8 +178,15 @@ class CameraCubit extends HydratedCubit<CameraState> {
         return;
       }
       photosTaken.removeWhere((test) => test == image);
+      allSelectedImages.removeWhere((test) => test == image);
+      emit(state.copyWith(
+        photosSelected: allSelectedImages,
+      ));
     }
-    emit(state.copyWith(photosTaken: photosTaken));
+    emit(state.copyWith(
+      photosTaken: photosTaken,
+      photosSelected: allSelectedImages,
+    ));
   }
 
   Future<void> uploadSelectedPhotos() async {
@@ -153,9 +195,19 @@ class CameraCubit extends HydratedCubit<CameraState> {
     List<CapturedImage> photosTaken = List.from(state.photosTaken);
 
     for (CapturedImage image in state.selectedAlbumSelectedImageList) {
-      bool success = false;
+      //bool success = false;
       String? error;
-      (success, error) = await dataRepository.addOneImageToAlbum(image);
+      (_, error) = await dataRepository.addOneImageToAlbum(image);
+      if (error == "Image data failed") {
+        Map<String, CapturedImage> failedImages = Map.from(state.failedUploads);
+        failedImages.putIfAbsent(image.uuid, () => image);
+
+        CustomException exception = CustomException(errorString: error);
+        emit(state.copyWith(
+            failedUploads: failedImages, loading: false, exception: exception));
+        emit(state.copyWith(exception: CustomException.empty));
+        return;
+      }
       if (error != null) {
         CustomException exception = CustomException(errorString: error);
         emit(state.copyWith(loading: false, exception: exception));
@@ -332,17 +384,27 @@ class CameraCubit extends HydratedCubit<CameraState> {
   @override
   CameraState? fromJson(Map<String, dynamic> json) {
     List<CapturedImage> photosTaken = [];
+    Map<String, CapturedImage> failedUploads = {};
 
     dynamic capturedImages = json['photos_taken'];
+    dynamic failedImages = json['failed_images'];
 
     for (var item in capturedImages) {
       CapturedImage image = CapturedImage.fromJson(item);
       photosTaken.add(image);
     }
 
+    for (var item in failedImages) {
+      CapturedImage image = CapturedImage.fromJson(item);
+      failedUploads.putIfAbsent(image.uuid, () => image);
+    }
+
     CameraState empty = CameraState.empty();
 
-    return empty.copyWith(photosTaken: photosTaken);
+    return empty.copyWith(
+      photosTaken: photosTaken,
+      failedUploads: failedUploads,
+    );
   }
 
   @override
@@ -351,10 +413,17 @@ class CameraCubit extends HydratedCubit<CameraState> {
 
     //jsonify photos taken
     List<Map<String, dynamic>> photosTakenJson = [];
+    List<Map<String, dynamic>> failedImageUploads = [];
     for (CapturedImage photo in state.photosTaken) {
       photosTakenJson.add(photo.toJson());
     }
     hydratedCache['photos_taken'] = photosTakenJson;
+
+    for (CapturedImage photo in state.failedUploads.values.toList()) {
+      failedImageUploads.add(photo.toJson());
+    }
+
+    hydratedCache['failed_images'] = failedImageUploads;
 
     return hydratedCache;
   }
