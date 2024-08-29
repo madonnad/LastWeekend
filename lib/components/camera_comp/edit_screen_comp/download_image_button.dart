@@ -51,12 +51,20 @@ class _DownloadImageButtonState extends State<DownloadImageButton>
       },
       borderRadius: BorderRadius.circular(10),
       child: Container(
-        height: 60,
-        width: 60,
+        height: 50,
         alignment: Alignment.center,
+        padding: const EdgeInsets.symmetric(horizontal: 12),
         decoration: BoxDecoration(
-          color: const Color.fromRGBO(44, 44, 44, 1),
-          borderRadius: BorderRadius.circular(10),
+          color: const Color.fromRGBO(181, 131, 141, 1),
+          borderRadius: BorderRadius.circular(5),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black54,
+              offset: Offset(0, 2),
+              blurRadius: 5,
+              spreadRadius: 1,
+            ),
+          ],
         ),
         child: isAnimated
             ? AnimatedBuilder(
@@ -69,19 +77,20 @@ class _DownloadImageButtonState extends State<DownloadImageButton>
                       end: Alignment.centerRight,
                       stops: [controller.value, controller.value + .25],
                       colors: const [
-                        Colors.lightGreenAccent,
+                        Colors.white,
                         Colors.transparent,
                       ],
                     ).createShader(bounds),
                     child: const Icon(
                       Icons.check,
                       size: 24,
+                      weight: 10,
                     ),
                   );
                 },
               )
             : const Icon(
-                Icons.download,
+                Icons.save,
                 size: 24,
                 color: Colors.white,
               ),

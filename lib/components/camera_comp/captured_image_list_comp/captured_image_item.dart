@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:icon_decoration/icon_decoration.dart';
 import 'package:shared_photo/bloc/cubit/camera_cubit.dart';
+import 'package:shared_photo/components/camera_comp/captured_image_modal/captured_image_modal.dart';
 import 'package:shared_photo/models/captured_image.dart';
 
 class CapturedImageItem extends StatefulWidget {
@@ -19,7 +21,6 @@ class CapturedImageItem extends StatefulWidget {
 }
 
 class _CapturedImageItemState extends State<CapturedImageItem> {
-  bool toggle = false;
   double? uploadStatus;
   late StreamSubscription<double> subscription;
 
@@ -50,7 +51,7 @@ class _CapturedImageItemState extends State<CapturedImageItem> {
             TextEditingController(text: widget.image.caption);
         return Container(
           padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 7),
-          margin: const EdgeInsets.symmetric(vertical: 5),
+          margin: const EdgeInsets.only(top: 5, bottom: 5),
           decoration: BoxDecoration(
             color: const Color.fromRGBO(19, 19, 19, 1),
             borderRadius: BorderRadius.circular(5),
@@ -59,18 +60,36 @@ class _CapturedImageItemState extends State<CapturedImageItem> {
             children: [
               Row(
                 children: [
-                  Container(
-                    height: rowHeight,
-                    clipBehavior: Clip.hardEdge,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: AspectRatio(
-                      aspectRatio: 5 / 6,
-                      child: Image(
-                        fit: BoxFit.cover,
-                        image: FileImage(
-                          File(widget.image.imageXFile.path),
+                  GestureDetector(
+                    onTap: () => {
+                      context
+                          .read<CameraCubit>()
+                          .updateSelectedImage(widget.image),
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        enableDrag: false,
+                        useSafeArea: true,
+                        backgroundColor: const Color.fromRGBO(19, 19, 19, 1),
+                        builder: (ctx) => BlocProvider.value(
+                          value: context.read<CameraCubit>(),
+                          child: const CapturedImageModal(),
+                        ),
+                      )
+                    },
+                    child: Container(
+                      height: rowHeight,
+                      clipBehavior: Clip.hardEdge,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: AspectRatio(
+                        aspectRatio: 5 / 6,
+                        child: Image(
+                          fit: BoxFit.cover,
+                          image: FileImage(
+                            File(widget.image.imageXFile.path),
+                          ),
                         ),
                       ),
                     ),
@@ -79,12 +98,13 @@ class _CapturedImageItemState extends State<CapturedImageItem> {
                     child: Container(
                       height: rowHeight,
                       padding: const EdgeInsets.only(left: 10, right: 5),
-                      child: TextField(
+                      child: TextFormField(
                         onTapOutside: (event) =>
                             FocusManager.instance.primaryFocus?.unfocus(),
                         onChanged: (text) => context
                             .read<CameraCubit>()
                             .updateImageCaptionWithText(widget.image, text),
+                        //focusNode: _focus,
                         controller: controller,
                         maxLines: null,
                         expands: true,
@@ -143,7 +163,7 @@ class _CapturedImageItemState extends State<CapturedImageItem> {
                           strokeAlign: BorderSide.strokeAlignOutside,
                         ),
                       ),
-                      value: state.photosSelected.contains(widget.image),
+                      value: state.photosToggled.contains(widget.image),
                       onChanged: (newValue) {
                         context
                             .read<CameraCubit>()

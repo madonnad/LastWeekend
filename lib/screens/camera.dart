@@ -1,13 +1,19 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/cubit/camera_cubit.dart';
 import 'package:shared_photo/components/camera_comp/active_album_dropdown.dart';
+import 'package:shared_photo/components/camera_comp/camera_image_stack.dart';
 import 'package:shared_photo/components/camera_comp/camera_utils/camera_controls.dart';
 import 'package:shared_photo/components/camera_comp/camera_utils/no_albums_overlay.dart';
 import 'package:shared_photo/components/camera_comp/captured_preview_listview.dart';
 import 'package:shared_photo/components/camera_comp/custom_cam_preview.dart';
+
+import 'package:shared_photo/screens/captured_image_list_screen.dart';
 
 class CameraScreen extends StatefulWidget {
   final List<CameraDescription> cameras;
@@ -134,12 +140,19 @@ class _CameraScreenState extends State<CameraScreen> {
         maxZoom < minZoom || currentZoom < minZoom || currentZoom > maxZoom;
     return BlocBuilder<CameraCubit, CameraState>(
       builder: (context, state) {
+        final size = MediaQuery.of(context).size;
         return Stack(
           children: [
             (controller.value.isInitialized)
-                ? GestureDetector(
-                    onDoubleTap: () => changeCameraDirection(),
-                    child: CustomCamPreview(controller: controller),
+                ? Positioned(
+                    bottom: kBottomNavigationBarHeight + 110 / 2,
+                    //top: 0,
+                    left: 0,
+                    right: 0,
+                    child: GestureDetector(
+                      onDoubleTap: () => changeCameraDirection(),
+                      child: CustomCamPreview(controller: controller),
+                    ),
                   )
                 : Container(
                     color: Colors.black,
@@ -147,13 +160,6 @@ class _CameraScreenState extends State<CameraScreen> {
                       child: CircularProgressIndicator(),
                     ),
                   ),
-            Positioned(
-              top: 125, // Adjust as needed
-              left: MediaQuery.of(context).size.width * .75, // Adjust as needed
-              right: 0, // Adjust as needed
-              bottom: 50, // Adjust as needed
-              child: const CapturedPreviewListView(),
-            ),
             const Positioned(
               top: 100, // Adjust as needed
               left: 0, // Adjust as needed
@@ -188,6 +194,12 @@ class _CameraScreenState extends State<CameraScreen> {
                         ),
                       ),
               ),
+            ),
+            Positioned(
+              bottom: 125, //MediaQuery.of(context).size.height * .75,
+              left: MediaQuery.of(context).size.width * .75,
+              right: 0,
+              child: const CameraImageStack(),
             ),
             Positioned(
                 bottom: 125, //MediaQuery.of(context).size.height * .75,

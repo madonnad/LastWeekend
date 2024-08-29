@@ -52,6 +52,7 @@ class CameraCubit extends HydratedCubit<CameraState> {
       // Initialize Unlocked Album Map
       _initializeUnlockedAlbums();
     } else if (mode == UploadMode.singleAlbum) {
+      albumStreamSubscription = null;
       if (album != null) {
         Map<String, Album> albumMap = {album!.albumId: album!};
         emit(state.copyWith(
@@ -61,6 +62,16 @@ class CameraCubit extends HydratedCubit<CameraState> {
         ));
       }
     }
+  }
+
+  void _initializeUnlockedAlbums() {
+    Map<String, Album> unlockedMap = Map.from(dataRepository.unlockedAlbums());
+    Album? selectedAlbum;
+    if (unlockedMap.isNotEmpty) {
+      selectedAlbum = unlockedMap.values.toList()[0];
+    }
+
+    emit(state.copyWith(albumMap: unlockedMap, selectedAlbum: selectedAlbum));
   }
 
   void checkFailedUploads() async {
@@ -107,23 +118,13 @@ class CameraCubit extends HydratedCubit<CameraState> {
   }
 
   void toggleImageInUploadList(CapturedImage image) {
-    List<CapturedImage> imageList = List.from(state.photosSelected);
+    List<CapturedImage> imageList = List.from(state.photosToggled);
     if (imageList.contains(image)) {
       imageList.removeWhere((listImage) => listImage == image);
     } else {
       imageList.add(image);
     }
-    emit(state.copyWith(photosSelected: imageList));
-  }
-
-  void _initializeUnlockedAlbums() {
-    Map<String, Album> unlockedMap = Map.from(dataRepository.unlockedAlbums());
-    Album? selectedAlbum;
-    if (unlockedMap.isNotEmpty) {
-      selectedAlbum = unlockedMap.values.toList()[0];
-    }
-
-    emit(state.copyWith(albumMap: unlockedMap, selectedAlbum: selectedAlbum));
+    emit(state.copyWith(photosToggled: imageList));
   }
 
   Future<void> downloadImageToDevice() async {
@@ -134,28 +135,65 @@ class CameraCubit extends HydratedCubit<CameraState> {
     return;
   }
 
-  Future<void> uploadImagesToAlbums(String token) async {
-    List<CapturedImage> photosTaken = List.from(state.photosTaken);
-
-    emit(state.copyWith(loading: true));
-
-    List<CapturedImage> failedUploads =
-        await dataRepository.addImagesToAlbum(photosTaken);
-
-    emit(state.copyWith(photosTaken: failedUploads, loading: false));
+  void updateSelectedImage(CapturedImage image) {
+    emit(state.copyWith(selectedImage: image));
   }
 
-  void updateSelectedImage(CapturedImage image) {
+  void deleteSelectedImage() {
+    List<CapturedImage> photosTaken = List.from(state.photosTaken);
+    List<CapturedImage> selectedAlbumList =
+        List.from(state.selectedAlbumImageList);
+    List<CapturedImage> allToggledImages = List.from(state.photosToggled);
+    CapturedImage? selectedImage = state.selectedImage;
+
+    int selectedIndex = photosTaken.indexWhere((test) => test == selectedImage);
+    if (selectedIndex == -1) return;
+
+    int newIndex = selectedIndex == 0 ? 1 : selectedIndex - 1;
+    CapturedImage? newImage = selectedAlbumList.elementAtOrNull(newIndex);
+
+    if (allToggledImages.contains(selectedImage)) {
+      allToggledImages.remove(selectedImage);
+    }
+
+    photosTaken.removeWhere((test) => test == selectedImage);
     emit(state.copyWith(
-      selectedImage: image,
-      captionTextController: TextEditingController(text: image.caption),
+      photosTaken: photosTaken,
+      selectedImage: newImage,
+      photosToggled: allToggledImages,
     ));
+  }
+
+  Future<void> uploadSelectedImage() async {
+    CapturedImage? image = state.selectedImage;
+
+    if (image == null) return;
+
+    String? error;
+    (_, error) = await dataRepository.addOneImageToAlbum(image);
+    if (error == "Image data failed") {
+      Map<String, CapturedImage> failedImages = Map.from(state.failedUploads);
+      failedImages.putIfAbsent(image.uuid, () => image);
+
+      CustomException exception = CustomException(errorString: error);
+      emit(state.copyWith(
+          failedUploads: failedImages, loading: false, exception: exception));
+      emit(state.copyWith(exception: CustomException.empty));
+      return;
+    }
+    if (error != null) {
+      CustomException exception = CustomException(errorString: error);
+      emit(state.copyWith(loading: false, exception: exception));
+      emit(state.copyWith(exception: CustomException.empty));
+      return;
+    }
+    deleteSelectedImage();
   }
 
   Future<void> uploadAllImagesToAlbum() async {
     List<CapturedImage> photosTaken = List.from(state.photosTaken);
     List<CapturedImage> albumList = List.from(state.selectedAlbumImageList);
-    List<CapturedImage> allSelectedImages = List.from(state.photosSelected);
+    List<CapturedImage> allSelectedImages = List.from(state.photosToggled);
 
     for (CapturedImage image in albumList) {
       //bool success = false;
@@ -180,21 +218,21 @@ class CameraCubit extends HydratedCubit<CameraState> {
       photosTaken.removeWhere((test) => test == image);
       allSelectedImages.removeWhere((test) => test == image);
       emit(state.copyWith(
-        photosSelected: allSelectedImages,
+        photosToggled: allSelectedImages,
       ));
     }
     emit(state.copyWith(
       photosTaken: photosTaken,
-      photosSelected: allSelectedImages,
+      photosToggled: allSelectedImages,
     ));
   }
 
-  Future<void> uploadSelectedPhotos() async {
+  Future<void> uploadToggledPhotos() async {
     List<CapturedImage> photosSelected =
-        List.from(state.selectedAlbumSelectedImageList);
+        List.from(state.selectedAlbumToggleImageList);
     List<CapturedImage> photosTaken = List.from(state.photosTaken);
 
-    for (CapturedImage image in state.selectedAlbumSelectedImageList) {
+    for (CapturedImage image in state.selectedAlbumToggleImageList) {
       //bool success = false;
       String? error;
       (_, error) = await dataRepository.addOneImageToAlbum(image);
@@ -218,7 +256,7 @@ class CameraCubit extends HydratedCubit<CameraState> {
       photosTaken.removeWhere((test) => test == image);
       emit(state.copyWith(photosTaken: photosTaken));
     }
-    emit(state.copyWith(photosSelected: photosSelected));
+    emit(state.copyWith(photosToggled: photosSelected));
   }
 
   void changeSelectedAlbum(Album? album) {
@@ -267,14 +305,6 @@ class CameraCubit extends HydratedCubit<CameraState> {
     emit(state.copyWith(photosTaken: images));
   }
 
-  void updateImageCaption(CapturedImage capturedImage) {
-    List<CapturedImage> photosTaken = List.from(state.photosTaken);
-    int index = photosTaken.indexOf(capturedImage);
-
-    photosTaken[index].caption = state.captionTextController.text;
-    emit(state.copyWith(photosTaken: photosTaken));
-  }
-
   void updateImageCaptionWithText(CapturedImage capturedImage, String text) {
     List<CapturedImage> photosTaken = List.from(state.photosTaken);
     int index = photosTaken.indexOf(capturedImage);
@@ -283,102 +313,45 @@ class CameraCubit extends HydratedCubit<CameraState> {
     emit(state.copyWith(photosTaken: photosTaken));
   }
 
-  void toggleMonthlyRecap(CapturedImage selectedImage) {
+  // void toggleMonthlyRecap(CapturedImage selectedImage) {
+  //   List<CapturedImage> photosTaken = List.from(state.photosTaken);
+  //   int index = photosTaken.indexOf(selectedImage);
+  //   photosTaken[index] =
+  //       photosTaken[index].setAddToRecap(!photosTaken[index].addToRecap);
+  //   !selectedImage.addToRecap;
+  //
+  //   emit(state.copyWith(
+  //       photosTaken: photosTaken, selectedImage: photosTaken[index]));
+  // }
+
+  void changeSelectedImageAlbum(Album album, String albumID) {
     List<CapturedImage> photosTaken = List.from(state.photosTaken);
-    int index = photosTaken.indexOf(selectedImage);
-    photosTaken[index] =
-        photosTaken[index].setAddToRecap(!photosTaken[index].addToRecap);
-    !selectedImage.addToRecap;
+    CapturedImage? image = state.selectedImage;
+
+    if (image == null) return;
+    int index = photosTaken.indexOf(image);
+
+    image.albumID = albumID;
+    photosTaken[index] = image;
 
     emit(state.copyWith(
-        photosTaken: photosTaken, selectedImage: photosTaken[index]));
+      photosTaken: photosTaken,
+      selectedAlbum: album,
+      selectedImage: image,
+    ));
   }
 
-  void changeImageAlbum(Album album, String albumID) {
+  void removeToggledImagesFromUploadList() {
     List<CapturedImage> photosTaken = List.from(state.photosTaken);
-    if (state.selectedImage == null) return;
-    int index = photosTaken.indexOf(state.selectedImage!);
+    List<CapturedImage> photosSelected = List.from(state.photosToggled);
 
-    photosTaken[index].albumID = albumID;
-
-    emit(state.copyWith(photosTaken: photosTaken, selectedAlbum: album));
-  }
-
-  void removePhotoFromList(BuildContext context, CapturedImage image) {
-    List<CapturedImage> photosTaken = state.photosTaken;
-    CapturedImage selectedImage = image;
-    int index;
-    List<CapturedImage> selectedAlbumList;
-    int selectedAlbumLength;
-    int selectedAlbumMaxIndex;
-
-    if (photosTaken.length == 1) {
-      // Navigator.of(context).pop();
-      emit(state.copyWith(
-          photosTaken: [],
-          selectedImage: null,
-          captionTextController: TextEditingController()));
-      return;
-    }
-
-    if (state.mapOfAlbumImages[state.selectedAlbum!.albumId] == null) {
-      return;
-    } else {
-      selectedAlbumList = state.mapOfAlbumImages[state.selectedAlbum!.albumId]!;
-      selectedAlbumLength = selectedAlbumList.length;
-      selectedAlbumMaxIndex = selectedAlbumLength - 1;
-      index = selectedAlbumList.indexWhere((element) => element == image);
-    }
-
-    if (selectedAlbumLength == 1) {
-      List<Album> albumsWithImages =
-          List.from(state.mapOfAlbumImages.keys.toList());
-      albumsWithImages.remove(state.selectedAlbum);
-
-      Album selectedAlbum = albumsWithImages[0];
-      selectedImage = state.mapOfAlbumImages[selectedAlbum]![0];
-
-      emit(state.copyWith(
-        selectedAlbum: selectedAlbum,
-        selectedImage: selectedImage,
-        captionTextController:
-            TextEditingController(text: selectedImage.caption),
-      ));
-
-      photosTaken.remove(image);
-      return;
-    }
-
-    if (index == selectedAlbumMaxIndex) {
-      selectedAlbumList.remove(image);
-      photosTaken.remove(image);
-      selectedImage = selectedAlbumList[selectedAlbumMaxIndex - 1];
-    } else {
-      selectedAlbumList.remove(image);
-      photosTaken.remove(image);
-      selectedImage = selectedAlbumList[index];
-    }
-
-    emit(
-      state.copyWith(
-          photosTaken: photosTaken,
-          selectedImage: selectedImage,
-          captionTextController:
-              TextEditingController(text: selectedImage.caption)),
-    );
-  }
-
-  void removeImageFromUploadList() {
-    List<CapturedImage> photosTaken = List.from(state.photosTaken);
-    List<CapturedImage> photosSelected = List.from(state.photosSelected);
-
-    for (CapturedImage image in state.photosSelected) {
+    for (CapturedImage image in state.photosToggled) {
       photosTaken.removeWhere((test) => test == image);
       photosSelected.removeWhere((test) => test == image);
       emit(state.copyWith(photosTaken: photosTaken));
     }
 
-    emit(state.copyWith(photosSelected: photosSelected));
+    emit(state.copyWith(photosToggled: photosSelected));
   }
 
   @override
@@ -386,17 +359,19 @@ class CameraCubit extends HydratedCubit<CameraState> {
     List<CapturedImage> photosTaken = [];
     Map<String, CapturedImage> failedUploads = {};
 
-    dynamic capturedImages = json['photos_taken'];
-    dynamic failedImages = json['failed_images'];
+    if (mode == UploadMode.unlockedAlbums) {
+      dynamic capturedImages = json['photos_taken'];
+      dynamic failedImages = json['failed_images'];
 
-    for (var item in capturedImages) {
-      CapturedImage image = CapturedImage.fromJson(item);
-      photosTaken.add(image);
-    }
+      for (var item in capturedImages) {
+        CapturedImage image = CapturedImage.fromJson(item);
+        photosTaken.add(image);
+      }
 
-    for (var item in failedImages) {
-      CapturedImage image = CapturedImage.fromJson(item);
-      failedUploads.putIfAbsent(image.uuid, () => image);
+      for (var item in failedImages) {
+        CapturedImage image = CapturedImage.fromJson(item);
+        failedUploads.putIfAbsent(image.uuid, () => image);
+      }
     }
 
     CameraState empty = CameraState.empty();
@@ -430,7 +405,9 @@ class CameraCubit extends HydratedCubit<CameraState> {
 
   @override
   Future<void> close() {
-    albumStreamSubscription?.cancel();
+    if (albumStreamSubscription != null) {
+      albumStreamSubscription?.cancel();
+    }
 
     return super.close();
   }
