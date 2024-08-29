@@ -34,7 +34,7 @@ class _CustomCamPreviewState extends State<CustomCamPreview> {
   void printMoveUpdate(LongPressMoveUpdateDetails details) {
     setState(() {
       if (firstFingerPressed && secondFingerPressed) {
-       // print('something');
+        // print('something');
         //print(details.localPosition);
       }
     });
@@ -43,14 +43,26 @@ class _CustomCamPreviewState extends State<CustomCamPreview> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return SizedBox(
-      width: size.width,
-      height: size.height,
-      child: FittedBox(
-        fit: BoxFit.cover,
-        child: SizedBox(
-          width: 100,
-          child: CameraPreview(widget.controller),
+    return AspectRatio(
+      aspectRatio: 9 / 16,
+      child: Container(
+        //width: size.width,
+        //height: size.height,
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10),
+            topRight: Radius.circular(10),
+            bottomLeft: Radius.circular(10),
+            bottomRight: Radius.circular(10),
+          ),
+        ),
+        clipBehavior: Clip.hardEdge,
+        child: FittedBox(
+          fit: BoxFit.fitHeight,
+          child: SizedBox(
+            width: 100,
+            child: CameraPreview(widget.controller),
+          ),
         ),
       ),
     );

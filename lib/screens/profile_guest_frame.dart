@@ -8,9 +8,9 @@ import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
 import 'package:shared_photo/bloc/cubit/camera_cubit.dart';
 import 'package:shared_photo/components/album_comp/image_components/guest_item_component.dart';
 import 'package:shared_photo/components/app_comp/section_header_small.dart';
-import 'package:shared_photo/components/camera_comp/edit_screen_comp/captured_edit_screen.dart';
 import 'package:shared_photo/models/photo.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
+import 'package:shared_photo/screens/captured_image_list_screen.dart';
 
 class ProfileGuestFrame extends StatelessWidget {
   final String guestID;
@@ -213,7 +213,7 @@ class ProfileGuestFrame extends StatelessWidget {
                                     mode: UploadMode.singleAlbum,
                                     album: state.album,
                                   ),
-                                  child: const CapturedEditScreen(),
+                                  child: const CapturedImageListScreen(),
                                 );
                               },
                             ),

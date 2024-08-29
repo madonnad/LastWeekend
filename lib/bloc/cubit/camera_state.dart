@@ -4,7 +4,7 @@ enum UploadMode { unlockedAlbums, singleAlbum }
 
 class CameraState extends Equatable {
   final List<CapturedImage> photosTaken;
-  final List<CapturedImage> photosSelected;
+  final List<CapturedImage> photosToggled;
   final Map<String, CapturedImage> failedUploads;
   final int? selectedIndex;
   final CapturedImage? selectedImage;
@@ -16,7 +16,7 @@ class CameraState extends Equatable {
   final CustomException exception;
   const CameraState({
     required this.photosTaken,
-    required this.photosSelected,
+    required this.photosToggled,
     required this.failedUploads,
     required this.selectedIndex,
     required this.selectedImage,
@@ -31,7 +31,7 @@ class CameraState extends Equatable {
   factory CameraState.empty() {
     return CameraState(
       photosTaken: const [],
-      photosSelected: const [],
+      photosToggled: const [],
       failedUploads: const {},
       selectedIndex: null,
       selectedImage: null,
@@ -45,7 +45,7 @@ class CameraState extends Equatable {
 
   CameraState copyWith({
     List<CapturedImage>? photosTaken,
-    List<CapturedImage>? photosSelected,
+    List<CapturedImage>? photosToggled,
     Map<String, CapturedImage>? failedUploads,
     int? selectedIndex,
     CapturedImage? selectedImage,
@@ -58,7 +58,7 @@ class CameraState extends Equatable {
   }) {
     return CameraState(
       photosTaken: photosTaken ?? this.photosTaken,
-      photosSelected: photosSelected ?? this.photosSelected,
+      photosToggled: photosToggled ?? this.photosToggled,
       failedUploads: failedUploads ?? this.failedUploads,
       selectedIndex: selectedIndex ?? this.selectedIndex,
       selectedImage: selectedImage ?? this.selectedImage,
@@ -77,8 +77,8 @@ class CameraState extends Equatable {
         .where((element) => element.albumID == selectedAlbum!.albumId));
   }
 
-  List<CapturedImage> get selectedAlbumSelectedImageList {
-    return List.from(photosSelected
+  List<CapturedImage> get selectedAlbumToggleImageList {
+    return List.from(photosToggled
         .where((element) => element.albumID == selectedAlbum!.albumId));
   }
 
@@ -117,7 +117,7 @@ class CameraState extends Equatable {
   @override
   List<Object?> get props => [
         photosTaken,
-        photosSelected,
+        photosToggled,
         failedUploads,
         selectedIndex,
         selectedAlbum,

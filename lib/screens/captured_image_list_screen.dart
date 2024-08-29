@@ -27,118 +27,134 @@ class CapturedImageListScreen extends StatelessWidget {
 
     return BlocBuilder<CameraCubit, CameraState>(
       builder: (context, state) {
-        bool itemsSelected = state.selectedAlbumSelectedImageList.isNotEmpty;
+        bool itemsSelected = state.selectedAlbumToggleImageList.isNotEmpty;
 
-        return SafeArea(
-          child: Scaffold(
-            resizeToAvoidBottomInset: true,
-            extendBodyBehindAppBar: true,
+        return Scaffold(
+          resizeToAvoidBottomInset: false,
+          extendBodyBehindAppBar: true,
+          backgroundColor: Colors.black,
+          appBar: AppBar(
             backgroundColor: Colors.black,
-            appBar: AppBar(
-              backgroundColor: Colors.black,
-              leading: IconButton(
-                onPressed: () => Navigator.of(context).pop(),
-                icon: state.mode == UploadMode.unlockedAlbums
-                    ? const Icon(Icons.arrow_back_ios_new)
-                    : const Icon(Icons.close),
-                color: Colors.white,
-              ),
-              title: const EditAlbumDropdown(
-                opacity: .75,
-              ),
-              centerTitle: true,
+            leading: IconButton(
+              onPressed: () => Navigator.of(context).pop(),
+              icon: state.mode == UploadMode.unlockedAlbums
+                  ? const Icon(Icons.arrow_back_ios_new)
+                  : const Icon(Icons.close),
+              color: Colors.white,
             ),
-            body: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Stack(
-                children: [
-                  state.selectedAlbumImageList.isNotEmpty
-                      ? ListView.builder(
-                          itemCount: state.selectedAlbumImageList.length,
-                          itemBuilder: (context, item) => CapturedImageItem(
-                            key: ValueKey(
-                                state.selectedAlbumImageList[item].hashCode),
-                            image: state.selectedAlbumImageList[item],
+            title: const EditAlbumDropdown(
+              opacity: .75,
+            ),
+            centerTitle: true,
+          ),
+          body: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: Stack(
+              children: [
+                state.selectedAlbumImageList.isNotEmpty
+                    ? SingleChildScrollView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          padding: EdgeInsets.only(
+                              left: 10,
+                              right: 10,
+                              bottom:
+                                  MediaQuery.of(context).viewInsets.bottom == 0
+                                      ? 75
+                                      : MediaQuery.of(context)
+                                              .viewInsets
+                                              .bottom +
+                                          15),
+                          child: ListView.builder(
+                            itemCount: state.selectedAlbumImageList.length,
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemBuilder: (context, item) {
+                              return CapturedImageItem(
+                                key: ValueKey(state
+                                    .selectedAlbumImageList[item].hashCode),
+                                image: state.selectedAlbumImageList[item],
+                              );
+                            },
                           ),
-                        )
-                      : const EmptyEditView(),
-                  Positioned(
-                    bottom: 40,
-                    width: MediaQuery.of(context).size.width - 20,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        itemsSelected
-                            ? CapturedListFab(
-                                count:
-                                    state.selectedAlbumSelectedImageList.length,
-                                backgroundColor:
-                                    const Color.fromRGBO(19, 19, 19, 1),
-                                horizontalPadding: 15,
-                                icon: Icons.delete_forever,
-                                contentColor: Colors.white54,
-                                borderRadius: 5,
-                                onTap: () => context
-                                    .read<CameraCubit>()
-                                    .removeImageFromUploadList(),
-                              )
-                            : const SizedBox.shrink(),
-                        (itemsSelected &&
-                                state.selectedAlbumSelectedImageList.length !=
-                                    state.selectedAlbumImageList.length)
-                            ? const Gap(7)
-                            : const Gap(0),
-                        (itemsSelected &&
-                                state.selectedAlbumSelectedImageList.length !=
-                                    state.selectedAlbumImageList.length)
-                            ? CapturedListFab(
-                                count:
-                                    state.selectedAlbumSelectedImageList.length,
-                                backgroundColor:
-                                    const Color.fromRGBO(136, 98, 106, 1),
-                                horizontalPadding: 15,
-                                icon: Icons.upload_rounded,
-                                contentColor: Colors.white.withOpacity(.75),
-                                borderRadius: 5,
-                                onTap: () => context
-                                    .read<CameraCubit>()
-                                    .uploadSelectedPhotos(),
-                              )
-                            : const SizedBox.shrink(),
-                        itemsSelected ? const Gap(7) : const Gap(0),
-                        state.selectedAlbumImageList.isNotEmpty
-                            ? CapturedListFab(
-                                count: state.selectedAlbumImageList.length,
-                                backgroundColor:
-                                    const Color.fromRGBO(181, 131, 141, 1),
-                                horizontalPadding: 25,
-                                icon: Icons.upload_rounded,
-                                contentColor: Colors.white,
-                                borderRadius: 5,
-                                onTap: () => context
-                                    .read<CameraCubit>()
-                                    .uploadAllImagesToAlbum(),
-                              )
-                            : const SizedBox.shrink(),
-                        const Gap(7),
-                        CapturedListFab(
-                          backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
-                          horizontalPadding: 15,
-                          icon: Icons.add_photo_alternate_rounded,
-                          contentColor: Colors.white,
-                          borderRadius: 5,
-                          onTap: () async {
-                            List<XFile>? selectedImages =
-                                await imagePicker.pickMultiImage();
+                        ),
+                      )
+                    : const EmptyEditView(),
+                Positioned(
+                  bottom: 40,
+                  width: MediaQuery.of(context).size.width - 20,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      itemsSelected
+                          ? CapturedListFab(
+                              count: state.selectedAlbumToggleImageList.length,
+                              backgroundColor:
+                                  const Color.fromRGBO(19, 19, 19, 1),
+                              horizontalPadding: 15,
+                              icon: Icons.delete_forever,
+                              contentColor: Colors.white54,
+                              borderRadius: 5,
+                              onTap: () => context
+                                  .read<CameraCubit>()
+                                  .removeToggledImagesFromUploadList(),
+                            )
+                          : const SizedBox.shrink(),
+                      (itemsSelected &&
+                              state.selectedAlbumToggleImageList.length !=
+                                  state.selectedAlbumImageList.length)
+                          ? const Gap(7)
+                          : const Gap(0),
+                      (itemsSelected &&
+                              state.selectedAlbumToggleImageList.length !=
+                                  state.selectedAlbumImageList.length)
+                          ? CapturedListFab(
+                              count: state.selectedAlbumToggleImageList.length,
+                              backgroundColor:
+                                  const Color.fromRGBO(136, 98, 106, 1),
+                              horizontalPadding: 15,
+                              icon: Icons.upload_rounded,
+                              contentColor: Colors.white.withOpacity(.75),
+                              borderRadius: 5,
+                              onTap: () => context
+                                  .read<CameraCubit>()
+                                  .uploadToggledPhotos(),
+                            )
+                          : const SizedBox.shrink(),
+                      itemsSelected ? const Gap(7) : const Gap(0),
+                      state.selectedAlbumImageList.isNotEmpty
+                          ? CapturedListFab(
+                              count: state.selectedAlbumImageList.length,
+                              backgroundColor:
+                                  const Color.fromRGBO(181, 131, 141, 1),
+                              horizontalPadding: 25,
+                              icon: Icons.upload_rounded,
+                              contentColor: Colors.white,
+                              borderRadius: 5,
+                              onTap: () => context
+                                  .read<CameraCubit>()
+                                  .uploadAllImagesToAlbum(),
+                            )
+                          : const SizedBox.shrink(),
+                      const Gap(7),
+                      CapturedListFab(
+                        backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
+                        horizontalPadding: 15,
+                        icon: Icons.add_photo_alternate_rounded,
+                        contentColor: Colors.white,
+                        borderRadius: 5,
+                        onTap: () async {
+                          List<XFile>? selectedImages =
+                              await imagePicker.pickMultiImage();
 
-                            addListPhotos(selectedImages);
-                          },
-                        )
-                      ],
-                    ),
+                          addListPhotos(selectedImages);
+                        },
+                      )
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         );
