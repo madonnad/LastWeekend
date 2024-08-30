@@ -3,46 +3,65 @@ import 'package:flutter/material.dart';
 
 class CustomCamPreview extends StatefulWidget {
   final CameraController controller;
-  const CustomCamPreview({super.key, required this.controller});
+  final double maxZoom;
+  final double minZoom;
+  const CustomCamPreview(
+      {super.key,
+      required this.controller,
+      required this.maxZoom,
+      required this.minZoom});
 
   @override
   State<CustomCamPreview> createState() => _CustomCamPreviewState();
 }
 
 class _CustomCamPreviewState extends State<CustomCamPreview> {
-  bool firstFingerPressed = false;
-  bool secondFingerPressed = false;
+  double currentZoom = 1;
+  double previousScale = 1;
+
   @override
   void initState() {
     super.initState();
   }
 
-  void toggleFirstFinger() {
-    //print("firstFingerPressed");
+  void pinchEnd(ScaleEndDetails details) async {
     setState(() {
-      firstFingerPressed = !firstFingerPressed;
+      previousScale = 1;
     });
   }
 
-  void toggleSecondFinger(TapDownDetails? details) {
-    //print("secondFingerPressed");
-    setState(() {
-      secondFingerPressed = !secondFingerPressed;
-    });
-  }
+  void pinchUpdate(ScaleUpdateDetails details) async {
+    double newScale = 0;
+    double newZoom = 0;
+    print(details.scale);
 
-  void printMoveUpdate(LongPressMoveUpdateDetails details) {
+    if (details.scale == 1) return;
+
+    newScale = details.scale - previousScale;
+    if (newScale < 1) {
+      newScale = newScale * 5;
+    }
+    newZoom = currentZoom + newScale;
+
+    if (newZoom > widget.maxZoom) {
+      newZoom = widget.maxZoom;
+    }
+
+    if (newZoom < widget.minZoom) {
+      newZoom = widget.minZoom;
+    }
+
     setState(() {
-      if (firstFingerPressed && secondFingerPressed) {
-        // print('something');
-        //print(details.localPosition);
-      }
+      currentZoom = newZoom;
+      previousScale = details.scale;
     });
+
+    await widget.controller.setZoomLevel(currentZoom);
   }
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    //final size = MediaQuery.of(context).size;
     return AspectRatio(
       aspectRatio: 9 / 16,
       child: Container(
@@ -57,11 +76,15 @@ class _CustomCamPreviewState extends State<CustomCamPreview> {
           ),
         ),
         clipBehavior: Clip.hardEdge,
-        child: FittedBox(
-          fit: BoxFit.fitHeight,
-          child: SizedBox(
-            width: 100,
-            child: CameraPreview(widget.controller),
+        child: GestureDetector(
+          onScaleEnd: pinchEnd,
+          onScaleUpdate: pinchUpdate,
+          child: FittedBox(
+            fit: BoxFit.fitHeight,
+            child: SizedBox(
+              width: 100,
+              child: CameraPreview(widget.controller),
+            ),
           ),
         ),
       ),

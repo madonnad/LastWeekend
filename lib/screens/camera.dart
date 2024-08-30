@@ -4,16 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/cubit/camera_cubit.dart';
 import 'package:shared_photo/components/camera_comp/active_album_dropdown.dart';
 import 'package:shared_photo/components/camera_comp/camera_image_stack.dart';
 import 'package:shared_photo/components/camera_comp/camera_utils/camera_controls.dart';
 import 'package:shared_photo/components/camera_comp/camera_utils/no_albums_overlay.dart';
-import 'package:shared_photo/components/camera_comp/captured_preview_listview.dart';
 import 'package:shared_photo/components/camera_comp/custom_cam_preview.dart';
-
-import 'package:shared_photo/screens/captured_image_list_screen.dart';
 
 class CameraScreen extends StatefulWidget {
   final List<CameraDescription> cameras;
@@ -48,31 +44,6 @@ class _CameraScreenState extends State<CameraScreen> {
       imageFormatGroup: ImageFormatGroup.yuv420,
     );
 
-    // controller.initialize().then((_) {
-    //   if (!mounted) {
-    //     return;
-    //   }
-    //   setState(() {});
-    // }).catchError((Object e) {
-    //   if (e is CameraException) {
-    //     switch (e.code) {
-    //       case 'CameraAccessDenied':
-    //         break;
-    //       case 'Cannot Record':
-    //         break;
-    //       default:
-    //         break;
-    //     }
-    //   }
-    // });
-
-    // controller.addListener(() {
-    //   if (mounted) {
-    //     setState(() {});
-    //   }
-    //   if (controller.value.hasError) {}
-    // });
-
     super.initState();
     Future.microtask(() async {
       await initializeCameraController();
@@ -97,8 +68,8 @@ class _CameraScreenState extends State<CameraScreen> {
         }));
     await controller.getMaxZoomLevel().then((value) => setState(() {
           maxZoom = value.floor().toDouble();
-          if (maxZoom > 6) {
-            maxZoom = 6;
+          if (maxZoom > 5) {
+            maxZoom = 5;
           }
         }));
 
@@ -144,14 +115,25 @@ class _CameraScreenState extends State<CameraScreen> {
         return Stack(
           children: [
             (controller.value.isInitialized)
-                ? Positioned(
-                    bottom: kBottomNavigationBarHeight + 110 / 2,
-                    //top: 0,
-                    left: 0,
-                    right: 0,
-                    child: GestureDetector(
-                      onDoubleTap: () => changeCameraDirection(),
-                      child: CustomCamPreview(controller: controller),
+                ? Padding(
+                    padding: EdgeInsets.only(
+                        top: MediaQuery.of(context).viewPadding.top),
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: GestureDetector(
+                            onDoubleTap: () => changeCameraDirection(),
+                            child: CustomCamPreview(
+                              controller: controller,
+                              maxZoom: maxZoom,
+                              minZoom: minZoom,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: kBottomNavigationBarHeight + 90 / 2,
+                        ),
+                      ],
                     ),
                   )
                 : Container(
@@ -168,31 +150,6 @@ class _CameraScreenState extends State<CameraScreen> {
                 child: ActiveAlbumDropdown(
                   opacity: .25,
                 ),
-              ),
-            ),
-            Positioned(
-              left: 0,
-              bottom: MediaQuery.of(context).size.height * .45,
-              child: RotatedBox(
-                quarterTurns: 3,
-                child: minMaxSame
-                    ? const SizedBox.shrink()
-                    : SizedBox(
-                        width: MediaQuery.of(context).size.height * .25,
-                        child: Slider(
-                          value: currentZoom,
-                          min: minZoom,
-                          max: maxZoom,
-                          // divisions: (maxZoom).toInt(),
-                          // label: (currentZoom - 1).round().toString(),
-                          onChanged: (value) {
-                            setState(() {
-                              currentZoom = value;
-                              controller.setZoomLevel(value);
-                            });
-                          },
-                        ),
-                      ),
               ),
             ),
             Positioned(
