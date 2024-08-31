@@ -33,13 +33,12 @@ class _CustomCamPreviewState extends State<CustomCamPreview> {
   void pinchUpdate(ScaleUpdateDetails details) async {
     double newScale = 0;
     double newZoom = 0;
-    print(details.scale);
 
     if (details.scale == 1) return;
 
     newScale = details.scale - previousScale;
     if (newScale < 1) {
-      newScale = newScale * 5;
+      newScale = newScale * 6;
     }
     newZoom = currentZoom + newScale;
 
@@ -63,7 +62,7 @@ class _CustomCamPreviewState extends State<CustomCamPreview> {
   Widget build(BuildContext context) {
     //final size = MediaQuery.of(context).size;
     return AspectRatio(
-      aspectRatio: 9 / 16,
+      aspectRatio: 1 / widget.controller.value.aspectRatio,
       child: Container(
         //width: size.width,
         //height: size.height,
@@ -79,13 +78,7 @@ class _CustomCamPreviewState extends State<CustomCamPreview> {
         child: GestureDetector(
           onScaleEnd: pinchEnd,
           onScaleUpdate: pinchUpdate,
-          child: FittedBox(
-            fit: BoxFit.fitHeight,
-            child: SizedBox(
-              width: 100,
-              child: CameraPreview(widget.controller),
-            ),
-          ),
+          child: CameraPreview(widget.controller),
         ),
       ),
     );

@@ -17,6 +17,7 @@ class NewBottomAppBar extends StatelessWidget {
           context.read<NotificationCubit>().clearTempNotifications();
         }
         return BottomAppBar(
+          padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
           height: 85,
           surfaceTintColor: Colors.transparent,
           color: Colors.transparent,
