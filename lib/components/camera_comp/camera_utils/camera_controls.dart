@@ -95,9 +95,13 @@ class _CameraControlsState extends State<CameraControls> {
         ),
         GestureDetector(
           onTap: () async {
-            List<XFile>? selectedImages = await imagePicker
-                .pickMultiImage()
-                .whenComplete(() => pushCapturedPage());
+            List<XFile>? selectedImages;
+            selectedImages =
+                await imagePicker.pickMultiImage().whenComplete(() {
+              if (selectedImages != null) {
+                pushCapturedPage();
+              }
+            });
             addListPhotos(selectedImages);
           },
           child: const Icon(
