@@ -3,7 +3,8 @@ part of './data_repository.dart';
 enum ImageChangeKey { userLikedUpdate, likeCountUpdate }
 
 extension ImageDataRepo on DataRepository {
-  Future<List<CapturedImage>> addImageToAlbum(
+  //Below function is only being used for uploading all images to an album - this is the old version, should delete
+  Future<List<CapturedImage>> addImagesToAlbum(
       List<CapturedImage> imagesToUpload) async {
     List<CapturedImage> failedUploads = [];
 
@@ -24,7 +25,7 @@ extension ImageDataRepo on DataRepository {
 
       Photo? uploadedImage;
       (uploadedImage, _) =
-          await ImageService.postCapturedImage(user.token, image);
+          await ImageService.postCapturedImageData(user.token, image);
       if (uploadedImage == null) {
         failedUploads.add(image);
         continue;
@@ -46,6 +47,85 @@ extension ImageDataRepo on DataRepository {
       i--;
     }
     return failedUploads;
+  }
+
+  Future<(bool, String?)> addOneImageToAlbum(CapturedImage image) async {
+    if (image.albumID == null) {
+      return (false, "Image not associated to album");
+    }
+
+    if (albumMap[image.albumID!] == null) {
+      return (false, "Album does not exist");
+    }
+
+    String albumID = image.albumID!;
+    bool success = false;
+    String? error;
+
+    (success, error) = await ImageService.uploadPhoto(
+      user.token,
+      image.imageXFile.path,
+      image.uuid,
+      image.uploadStatusController,
+    );
+
+    if (!success) return (success, error);
+
+    Photo? uploadedImage;
+    (uploadedImage, _) = await ImageService.postCapturedImageData(
+      user.token,
+      image,
+    );
+    if (uploadedImage == null) {
+      return (false, "Image data failed");
+    }
+
+    Map<String, Photo> albumImages = albumMap[albumID]!.imageMap;
+    albumImages[uploadedImage.imageId] = uploadedImage;
+
+    ImageChange change = ImageChange(
+      albumID: albumID,
+      imageID: uploadedImage.imageId,
+      image: uploadedImage,
+    );
+
+    _imageController.add(change);
+    return (true, null);
+  }
+
+  Future<(bool, String?)> uploadFailedImage(CapturedImage image) async {
+    if (image.albumID == null) {
+      return (false, "Image not associated to album");
+    }
+
+    if (albumMap[image.albumID!] == null) {
+      return (false, "Album does not exist");
+    }
+
+    String albumID = image.albumID!;
+    //bool success = false;
+    //String? error;
+
+    Photo? uploadedImage;
+    (uploadedImage, _) = await ImageService.postCapturedImageData(
+      user.token,
+      image,
+    );
+    if (uploadedImage == null) {
+      return (false, "Image data failed");
+    }
+
+    Map<String, Photo> albumImages = albumMap[albumID]!.imageMap;
+    albumImages[uploadedImage.imageId] = uploadedImage;
+
+    ImageChange change = ImageChange(
+      albumID: albumID,
+      imageID: uploadedImage.imageId,
+      image: uploadedImage,
+    );
+
+    _imageController.add(change);
+    return (true, null);
   }
 
   Future<(bool, String?)> moveImageToAlbum(

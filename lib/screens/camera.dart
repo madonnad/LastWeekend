@@ -4,9 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/cubit/camera_cubit.dart';
 import 'package:shared_photo/components/camera_comp/active_album_dropdown.dart';
+import 'package:shared_photo/components/camera_comp/camera_image_stack.dart';
 import 'package:shared_photo/components/camera_comp/camera_utils/camera_controls.dart';
 import 'package:shared_photo/components/camera_comp/camera_utils/no_albums_overlay.dart';
-import 'package:shared_photo/components/camera_comp/captured_preview_listview.dart';
 import 'package:shared_photo/components/camera_comp/custom_cam_preview.dart';
 
 class CameraScreen extends StatefulWidget {
@@ -38,34 +38,9 @@ class _CameraScreenState extends State<CameraScreen> {
           );
     controller = CameraController(
       camera,
-      ResolutionPreset.max,
+      ResolutionPreset.ultraHigh,
       imageFormatGroup: ImageFormatGroup.yuv420,
     );
-
-    // controller.initialize().then((_) {
-    //   if (!mounted) {
-    //     return;
-    //   }
-    //   setState(() {});
-    // }).catchError((Object e) {
-    //   if (e is CameraException) {
-    //     switch (e.code) {
-    //       case 'CameraAccessDenied':
-    //         break;
-    //       case 'Cannot Record':
-    //         break;
-    //       default:
-    //         break;
-    //     }
-    //   }
-    // });
-
-    // controller.addListener(() {
-    //   if (mounted) {
-    //     setState(() {});
-    //   }
-    //   if (controller.value.hasError) {}
-    // });
 
     super.initState();
     Future.microtask(() async {
@@ -91,8 +66,8 @@ class _CameraScreenState extends State<CameraScreen> {
         }));
     await controller.getMaxZoomLevel().then((value) => setState(() {
           maxZoom = value.floor().toDouble();
-          if (maxZoom > 6) {
-            maxZoom = 6;
+          if (maxZoom > 5) {
+            maxZoom = 5;
           }
         }));
 
@@ -117,7 +92,7 @@ class _CameraScreenState extends State<CameraScreen> {
 
     controller = CameraController(
       widget.cameras[cameraSelect],
-      ResolutionPreset.high,
+      ResolutionPreset.ultraHigh,
       imageFormatGroup: ImageFormatGroup.yuv420,
     );
 
@@ -134,12 +109,30 @@ class _CameraScreenState extends State<CameraScreen> {
         maxZoom < minZoom || currentZoom < minZoom || currentZoom > maxZoom;
     return BlocBuilder<CameraCubit, CameraState>(
       builder: (context, state) {
+        final size = MediaQuery.of(context).size;
         return Stack(
           children: [
             (controller.value.isInitialized)
-                ? GestureDetector(
-                    onDoubleTap: () => changeCameraDirection(),
-                    child: CustomCamPreview(controller: controller),
+                ? SizedBox(
+                    height: size.height,
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: MediaQuery.of(context).viewPadding.top,
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            onDoubleTap: () => changeCameraDirection(),
+                            child: CustomCamPreview(
+                              controller: controller,
+                              maxZoom: maxZoom,
+                              minZoom: minZoom,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 110),
+                      ],
+                    ),
                   )
                 : Container(
                     color: Colors.black,
@@ -147,13 +140,6 @@ class _CameraScreenState extends State<CameraScreen> {
                       child: CircularProgressIndicator(),
                     ),
                   ),
-            Positioned(
-              top: 125, // Adjust as needed
-              left: MediaQuery.of(context).size.width * .75, // Adjust as needed
-              right: 0, // Adjust as needed
-              bottom: 50, // Adjust as needed
-              child: const CapturedPreviewListView(),
-            ),
             const Positioned(
               top: 100, // Adjust as needed
               left: 0, // Adjust as needed
@@ -165,32 +151,13 @@ class _CameraScreenState extends State<CameraScreen> {
               ),
             ),
             Positioned(
-              left: 0,
-              bottom: MediaQuery.of(context).size.height * .45,
-              child: RotatedBox(
-                quarterTurns: 3,
-                child: minMaxSame
-                    ? const SizedBox.shrink()
-                    : SizedBox(
-                        width: MediaQuery.of(context).size.height * .25,
-                        child: Slider(
-                          value: currentZoom,
-                          min: minZoom,
-                          max: maxZoom,
-                          // divisions: (maxZoom).toInt(),
-                          // label: (currentZoom - 1).round().toString(),
-                          onChanged: (value) {
-                            setState(() {
-                              currentZoom = value;
-                              controller.setZoomLevel(value);
-                            });
-                          },
-                        ),
-                      ),
-              ),
+              bottom: 110 + 25, //MediaQuery.of(context).size.height * .75,
+              left: MediaQuery.of(context).size.width * .75,
+              right: 0,
+              child: const CameraImageStack(),
             ),
             Positioned(
-                bottom: 125, //MediaQuery.of(context).size.height * .75,
+                bottom: 110 + 25, //MediaQuery.of(context).size.height * .75,
                 left: 0,
                 right: 0,
                 child: CameraControls(

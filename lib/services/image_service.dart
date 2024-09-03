@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
@@ -7,6 +8,7 @@ import 'package:shared_photo/models/captured_image.dart';
 import 'package:shared_photo/models/photo.dart';
 import 'package:http/http.dart' as http;
 import 'dart:developer' as developer;
+import 'package:dio/dio.dart';
 
 class ImageService {
   static Future<List<Photo>> getUserImages(String token) async {
@@ -98,7 +100,12 @@ class ImageService {
   }
 
   static Future<(bool, String?)> uploadPhoto(
-      String token, String imagePath, String imageId) async {
+    String token,
+    String imagePath,
+    String imageId,
+    StreamController<double> statusController,
+  ) async {
+    final dio = Dio();
     String urlString = "${dotenv.env['URL']}/upload?id=$imageId";
     Uri url = Uri.parse(urlString);
 
@@ -113,26 +120,50 @@ class ImageService {
 
     Uint8List imageBytes = await File(imagePath).readAsBytes();
 
+    if (statusController.isClosed) {
+      return (false, "controller is closed");
+    }
+
     try {
-      var response = await http.get(url, headers: headers);
+      dynamic response = await http.get(url, headers: headers);
 
       if (response.statusCode == 200) {
         final gcpSignedUrl = Uri.parse(response.body);
+        Options options = Options(
+          receiveTimeout: const Duration(seconds: 10),
+          headers: gcpHeader,
+        );
 
-        final uploadResponse =
-            await http.put(gcpSignedUrl, headers: gcpHeader, body: imageBytes);
+        final uploadResponse = await dio.put(
+          gcpSignedUrl.toString(),
+          data: imageBytes,
+          options: options,
+          // onReceiveProgress: (int sent, int total) {
+          //   double statusPercent = sent / total;
+          //   print(statusPercent);
+          //   statusController.add(statusPercent);
+          // },
+          onSendProgress: (int sent, int total) {
+            double statusPercent = sent / total;
+            if (statusController.isClosed == false) {
+              statusController.add(statusPercent);
+            }
+          },
+        );
+
+        developer.log("upload finished");
 
         if (uploadResponse.statusCode == 200) {
           return (true, null);
         }
         response = uploadResponse;
       }
-
       String code = response.statusCode.toString();
       String body = response.body;
 
       return (false, "$code: $body");
     } catch (e) {
+      developer.log(e.toString());
       return (false, e.toString());
     }
   }
@@ -177,8 +208,10 @@ class ImageService {
     }
   }
 
-  static Future<(Photo?, String?)> postCapturedImage(
-      String token, CapturedImage image) async {
+  static Future<(Photo?, String?)> postCapturedImageData(
+    String token,
+    CapturedImage image,
+  ) async {
     String urlString = "${dotenv.env['URL']}/user/image";
     Uri url = Uri.parse(urlString);
 
@@ -197,14 +230,6 @@ class ImageService {
       if (response.statusCode == 200) {
         Map<String, dynamic> body = json.decode(response.body);
         Photo newImage = Photo.fromMap(body);
-
-        bool upload;
-        String? error;
-        (upload, error) =
-            await uploadPhoto(token, image.imageXFile.path, newImage.imageId);
-        if (upload == false) {
-          return (null, error);
-        }
 
         return (newImage, null);
       } else {

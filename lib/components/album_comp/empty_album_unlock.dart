@@ -4,9 +4,9 @@ import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/camera_cubit.dart';
-import 'package:shared_photo/components/camera_comp/edit_screen_comp/captured_edit_screen.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
+import 'package:shared_photo/screens/captured_image_list_screen.dart';
 
 class EmptyAlbumView extends StatelessWidget {
   final bool isUnlockPhase;
@@ -91,7 +91,7 @@ class EmptyAlbumView extends StatelessWidget {
                   mode: UploadMode.singleAlbum,
                   album: album,
                 ),
-                child: const CapturedEditScreen(),
+                child: const CapturedImageListScreen(),
               );
             },
           ),

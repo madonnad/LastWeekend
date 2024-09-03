@@ -52,7 +52,8 @@ class _MoveAlbumModalState extends State<MoveAlbumModal> {
                         Album album = state.unlockedAlbums[selectedIndex!];
                         context
                             .read<CameraCubit>()
-                            .changeImageAlbum(album, album.albumId);
+                            .changeSelectedImageAlbum(album, album.albumId);
+                        Navigator.of(context).pop();
                         Navigator.of(context).pop();
                       }
                     },

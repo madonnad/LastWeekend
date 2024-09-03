@@ -1,9 +1,11 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_photo/bloc/cubit/camera_cubit.dart';
 import 'package:shared_photo/components/camera_comp/camera_utils/shutter_button.dart';
-import 'package:shared_photo/components/camera_comp/edit_screen_comp/captured_edit_screen.dart';
+import 'package:shared_photo/models/photo.dart';
+import 'package:shared_photo/screens/captured_image_list_screen.dart';
 
 class CameraControls extends StatefulWidget {
   final CameraController controller;
@@ -44,6 +46,28 @@ class _CameraControlsState extends State<CameraControls> {
 
   @override
   Widget build(BuildContext context) {
+    final ImagePicker imagePicker = ImagePicker();
+
+    void addListPhotos(List<XFile>? selectedImages) {
+      if (selectedImages == null) return;
+
+      context
+          .read<CameraCubit>()
+          .addListOfPhotosToList(selectedImages, UploadType.forgotShot);
+    }
+
+    void pushCapturedPage() {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (ctx) => BlocProvider<CameraCubit>.value(
+            value: context.read<CameraCubit>(),
+            child:
+                const CapturedImageListScreen(), //const CapturedEditScreen(),
+          ),
+        ),
+      );
+    }
+
     return Column(
       children: [
         Row(
@@ -70,18 +94,16 @@ class _CameraControlsState extends State<CameraControls> {
           ],
         ),
         GestureDetector(
-          onTap: () => showModalBottomSheet(
-            context: context,
-            isScrollControlled: true,
-            useSafeArea: true,
-            enableDrag: false,
-            builder: (ctx) {
-              return BlocProvider.value(
-                value: context.read<CameraCubit>(),
-                child: const CapturedEditScreen(),
-              );
-            },
-          ),
+          onTap: () async {
+            List<XFile>? selectedImages;
+            selectedImages =
+                await imagePicker.pickMultiImage().whenComplete(() {
+              if (selectedImages != null) {
+                pushCapturedPage();
+              }
+            });
+            addListPhotos(selectedImages);
+          },
           child: const Icon(
             Icons.library_add,
             color: Colors.white,
