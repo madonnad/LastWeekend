@@ -12,6 +12,7 @@ import 'package:shared_photo/bloc/cubit/firebase_notifications_cubit.dart';
 import 'package:shared_photo/firebase_options.dart';
 import 'package:shared_photo/repositories/auth0_repository.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
+import 'package:shared_photo/repositories/firebase_messaging_repository.dart';
 import 'package:shared_photo/repositories/notification_repository/notification_repository.dart';
 import 'package:shared_photo/repositories/realtime_repository.dart';
 import 'package:shared_photo/repositories/user_repository.dart';
@@ -45,7 +46,6 @@ Future<void> main() async {
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory: await getApplicationDocumentsDirectory(),
   );
-
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -96,16 +96,18 @@ class MainApp extends StatelessWidget {
                       ),
                     ),
                     RepositoryProvider(
-                      create: (context) => NotificationRepository(
-                        realtimeRepository: context.read<RealtimeRepository>(),
+                      lazy: false,
+                      create: (context) => FirebaseMessagingRepository(
                         user: context.read<AppBloc>().state.user,
+                        settings: settings,
                       ),
                     ),
                     RepositoryProvider(
-                      lazy: false,
-                      create: (context) => FirebaseNotificationsCubit(
+                      create: (context) => NotificationRepository(
+                        firebaseMessagingRepository:
+                            context.read<FirebaseMessagingRepository>(),
+                        realtimeRepository: context.read<RealtimeRepository>(),
                         user: context.read<AppBloc>().state.user,
-                        settings: settings,
                       ),
                     ),
                     RepositoryProvider(
