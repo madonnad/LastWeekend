@@ -55,11 +55,12 @@ class ImageFrameImageContainer extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: const Color.fromRGBO(19, 19, 19, 1),
                           image: DecorationImage(
-                              image: CachedNetworkImageProvider(
-                                state.imageFrameTimelineList[index].imageReq,
-                                headers: headers,
-                              ),
-                              fit: BoxFit.cover),
+                            image: CachedNetworkImageProvider(
+                              state.imageFrameTimelineList[index].imageReq,
+                              headers: headers,
+                            ),
+                            fit: BoxFit.fitWidth,
+                          ),
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
