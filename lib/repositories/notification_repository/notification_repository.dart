@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:shared_photo/models/notification.dart';
 import 'package:shared_photo/models/user.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
+import 'package:shared_photo/repositories/firebase_messaging_repository.dart';
 import 'package:shared_photo/repositories/realtime_repository.dart';
 import 'package:shared_photo/services/notification_service.dart';
 import 'package:shared_photo/services/request_service.dart';
@@ -13,6 +14,7 @@ part 'all_noti_repo.dart';
 
 class NotificationRepository {
   //Imports
+  FirebaseMessagingRepository firebaseMessagingRepository;
   RealtimeRepository realtimeRepository;
   User user;
 
@@ -29,7 +31,9 @@ class NotificationRepository {
       _notificationController.stream;
 
   NotificationRepository(
-      {required this.realtimeRepository, required this.user}) {
+      {required this.firebaseMessagingRepository,
+      required this.realtimeRepository,
+      required this.user}) {
     // Initialize Notifications from DB
     _initializeNotifications();
 

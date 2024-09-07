@@ -97,14 +97,12 @@ class Auth0Repository {
       {required String email, required String password}) async {
     String audience = dotenv.env["AUTH0_AUDIENCE"] ?? '';
     try {
-      print('before login');
       Credentials credentials = await auth0.api.login(
         usernameOrEmail: email,
         password: password,
         connectionOrRealm: connection,
         audience: audience,
       );
-      print('after login');
 
       bool didStore =
           await auth0.credentialsManager.storeCredentials(credentials);
