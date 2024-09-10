@@ -215,14 +215,16 @@ class CameraCubit extends HydratedCubit<CameraState> {
         emit(state.copyWith(exception: CustomException.empty));
         return;
       }
-      photosTaken.removeWhere((test) => test == image);
+      photosTaken.remove(image);
+      List<CapturedImage> _photosTaken = List.from(photosTaken);
       allSelectedImages.removeWhere((test) => test == image);
       emit(state.copyWith(
         photosToggled: allSelectedImages,
+        photosTaken: _photosTaken,
       ));
     }
     emit(state.copyWith(
-      photosTaken: photosTaken,
+      //photosTaken: photosTaken,
       photosToggled: allSelectedImages,
     ));
   }
@@ -236,7 +238,7 @@ class CameraCubit extends HydratedCubit<CameraState> {
       //bool success = false;
       String? error;
       (_, error) = await dataRepository.addOneImageToAlbum(image);
-      if (error == "Image data failed") {
+      if (error == "Image data upload failed") {
         Map<String, CapturedImage> failedImages = Map.from(state.failedUploads);
         failedImages.putIfAbsent(image.uuid, () => image);
 

@@ -26,10 +26,10 @@ class _CapturedModalPageViewState extends State<CapturedModalPageView> {
   late TextEditingController textEditingController;
   late CapturedImage _selectedImage;
   int page = 0;
+  bool controllerMoved = false;
 
   @override
   void initState() {
-    print('inits');
     _selectedImage = widget.selectedImage;
     page = widget.selectedAlbumImageList.indexOf(_selectedImage);
     pageController = PageController(viewportFraction: .9, initialPage: page);
@@ -39,7 +39,6 @@ class _CapturedModalPageViewState extends State<CapturedModalPageView> {
 
   @override
   Widget build(BuildContext context) {
-    bool controllerMoved = false;
     return BlocConsumer<CameraCubit, CameraState>(
       listenWhen: (previous, current) =>
           previous.selectedAlbumImageList != current.selectedAlbumImageList,
@@ -49,22 +48,25 @@ class _CapturedModalPageViewState extends State<CapturedModalPageView> {
 
         textEditingController =
             TextEditingController(text: state.selectedImage?.caption);
-
-        controllerMoved = true;
-
-        pageController.jumpToPage(page);
       },
       builder: (context, state) {
         void updateSelectedImage(int index) {
-          if (controllerMoved) {
-            controllerMoved = false;
-          } else {
-            context
-                .read<CameraCubit>()
-                .updateSelectedImage(state.selectedAlbumImageList[index]);
-            textEditingController = TextEditingController(
-                text: state.selectedAlbumImageList[index].caption);
-          }
+          context
+              .read<CameraCubit>()
+              .updateSelectedImage(state.selectedAlbumImageList[index]);
+
+          textEditingController = TextEditingController(
+              text: state.selectedAlbumImageList[index].caption);
+          // if (controllerMoved) {
+          //   controllerMoved = false;
+          // } else {
+          //   context
+          //       .read<CameraCubit>()
+          //       .updateSelectedImage(state.selectedAlbumImageList[index]);
+          //   textEditingController = TextEditingController(
+          //       text: state.selectedAlbumImageList[index].caption);
+          //   controllerMoved = true;
+          // }
 
           //setState(() {});
         }

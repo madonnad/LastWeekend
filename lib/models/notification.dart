@@ -107,7 +107,9 @@ class AlbumInviteNotification extends Notification {
       notificationID: map['request_id'],
       receivedDateTime: DateTime.parse(map['received_at']),
       notificationMediaID: map['album_cover_id'],
-      notificationSeen: map['invite_seen'],
+      notificationSeen: map['invite_seen'].runtimeType == String
+          ? bool.parse(map['invite_seen'])
+          : map['invite_seen'],
       albumID: map['album_id'],
       albumName: albumName,
       albumOwner: map['album_owner'],
@@ -117,7 +119,9 @@ class AlbumInviteNotification extends Notification {
       guestFirst: map['guest_first'],
       guestLast: map['guest_last'],
       status: status,
-      responseSeen: map['response_seen'],
+      responseSeen: map['response_seen'].runtimeType == String
+          ? bool.parse(map['response_seen'])
+          : map['response_seen'],
       unlockedAt: DateTime.parse(map['unlocked_at']),
     );
   }
@@ -186,7 +190,9 @@ class FriendRequestNotification extends Notification {
     return FriendRequestNotification(
       notificationID: map['request_id'],
       receivedDateTime: DateTime.parse(map['received_at']),
-      notificationSeen: map['request_seen'] as bool,
+      notificationSeen: map['request_seen'].runtimeType == String
+          ? bool.parse(map['request_seen'])
+          : map['request_seen'],
       senderID: map['sender_id'],
       receiverID: map['receiver_id'],
       firstName: map['first_name'],
