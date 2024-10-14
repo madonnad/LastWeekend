@@ -200,24 +200,26 @@ extension AlbumDataRepo on DataRepository {
     String albumID = notification.albumID;
     String guestID = notification.guestID;
 
-    bool albumExists = albumMap.containsKey(albumID) ? true : false;
+    bool albumExists = albumMap.containsKey(albumID);
 
     switch (notification.status) {
       case RequestStatus.pending:
         return;
       case RequestStatus.accepted:
-        if (notification.guestID != user.id && albumExists) {
+        if (notification.guestID != user.id &&
+            albumMap[albumID]?.guestMap[guestID] != null &&
+            albumExists) {
           albumMap[albumID]!.guestMap[guestID]!.status = RequestStatus.accepted;
           _albumController.add((StreamOperation.update, albumMap[albumID]!));
           return;
         }
         if (notification.guestID == user.id) {
-          if (!albumExists) {
-            getAlbumByID(albumID);
-            return;
-          }
-          _albumController.add((StreamOperation.update, albumMap[albumID]!));
+          // if (!albumExists) {
+          getAlbumByID(albumID);
           return;
+          // }
+          // _albumController.add((StreamOperation.update, albumMap[albumID]!));
+          // return;
         }
       case RequestStatus.denied:
         if (notification.guestID != user.id && albumExists) {

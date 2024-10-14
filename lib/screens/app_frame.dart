@@ -64,7 +64,8 @@ class _AppFrameState extends State<AppFrame> with WidgetsBindingObserver {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => AppFrameCubit(),
+          create: (context) => AppFrameCubit(
+              notificationRepository: context.read<NotificationRepository>()),
         ),
         BlocProvider(
           lazy: false,

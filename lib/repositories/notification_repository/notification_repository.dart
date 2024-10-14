@@ -14,7 +14,6 @@ part 'all_noti_repo.dart';
 
 class NotificationRepository {
   //Imports
-  FirebaseMessagingRepository firebaseMessagingRepository;
   RealtimeRepository realtimeRepository;
   User user;
 
@@ -25,15 +24,16 @@ class NotificationRepository {
       <String, AlbumInviteNotification>{};
   Map<String, Notification> allNotificationMap = <String, Notification>{};
 
+  final _navigationController = StreamController<String>();
+  Stream<String> get navigationStream => _navigationController.stream;
+
   final _notificationController =
       StreamController<(StreamOperation, Notification)>.broadcast();
   Stream<(StreamOperation, Notification)> get notificationStream =>
       _notificationController.stream;
 
   NotificationRepository(
-      {required this.firebaseMessagingRepository,
-      required this.realtimeRepository,
-      required this.user}) {
+      {required this.realtimeRepository, required this.user}) {
     // Initialize Notifications from DB
     _initializeNotifications();
 
@@ -54,6 +54,11 @@ class NotificationRepository {
       case CommentNotification:
         _commentHandler(notification as CommentNotification);
     }
+  }
+
+  void refreshNotificationsAndNavigate(String type) {
+    _initializeNotifications();
+    _navigationController.add(type);
   }
 
   Future<void> _initializeNotifications() async {
