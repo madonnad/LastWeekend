@@ -10,6 +10,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/captured_image.dart';
 import 'package:shared_photo/models/custom_exception.dart';
+import 'package:shared_photo/models/guest.dart';
+import 'package:shared_photo/models/notification.dart';
 import 'package:shared_photo/models/photo.dart';
 import 'package:shared_photo/models/user.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
@@ -37,10 +39,18 @@ class CameraCubit extends HydratedCubit<CameraState> {
         Album album = event.$2;
 
         // Check if user is in the album that was passed
-        bool userIsGuest = album.guests.any((guest) => guest.uid == user.id);
+        bool userIsGuest = false;
+
+        for (Guest guest in album.guests) {
+          if (guest.uid == user.id && guest.status == RequestStatus.accepted) {
+            userIsGuest = true;
+          }
+        }
+
+        bool userIsOwner = album.albumOwner == user.id;
 
         // Only allow album through if it passes these qualities
-        if (userIsGuest && album.phase == AlbumPhases.unlock) {
+        if ((userIsGuest || userIsOwner) && album.phase == AlbumPhases.unlock) {
           switch (streamOperation) {
             case StreamOperation.add:
               addUnlockedAlbums(album);

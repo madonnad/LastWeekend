@@ -100,7 +100,8 @@ class AlbumInviteNotification extends Notification {
         break;
     }
 
-    List<int> bytes = map['album_name'].toString().codeUnits;
+    List<int> bytes = utf8.encode(map['album_name'].toString());
+    //List<int> bytes = map['album_name'].toString().codeUnits;
     String albumName = utf8.decode(bytes);
 
     return AlbumInviteNotification(
