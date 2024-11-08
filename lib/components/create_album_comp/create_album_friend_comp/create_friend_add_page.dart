@@ -14,7 +14,6 @@ class CreateFriendAddPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(
-        top: kToolbarHeight,
         left: 15,
         right: 15,
         bottom: MediaQuery.of(context).padding.bottom,

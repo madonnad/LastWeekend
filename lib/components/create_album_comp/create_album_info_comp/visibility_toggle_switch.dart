@@ -13,7 +13,7 @@ class VisibilityToggleSwitch extends StatelessWidget {
     return BlocBuilder<CreateAlbumCubit, CreateAlbumState>(
       builder: (context, state) {
         return AnimatedToggleSwitch<AlbumVisibility>.size(
-          current: state.visibility,
+          current: state.visibility!,
           values: const [
             AlbumVisibility.public,
             AlbumVisibility.friends,

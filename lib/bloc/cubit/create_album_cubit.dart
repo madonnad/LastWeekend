@@ -124,6 +124,36 @@ class CreateAlbumCubit extends Cubit<CreateAlbumState> {
     }
   }
 
+  void setDuration(DurationEvent duration, {DateTime? datetime}) {
+    DateTime revealDateTime = DateTime.now();
+
+    switch (duration) {
+      case DurationEvent.oneDay:
+        revealDateTime = revealDateTime.add(Duration(hours: 24));
+      case DurationEvent.twoDays:
+        revealDateTime = revealDateTime.add(Duration(days: 2));
+      case DurationEvent.oneWeek:
+        revealDateTime = revealDateTime.add(Duration(days: 7));
+      case DurationEvent.custom:
+        if (datetime != null) {
+          emit(state.copyWith(
+            durationEvent: duration,
+            revealDateTime: datetime,
+            revealTimeOfDay: TimeOfDay.fromDateTime(datetime),
+          ));
+          return;
+        }
+    }
+
+    TimeOfDay revealTimeOfDay = TimeOfDay.fromDateTime(revealDateTime);
+
+    emit(state.copyWith(
+      durationEvent: duration,
+      revealDateTime: revealDateTime,
+      revealTimeOfDay: revealTimeOfDay,
+    ));
+  }
+
   void setUnlockDate(DateTime dateTime) {
     if (state.lockDateTime != null) {
       bool resetDate = (state.lockDateTime!.isBefore(dateTime));

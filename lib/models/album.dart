@@ -7,7 +7,14 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'package:shared_photo/models/guest.dart';
 import 'package:shared_photo/models/photo.dart';
 
-enum AlbumVisibility { private, public, friends }
+enum AlbumVisibility {
+  private("Private"),
+  friends("Friends"),
+  public("Public");
+
+  final String description;
+  const AlbumVisibility(this.description);
+}
 
 enum AlbumPhases { invite, unlock, lock, reveal }
 

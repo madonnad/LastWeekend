@@ -11,7 +11,7 @@ import firebase_core
 import firebase_messaging
 import flutter_udid
 import path_provider_foundation
-import sqflite
+import sqflite_darwin
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   Auth0FlutterPlugin.register(with: registry.registrar(forPlugin: "Auth0FlutterPlugin"))
