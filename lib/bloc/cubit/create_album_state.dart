@@ -5,12 +5,23 @@ enum FriendState {
   searching,
 }
 
+enum DurationEvent {
+  oneDay("24 Hours"),
+  twoDays("2 Days"),
+  oneWeek("1 Week"),
+  custom("Custom");
+
+  final String description;
+
+  const DurationEvent(this.description);
+}
+
 final class CreateAlbumState extends Equatable {
   final TextEditingController albumName;
   final TextEditingController? friendSearch;
   final String? albumCoverImagePath;
   final String? albumUID;
-  final AlbumVisibility visibility;
+  final AlbumVisibility? visibility;
   // Unlock Date Variables
   final DateTime? unlockDateTime;
   final TimeOfDay? unlockTimeOfDay;
@@ -28,6 +39,7 @@ final class CreateAlbumState extends Equatable {
   final String modalTextString;
   final bool loading;
   final CustomException exception;
+  final DurationEvent? durationEvent;
 
   const CreateAlbumState({
     required this.albumName,
@@ -50,8 +62,9 @@ final class CreateAlbumState extends Equatable {
     this.friendState = FriendState.empty,
     this.modalTextString = '',
     this.loading = false,
-    this.visibility = AlbumVisibility.public,
+    this.visibility,
     this.exception = CustomException.empty,
+    this.durationEvent,
   });
 
   CreateAlbumState copyWith({
@@ -74,6 +87,7 @@ final class CreateAlbumState extends Equatable {
     bool? loading,
     AlbumVisibility? visibility,
     CustomException? exception,
+    DurationEvent? durationEvent,
   }) {
     return CreateAlbumState(
       albumName: albumName ?? this.albumName,
@@ -94,6 +108,7 @@ final class CreateAlbumState extends Equatable {
       loading: loading ?? this.loading,
       visibility: visibility ?? this.visibility,
       exception: exception ?? this.exception,
+      durationEvent: durationEvent ?? this.durationEvent,
     );
   }
 
@@ -166,6 +181,7 @@ final class CreateAlbumState extends Equatable {
         loading,
         visibility,
         exception,
+        durationEvent,
       ];
 
   bool get canContinue {
@@ -278,10 +294,10 @@ final class CreateAlbumState extends Equatable {
   String dateFormatter(DateTime dateTime) {
     String dateString;
     if (dateTime.year != DateTime.now().year) {
-      dateString = DateFormat("MMM d, ''yy").format(dateTime);
+      dateString = DateFormat("EEE MMM d, ''yy").format(dateTime);
       return dateString;
     }
-    return dateString = DateFormat("MMM d").format(dateTime);
+    return dateString = DateFormat("EEE MMM d").format(dateTime);
   }
 
   //? Time Getters and Formatter
@@ -316,16 +332,22 @@ final class CreateAlbumState extends Equatable {
   String timeFormatter(TimeOfDay time) {
     String hour = time.hour.toString();
     String minute = time.minute.toString();
-    String amPm = 'am';
+    String amPm = 'AM';
     String timeString;
 
+    //This fires after noon, but does not include noon
     if (time.hour % 12 != time.hour) {
-      amPm = 'pm';
+      amPm = 'PM';
       hour = (time.hour - 12).toString();
     }
 
+    if (time.hour == 12) {
+      amPm = 'PM';
+      hour = 12.toString();
+    }
+
     if (time.hour == 0) {
-      amPm = 'am';
+      amPm = 'AM';
       hour = 12.toString();
     }
 
@@ -349,6 +371,8 @@ final class CreateAlbumState extends Equatable {
         visibilityString = "private";
       case AlbumVisibility.friends:
         visibilityString = "friends";
+      default:
+        visibilityString = "private";
     }
 
     return {
