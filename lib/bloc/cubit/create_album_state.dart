@@ -16,18 +16,13 @@ enum DurationEvent {
   const DurationEvent(this.description);
 }
 
-final class CreateAlbumState extends Equatable {
+final class CreateEventState extends Equatable {
   final TextEditingController albumName;
   final TextEditingController? friendSearch;
+  final String? eventTitle;
   final String? albumCoverImagePath;
   final String? albumUID;
   final AlbumVisibility? visibility;
-  // Unlock Date Variables
-  final DateTime? unlockDateTime;
-  final TimeOfDay? unlockTimeOfDay;
-  // Lock Date Variables
-  final DateTime? lockDateTime;
-  final TimeOfDay? lockTimeOfDay;
   // Reveal Date Variables
   final DateTime? revealDateTime;
   final TimeOfDay? revealTimeOfDay;
@@ -36,22 +31,16 @@ final class CreateAlbumState extends Equatable {
   final List<Friend> invitedFriends;
   final List<Friend> searchResult;
   final FriendState friendState;
-  final String modalTextString;
   final bool loading;
   final CustomException exception;
   final DurationEvent? durationEvent;
 
-  const CreateAlbumState({
+  const CreateEventState({
     required this.albumName,
     required this.friendSearch,
+    this.eventTitle,
     this.albumCoverImagePath,
     this.albumUID,
-    // Unlock Date Variables
-    this.unlockDateTime,
-    this.unlockTimeOfDay,
-    // Lock Date Variables
-    this.lockDateTime,
-    this.lockTimeOfDay,
     // Reveal Date Variables
     this.revealDateTime,
     this.revealTimeOfDay,
@@ -60,51 +49,41 @@ final class CreateAlbumState extends Equatable {
     this.invitedFriends = const [],
     this.searchResult = const [],
     this.friendState = FriendState.empty,
-    this.modalTextString = '',
     this.loading = false,
     this.visibility,
     this.exception = CustomException.empty,
     this.durationEvent,
   });
 
-  CreateAlbumState copyWith({
+  CreateEventState copyWith({
     TextEditingController? albumName,
     TextEditingController? friendSearch,
+    String? eventTitle,
     String? albumCoverImagePath,
     String? albumUID,
     List<Friend>? invitedFriends,
-    DateTime? unlockDateTime,
-    TimeOfDay? unlockTimeOfDay,
-    DateTime? lockDateTime,
-    TimeOfDay? lockTimeOfDay,
-    String? lockTimeString,
     DateTime? revealDateTime,
     TimeOfDay? revealTimeOfDay,
     Map<String, Friend>? friendsMap,
     List<Friend>? searchResult,
     FriendState? friendState,
-    String? modalTextString,
     bool? loading,
     AlbumVisibility? visibility,
     CustomException? exception,
     DurationEvent? durationEvent,
   }) {
-    return CreateAlbumState(
+    return CreateEventState(
       albumName: albumName ?? this.albumName,
       friendSearch: friendSearch ?? this.friendSearch,
+      eventTitle: eventTitle ?? this.eventTitle,
       albumCoverImagePath: albumCoverImagePath ?? this.albumCoverImagePath,
       albumUID: albumUID ?? this.albumUID,
       invitedFriends: invitedFriends ?? this.invitedFriends,
-      unlockDateTime: unlockDateTime ?? this.unlockDateTime,
-      unlockTimeOfDay: unlockTimeOfDay ?? this.unlockTimeOfDay,
-      lockDateTime: lockDateTime ?? this.lockDateTime,
-      lockTimeOfDay: lockTimeOfDay ?? this.lockTimeOfDay,
       revealDateTime: revealDateTime ?? this.revealDateTime,
       revealTimeOfDay: revealTimeOfDay ?? this.revealTimeOfDay,
       friendsMap: friendsMap ?? this.friendsMap,
       searchResult: searchResult ?? this.searchResult,
       friendState: friendState ?? this.friendState,
-      modalTextString: modalTextString ?? this.modalTextString,
       loading: loading ?? this.loading,
       visibility: visibility ?? this.visibility,
       exception: exception ?? this.exception,
@@ -112,98 +91,32 @@ final class CreateAlbumState extends Equatable {
     );
   }
 
-  //? Nulling copyWiths
-
-  CreateAlbumState copyWithNullLockDate() {
-    return CreateAlbumState(
-      albumName: albumName,
-      friendSearch: friendSearch,
-      albumCoverImagePath: albumCoverImagePath,
-      albumUID: albumUID,
-      invitedFriends: invitedFriends,
-      unlockDateTime: unlockDateTime,
-      unlockTimeOfDay: unlockTimeOfDay,
-      lockDateTime: null,
-      lockTimeOfDay: null,
-      revealDateTime: revealDateTime,
-      revealTimeOfDay: revealTimeOfDay,
-      friendsMap: friendsMap,
-      searchResult: searchResult,
-      friendState: friendState,
-      modalTextString: modalTextString,
-      loading: loading,
-      visibility: visibility,
-      exception: exception,
-    );
-  }
-
-  CreateAlbumState copyWithNullRevealDate() {
-    return CreateAlbumState(
-      albumName: albumName,
-      friendSearch: friendSearch,
-      albumCoverImagePath: albumCoverImagePath,
-      albumUID: albumUID,
-      invitedFriends: invitedFriends,
-      unlockDateTime: unlockDateTime,
-      unlockTimeOfDay: unlockTimeOfDay,
-      lockDateTime: lockDateTime,
-      lockTimeOfDay: lockTimeOfDay,
-      revealDateTime: null,
-      revealTimeOfDay: null,
-      friendsMap: friendsMap,
-      searchResult: searchResult,
-      friendState: friendState,
-      modalTextString: modalTextString,
-      loading: loading,
-      visibility: visibility,
-      exception: exception,
-    );
-  }
-
   @override
   List<Object?> get props => [
         albumName,
         friendSearch,
+        eventTitle,
         albumCoverImagePath,
         albumUID,
         invitedFriends,
-        unlockDateTime,
-        unlockTimeOfDay,
-        lockDateTime,
-        lockTimeOfDay,
         revealDateTime,
         revealTimeOfDay,
         revealTimeString,
         friendsMap,
         searchResult,
         friendState,
-        modalTextString,
         loading,
         visibility,
         exception,
         durationEvent,
       ];
 
-  bool get canContinue {
-    return (albumCoverImagePath != null &&
-        unlockDateTime != null &&
-        unlockTimeOfDay != null &&
-        lockDateTime != null &&
-        lockTimeOfDay != null &&
-        revealDateTime != null &&
-        revealTimeOfDay != null &&
-        albumName.text.isNotEmpty);
-  }
-
   bool get canCreate {
     return (albumCoverImagePath != null &&
-        unlockDateTime != null &&
-        unlockTimeOfDay != null &&
-        lockDateTime != null &&
-        lockTimeOfDay != null &&
         revealDateTime != null &&
         revealTimeOfDay != null &&
-        albumName.text.isNotEmpty);
+        albumName.text.isNotEmpty &&
+        visibility != null);
   }
 
   //? Friend Getters
@@ -219,36 +132,6 @@ final class CreateAlbumState extends Equatable {
 
   //? Date Getters and Formatter
 
-  DateTime get finalLockDateTime {
-    DateTime dateTime = DateTime(1900);
-    if (lockDateTime != null && lockTimeOfDay != null) {
-      dateTime = DateTime(
-        lockDateTime!.year,
-        lockDateTime!.month,
-        lockDateTime!.day,
-        lockTimeOfDay!.hour,
-        lockTimeOfDay!.minute,
-        0,
-      );
-    }
-    return dateTime;
-  }
-
-  DateTime get finalUnlockDateTime {
-    DateTime dateTime = DateTime(1900);
-    if (unlockDateTime != null && unlockTimeOfDay != null) {
-      dateTime = DateTime(
-        unlockDateTime!.year,
-        unlockDateTime!.month,
-        unlockDateTime!.day,
-        unlockTimeOfDay!.hour,
-        unlockTimeOfDay!.minute,
-        0,
-      );
-    }
-    return dateTime;
-  }
-
   DateTime get finalRevealDateTime {
     DateTime dateTime = DateTime(1900);
     if (revealDateTime != null && revealTimeOfDay != null) {
@@ -262,24 +145,6 @@ final class CreateAlbumState extends Equatable {
       );
     }
     return dateTime;
-  }
-
-  String? get unlockDateString {
-    String? date;
-    if (unlockDateTime != null) {
-      date = dateFormatter(unlockDateTime!);
-      return date;
-    }
-    return date = null;
-  }
-
-  String? get lockDateString {
-    String? date;
-    if (lockDateTime != null) {
-      date = dateFormatter(lockDateTime!);
-      return date;
-    }
-    return date = null;
   }
 
   String? get revealDateString {
@@ -298,26 +163,6 @@ final class CreateAlbumState extends Equatable {
       return dateString;
     }
     return dateString = DateFormat("EEE MMM d").format(dateTime);
-  }
-
-  //? Time Getters and Formatter
-
-  String? get unlockTimeString {
-    String? time;
-    if (unlockTimeOfDay != null) {
-      time = timeFormatter(unlockTimeOfDay!);
-      return time;
-    }
-    return time = null;
-  }
-
-  String? get lockTimeString {
-    String? time;
-    if (lockTimeOfDay != null) {
-      time = timeFormatter(lockTimeOfDay!);
-      return time;
-    }
-    return time = null;
   }
 
   String? get revealTimeString {
@@ -376,10 +221,10 @@ final class CreateAlbumState extends Equatable {
     }
 
     return {
-      "album_name": albumName.text,
+      "album_name": eventTitle,
       "invite_list": inviteJson,
-      "unlocked_at": finalUnlockDateTime.toUtc().toIso8601String(),
-      "locked_at": finalLockDateTime.toUtc().toIso8601String(),
+      // "unlocked_at": finalUnlockDateTime.toUtc().toIso8601String(),
+      // "locked_at": finalLockDateTime.toUtc().toIso8601String(),
       "revealed_at": finalRevealDateTime.toUtc().toIso8601String(),
       "visibility": visibilityString,
     };

@@ -13,7 +13,7 @@ class CustomDatetimeModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CreateAlbumCubit, CreateAlbumState>(
+    return BlocBuilder<CreateEventCubit, CreateEventState>(
       builder: (context, state) {
         return Center(
           child: Container(
@@ -35,7 +35,7 @@ class CustomDatetimeModal extends StatelessWidget {
                 initialDateTime: state.revealDateTime ??
                     DateTime.now().add(Duration(hours: 1)),
                 onDateTimeChanged: (datetime) =>
-                    context.read<CreateAlbumCubit>().setDuration(
+                    context.read<CreateEventCubit>().setDuration(
                           itemDuration,
                           datetime: datetime,
                         ),

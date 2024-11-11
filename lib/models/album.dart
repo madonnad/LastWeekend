@@ -186,8 +186,12 @@ class Album extends Equatable {
       creationDateTime: DateTime.parse(map['created_at']),
       guestMap: guests,
       imageMap: images,
-      lockDateTime: DateTime.parse(map['locked_at']),
-      unlockDateTime: DateTime.parse(map['unlocked_at']),
+      lockDateTime: map['locked_at'] != ''
+          ? DateTime.parse(map['locked_at'])
+          : DateTime(1900),
+      unlockDateTime: map['unlocked_at'] != ''
+          ? DateTime.parse(map['unlocked_at'])
+          : DateTime(1900),
       revealDateTime: DateTime.parse(map['revealed_at']),
       visibility: visibility,
       phase: phase,
@@ -365,23 +369,6 @@ class Album extends Equatable {
     sortedGuests.addAll(deniedGuests);
     return sortedGuests;
   }
-
-  // @override
-  // bool operator ==(Object other) =>
-  //     identical(this, other) ||
-  //     other is Album &&
-  //         runtimeType == other.runtimeType &&
-  //         albumId == other.albumId &&
-  //         mapEquals(guestMap, other.guestMap) &&
-  //         mapEquals(imageMap, other.imageMap) &&
-  //         albumOwner == other.albumOwner;
-
-  // @override
-  // int get hashCode =>
-  //     albumId.hashCode ^
-  //     guestMap.hashCode ^
-  //     imageMap.hashCode ^
-  //     albumOwner.hashCode;
 
   @override
   List<Object?> get props =>

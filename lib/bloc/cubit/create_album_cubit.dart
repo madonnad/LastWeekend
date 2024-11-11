@@ -12,15 +12,15 @@ import 'package:shared_photo/repositories/user_repository.dart';
 
 part 'create_album_state.dart';
 
-class CreateAlbumCubit extends Cubit<CreateAlbumState> {
+class CreateEventCubit extends Cubit<CreateEventState> {
   UserRepository userRepository;
   DataRepository dataRepository;
 
-  CreateAlbumCubit({
+  CreateEventCubit({
     required this.userRepository,
     required this.dataRepository,
   }) : super(
-          CreateAlbumState(
+          CreateEventState(
             albumName: TextEditingController(),
             friendSearch: TextEditingController(),
             friendsMap: const {},
@@ -40,6 +40,7 @@ class CreateAlbumCubit extends Cubit<CreateAlbumState> {
     initializeCubit();
   }
 
+  // Getting new friends from FriendRepo
   void addFriendToFriendsList(Friend friend) {
     Map<String, Friend> friendMap = Map.from(state.friendsMap);
     String key = friend.uid;
@@ -50,7 +51,8 @@ class CreateAlbumCubit extends Cubit<CreateAlbumState> {
     }
   }
 
-  void handleFriendAddRemoveFromAlbum(Friend friend) {
+  // Adding friends to current event
+  void handleFriendAddRemoveFromEvent(Friend friend) {
     List<Friend> currentInvited = List.from(state.invitedFriends);
     bool friendIsInList = state.invitedUIDList.contains(friend.uid);
 
@@ -95,17 +97,11 @@ class CreateAlbumCubit extends Cubit<CreateAlbumState> {
     }
   }
 
-  void checkToShowState() {
-    if (state.friendSearch!.text.isEmpty) {
-      emit(state.copyWith(friendState: FriendState.empty));
-    }
-  }
-
   void addImage(String? imagePath) {
     emit(state.copyWith(albumCoverImagePath: imagePath));
   }
 
-  Future<bool> createAlbum() async {
+  Future<bool> createEvent() async {
     emit(state.copyWith(loading: true));
     bool success = false;
     String? error;
@@ -154,43 +150,6 @@ class CreateAlbumCubit extends Cubit<CreateAlbumState> {
     ));
   }
 
-  void setUnlockDate(DateTime dateTime) {
-    if (state.lockDateTime != null) {
-      bool resetDate = (state.lockDateTime!.isBefore(dateTime));
-      if (resetDate == true) {
-        emit(state.copyWithNullLockDate());
-      }
-    }
-    if (state.revealDateTime != null) {
-      bool resetDate = (state.revealDateTime!.isBefore(dateTime));
-
-      if (resetDate == true) {
-        emit(state.copyWithNullRevealDate());
-      }
-    }
-
-    emit(state.copyWith(unlockDateTime: dateTime));
-  }
-
-  void setUnlockTime(TimeOfDay time) {
-    emit(state.copyWith(unlockTimeOfDay: time));
-  }
-
-  void setLockDate(DateTime dateTime) {
-    if (state.revealDateTime != null) {
-      bool resetDate = (state.revealDateTime!.isBefore(dateTime));
-
-      if (resetDate == true) {
-        emit(state.copyWithNullRevealDate());
-      }
-    }
-    emit(state.copyWith(lockDateTime: dateTime));
-  }
-
-  void setLockTime(TimeOfDay time) {
-    emit(state.copyWith(lockTimeOfDay: time));
-  }
-
   void setRevealDate(DateTime dateTime) {
     emit(state.copyWith(revealDateTime: dateTime));
   }
@@ -201,6 +160,10 @@ class CreateAlbumCubit extends Cubit<CreateAlbumState> {
 
   void setVisibilityMode(AlbumVisibility visibility) {
     emit(state.copyWith(visibility: visibility));
+  }
+
+  void setEventTitle(String text) {
+    emit(state.copyWith(eventTitle: text));
   }
 
   void initializeCubit() {

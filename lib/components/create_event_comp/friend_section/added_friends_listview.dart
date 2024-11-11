@@ -8,7 +8,7 @@ class AddedFriendsListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CreateAlbumCubit, CreateAlbumState>(
+    return BlocBuilder<CreateEventCubit, CreateEventState>(
       builder: (context, state) {
         return SizedBox(
           height: 35,
@@ -63,8 +63,8 @@ class AddedFriendsListView extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap: () => context
-                            .read<CreateAlbumCubit>()
-                            .handleFriendAddRemoveFromAlbum(
+                            .read<CreateEventCubit>()
+                            .handleFriendAddRemoveFromEvent(
                                 state.invitedFriends[index - 1]),
                         child: const Padding(
                           padding: EdgeInsets.only(left: 8.0),

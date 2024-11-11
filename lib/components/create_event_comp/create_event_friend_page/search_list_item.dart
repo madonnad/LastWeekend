@@ -44,7 +44,7 @@ class SearchListItem extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () =>
-              context.read<CreateAlbumCubit>().handleFriendAddRemoveFromAlbum(
+              context.read<CreateEventCubit>().handleFriendAddRemoveFromEvent(
                     friend,
                   ),
           child: isInvited

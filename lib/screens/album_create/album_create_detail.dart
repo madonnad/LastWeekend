@@ -6,20 +6,18 @@ import 'package:shared_photo/components/create_album_comp/create_album_info_comp
 import 'package:shared_photo/components/create_album_comp/create_album_info_comp/album_title_field.dart';
 
 import 'package:shared_photo/components/app_comp/section_header_small.dart';
-import 'package:shared_photo/components/create_album_comp/create_album_friend_comp/add_friends_info_list.dart';
 import 'package:shared_photo/components/create_album_comp/create_album_info_comp/create_album_button.dart';
-import 'package:shared_photo/components/create_album_comp/create_album_info_comp/date_time_section.dart';
 import 'package:shared_photo/components/create_album_comp/create_album_info_comp/visibility_toggle_switch.dart';
+import 'package:shared_photo/components/create_event_comp/create_event_friend_page/add_friends_info_list.dart';
 
 class AlbumCreateDetail extends StatelessWidget {
   final PageController createAlbumController;
 
-  const AlbumCreateDetail({Key? key, required this.createAlbumController})
-      : super(key: key);
+  const AlbumCreateDetail({super.key, required this.createAlbumController});
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<CreateAlbumCubit, CreateAlbumState>(
+    return BlocConsumer<CreateEventCubit, CreateEventState>(
       listenWhen: (previous, current) => current.exception.errorString != null,
       listener: (context, state) {
         String errorString = "${state.exception.errorString} ";
@@ -62,7 +60,7 @@ class AlbumCreateDetail extends StatelessWidget {
                     padding: EdgeInsets.only(top: 10.0, bottom: 0),
                     child: SectionHeaderSmall('Duration'),
                   ),
-                  const DateTimeSection(),
+                  // const DateTimeSection(),
                   const Padding(
                     padding: EdgeInsets.only(top: 10.0, bottom: 8),
                     child: SectionHeaderSmall('Visibility'),
@@ -76,15 +74,15 @@ class AlbumCreateDetail extends StatelessWidget {
                     pageController: createAlbumController,
                   ),
                   const Gap(25),
-                  BlocBuilder<CreateAlbumCubit, CreateAlbumState>(
+                  BlocBuilder<CreateEventCubit, CreateEventState>(
                     builder: (context, state) {
                       return Align(
                         alignment: Alignment.center,
                         child: InkWell(
                           onTap: state.canCreate
                               ? () => context
-                                      .read<CreateAlbumCubit>()
-                                      .createAlbum()
+                                      .read<CreateEventCubit>()
+                                      .createEvent()
                                       .then((success) {
                                     if (success) {
                                       Navigator.of(context).pop();

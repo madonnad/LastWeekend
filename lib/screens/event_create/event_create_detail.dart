@@ -6,7 +6,7 @@ import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 import 'package:shared_photo/bloc/cubit/create_album_cubit.dart';
-import 'package:shared_photo/components/create_album_comp/create_album_info_comp/added_friends_listview.dart';
+import 'package:shared_photo/components/create_event_comp/friend_section/added_friends_listview.dart';
 import 'package:shared_photo/components/create_event_comp/duration_section/custom_datetime_modal.dart';
 import 'package:shared_photo/components/create_event_comp/duration_section/reveal_duration_row.dart';
 import 'package:shared_photo/components/create_event_comp/event_cover_photo_selector.dart';
@@ -21,7 +21,7 @@ class EventCreateDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CreateAlbumCubit, CreateAlbumState>(
+    return BlocBuilder<CreateEventCubit, CreateEventState>(
       builder: (context, state) {
         return Stack(
           children: [
@@ -57,13 +57,13 @@ class EventCreateDetail extends StatelessWidget {
                         isSelected: state.durationEvent == duration,
                         onTap: duration != DurationEvent.custom
                             ? () => context
-                                .read<CreateAlbumCubit>()
+                                .read<CreateEventCubit>()
                                 .setDuration(duration)
                             : () {
                                 showCupertinoModalPopup(
                                   context: context,
                                   builder: (ctx) => BlocProvider.value(
-                                    value: context.read<CreateAlbumCubit>(),
+                                    value: context.read<CreateEventCubit>(),
                                     child: CustomDatetimeModal(
                                       itemDuration: duration,
                                     ),
@@ -89,7 +89,7 @@ class EventCreateDetail extends StatelessWidget {
                         text: visibility.description,
                         isSelected: state.visibility == visibility,
                         onTap: () => context
-                            .read<CreateAlbumCubit>()
+                            .read<CreateEventCubit>()
                             .setVisibilityMode(visibility),
                       );
                     },
@@ -116,27 +116,31 @@ class EventCreateDetail extends StatelessWidget {
               child: Column(
                 children: [
                   const Spacer(),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: EventModalButton(
-                          onTap: () => Navigator.pop(context),
-                          enabled: true,
-                          buttonText: "Cancel",
-                          backgroundColor: Color.fromRGBO(19, 19, 19, 1),
+                  Container(
+                    color: Colors.black,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: EventModalButton(
+                            onTap: () => Navigator.pop(context),
+                            enabled: true,
+                            buttonText: "Cancel",
+                            backgroundColor: Color.fromRGBO(19, 19, 19, 1),
+                          ),
                         ),
-                      ),
-                      const Gap(20),
-                      Expanded(
-                        child: EventModalButton(
-                          onTap: () {},
-                          enabled: false,
-                          buttonText: "Create Event",
-                          backgroundColor:
-                              const Color.fromRGBO(181, 131, 141, 1),
+                        const Gap(20),
+                        Expanded(
+                          child: EventModalButton(
+                            onTap: () =>
+                                context.read<CreateEventCubit>().createEvent(),
+                            enabled: state.canCreate,
+                            buttonText: "Create Event",
+                            backgroundColor:
+                                const Color.fromRGBO(181, 131, 141, 1),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),
