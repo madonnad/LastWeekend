@@ -8,7 +8,7 @@ class RevealDurationRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CreateAlbumCubit, CreateAlbumState>(
+    return BlocBuilder<CreateEventCubit, CreateEventState>(
       builder: (context, state) {
         return SizedBox(
           child: Column(

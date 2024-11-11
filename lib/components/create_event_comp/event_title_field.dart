@@ -8,7 +8,7 @@ class EventTitleField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CreateAlbumCubit, CreateAlbumState>(
+    return BlocBuilder<CreateEventCubit, CreateEventState>(
       builder: (context, state) {
         return Expanded(
           child: Container(
@@ -25,6 +25,8 @@ class EventTitleField extends StatelessWidget {
               onTapOutside: (_) =>
                   FocusManager.instance.primaryFocus?.unfocus(),
               //cursorHeight: 18,
+              onChanged: (text) =>
+                  context.read<CreateEventCubit>().setEventTitle(text),
               controller: state.albumName,
               textAlignVertical: TextAlignVertical.center,
               maxLines: null,

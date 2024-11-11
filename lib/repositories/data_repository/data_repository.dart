@@ -53,9 +53,9 @@ class DataRepository {
     realtimeRepository.realtimeNotificationStream.listen((event) {
       Notification notification = event;
       switch (event.runtimeType) {
-        case EngagementNotification:
+        case EngagementNotification _:
           _handleImageEngagement(notification as EngagementNotification);
-        case CommentNotification:
+        case CommentNotification _:
           _handleImageComment(notification as CommentNotification);
       }
     });
@@ -65,7 +65,7 @@ class DataRepository {
       Notification notification = event.$2;
 
       switch (notification.runtimeType) {
-        case AlbumInviteNotification:
+        case AlbumInviteNotification _:
           _handleInviteResponse(notification as AlbumInviteNotification);
       }
     });

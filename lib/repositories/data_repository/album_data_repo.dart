@@ -86,7 +86,7 @@ extension AlbumDataRepo on DataRepository {
   }
 
   // Create New Album
-  Future<(bool, String?)> createAlbum({required CreateAlbumState state}) async {
+  Future<(bool, String?)> createAlbum({required CreateEventState state}) async {
     bool success = false;
     String? error;
     Album? album;

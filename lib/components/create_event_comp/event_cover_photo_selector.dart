@@ -15,10 +15,10 @@ class EventCoverPhotoSelector extends StatelessWidget {
     ImagePicker picker = ImagePicker();
 
     void addImageToCubit(XFile value) {
-      context.read<CreateAlbumCubit>().addImage(value.path);
+      context.read<CreateEventCubit>().addImage(value.path);
     }
 
-    return BlocBuilder<CreateAlbumCubit, CreateAlbumState>(
+    return BlocBuilder<CreateEventCubit, CreateEventState>(
       builder: (context, state) {
         return Expanded(
           child: GestureDetector(

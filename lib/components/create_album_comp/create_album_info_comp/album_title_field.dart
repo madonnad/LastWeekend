@@ -9,7 +9,7 @@ class AlbumTitleField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CreateAlbumCubit, CreateAlbumState>(
+    return BlocBuilder<CreateEventCubit, CreateEventState>(
       builder: (context, state) {
         return TextField(
           onTapOutside: (event) =>
