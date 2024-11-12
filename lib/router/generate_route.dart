@@ -8,10 +8,10 @@ import 'package:shared_photo/models/arguments.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 import 'package:shared_photo/repositories/realtime_repository.dart';
 import 'package:shared_photo/repositories/user_repository.dart';
-import 'package:shared_photo/screens/album_create/album_create_modal.dart';
 import 'package:shared_photo/screens/album_detail_frame.dart';
 import 'package:shared_photo/screens/auth.dart';
 import 'package:shared_photo/screens/album_frame.dart';
+import 'package:shared_photo/screens/event_create/event_create_modal.dart';
 import 'package:shared_photo/screens/friend_profile_frame.dart';
 import 'package:shared_photo/screens/profile_guest_frame.dart';
 import 'package:shared_photo/screens/settings/edit_profile_frame.dart';
@@ -22,7 +22,7 @@ Route onGenerateRoute(RouteSettings settings) {
     case '/':
       return MaterialPageRoute(builder: (context) => const AuthScreen());
     case '/create-album':
-      return MaterialPageRoute(builder: (context) => const AlbumCreateModal());
+      return MaterialPageRoute(builder: (context) => const EventCreateModal());
     case '/album':
       Arguments arguments = settings.arguments as Arguments;
 

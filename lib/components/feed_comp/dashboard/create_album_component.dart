@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/repositories/user_repository.dart';
-import 'package:shared_photo/screens/album_create/album_create_modal.dart';
+import 'package:shared_photo/screens/event_create/event_create_modal.dart';
 
 class CreateAlbumComponent extends StatelessWidget {
   const CreateAlbumComponent({super.key});
@@ -20,7 +20,7 @@ class CreateAlbumComponent extends StatelessWidget {
           context: context,
           builder: (ctx) => RepositoryProvider.value(
             value: context.read<UserRepository>(),
-            child: const AlbumCreateModal(),
+            child: const EventCreateModal(),
           ),
         );
       },

@@ -50,7 +50,7 @@ class CameraCubit extends HydratedCubit<CameraState> {
         bool userIsOwner = album.albumOwner == user.id;
 
         // Only allow album through if it passes these qualities
-        if ((userIsGuest || userIsOwner) && album.phase == AlbumPhases.unlock) {
+        if ((userIsGuest || userIsOwner) && album.phase == AlbumPhases.open) {
           switch (streamOperation) {
             case StreamOperation.add:
               addUnlockedAlbums(album);
