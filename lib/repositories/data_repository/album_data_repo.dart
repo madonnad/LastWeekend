@@ -73,7 +73,7 @@ extension AlbumDataRepo on DataRepository {
     return albumMap.values
         .where((album) =>
             album.guests.any((guest) => guest.uid == user.id) &&
-            album.phase == AlbumPhases.unlock)
+            album.phase == AlbumPhases.open)
         .fold({}, (map, album) => map..[album.albumId] = album);
   }
 

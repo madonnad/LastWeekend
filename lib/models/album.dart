@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_photo/models/notification.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:shared_photo/models/guest.dart';
@@ -16,7 +17,7 @@ enum AlbumVisibility {
   const AlbumVisibility(this.description);
 }
 
-enum AlbumPhases { invite, unlock, lock, reveal }
+enum AlbumPhases { open, reveal }
 
 class Album extends Equatable {
   final String albumId;
@@ -28,8 +29,6 @@ class Album extends Equatable {
   final Map<String, Photo> imageMap;
   final Map<String, Guest> guestMap;
   final DateTime creationDateTime;
-  final DateTime lockDateTime;
-  final DateTime unlockDateTime;
   final DateTime revealDateTime;
   final String? albumCoverUrl;
   final AlbumVisibility visibility;
@@ -42,8 +41,6 @@ class Album extends Equatable {
     required this.ownerFirst,
     required this.ownerLast,
     required this.creationDateTime,
-    required this.lockDateTime,
-    required this.unlockDateTime,
     required this.revealDateTime,
     required this.visibility,
     required this.phase,
@@ -55,7 +52,7 @@ class Album extends Equatable {
 
   @override
   String toString() {
-    return 'Album(albumId: $albumId, albumName: $albumName, albumOwner: $albumOwner,visibility: $visibility, images: $images, creationDateTime: $creationDateTime, lockDateTime: $lockDateTime)';
+    return 'Album(albumId: $albumId, albumName: $albumName, albumOwner: $albumOwner,visibility: $visibility, images: $images, creationDateTime: $creationDateTime)';
   }
 
   static final empty = Album(
@@ -65,11 +62,9 @@ class Album extends Equatable {
     ownerFirst: "",
     ownerLast: "",
     creationDateTime: DateTime.utc(1900),
-    lockDateTime: DateTime.utc(1900),
-    unlockDateTime: DateTime.utc(1900),
     revealDateTime: DateTime.utc(1900),
     visibility: AlbumVisibility.public,
-    phase: AlbumPhases.invite,
+    phase: AlbumPhases.open,
   );
 
   Map<String, dynamic> toMap() {
@@ -77,8 +72,6 @@ class Album extends Equatable {
       'album_cover_id': albumCoverId,
       'album_name': albumName,
       'album_owner': albumOwner,
-      'unlocked_at': unlockDateTime,
-      'locked_at': lockDateTime,
       'revealed_at': revealDateTime,
     };
   }
@@ -94,8 +87,6 @@ class Album extends Equatable {
       imageMap: album.imageMap,
       guestMap: album.guestMap,
       creationDateTime: album.creationDateTime,
-      lockDateTime: album.lockDateTime,
-      unlockDateTime: album.unlockDateTime,
       revealDateTime: album.revealDateTime,
       albumCoverUrl: album.albumCoverUrl,
       visibility: album.visibility,
@@ -114,8 +105,6 @@ class Album extends Equatable {
       ownerFirst: ownerFirst,
       ownerLast: ownerLast,
       creationDateTime: creationDateTime,
-      lockDateTime: lockDateTime,
-      unlockDateTime: unlockDateTime,
       revealDateTime: revealDateTime,
       visibility: visibility ?? this.visibility,
       phase: phase,
@@ -151,15 +140,15 @@ class Album extends Equatable {
 
     switch (map['phase']) {
       case 'invite':
-        phase = AlbumPhases.invite;
+        phase = AlbumPhases.open;
       case 'unlock':
-        phase = AlbumPhases.unlock;
+        phase = AlbumPhases.open;
       case 'lock':
-        phase = AlbumPhases.lock;
+        phase = AlbumPhases.open;
       case 'reveal':
         phase = AlbumPhases.reveal;
       default:
-        phase = AlbumPhases.invite;
+        phase = AlbumPhases.open;
     }
 
     switch (map['visibility']) {
@@ -186,12 +175,6 @@ class Album extends Equatable {
       creationDateTime: DateTime.parse(map['created_at']),
       guestMap: guests,
       imageMap: images,
-      lockDateTime: map['locked_at'] != ''
-          ? DateTime.parse(map['locked_at'])
-          : DateTime(1900),
-      unlockDateTime: map['unlocked_at'] != ''
-          ? DateTime.parse(map['unlocked_at'])
-          : DateTime(1900),
       revealDateTime: DateTime.parse(map['revealed_at']),
       visibility: visibility,
       phase: phase,
@@ -370,7 +353,23 @@ class Album extends Equatable {
     return sortedGuests;
   }
 
+  String get revealDateTimeFormatter {
+    String dateString;
+    if (revealDateTime.year != DateTime.now().year) {
+      dateString =
+          DateFormat("EEE MMM d, ''yy h:mm aaa").format(revealDateTime);
+      return dateString;
+    }
+    return dateString =
+        DateFormat("EEE MMM d @ h:mm aaa").format(revealDateTime);
+  }
+
   @override
-  List<Object?> get props =>
-      [albumId, guestMap, imageMap, albumOwner, visibility];
+  List<Object?> get props => [
+        albumId,
+        guestMap,
+        imageMap,
+        albumOwner,
+        visibility,
+      ];
 }

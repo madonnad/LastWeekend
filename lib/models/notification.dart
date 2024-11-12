@@ -63,7 +63,7 @@ class AlbumInviteNotification extends Notification {
   final String guestLast;
   final RequestStatus status;
   final bool responseSeen;
-  final DateTime unlockedAt;
+  final DateTime revealedAt;
   const AlbumInviteNotification({
     required super.notificationID,
     required super.receivedDateTime,
@@ -79,12 +79,12 @@ class AlbumInviteNotification extends Notification {
     required this.guestLast,
     required this.responseSeen,
     required this.status,
-    required this.unlockedAt,
+    required this.revealedAt,
   });
 
   String get ownerURL => "${dotenv.env['URL']}/image?id=$albumOwner";
   String get guestURL => "${dotenv.env['URL']}/image?id=$guestID";
-  String get timeUntil => TimeUntil.format(unlockedAt);
+  String get timeUntil => TimeUntil.format(revealedAt);
   String get timeReceived => timeago.format(receivedDateTime,
       locale: "en_short", clock: DateTime.now().toUtc());
 
@@ -123,7 +123,7 @@ class AlbumInviteNotification extends Notification {
       responseSeen: map['response_seen'].runtimeType == String
           ? bool.parse(map['response_seen'])
           : map['response_seen'],
-      unlockedAt: DateTime.parse(map['unlocked_at']),
+      revealedAt: DateTime.parse(map['revealed_at']),
     );
   }
 
@@ -150,7 +150,7 @@ class AlbumInviteNotification extends Notification {
       guestFirst: guestFirst,
       guestLast: guestLast,
       responseSeen: responseSeen,
-      unlockedAt: unlockedAt,
+      revealedAt: revealedAt,
     );
   }
 

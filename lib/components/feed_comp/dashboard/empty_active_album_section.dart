@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/components/app_comp/section_header_small.dart';
 import 'package:shared_photo/repositories/user_repository.dart';
-import 'package:shared_photo/screens/album_create/album_create_modal.dart';
 import 'package:shared_photo/screens/event_create/event_create_modal.dart';
 
 class EmptyActiveAlbumSection extends StatelessWidget {
