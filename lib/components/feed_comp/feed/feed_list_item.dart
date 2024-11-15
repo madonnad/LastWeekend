@@ -17,7 +17,7 @@ class FeedListItem extends StatelessWidget {
     Arguments arguments = Arguments(albumID: album.albumId);
 
     return Padding(
-      padding: const EdgeInsets.only(top: 30, left: 12, right: 12),
+      padding: const EdgeInsets.only(top: 0, left: 12, right: 12),
       child: AspectRatio(
         aspectRatio: 2 / 3,
         child: Container(

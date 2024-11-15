@@ -13,7 +13,10 @@ class AppFrameCubit extends Cubit<AppFrameState> {
   late StreamSubscription navigationController;
 
   AppFrameCubit({required this.notificationRepository})
-      : super(AppFrameState(pageController: PageController(initialPage: 1))) {
+      : super(AppFrameState(
+          pageController: PageController(initialPage: 1),
+          feedScrollController: ScrollController(),
+        )) {
     navigationController =
         notificationRepository.navigationStream.listen((data) {
       switch (data) {
@@ -32,6 +35,17 @@ class AppFrameCubit extends Cubit<AppFrameState> {
     state.pageController.jumpToPage(index);
     HapticFeedback.mediumImpact();
     emit(state.copyWith(index: index));
+  }
+
+  void jumpToTopOfFeed() {
+    if (state.index != 1) {
+      return;
+    }
+    state.feedScrollController.animateTo(
+      0,
+      duration: Duration(milliseconds: 250),
+      curve: Curves.easeInOut,
+    );
   }
 
   // void changePageFromPassedRoute(BuildContext context, int index) {

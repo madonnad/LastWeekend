@@ -19,12 +19,20 @@ class IconNavElement extends StatelessWidget {
     return BlocBuilder<AppFrameCubit, AppFrameState>(
       builder: (context, state) {
         if (state.index == index) {
-          return GestureDetector(
-            child: Icon(
-              selectedIcon,
-              size: 30,
-              color: Colors.white,
-            ),
+          if (index == 1) {
+            return GestureDetector(
+              onTap: () => context.read<AppFrameCubit>().jumpToTopOfFeed(),
+              child: Icon(
+                selectedIcon,
+                size: 30,
+                color: Colors.white,
+              ),
+            );
+          }
+          return Icon(
+            selectedIcon,
+            size: 30,
+            color: Colors.white,
           );
         } else if (state.index == 2) {
           return GestureDetector(
