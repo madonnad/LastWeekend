@@ -22,7 +22,9 @@ class DashboardState extends Equatable {
   }
 
   List<Album> get activeAlbums {
-    return activeAlbumMap.values.toList();
+    List<Album> activeAlbums = activeAlbumMap.values.toList();
+    activeAlbums.sort((a, b) => a.revealDateTime.compareTo(b.revealDateTime));
+    return activeAlbums;
   }
 
   List<Album> get sortActiveAlbumList {

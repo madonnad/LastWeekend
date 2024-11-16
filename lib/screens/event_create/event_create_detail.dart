@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 import 'package:shared_photo/bloc/cubit/create_album_cubit.dart';
 import 'package:shared_photo/components/create_event_comp/friend_section/added_friends_listview.dart';
 import 'package:shared_photo/components/create_event_comp/duration_section/custom_datetime_modal.dart';
@@ -131,8 +129,14 @@ class EventCreateDetail extends StatelessWidget {
                         const Gap(20),
                         Expanded(
                           child: EventModalButton(
-                            onTap: () =>
-                                context.read<CreateEventCubit>().createEvent(),
+                            onTap: () async {
+                              bool success = await context
+                                  .read<CreateEventCubit>()
+                                  .createEvent();
+                              if (context.mounted && success) {
+                                Navigator.of(context).pop();
+                              }
+                            },
                             enabled: state.canCreate,
                             buttonText: "Create Event",
                             backgroundColor:
@@ -144,7 +148,15 @@ class EventCreateDetail extends StatelessWidget {
                   ),
                 ],
               ),
-            )
+            ),
+            state.loading
+                ? Container(
+                    color: Colors.black.withOpacity(.65),
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  )
+                : SizedBox.shrink(),
           ],
         );
       },
