@@ -8,14 +8,37 @@ class AddedFriendsListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CreateAlbumCubit, CreateAlbumState>(
+    return BlocBuilder<CreateEventCubit, CreateEventState>(
       builder: (context, state) {
         return SizedBox(
           height: 35,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
-            itemCount: state.invitedFriends.length,
+            itemCount: state.invitedFriends.length + 1,
             itemBuilder: (context, index) {
+              if (index == 0) {
+                return Container(
+                  decoration: BoxDecoration(
+                    color: Color.fromRGBO(181, 131, 141, .85),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  margin: EdgeInsets.only(right: 5),
+                  padding: EdgeInsets.symmetric(horizontal: 3),
+                  width: 35,
+                  child: Center(
+                    child: FittedBox(
+                      child: Text(
+                        (state.invitedFriends.length).toString(),
+                        style: GoogleFonts.montserrat(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              }
               return Container(
                 decoration: BoxDecoration(
                   color: const Color.fromRGBO(44, 44, 44, 1),
@@ -32,7 +55,7 @@ class AddedFriendsListView extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        state.invitedFriends[index].firstName,
+                        state.invitedFriends[index - 1].firstName,
                         style: GoogleFonts.josefinSans(
                           color: Colors.white,
                           fontSize: 16,
@@ -40,9 +63,9 @@ class AddedFriendsListView extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap: () => context
-                            .read<CreateAlbumCubit>()
-                            .handleFriendAddRemoveFromAlbum(
-                                state.invitedFriends[index]),
+                            .read<CreateEventCubit>()
+                            .handleFriendAddRemoveFromEvent(
+                                state.invitedFriends[index - 1]),
                         child: const Padding(
                           padding: EdgeInsets.only(left: 8.0),
                           child: Icon(

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/cubit/create_album_cubit.dart';
-import 'package:shared_photo/components/create_album_comp/create_album_friend_comp/empty_friends_listview.dart';
-import 'package:shared_photo/components/create_album_comp/create_album_friend_comp/search_results_listview.dart';
-import 'package:shared_photo/components/create_album_comp/create_album_info_comp/added_friends_listview.dart';
+import 'package:shared_photo/components/create_event_comp/create_event_friend_page/empty_friends_listview.dart';
+import 'package:shared_photo/components/create_event_comp/create_event_friend_page/search_results_listview.dart';
+import 'package:shared_photo/components/create_event_comp/friend_section/added_friends_listview.dart';
 
 class CreateFriendAddPage extends StatelessWidget {
   final PageController pageController;
@@ -14,7 +14,6 @@ class CreateFriendAddPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(
-        top: kToolbarHeight,
         left: 15,
         right: 15,
         bottom: MediaQuery.of(context).padding.bottom,
@@ -39,7 +38,7 @@ class CreateFriendAddPage extends StatelessWidget {
           const SizedBox(
             height: 30,
           ),
-          BlocBuilder<CreateAlbumCubit, CreateAlbumState>(
+          BlocBuilder<CreateEventCubit, CreateEventState>(
             builder: (context, state) {
               return TextField(
                 controller: state.friendSearch,
@@ -48,7 +47,7 @@ class CreateFriendAddPage extends StatelessWidget {
                 onSubmitted: (_) =>
                     FocusManager.instance.primaryFocus?.unfocus(),
                 onChanged: (_) =>
-                    context.read<CreateAlbumCubit>().searchFriendByName(),
+                    context.read<CreateEventCubit>().searchFriendByName(),
                 style: GoogleFonts.josefinSans(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
@@ -77,7 +76,7 @@ class CreateFriendAddPage extends StatelessWidget {
               );
             },
           ),
-          BlocBuilder<CreateAlbumCubit, CreateAlbumState>(
+          BlocBuilder<CreateEventCubit, CreateEventState>(
             builder: (context, state) {
               if (state.invitedFriends.isNotEmpty) {
                 return const Padding(
@@ -90,7 +89,7 @@ class CreateFriendAddPage extends StatelessWidget {
             },
           ),
           Expanded(
-            child: BlocBuilder<CreateAlbumCubit, CreateAlbumState>(
+            child: BlocBuilder<CreateEventCubit, CreateEventState>(
               builder: (context, state) {
                 switch (state.friendState) {
                   case FriendState.searching:

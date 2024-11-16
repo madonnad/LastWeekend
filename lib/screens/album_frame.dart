@@ -4,11 +4,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
 import 'package:shared_photo/bloc/cubit/image_frame_cubit.dart';
-import 'package:shared_photo/components/album_comp/invite_comps/invite_page.dart';
-import 'package:shared_photo/components/album_comp/lock_comps/album_lock_tab_view.dart';
 import 'package:shared_photo/components/album_comp/util_comps/album_appbar_title.dart';
 import 'package:shared_photo/components/album_comp/reveal_comps/album_reveal_tab_view.dart';
 import 'package:shared_photo/components/album_comp/unlock_comps/album_unlock_tab_view.dart';
+import 'package:shared_photo/components/album_comp/util_comps/reveal_countdown.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/arguments.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
@@ -41,65 +40,26 @@ class AlbumFrame extends StatelessWidget {
           },
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: BlocBuilder<AlbumFrameCubit, AlbumFrameState>(
-                  builder: (context, state) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(
-                          "Invite",
-                          style: GoogleFonts.josefinSans(
-                            color: state.album.phase == AlbumPhases.invite
-                                ? Colors.white
-                                : const Color.fromRGBO(125, 125, 125, 1),
-                            fontSize: 16,
-                          ),
-                        ),
-                        Text(
-                          "Unlock",
-                          style: GoogleFonts.josefinSans(
-                            color: state.album.phase == AlbumPhases.unlock
-                                ? Colors.white
-                                : const Color.fromRGBO(125, 125, 125, 1),
-                            fontSize: 16,
-                          ),
-                        ),
-                        Text(
-                          "Lock",
-                          style: GoogleFonts.josefinSans(
-                            color: state.album.phase == AlbumPhases.lock
-                                ? Colors.white
-                                : const Color.fromRGBO(125, 125, 125, 1),
-                            fontSize: 16,
-                          ),
-                        ),
-                        Text(
-                          "Reveal",
-                          style: GoogleFonts.josefinSans(
-                            color: state.album.phase == AlbumPhases.reveal
-                                ? Colors.white
-                                : const Color.fromRGBO(125, 125, 125, 1),
-                            fontSize: 16,
-                          ),
-                        )
-                      ],
-                    );
-                  },
-                ),
+              BlocBuilder<AlbumFrameCubit, AlbumFrameState>(
+                builder: (context, state) {
+                  return RevealCountdown(
+                    album: state.album,
+                  );
+                },
               ),
               BlocBuilder<AlbumFrameCubit, AlbumFrameState>(
                 builder: (context, state) {
                   switch (state.album.phase) {
                     case AlbumPhases.reveal:
                       return AlbumRevealTabView(arguments: arguments);
-                    case AlbumPhases.invite:
-                      return const InvitePage();
-                    case AlbumPhases.unlock:
+                    case AlbumPhases.open:
                       return const AlbumUnlockTabView();
-                    case AlbumPhases.lock:
-                      return const AlbumLockTabView();
+                    // case AlbumPhases.invite:
+                    //   return const InvitePage();
+                    // case AlbumPhases.unlock:
+                    //   return const AlbumUnlockTabView();
+                    // case AlbumPhases.lock:
+                    //   return const AlbumLockTabView();
                     default:
                       return const Placeholder();
                   }

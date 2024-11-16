@@ -10,7 +10,7 @@ import 'dart:developer' as developer;
 
 class AlbumService {
   static Future<(Album?, String?)> postNewAlbum(
-      String token, CreateAlbumState state) async {
+      String token, CreateEventState state) async {
     Map<String, dynamic> albumInformation = state.toJson();
     String encodedBody = json.encode(albumInformation);
 

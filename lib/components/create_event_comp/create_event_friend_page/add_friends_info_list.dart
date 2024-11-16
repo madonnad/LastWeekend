@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/cubit/create_album_cubit.dart';
-import 'package:shared_photo/components/create_album_comp/create_album_info_comp/added_friends_listview.dart';
+import 'package:shared_photo/components/create_event_comp/friend_section/added_friends_listview.dart';
 
 class AddFriendsInfoList extends StatelessWidget {
   final PageController pageController;
@@ -10,7 +10,7 @@ class AddFriendsInfoList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CreateAlbumCubit, CreateAlbumState>(
+    return BlocBuilder<CreateEventCubit, CreateEventState>(
       builder: (context, state) {
         return Row(
           children: [

@@ -93,17 +93,18 @@ class AlbumRequestAcceptedItem extends StatelessWidget {
                     const Gap(10),
                     Expanded(
                       child: FittedBox(
+                        fit: BoxFit.fitWidth,
                         child: Text(
-                          "Unlocks in $timeUntil",
+                          "Reveals in $timeUntil",
                           style: GoogleFonts.josefinSans(
                             color: const Color.fromRGBO(181, 131, 141, 1),
-                            fontSize: 14,
+                            fontSize: 18,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),
                     ),
-                    const Gap(10),
+                    Gap(50)
                   ],
                 ),
               ],

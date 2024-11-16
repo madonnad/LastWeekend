@@ -10,10 +10,10 @@ class VisibilityToggleSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CreateAlbumCubit, CreateAlbumState>(
+    return BlocBuilder<CreateEventCubit, CreateEventState>(
       builder: (context, state) {
         return AnimatedToggleSwitch<AlbumVisibility>.size(
-          current: state.visibility,
+          current: state.visibility!,
           values: const [
             AlbumVisibility.public,
             AlbumVisibility.friends,
@@ -70,7 +70,7 @@ class VisibilityToggleSwitch extends StatelessWidget {
             }
           },
           onChanged: (value) =>
-              context.read<CreateAlbumCubit>().setVisibilityMode(value),
+              context.read<CreateEventCubit>().setVisibilityMode(value),
         );
       },
     );

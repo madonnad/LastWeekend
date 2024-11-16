@@ -12,7 +12,7 @@ class AlbumCoverSelect extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ImagePicker picker = ImagePicker();
-    return BlocBuilder<CreateAlbumCubit, CreateAlbumState>(
+    return BlocBuilder<CreateEventCubit, CreateEventState>(
       builder: (context, state) {
         return AspectRatio(
           aspectRatio: 5 / 7,
@@ -27,7 +27,7 @@ class AlbumCoverSelect extends StatelessWidget {
                 picker.pickImage(source: ImageSource.gallery).then(
                   (value) {
                     if (value != null) {
-                      context.read<CreateAlbumCubit>().addImage(value.path);
+                      context.read<CreateEventCubit>().addImage(value.path);
                     }
                   },
                 ).catchError(

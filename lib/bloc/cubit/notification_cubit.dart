@@ -301,7 +301,7 @@ class NotificationCubit extends Cubit<NotificationState> {
           emit(
             state.copyWith(
               albumInviteMap: albumInviteCopy,
-              unseenAlbumInvites: !invite.notificationSeen,
+              unseenAlbumInvites: false,
             ),
           );
         }
