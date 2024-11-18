@@ -42,6 +42,7 @@ class TopItemComponent extends StatelessWidget {
                 isScrollControlled: true,
                 useRootNavigator: true,
                 useSafeArea: true,
+                isDismissible: false,
                 builder: (ctx) => MultiBlocProvider(
                   providers: [
                     BlocProvider(

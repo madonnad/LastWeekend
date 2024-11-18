@@ -53,7 +53,8 @@ class LockTimelinePage extends StatelessWidget {
                         } else {
                           return BlankItemComponent(
                             image: album.imagesGroupedSortedByDate[index][item],
-                            url: album.imagesGroupedSortedByDate[index][item]
+                            avatarUrl: album
+                                .imagesGroupedSortedByDate[index][item]
                                 .avatarReq,
                             headers: header,
                           );

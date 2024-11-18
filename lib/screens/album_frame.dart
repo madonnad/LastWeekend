@@ -92,6 +92,7 @@ void pushImageFrameIfPassed(BuildContext context, Arguments arguments) {
       isScrollControlled: true,
       useRootNavigator: true,
       useSafeArea: true,
+      enableDrag: false,
       builder: (ctx) => MultiBlocProvider(
         providers: [
           BlocProvider.value(

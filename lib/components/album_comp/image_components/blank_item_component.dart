@@ -9,12 +9,12 @@ import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 import 'package:shared_photo/screens/image_frame.dart';
 
 class BlankItemComponent extends StatelessWidget {
-  final String url;
+  final String avatarUrl;
   final Map<String, String> headers;
   final Photo image;
   const BlankItemComponent({
     super.key,
-    required this.url,
+    required this.avatarUrl,
     required this.headers,
     required this.image,
   });
@@ -42,6 +42,7 @@ class BlankItemComponent extends StatelessWidget {
                 isScrollControlled: true,
                 useRootNavigator: true,
                 useSafeArea: true,
+                enableDrag: false,
                 builder: (ctx) => MultiBlocProvider(
                   providers: [
                     BlocProvider(
@@ -82,7 +83,7 @@ class BlankItemComponent extends StatelessWidget {
                 child: CircleAvatar(
                   backgroundColor: const Color.fromRGBO(16, 16, 16, 1),
                   foregroundImage: CachedNetworkImageProvider(
-                    url,
+                    avatarUrl,
                     headers: headers,
                   ),
                   radius: 10,
