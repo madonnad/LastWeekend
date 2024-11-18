@@ -37,6 +37,7 @@ class GuestItemComponent extends StatelessWidget {
           isScrollControlled: true,
           useRootNavigator: true,
           useSafeArea: true,
+          enableDrag: false,
           builder: (ctx) => MultiBlocProvider(
             providers: [
               BlocProvider(

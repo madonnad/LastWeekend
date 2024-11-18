@@ -42,6 +42,7 @@ class ImageFrame extends StatelessWidget {
                     return Container(
                       height: MediaQuery.of(context).size.height * .08,
                       margin: const EdgeInsets.only(top: 15, bottom: 15),
+                      color: Colors.transparent,
                       child: Stack(
                         children: [
                           PageView.builder(

@@ -61,8 +61,9 @@ class UnlockTimelinePage extends StatelessWidget {
                             child: BlankItemComponent(
                               image: album.imagesGroupedSortedByDate[index]
                                   [item],
-                              url: album.imagesGroupedSortedByDate[index][item]
-                                  .imageReqSmallSize,
+                              avatarUrl: album
+                                  .imagesGroupedSortedByDate[index][item]
+                                  .avatarReq,
                               headers: header,
                             ),
                           );
