@@ -109,8 +109,12 @@ class AlbumFrameState extends Equatable {
   List<List<Photo>> get imagesGroupedSortedByDate {
     Map<String, List<Photo>> mapImages = {};
     List<List<Photo>> listImages = [];
+    List<Photo> dateSortedImages = images;
 
-    for (var item in images) {
+    dateSortedImages
+        .sort((a, b) => a.uploadDateTime.compareTo(b.uploadDateTime));
+
+    for (var item in dateSortedImages) {
       if (!mapImages.containsKey(item.dateString)) {
         mapImages[item.dateString] = [];
       }
