@@ -71,7 +71,7 @@ class Photo {
       firstName: map['first_name'],
       lastName: map['last_name'],
       imageCaption: caption,
-      uploadDateTime: DateTime.parse(map['created_at']),
+      uploadDateTime: DateTime.parse(map['created_at']).toLocal(),
       likes: map['likes'],
       upvotes: map['upvotes'],
       userLiked: map['user_liked'],
