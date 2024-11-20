@@ -54,12 +54,6 @@ class AlbumFrame extends StatelessWidget {
                       return AlbumRevealTabView(arguments: arguments);
                     case AlbumPhases.open:
                       return const AlbumUnlockTabView();
-                    // case AlbumPhases.invite:
-                    //   return const InvitePage();
-                    // case AlbumPhases.unlock:
-                    //   return const AlbumUnlockTabView();
-                    // case AlbumPhases.lock:
-                    //   return const AlbumLockTabView();
                     default:
                       return const Placeholder();
                   }

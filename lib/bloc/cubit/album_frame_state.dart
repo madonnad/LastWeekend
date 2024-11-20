@@ -110,6 +110,12 @@ class AlbumFrameState extends Equatable {
     Map<String, List<Photo>> mapImages = {};
     List<List<Photo>> listImages = [];
     List<Photo> dateSortedImages = images;
+    List<Photo> forgotImages = images;
+
+    dateSortedImages.removeWhere((test) => test.type == UploadType.forgotShot);
+    forgotImages.removeWhere((test) => test.type == UploadType.snap);
+
+    forgotImages.sort((a, b) => a.uploadDateTime.compareTo(b.uploadDateTime));
 
     dateSortedImages
         .sort((a, b) => a.uploadDateTime.compareTo(b.uploadDateTime));
@@ -130,6 +136,8 @@ class AlbumFrameState extends Equatable {
     mapImages.forEach((key, value) {
       listImages.add(value);
     });
+
+    listImages.add(forgotImages);
 
     return listImages;
   }
