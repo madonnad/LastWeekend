@@ -36,7 +36,7 @@ class _ImageFrameImageContainerState extends State<ImageFrameImageContainer> {
             PageView.builder(
               controller: state.pageController,
               physics: canScroll
-                  ? AlwaysScrollableScrollPhysics()
+                  ? BouncingScrollPhysics()
                   : NeverScrollableScrollPhysics(),
               onPageChanged: (index) {
                 context

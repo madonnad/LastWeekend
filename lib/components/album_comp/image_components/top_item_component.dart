@@ -28,8 +28,8 @@ class TopItemComponent extends StatelessWidget {
         .state
         .imageFrameTimelineList
         .indexOf(image);
-    return AspectRatio(
-      aspectRatio: 4 / 5,
+    return SizedBox(
+      height: 200,
       child: Stack(
         children: [
           GestureDetector(
