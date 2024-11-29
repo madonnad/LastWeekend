@@ -42,7 +42,7 @@ Route onGenerateRoute(RouteSettings settings) {
               ),
             ),
           ],
-          child: AlbumFrame(arguments: arguments),
+          child: EventFrame(arguments: arguments),
         ),
         transitionsBuilder: (context, a, b, c) {
           var begin = const Offset(1.0, 0.0);
