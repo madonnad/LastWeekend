@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
 import 'package:shared_photo/bloc/cubit/image_frame_cubit.dart';
+import 'package:shared_photo/components/album_comp/reveal_comps/reveal_event_landing.dart';
 import 'package:shared_photo/components/album_comp/util_comps/album_appbar_title.dart';
 import 'package:shared_photo/components/album_comp/reveal_comps/album_reveal_tab_view.dart';
 import 'package:shared_photo/components/album_comp/unlock_comps/album_unlock_tab_view.dart';
@@ -15,10 +16,10 @@ import 'package:shared_photo/screens/image_frame.dart';
 
 final List<String> filterList = ["Popular", "Guests", "Timeline"];
 
-class AlbumFrame extends StatelessWidget {
+class EventFrame extends StatelessWidget {
   final Arguments arguments;
 
-  const AlbumFrame({super.key, required this.arguments});
+  const EventFrame({super.key, required this.arguments});
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +52,8 @@ class AlbumFrame extends StatelessWidget {
                 builder: (context, state) {
                   switch (state.album.phase) {
                     case AlbumPhases.reveal:
-                      return AlbumRevealTabView(arguments: arguments);
+                      return RevealEventLanding();
+                    //return AlbumRevealTabView(arguments: arguments);
                     case AlbumPhases.open:
                       return const AlbumUnlockTabView();
                     default:
