@@ -145,8 +145,8 @@ class CapturedImageListScreen extends StatelessWidget {
                         contentColor: Colors.white,
                         borderRadius: 5,
                         onTap: () async {
-                          List<XFile>? selectedImages =
-                              await imagePicker.pickMultiImage();
+                          List<XFile>? selectedImages = await imagePicker
+                              .pickMultiImage(maxHeight: 2160, maxWidth: 2160);
 
                           addListPhotos(selectedImages);
                         },

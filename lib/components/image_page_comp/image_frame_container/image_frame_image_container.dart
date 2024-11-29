@@ -77,6 +77,10 @@ class _ImageFrameImageContainerState extends State<ImageFrameImageContainer> {
                               image: CachedNetworkImageProvider(
                                 state.imageFrameTimelineList[index].imageReq,
                                 headers: headers,
+                                errorListener: (_) =>
+                                    CachedNetworkImage.evictFromCache(state
+                                        .imageFrameTimelineList[index]
+                                        .imageReq),
                               ),
                               fit: BoxFit.fitWidth,
                             ),
