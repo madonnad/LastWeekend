@@ -112,14 +112,14 @@ class Photo {
     return requestUrl;
   }
 
-  String get imageReqMedSize {
-    String requestUrl = "${dotenv.env['URL']}/image?id=$imageId&height=350";
+  String get imageReq1080 {
+    String requestUrl = "${dotenv.env['URL']}/image?id=${imageId}_1080";
 
     return requestUrl;
   }
 
-  String get imageReqSmallSize {
-    String requestUrl = "${dotenv.env['URL']}/image?id=$imageId&height=150";
+  String get imageReq540 {
+    String requestUrl = "${dotenv.env['URL']}/image?id=${imageId}_540";
 
     return requestUrl;
   }
