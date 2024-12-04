@@ -31,7 +31,7 @@ class GuestItemComponent extends StatelessWidget {
       onTap: () {
         context
             .read<AlbumFrameCubit>()
-            .initalizeImageFrameWithSelectedImage(selectedIndex);
+            .initalizeImageFrameWithSelectedImage(image);
         showModalBottomSheet(
           context: context,
           isScrollControlled: true,
@@ -64,7 +64,7 @@ class GuestItemComponent extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
             image: DecorationImage(
               image: CachedNetworkImageProvider(
-                image.imageReq,
+                image.imageReq540,
                 headers: headers,
               ),
               fit: BoxFit.cover,

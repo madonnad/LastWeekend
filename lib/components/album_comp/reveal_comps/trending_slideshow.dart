@@ -2,13 +2,21 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
+import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
+import 'package:shared_photo/bloc/cubit/image_frame_cubit.dart';
 import 'package:shared_photo/models/photo.dart';
+import 'package:shared_photo/repositories/data_repository/data_repository.dart';
+import 'package:shared_photo/screens/image_frame.dart';
 
 class TrendingSlideshow extends StatefulWidget {
   final List<Photo> slideshowPhotos;
-  const TrendingSlideshow({super.key, required this.slideshowPhotos});
+  final String albumID;
+  const TrendingSlideshow({
+    super.key,
+    required this.slideshowPhotos,
+    required this.albumID,
+  });
 
   @override
   State<TrendingSlideshow> createState() => _TrendingSlideshowState();
@@ -18,7 +26,7 @@ class _TrendingSlideshowState extends State<TrendingSlideshow>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   late AnimationController _controller;
   String? shownImageUrl;
-  int slideDuration = 12;
+  int slideDuration = 6;
   int currentIndex = 0;
   int length = 0;
 
@@ -134,6 +142,37 @@ class _TrendingSlideshowState extends State<TrendingSlideshow>
                           onLongPressUp: () => _resumeController(),
                           onLongPressDown: (_) => _pauseController(),
                           onLongPressCancel: () => _resumeController(),
+                          onTap: () {
+                            context
+                                .read<AlbumFrameCubit>()
+                                .initalizeImageFrameWithSelectedImage(
+                                    widget.slideshowPhotos[currentIndex]);
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              useRootNavigator: true,
+                              useSafeArea: true,
+                              enableDrag: false,
+                              builder: (ctx) => MultiBlocProvider(
+                                providers: [
+                                  BlocProvider(
+                                    create: (context) => ImageFrameCubit(
+                                      dataRepository:
+                                          context.read<DataRepository>(),
+                                      user: context.read<AppBloc>().state.user,
+                                      image:
+                                          widget.slideshowPhotos[currentIndex],
+                                      albumID: widget.albumID,
+                                    ),
+                                  ),
+                                  BlocProvider.value(
+                                    value: context.read<AlbumFrameCubit>(),
+                                  ),
+                                ],
+                                child: const ImageFrame(),
+                              ),
+                            );
+                          },
                           child: Container(
                             color: Colors.transparent,
                           ),

@@ -28,7 +28,7 @@ class FirstItemComponent extends StatelessWidget {
       onTap: () {
         context
             .read<AlbumFrameCubit>()
-            .initalizeImageFrameWithSelectedImage(selectedIndex);
+            .initalizeImageFrameWithSelectedImage(image);
         showModalBottomSheet(
           context: context,
           isScrollControlled: true,

@@ -83,7 +83,7 @@ class ImageFrame extends StatelessWidget {
                                             image: CachedNetworkImageProvider(
                                               albumState
                                                   .imageFrameTimelineList[index]
-                                                  .imageReq,
+                                                  .imageReq540,
                                               headers: context
                                                   .read<AppBloc>()
                                                   .state

@@ -66,7 +66,7 @@ class _RevealCountdownState extends State<RevealCountdown> {
   Widget build(BuildContext context) {
     calculateTimeUntilReveal();
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 10),
+      padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 00),
       child: Builder(
         builder: (context) {
           if (widget.album.phase == AlbumPhases.open) {
@@ -74,10 +74,10 @@ class _RevealCountdownState extends State<RevealCountdown> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Reveals in...",
-                  style: GoogleFonts.josefinSans(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400,
+                  "Reveals in",
+                  style: GoogleFonts.montserrat(
+                    color: Colors.white70,
+                    fontWeight: FontWeight.w600,
                     fontSize: 16,
                   ),
                 ),
@@ -87,7 +87,7 @@ class _RevealCountdownState extends State<RevealCountdown> {
                     revealsInString(),
                     style: GoogleFonts.dmMono(
                       color: Colors.white,
-                      fontWeight: FontWeight.w800,
+                      fontWeight: FontWeight.w600,
                       fontSize: 16,
                     ),
                   ),
@@ -99,10 +99,10 @@ class _RevealCountdownState extends State<RevealCountdown> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Revealed on...",
-                  style: GoogleFonts.josefinSans(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400,
+                  "Revealed on",
+                  style: GoogleFonts.montserrat(
+                    color: Colors.white70,
+                    fontWeight: FontWeight.w600,
                     fontSize: 16,
                   ),
                 ),
@@ -110,7 +110,7 @@ class _RevealCountdownState extends State<RevealCountdown> {
                   widget.album.revealDateTimeFormatter,
                   style: GoogleFonts.josefinSans(
                     color: Colors.white,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w600,
                     fontSize: 16,
                   ),
                 )

@@ -37,9 +37,9 @@ class UnlockTimelinePage extends StatelessWidget {
                       itemCount: album.imagesGroupedSortedByDate[index].length,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        mainAxisSpacing: 8,
-                        crossAxisSpacing: 8,
+                        crossAxisCount: 4,
+                        mainAxisSpacing: 4,
+                        crossAxisSpacing: 4,
                         childAspectRatio: 4 / 5,
                       ),
                       itemBuilder: (context, item) {

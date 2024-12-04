@@ -36,7 +36,7 @@ class BlankItemComponent extends StatelessWidget {
             onTap: () {
               context
                   .read<AlbumFrameCubit>()
-                  .initalizeImageFrameWithSelectedImage(selectedIndex);
+                  .initalizeImageFrameWithSelectedImage(image);
               showModalBottomSheet(
                 context: context,
                 isScrollControlled: true,
@@ -65,7 +65,7 @@ class BlankItemComponent extends StatelessWidget {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 color: const Color.fromRGBO(44, 44, 44, .75),
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(0),
               ),
               child: const Text(
                 "🫣",

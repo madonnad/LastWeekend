@@ -130,6 +130,12 @@ class Photo {
     return requestUrl;
   }
 
+  String get avatarReq540 {
+    String requestUrl = "${dotenv.env['URL']}/image?id=${owner}_540";
+
+    return requestUrl;
+  }
+
   String get fullName {
     String fullName = "$firstName $lastName";
 

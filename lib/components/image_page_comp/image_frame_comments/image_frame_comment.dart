@@ -22,7 +22,7 @@ class ImageFrameComment extends StatelessWidget {
           CircleAvatar(
             backgroundColor: const Color.fromRGBO(25, 25, 25, 1),
             foregroundImage: CachedNetworkImageProvider(
-              comment.avatarReq,
+              comment.avatarReq540,
               headers: headers,
             ),
             radius: 14,
