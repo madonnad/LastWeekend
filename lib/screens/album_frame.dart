@@ -11,6 +11,7 @@ import 'package:shared_photo/components/album_comp/unlock_comps/album_unlock_tab
 import 'package:shared_photo/components/album_comp/util_comps/reveal_countdown.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/arguments.dart';
+import 'package:shared_photo/models/photo.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 import 'package:shared_photo/screens/image_frame.dart';
 
@@ -71,17 +72,17 @@ class EventFrame extends StatelessWidget {
 
 void pushImageFrameIfPassed(BuildContext context, Arguments arguments) {
   if (arguments.imageID != null) {
-    int selectedIndex = context
+    Photo selectedImage = context
         .read<AlbumFrameCubit>()
         .state
         .imageFrameTimelineList
-        .indexWhere((element) => element.imageId == arguments.imageID);
+        .firstWhere((element) => element.imageId == arguments.imageID);
 
     arguments.imageID = null;
 
     context
         .read<AlbumFrameCubit>()
-        .initalizeImageFrameWithSelectedImage(selectedIndex);
+        .initalizeImageFrameWithSelectedImage(selectedImage);
 
     showModalBottomSheet(
       context: context,
@@ -98,10 +99,7 @@ void pushImageFrameIfPassed(BuildContext context, Arguments arguments) {
             create: (context) => ImageFrameCubit(
               dataRepository: context.read<DataRepository>(),
               user: context.read<AppBloc>().state.user,
-              image: context
-                  .read<AlbumFrameCubit>()
-                  .state
-                  .imageFrameTimelineList[selectedIndex],
+              image: selectedImage,
               albumID: arguments.albumID,
             ),
           ),

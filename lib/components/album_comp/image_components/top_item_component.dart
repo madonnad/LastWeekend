@@ -36,7 +36,7 @@ class TopItemComponent extends StatelessWidget {
             onTap: () {
               context
                   .read<AlbumFrameCubit>()
-                  .initalizeImageFrameWithSelectedImage(selectedIndex);
+                  .initalizeImageFrameWithSelectedImage(image);
               showModalBottomSheet(
                 context: context,
                 isScrollControlled: true,
@@ -64,10 +64,10 @@ class TopItemComponent extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 color: const Color.fromRGBO(44, 44, 44, .75),
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(00),
                 image: DecorationImage(
                   image: CachedNetworkImageProvider(
-                    image.imageReq,
+                    image.imageReq540,
                     headers: headers,
                   ),
                   onError: (_, __) {},

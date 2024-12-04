@@ -19,13 +19,14 @@ class RevealEventLanding extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 0.0),
                   child: ListView(
                     children: [
-                      Gap(15),
+                      Gap(5),
                       TrendingSlideshow(
-                        slideshowPhotos: state.topThreeImages,
+                        slideshowPhotos: state.shuffledPhotos,
+                        albumID: state.album.albumId,
                       ),
-                      Gap(15),
-                      EventGuestRow(guestList: state.album.guests),
-                      Gap(25),
+                      Gap(20),
+                      EventGuestRow(guestList: state.mostImagesUploaded),
+                      Gap(20),
                       Container(
                         height: 850,
                         color: Colors.brown,

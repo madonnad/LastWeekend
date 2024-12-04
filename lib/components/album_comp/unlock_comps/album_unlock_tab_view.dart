@@ -15,42 +15,29 @@ class AlbumUnlockTabView extends StatelessWidget {
       child: BlocBuilder<AlbumFrameCubit, AlbumFrameState>(
         builder: (context, state) {
           return state.images.isNotEmpty
-              ? DefaultTabController(
-                  length: 1,
-                  animationDuration: const Duration(milliseconds: 1),
-                  child: Stack(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          const Padding(
-                            padding: EdgeInsets.only(left: 16),
-                            child: AlbumUnlockTabBar(),
+              ? Stack(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Expanded(
+                          child: GestureDetector(
+                            onHorizontalDragUpdate: (details) {
+                              if (details.delta.dx > 7) {
+                                Navigator.of(context).pop();
+                              }
+                            },
+                            child: UnlockTimelinePage(album: state.album),
                           ),
-                          Expanded(
-                            child: GestureDetector(
-                              onHorizontalDragUpdate: (details) {
-                                if (details.delta.dx > 7) {
-                                  Navigator.of(context).pop();
-                                }
-                              },
-                              child: TabBarView(
-                                physics: const NeverScrollableScrollPhysics(),
-                                children: <Widget>[
-                                  UnlockTimelinePage(album: state.album),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Positioned(
-                        bottom: 50,
-                        right: 16,
-                        child: ForgotShotFab(album: state.album),
-                      ),
-                    ],
-                  ),
+                        ),
+                      ],
+                    ),
+                    Positioned(
+                      bottom: 50,
+                      right: 16,
+                      child: ForgotShotFab(album: state.album),
+                    ),
+                  ],
                 )
               : EmptyAlbumView(
                   isUnlockPhase: true,

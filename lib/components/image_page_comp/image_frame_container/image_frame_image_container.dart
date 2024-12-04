@@ -75,7 +75,8 @@ class _ImageFrameImageContainerState extends State<ImageFrameImageContainer> {
                             color: const Color.fromRGBO(19, 19, 19, 1),
                             image: DecorationImage(
                               image: CachedNetworkImageProvider(
-                                state.imageFrameTimelineList[index].imageReq,
+                                state
+                                    .imageFrameTimelineList[index].imageReq1080,
                                 headers: headers,
                                 errorListener: (_) =>
                                     CachedNetworkImage.evictFromCache(state
@@ -110,7 +111,7 @@ class _ImageFrameImageContainerState extends State<ImageFrameImageContainer> {
                                     backgroundColor:
                                         const Color.fromRGBO(25, 25, 25, 1),
                                     foregroundImage: CachedNetworkImageProvider(
-                                      imageState.image.avatarReq,
+                                      imageState.image.avatarReq540,
                                       headers: headers,
                                     ),
                                     radius: 17,

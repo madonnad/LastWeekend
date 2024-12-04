@@ -43,10 +43,10 @@ class ImageFrameCaption extends StatelessWidget {
               return CircleAvatar(
                 backgroundColor: const Color.fromRGBO(25, 25, 25, 1),
                 foregroundImage: CachedNetworkImageProvider(
-                  state.image.avatarReq,
+                  state.image.avatarReq540,
                   headers: headers,
                 ),
-                radius: 14,
+                radius: 20,
               );
             },
           ),
@@ -93,7 +93,14 @@ class ImageFrameCaption extends StatelessWidget {
                                   fontSize: 14,
                                 ),
                               )
-                        : const SizedBox(height: 0),
+                        : Text(
+                            "   ",
+                            style: GoogleFonts.montserrat(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 14,
+                            ),
+                          ),
                   ],
                 ),
               );

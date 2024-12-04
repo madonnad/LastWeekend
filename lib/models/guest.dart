@@ -41,8 +41,8 @@ class Guest {
     return requestUrl;
   }
 
-  String get avatarReqSmall {
-    String requestUrl = "${dotenv.env['URL']}/image?id=$uid&height=100";
+  String get avatarReq540 {
+    String requestUrl = "${dotenv.env['URL']}/image?id=${uid}_540";
 
     return requestUrl;
   }
