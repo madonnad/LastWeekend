@@ -147,6 +147,11 @@ class AlbumFrameState extends Equatable {
     return shuffled.take(25).toList();
   }
 
+  List<Photo> get popularPhotoSlider {
+    List<Photo> popular = rankedImages;
+    return popular.take(10).toList();
+  }
+
   List<List<Photo>> get imagesGroupedSortedByDate {
     Map<String, List<Photo>> mapImages = {};
     List<List<Photo>> listImages = [];

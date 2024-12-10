@@ -65,20 +65,36 @@ class _RevealCountdownState extends State<RevealCountdown> {
   @override
   Widget build(BuildContext context) {
     calculateTimeUntilReveal();
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 00),
+    return Container(
+      decoration: BoxDecoration(
+          //color: Color.fromRGBO(181, 131, 141, 1),
+          gradient: const LinearGradient(
+            colors: [
+              // Color.fromRGBO(255, 205, 178, 1),
+              // Color.fromRGBO(255, 180, 162, 1),
+              //Color.fromRGBO(229, 152, 155, 1),
+              Color.fromRGBO(181, 131, 141, 1),
+              Color.fromRGBO(109, 104, 117, 1),
+            ],
+            begin: Alignment.bottomLeft,
+            end: Alignment.topRight,
+          ),
+          borderRadius: BorderRadius.circular(2)),
+      padding: const EdgeInsets.symmetric(vertical: 3.0, horizontal: 5.0),
+      margin: const EdgeInsets.only(bottom: 4.0, left: 2.0, right: 2.0),
       child: Builder(
         builder: (context) {
           if (widget.album.phase == AlbumPhases.open) {
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
                   "Reveals in",
                   style: GoogleFonts.montserrat(
                     color: Colors.white70,
                     fontWeight: FontWeight.w600,
-                    fontSize: 16,
+                    fontSize: 14,
                   ),
                 ),
                 FittedBox(
@@ -87,8 +103,8 @@ class _RevealCountdownState extends State<RevealCountdown> {
                     revealsInString(),
                     style: GoogleFonts.dmMono(
                       color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
+                      fontWeight: FontWeight.w800,
+                      fontSize: 14,
                     ),
                   ),
                 )
@@ -97,21 +113,22 @@ class _RevealCountdownState extends State<RevealCountdown> {
           } else {
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
                   "Revealed on",
                   style: GoogleFonts.montserrat(
                     color: Colors.white70,
                     fontWeight: FontWeight.w600,
-                    fontSize: 16,
+                    fontSize: 14,
                   ),
                 ),
                 Text(
                   widget.album.revealDateTimeFormatter,
                   style: GoogleFonts.josefinSans(
                     color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
+                    fontSize: 14,
                   ),
                 )
               ],

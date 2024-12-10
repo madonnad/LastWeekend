@@ -30,21 +30,20 @@ class EventGuestRow extends StatelessWidget {
                 Text(
                   "Guests",
                   style: GoogleFonts.montserrat(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                  ),
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold),
                 ),
                 Icon(
                   Icons.arrow_forward_ios,
                   color: Colors.white70,
-                  size: 18,
+                  size: 16,
                 ),
               ],
             ),
           ),
         ),
-        Gap(10),
+        Gap(5),
         Container(
           height: 70,
           padding: EdgeInsets.symmetric(vertical: 5),
@@ -56,6 +55,7 @@ class EventGuestRow extends StatelessWidget {
               if (index == 0) {
                 return SizedBox(width: 0);
               }
+
               return AvatarListItem(
                 avatarURL: guestList[index - 1].avatarReq540,
                 name: guestList[index - 1].firstName,
