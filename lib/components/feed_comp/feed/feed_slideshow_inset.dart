@@ -49,7 +49,7 @@ class FeedSlideshowInset extends StatelessWidget {
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
                                       image: CachedNetworkImageProvider(
-                                        state.topThreeImages[index].imageReq,
+                                        state.topThreeImages[index].imageReq540,
                                         headers: headers,
                                       ),
                                       fit: BoxFit.cover,

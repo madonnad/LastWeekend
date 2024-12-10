@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
 import 'package:shared_photo/bloc/cubit/image_frame_cubit.dart';
 import 'package:shared_photo/components/album_comp/reveal_comps/reveal_event_landing.dart';
 import 'package:shared_photo/components/album_comp/util_comps/album_appbar_title.dart';
-import 'package:shared_photo/components/album_comp/reveal_comps/album_reveal_tab_view.dart';
 import 'package:shared_photo/components/album_comp/unlock_comps/album_unlock_tab_view.dart';
 import 'package:shared_photo/components/album_comp/util_comps/reveal_countdown.dart';
 import 'package:shared_photo/models/album.dart';

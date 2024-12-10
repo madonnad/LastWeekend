@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
 import 'package:shared_photo/bloc/cubit/image_frame_cubit.dart';
@@ -117,12 +118,11 @@ class _TrendingSlideshowState extends State<TrendingSlideshow>
               // Text(
               //   "Trending",
               //   style: GoogleFonts.montserrat(
-              //     color: Colors.white,
-              //     fontSize: 18,
-              //     fontWeight: FontWeight.w600,
-              //   ),
+              //       color: Colors.white,
+              //       fontSize: 18,
+              //       fontWeight: FontWeight.bold),
               // ),
-              // Gap(8),
+              // Gap(5),
               Stack(
                 children: [
                   AspectRatio(
@@ -226,7 +226,7 @@ class _TrendingSlideshowState extends State<TrendingSlideshow>
                                         child: index < currentIndex
                                             ? Container(
                                                 color: Colors.white,
-                                                height: 5,
+                                                height: 3,
                                               )
                                             : index == currentIndex
                                                 ? Container(
@@ -242,16 +242,16 @@ class _TrendingSlideshowState extends State<TrendingSlideshow>
                                                         ],
                                                       ),
                                                     ),
-                                                    height: 5,
+                                                    height: 3,
                                                   )
                                                 : index > currentIndex
                                                     ? Container(
                                                         color: Colors.white24,
-                                                        height: 5,
+                                                        height: 3,
                                                       )
                                                     : Container(
                                                         color: Colors.white24,
-                                                        height: 5,
+                                                        height: 3,
                                                       ),
                                       ),
                                       index != widget.slideshowPhotos.length - 1

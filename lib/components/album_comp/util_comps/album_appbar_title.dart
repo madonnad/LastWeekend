@@ -12,6 +12,8 @@ class AlbumAppBarTitle extends StatelessWidget implements PreferredSizeWidget {
       builder: (context, state) {
         return AppBar(
           centerTitle: true,
+          titleSpacing: 0,
+          leadingWidth: 25,
           leading: GestureDetector(
             onTap: () => Navigator.of(context).pop(),
             child: const Icon(
@@ -24,7 +26,7 @@ class AlbumAppBarTitle extends StatelessWidget implements PreferredSizeWidget {
             style: GoogleFonts.josefinSans(
               color: Colors.white,
               fontWeight: FontWeight.w600,
-              fontSize: 24,
+              fontSize: 20,
             ),
           ),
           actions: [
