@@ -28,20 +28,21 @@ class TopItemComponent extends StatelessWidget {
         .state
         .imageFrameTimelineList
         .indexOf(image);
-    return AspectRatio(
-      aspectRatio: 4 / 5,
+    return SizedBox(
+      height: 200,
       child: Stack(
         children: [
           GestureDetector(
             onTap: () {
               context
                   .read<AlbumFrameCubit>()
-                  .initalizeImageFrameWithSelectedImage(selectedIndex);
+                  .initalizeImageFrameWithSelectedImage(image);
               showModalBottomSheet(
                 context: context,
                 isScrollControlled: true,
                 useRootNavigator: true,
                 useSafeArea: true,
+                isDismissible: false,
                 builder: (ctx) => MultiBlocProvider(
                   providers: [
                     BlocProvider(
@@ -63,10 +64,10 @@ class TopItemComponent extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 color: const Color.fromRGBO(44, 44, 44, .75),
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(00),
                 image: DecorationImage(
                   image: CachedNetworkImageProvider(
-                    image.imageReq,
+                    image.imageReq540,
                     headers: headers,
                   ),
                   onError: (_, __) {},

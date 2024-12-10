@@ -7,6 +7,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
 import 'package:shared_photo/components/album_comp/image_components/guest_item_component.dart';
+import 'package:shared_photo/models/guest.dart';
+import 'package:shared_photo/models/photo.dart';
 
 class GuestsPage extends StatelessWidget {
   const GuestsPage({super.key});
@@ -22,101 +24,120 @@ class GuestsPage extends StatelessWidget {
           ),
           BlocBuilder<AlbumFrameCubit, AlbumFrameState>(
             builder: (context, state) {
+              List<String> idList = state.imagesGroupedByGuest.keys.toList();
               return SliverList.separated(
                 itemCount: state.imagesGroupedByGuest.length,
                 itemBuilder: (context, index) {
-                  int imagesToShow =
-                      min(3, state.imagesGroupedByGuest[index].length);
+                  String id = idList[index];
+                  int imagesToShow = 0;
+                  List<Photo> guestsImages = [];
+                  Guest? guest = state.album.guestMap[id];
+
+                  if (state.imagesGroupedByGuest[id] != null) {
+                    guestsImages = state.imagesGroupedByGuest[id]!;
+
+                    imagesToShow = min(3, guestsImages.length);
+                  }
 
                   Map<String, dynamic> argMap = {
                     'albumFrameCubit': context.read<AlbumFrameCubit>(),
-                    'guestID': state.imagesGroupedByGuest[index][0].owner,
+                    'guestID': id,
                   };
 
-                  return GestureDetector(
-                    onTap: () => Navigator.of(context)
-                        .pushNamed('/guest', arguments: argMap),
-                    child: Container(
-                      height: 200,
-                      color: Colors.black,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 16.0, right: 16, bottom: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  return guest != null
+                      ? GestureDetector(
+                          onTap: () => Navigator.of(context)
+                              .pushNamed('/guest', arguments: argMap),
+                          child: Container(
+                            height: guestsImages.isNotEmpty ? 200 : null,
+                            color: Colors.black,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Row(
-                                  children: [
-                                    CircleAvatar(
-                                      foregroundImage:
-                                          CachedNetworkImageProvider(
-                                        state.imagesGroupedByGuest[index][0]
-                                            .avatarReq,
-                                        headers: headers,
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 16.0, right: 16, bottom: 10),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          CircleAvatar(
+                                            foregroundImage:
+                                                CachedNetworkImageProvider(
+                                              guest.avatarReq540,
+                                              headers: headers,
+                                            ),
+                                            radius: 20,
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 10.0),
+                                            child: Text(
+                                              guest.fullName,
+                                              style: GoogleFonts.josefinSans(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 16,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      radius: 20,
-                                    ),
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 10.0),
-                                      child: Text(
-                                        state.imagesGroupedByGuest[index][0]
-                                            .fullName,
-                                        style: GoogleFonts.josefinSans(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 16,
-                                          color: Colors.white,
+                                      const Icon(
+                                        Icons.arrow_forward_ios,
+                                        color: Colors.white,
+                                        size: 15,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                guestsImages.isNotEmpty
+                                    ? Expanded(
+                                        child: ListView.separated(
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: imagesToShow,
+                                          itemBuilder: (context, item) {
+                                            if (item == 0) {
+                                              return Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 16.0),
+                                                child: GuestItemComponent(
+                                                  image: guestsImages[item],
+                                                  headers: headers,
+                                                ),
+                                              );
+                                            }
+                                            return GuestItemComponent(
+                                              image: guestsImages[item],
+                                              headers: headers,
+                                            );
+                                          },
+                                          separatorBuilder: (context, index) {
+                                            return const SizedBox(width: 10);
+                                          },
+                                        ),
+                                      )
+                                    : Center(
+                                        child: Text(
+                                          "No Photos Added",
+                                          style: GoogleFonts.montserrat(
+                                            color: Colors.white70,
+                                            fontStyle: FontStyle.italic,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                const Icon(
-                                  Icons.arrow_forward_ios,
-                                  color: Colors.white,
-                                  size: 15,
-                                )
                               ],
                             ),
                           ),
-                          Expanded(
-                            child: ListView.separated(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: imagesToShow,
-                              itemBuilder: (context, item) {
-                                if (item == 0) {
-                                  return Padding(
-                                    padding: const EdgeInsets.only(left: 16.0),
-                                    child: GuestItemComponent(
-                                      image: state.imagesGroupedByGuest[index]
-                                          [item],
-                                      headers: headers,
-                                    ),
-                                  );
-                                }
-                                return GuestItemComponent(
-                                  image: state.imagesGroupedByGuest[index]
-                                      [item],
-                                  headers: headers,
-                                );
-                              },
-                              separatorBuilder: (context, index) {
-                                return const SizedBox(width: 10);
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
+                        )
+                      : SizedBox.shrink();
                 },
                 separatorBuilder: (context, index) {
                   return const Padding(
                     padding:
-                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 25),
+                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
                     child: Divider(
                       color: Color.fromRGBO(44, 44, 44, 1),
                     ),

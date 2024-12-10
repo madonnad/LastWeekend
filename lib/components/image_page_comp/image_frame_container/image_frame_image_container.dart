@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icon_decoration/icon_decoration.dart';
+import 'package:pinch_zoom_release_unzoom/pinch_zoom_release_unzoom.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
 import 'package:shared_photo/bloc/cubit/image_frame_cubit.dart';
@@ -14,9 +15,16 @@ import 'package:shared_photo/components/image_page_comp/image_frame_dialog/more_
 import 'package:shared_photo/models/album.dart';
 import 'dart:math' as math;
 
-class ImageFrameImageContainer extends StatelessWidget {
+class ImageFrameImageContainer extends StatefulWidget {
   const ImageFrameImageContainer({super.key});
 
+  @override
+  State<ImageFrameImageContainer> createState() =>
+      _ImageFrameImageContainerState();
+}
+
+class _ImageFrameImageContainerState extends State<ImageFrameImageContainer> {
+  bool canScroll = true;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AlbumFrameCubit, AlbumFrameState>(
@@ -27,6 +35,9 @@ class ImageFrameImageContainer extends StatelessWidget {
           children: [
             PageView.builder(
               controller: state.pageController,
+              physics: canScroll
+                  ? BouncingScrollPhysics()
+                  : NeverScrollableScrollPhysics(),
               onPageChanged: (index) {
                 context
                     .read<AlbumFrameCubit>()
@@ -51,17 +62,31 @@ class ImageFrameImageContainer extends StatelessWidget {
                 if (showImage) {
                   return Stack(
                     children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: const Color.fromRGBO(19, 19, 19, 1),
-                          image: DecorationImage(
-                            image: CachedNetworkImageProvider(
-                              state.imageFrameTimelineList[index].imageReq,
-                              headers: headers,
+                      PinchZoomReleaseUnzoomWidget(
+                        twoFingersOn: () => setState(() {
+                          canScroll = false;
+                        }),
+                        twoFingersOff: () => setState(() {
+                          canScroll = true;
+                        }),
+                        resetDuration: Duration(milliseconds: 300),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: const Color.fromRGBO(19, 19, 19, 1),
+                            image: DecorationImage(
+                              image: CachedNetworkImageProvider(
+                                state
+                                    .imageFrameTimelineList[index].imageReq1080,
+                                headers: headers,
+                                errorListener: (_) =>
+                                    CachedNetworkImage.evictFromCache(state
+                                        .imageFrameTimelineList[index]
+                                        .imageReq),
+                              ),
+                              fit: BoxFit.fitWidth,
                             ),
-                            fit: BoxFit.fitWidth,
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          borderRadius: BorderRadius.circular(10),
                         ),
                       ),
                       BlocBuilder<ImageFrameCubit, ImageFrameState>(
@@ -86,7 +111,7 @@ class ImageFrameImageContainer extends StatelessWidget {
                                     backgroundColor:
                                         const Color.fromRGBO(25, 25, 25, 1),
                                     foregroundImage: CachedNetworkImageProvider(
-                                      imageState.image.avatarReq,
+                                      imageState.image.avatarReq540,
                                       headers: headers,
                                     ),
                                     radius: 17,

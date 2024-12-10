@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'dart:collection';
+import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/custom_exception.dart';
+import 'package:shared_photo/models/guest.dart';
 import 'package:shared_photo/models/photo.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 import 'package:shared_photo/repositories/realtime_repository.dart';
@@ -146,7 +149,8 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
     emit(state.copyWith(viewMode: viewMode));
   }
 
-  void initalizeImageFrameWithSelectedImage(int selectedIndex) {
+  void initalizeImageFrameWithSelectedImage(Photo selectedImage) {
+    int selectedIndex = state.imageFrameTimelineList.indexOf(selectedImage);
     PageController pageController = PageController(initialPage: selectedIndex);
     PageController miniMapController =
         PageController(initialPage: selectedIndex, viewportFraction: 1 / 6);

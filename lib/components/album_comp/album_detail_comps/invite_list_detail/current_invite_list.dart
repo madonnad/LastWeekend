@@ -34,7 +34,7 @@ class CurrentInviteList extends StatelessWidget {
                                     const Color.fromRGBO(16, 16, 16, 1),
                                 foregroundImage: CachedNetworkImageProvider(
                                   state.album.sortedGuestsByInvite[index]
-                                      .avatarReqSmall,
+                                      .avatarReq540,
                                   headers: context
                                       .read<AppBloc>()
                                       .state

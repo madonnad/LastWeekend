@@ -19,7 +19,7 @@ class UnlockTimelinePage extends StatelessWidget {
       child: CustomScrollView(
         slivers: [
           SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 2),
             sliver: SliverList.separated(
               itemCount: album.imagesGroupedSortedByDate.length,
               itemBuilder: (context, index) {
@@ -38,9 +38,9 @@ class UnlockTimelinePage extends StatelessWidget {
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,
-                        mainAxisSpacing: 8,
-                        crossAxisSpacing: 8,
-                        childAspectRatio: 4 / 5,
+                        mainAxisSpacing: 4,
+                        crossAxisSpacing: 4,
+                        //childAspectRatio: 4 / 5,
                       ),
                       itemBuilder: (context, item) {
                         if (album
@@ -61,8 +61,9 @@ class UnlockTimelinePage extends StatelessWidget {
                             child: BlankItemComponent(
                               image: album.imagesGroupedSortedByDate[index]
                                   [item],
-                              url: album.imagesGroupedSortedByDate[index][item]
-                                  .imageReqSmallSize,
+                              avatarUrl: album
+                                  .imagesGroupedSortedByDate[index][item]
+                                  .avatarReq,
                               headers: header,
                             ),
                           );

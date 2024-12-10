@@ -42,6 +42,7 @@ class ImageFrame extends StatelessWidget {
                     return Container(
                       height: MediaQuery.of(context).size.height * .08,
                       margin: const EdgeInsets.only(top: 15, bottom: 15),
+                      color: Colors.transparent,
                       child: Stack(
                         children: [
                           PageView.builder(
@@ -82,7 +83,7 @@ class ImageFrame extends StatelessWidget {
                                             image: CachedNetworkImageProvider(
                                               albumState
                                                   .imageFrameTimelineList[index]
-                                                  .imageReq,
+                                                  .imageReq540,
                                               headers: context
                                                   .read<AppBloc>()
                                                   .state

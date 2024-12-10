@@ -35,8 +35,14 @@ class ImageFrameDialog extends StatelessWidget {
                     itemCount: state.imageFrameTimelineList.length,
                     itemBuilder: (context, index) {
                       String listText = '';
+
                       listText =
                           "${state.imageFrameTimelineList[index].dateString} ${state.imageFrameTimelineList[index].timeString}";
+
+                      if (state.imageFrameTimelineList[index].type ==
+                          UploadType.forgotShot) {
+                        listText = "Forgot Shot 🫣";
+                      }
 
                       String userID = context.read<AppBloc>().state.user.id;
 

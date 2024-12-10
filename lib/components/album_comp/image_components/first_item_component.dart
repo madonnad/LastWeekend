@@ -28,12 +28,13 @@ class FirstItemComponent extends StatelessWidget {
       onTap: () {
         context
             .read<AlbumFrameCubit>()
-            .initalizeImageFrameWithSelectedImage(selectedIndex);
+            .initalizeImageFrameWithSelectedImage(image);
         showModalBottomSheet(
           context: context,
           isScrollControlled: true,
           useRootNavigator: true,
           useSafeArea: true,
+          enableDrag: false,
           builder: (ctx) => MultiBlocProvider(
             providers: [
               BlocProvider(

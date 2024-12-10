@@ -61,7 +61,7 @@ class AlbumFrameState extends Equatable {
         return rankedImages;
       case AlbumViewMode.guests:
         List<Photo> ungroupedGuests = [];
-        for (List<Photo> list in imagesGroupedByGuest) {
+        for (List<Photo> list in imagesGroupedByGuest.values) {
           for (Photo image in list) {
             ungroupedGuests.add(image);
           }
@@ -82,9 +82,37 @@ class AlbumFrameState extends Equatable {
     return album.imageMap.values.toList();
   }
 
-  List<List<Photo>> get imagesGroupedByGuest {
+  List<Guest> get mostImagesUploaded {
+    Map<Guest, List<Photo>> mapImages = {};
+
+    for (var guest in album.guests) {
+      mapImages[guest] = [];
+    }
+
+    for (var item in images) {
+      Guest _guest =
+          album.guests.firstWhere((guest) => guest.uid == item.owner);
+      if (!mapImages.containsKey(_guest)) {
+        mapImages[_guest] = [];
+      }
+      if (mapImages[_guest] != null) {
+        mapImages[_guest]!.add(item);
+      }
+    }
+
+    List<Guest> sortedGuests = mapImages.keys.toList()
+      ..sort((a, b) => mapImages[b]!.length.compareTo(mapImages[a]!.length));
+
+    return sortedGuests;
+  }
+
+  Map<String, List<Photo>> get imagesGroupedByGuest {
     Map<String, List<Photo>> mapImages = {};
     List<List<Photo>> listImages = [];
+
+    for (var guest in album.guests) {
+      mapImages[guest.uid] = [];
+    }
 
     for (var item in images) {
       if (!mapImages.containsKey(item.owner)) {
@@ -99,18 +127,46 @@ class AlbumFrameState extends Equatable {
       value.sort((a, b) => b.upvotes.compareTo(a.upvotes));
     });
 
-    mapImages.forEach((key, value) {
-      listImages.add(value);
-    });
+    // mapImages.forEach((key, value) {
+    //   listImages.add(value);
+    // });
 
-    return listImages;
+    var sortedEntries = mapImages.entries.toList()
+      ..sort((a, b) => b.value.length.compareTo(a.value.length));
+
+    // Return a LinkedHashMap to preserve the order
+    return LinkedHashMap.fromEntries(sortedEntries);
+
+    return mapImages;
+  }
+
+  List<Photo> get shuffledPhotos {
+    DateTime now = DateTime.now();
+    List<Photo> shuffled = images;
+    shuffled.shuffle(Random(now.second));
+    return shuffled.take(25).toList();
+  }
+
+  List<Photo> get popularPhotoSlider {
+    List<Photo> popular = rankedImages;
+    return popular.take(10).toList();
   }
 
   List<List<Photo>> get imagesGroupedSortedByDate {
     Map<String, List<Photo>> mapImages = {};
     List<List<Photo>> listImages = [];
+    List<Photo> dateSortedImages = images;
+    List<Photo> forgotImages = images;
 
-    for (var item in images) {
+    dateSortedImages.removeWhere((test) => test.type == UploadType.forgotShot);
+    forgotImages.removeWhere((test) => test.type == UploadType.snap);
+
+    forgotImages.sort((a, b) => a.uploadDateTime.compareTo(b.uploadDateTime));
+
+    dateSortedImages
+        .sort((a, b) => a.uploadDateTime.compareTo(b.uploadDateTime));
+
+    for (var item in dateSortedImages) {
       if (!mapImages.containsKey(item.dateString)) {
         mapImages[item.dateString] = [];
       }
@@ -126,6 +182,8 @@ class AlbumFrameState extends Equatable {
     mapImages.forEach((key, value) {
       listImages.add(value);
     });
+
+    listImages.add(forgotImages);
 
     return listImages;
   }

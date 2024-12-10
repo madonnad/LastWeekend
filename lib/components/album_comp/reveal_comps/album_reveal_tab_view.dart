@@ -9,6 +9,7 @@ import 'package:shared_photo/components/album_comp/reveal_comps/reveal_timeline_
 import 'package:shared_photo/components/album_comp/guests_page.dart';
 import 'package:shared_photo/components/album_comp/popular_page.dart';
 import 'package:shared_photo/models/arguments.dart';
+import 'package:shared_photo/models/photo.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 import 'package:shared_photo/screens/image_frame.dart';
 
@@ -22,32 +23,29 @@ class AlbumRevealTabView extends StatelessWidget {
       listener: (context, state) {
         if (state.images.isNotEmpty) {
           if (arguments.imageID != null) {
-            int selectedIndex = context
+            Photo selectedImage = context
                 .read<AlbumFrameCubit>()
                 .state
                 .imageFrameTimelineList
-                .indexWhere((element) => element.imageId == arguments.imageID);
+                .firstWhere((element) => element.imageId == arguments.imageID);
 
             context
                 .read<AlbumFrameCubit>()
-                .initalizeImageFrameWithSelectedImage(selectedIndex);
+                .initalizeImageFrameWithSelectedImage(selectedImage);
 
             showModalBottomSheet(
               context: context,
               isScrollControlled: true,
               useRootNavigator: true,
               useSafeArea: true,
+              enableDrag: false,
               builder: (ctx) => MultiBlocProvider(
                 providers: [
                   BlocProvider(
                     create: (context) => ImageFrameCubit(
                       dataRepository: context.read<DataRepository>(),
                       user: context.read<AppBloc>().state.user,
-                      image: context
-                          .read<AlbumFrameCubit>()
-                          .state
-                          .album
-                          .images[selectedIndex],
+                      image: selectedImage,
                       albumID: arguments.albumID,
                     ),
                   ),

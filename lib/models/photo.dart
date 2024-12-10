@@ -71,7 +71,7 @@ class Photo {
       firstName: map['first_name'],
       lastName: map['last_name'],
       imageCaption: caption,
-      uploadDateTime: DateTime.parse(map['created_at']),
+      uploadDateTime: DateTime.parse(map['created_at']).toLocal(),
       likes: map['likes'],
       upvotes: map['upvotes'],
       userLiked: map['user_liked'],
@@ -112,20 +112,26 @@ class Photo {
     return requestUrl;
   }
 
-  String get imageReqMedSize {
-    String requestUrl = "${dotenv.env['URL']}/image?id=$imageId&height=350";
+  String get imageReq1080 {
+    String requestUrl = "${dotenv.env['URL']}/image?id=${imageId}_1080";
 
     return requestUrl;
   }
 
-  String get imageReqSmallSize {
-    String requestUrl = "${dotenv.env['URL']}/image?id=$imageId&height=150";
+  String get imageReq540 {
+    String requestUrl = "${dotenv.env['URL']}/image?id=${imageId}_540";
 
     return requestUrl;
   }
 
   String get avatarReq {
     String requestUrl = "${dotenv.env['URL']}/image?id=$owner";
+
+    return requestUrl;
+  }
+
+  String get avatarReq540 {
+    String requestUrl = "${dotenv.env['URL']}/image?id=${owner}_540";
 
     return requestUrl;
   }
