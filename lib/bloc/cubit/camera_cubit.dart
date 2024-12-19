@@ -5,7 +5,7 @@ import 'dart:io' show Platform;
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/captured_image.dart';
@@ -141,7 +141,8 @@ class CameraCubit extends HydratedCubit<CameraState> {
     if (state.selectedImage?.imageXFile == null) return;
     String imagePath = state.selectedImage!.imageXFile.path;
 
-    ImageGallerySaver.saveFile(imagePath, isReturnPathOfIOS: Platform.isIOS);
+    ImageGallerySaverPlus.saveFile(imagePath,
+        isReturnPathOfIOS: Platform.isIOS);
     return;
   }
 
