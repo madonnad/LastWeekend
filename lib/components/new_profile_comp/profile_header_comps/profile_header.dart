@@ -12,7 +12,7 @@ class ProfileHeader extends StatelessWidget {
     return BlocBuilder<ProfileBloc, ProfileState>(
       builder: (context, state) {
         double devWidth = MediaQuery.of(context).size.width;
-        double circleDiameter = devWidth * .25;
+        double circleDiameter = devWidth * .11;
         return Column(
           children: [
             SizedBox(
@@ -29,7 +29,7 @@ class ProfileHeader extends StatelessWidget {
                           .pushNamed('/settings', arguments: argMap);
                     },
                     child: const Icon(
-                      Icons.settings,
+                      Icons.more_vert,
                       color: Colors.white70,
                     ),
                   ),
@@ -48,13 +48,13 @@ class ProfileHeader extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(
-                  top: 20.0, right: 35, left: 35, bottom: 5),
+                  top: 15.0, right: 35, left: 35, bottom: 15),
               child: FittedBox(
                 child: Text(
                   state.user.fullName,
-                  style: GoogleFonts.josefinSans(
-                    fontSize: 32,
-                    fontWeight: FontWeight.w500,
+                  style: GoogleFonts.montserrat(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
                     color: Colors.white,
                   ),
                 ),

@@ -16,8 +16,8 @@ class ProfileScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ProfileHeader(),
-              TopFriendsComponent(),
-              SizedBox(height: 25),
+              //TopFriendsComponent(),
+              //SizedBox(height: 25),
               //MonthlyRecapList(),
               ProfileRevealedAlbums(),
             ],

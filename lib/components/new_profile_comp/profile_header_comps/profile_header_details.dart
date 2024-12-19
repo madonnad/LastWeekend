@@ -17,7 +17,7 @@ class ProfileHeaderDetail extends StatelessWidget {
               title: "friends",
               value: state.myFriends.length.toString(),
             ),
-            const SizedBox(width: 45),
+            const SizedBox(width: 10),
             ProfileDetailElement(
               title: "albums",
               value: state.myAlbumsMap.length.toString(),

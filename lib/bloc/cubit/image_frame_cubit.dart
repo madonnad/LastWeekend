@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image/image.dart' as img;
-import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart';
 import 'package:shared_photo/models/comment.dart';
 import 'package:shared_photo/models/custom_exception.dart';
 import 'package:shared_photo/models/photo.dart';
@@ -156,7 +156,7 @@ class ImageFrameCubit extends Cubit<ImageFrameState> {
       if (decodedImage == null) throw Exception();
       img.Image orientedImage = img.bakeOrientation(decodedImage);
 
-      ImageGallerySaver.saveImage(img.encodeJpg(orientedImage),
+      ImageGallerySaverPlus.saveImage(img.encodeJpg(orientedImage),
           isReturnImagePathOfIOS: Platform.isIOS);
     } catch (e) {
       emit(state.copyWith(loading: false));
