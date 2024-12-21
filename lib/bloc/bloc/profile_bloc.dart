@@ -31,6 +31,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             myAlbumsMap: dataRepository.profileAlbums(),
           ),
         );
+        add(UpdateEventByDatetime());
       },
     );
 
@@ -59,6 +60,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           albumMap[key] = album;
           emit(state.copyWith(myAlbumsMap: albumMap));
         }
+        add(UpdateEventByDatetime());
       },
     );
 
@@ -70,6 +72,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
       albumMap.update(key, (value) => album, ifAbsent: () => album);
       emit(state.copyWith(myAlbumsMap: albumMap));
+      add(UpdateEventByDatetime());
     });
 
     on<UpdateImageInAlbum>((event, emit) {
@@ -88,6 +91,30 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       profileAlbumMap[albumID] = newAlbum;
 
       emit(state.copyWith(myAlbumsMap: profileAlbumMap));
+    });
+
+    on<UpdateEventByDatetime>((event, emit) {
+      Map<DateTime, List<Album>> eventDateMap = {};
+      for (Album album in state.myAlbums) {
+        DateTime tempDT = album.creationDateTime;
+        DateTime yearMonth = tempDT.copyWith(
+            year: tempDT.year,
+            month: tempDT.month,
+            day: 1,
+            hour: 0,
+            minute: 0,
+            second: 0,
+            millisecond: 0,
+            microsecond: 0);
+
+        if (eventDateMap[yearMonth] != null) {
+          List<Album> tempAlbumList = eventDateMap[yearMonth]!;
+          tempAlbumList.add(album);
+        } else {
+          eventDateMap[yearMonth] = [album];
+        }
+      }
+      emit(state.copyWith(myEventsByDatetime: eventDateMap));
     });
 
     on<UpdateUser>((event, emit) {
@@ -149,5 +176,30 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     });
 
     add(InitializeProfile());
+  }
+
+  Map<DateTime, List<Album>> sortAlbumsByDatetime() {
+    Map<DateTime, List<Album>> eventDateMap = {};
+    for (Album album in state.myAlbums) {
+      DateTime tempDT = album.creationDateTime;
+      DateTime yearMonth = tempDT.copyWith(
+          year: tempDT.year,
+          month: tempDT.month,
+          day: 1,
+          hour: 0,
+          minute: 0,
+          second: 0,
+          millisecond: 0,
+          microsecond: 0);
+
+      if (eventDateMap[yearMonth] != null) {
+        List<Album> tempAlbumList = eventDateMap[yearMonth]!;
+        tempAlbumList.add(album);
+      } else {
+        eventDateMap[yearMonth] = [album];
+      }
+    }
+
+    return eventDateMap;
   }
 }

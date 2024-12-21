@@ -15,36 +15,52 @@ class ProfileHeader extends StatelessWidget {
         double circleDiameter = devWidth * .11;
         return Column(
           children: [
-            SizedBox(
-              height: 56,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Map<String, dynamic> argMap = {
-                        'profileBloc': context.read<ProfileBloc>(),
-                      };
-                      Navigator.of(context)
-                          .pushNamed('/settings', arguments: argMap);
-                    },
-                    child: const Icon(
-                      Icons.more_vert,
-                      color: Colors.white70,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 56,
+                  width: 24,
+                ),
+                Spacer(),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: CircleAvatar(
+                    radius: circleDiameter,
+                    backgroundColor: Colors.grey,
+                    backgroundImage: const AssetImage("lib/assets/default.png"),
+                    foregroundImage: NetworkImage(
+                      state.user.avatarUrl,
+                      headers: state.user.headers,
                     ),
+                    onForegroundImageError: (_, __) {},
                   ),
-                ],
-              ),
-            ),
-            CircleAvatar(
-              radius: circleDiameter,
-              backgroundColor: Colors.grey,
-              backgroundImage: const AssetImage("lib/assets/default.png"),
-              foregroundImage: NetworkImage(
-                state.user.avatarUrl,
-                headers: state.user.headers,
-              ),
-              onForegroundImageError: (_, __) {},
+                ),
+                Spacer(),
+                SizedBox(
+                  height: 56,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Map<String, dynamic> argMap = {
+                            'profileBloc': context.read<ProfileBloc>(),
+                          };
+                          Navigator.of(context)
+                              .pushNamed('/settings', arguments: argMap);
+                        },
+                        child: const Icon(
+                          Icons.more_vert,
+                          color: Colors.white70,
+                          size: 24,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
             Padding(
               padding: const EdgeInsets.only(

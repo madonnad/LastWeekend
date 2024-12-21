@@ -20,7 +20,7 @@ class ProfileDetailElement extends StatelessWidget {
         onTap: onTap,
         child: Container(
           color: Color.fromRGBO(16, 16, 16, 1),
-          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -31,7 +31,7 @@ class ProfileDetailElement extends StatelessWidget {
                   Text(
                     value,
                     style: GoogleFonts.montserrat(
-                      fontSize: 30,
+                      fontSize: 20,
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
                       height: 1,
@@ -41,7 +41,7 @@ class ProfileDetailElement extends StatelessWidget {
                   Text(
                     title.toUpperCase(),
                     style: GoogleFonts.montserrat(
-                      fontSize: 14,
+                      fontSize: 13,
                       fontWeight: FontWeight.w500,
                       color: Colors.white54,
                       height: 1,
