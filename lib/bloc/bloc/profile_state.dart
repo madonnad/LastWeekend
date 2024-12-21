@@ -3,6 +3,7 @@ part of 'profile_bloc.dart';
 class ProfileState extends Equatable {
   final User user;
   final Map<String, Album> myAlbumsMap;
+  final Map<DateTime, List<Album>> myEventsByDatetime;
   final List<Photo> myImages;
   final Map<String, Friend> myFriendsMap;
   final List<Notification> myNotifications;
@@ -13,6 +14,7 @@ class ProfileState extends Equatable {
   const ProfileState({
     required this.user,
     required this.myAlbumsMap,
+    required this.myEventsByDatetime,
     required this.myImages,
     required this.myFriendsMap,
     required this.myNotifications,
@@ -24,6 +26,7 @@ class ProfileState extends Equatable {
   static const empty = ProfileState(
     user: User.empty,
     myAlbumsMap: {},
+    myEventsByDatetime: {},
     myImages: [],
     myFriendsMap: {},
     myNotifications: [],
@@ -36,6 +39,7 @@ class ProfileState extends Equatable {
     return ProfileState(
       user: user,
       myAlbumsMap: const {},
+      myEventsByDatetime: {},
       myImages: const [],
       myFriendsMap: const {},
       myNotifications: const [],
@@ -48,6 +52,7 @@ class ProfileState extends Equatable {
   ProfileState copyWith({
     User? user,
     Map<String, Album>? myAlbumsMap,
+    Map<DateTime, List<Album>>? myEventsByDatetime,
     List<Photo>? myImages,
     Map<String, Friend>? myFriendsMap,
     List<Notification>? myNotifications,
@@ -58,6 +63,7 @@ class ProfileState extends Equatable {
     return ProfileState(
       user: user ?? this.user,
       myAlbumsMap: myAlbumsMap ?? this.myAlbumsMap,
+      myEventsByDatetime: myEventsByDatetime ?? this.myEventsByDatetime,
       myImages: myImages ?? this.myImages,
       myFriendsMap: myFriendsMap ?? this.myFriendsMap,
       myNotifications: myNotifications ?? this.myNotifications,
@@ -81,6 +87,7 @@ class ProfileState extends Equatable {
   List<Object?> get props => [
         user,
         myAlbumsMap,
+        myEventsByDatetime,
         myImages,
         myAlbumsMap,
         myNotifications,

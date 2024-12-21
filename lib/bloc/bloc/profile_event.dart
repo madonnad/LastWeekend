@@ -49,6 +49,13 @@ class UpdateImageInAlbum extends ProfileEvent {
   List<Object?> get props => [imageChange];
 }
 
+class UpdateEventByDatetime extends ProfileEvent {
+  const UpdateEventByDatetime();
+
+  @override
+  List<Object?> get props => [];
+}
+
 class FetchProfileAlbumCoverURL extends ProfileEvent {
   final int index;
 

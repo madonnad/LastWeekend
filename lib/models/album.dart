@@ -357,11 +357,30 @@ class Album extends Equatable {
     String dateString;
     if (revealDateTime.year != DateTime.now().year) {
       dateString =
-          DateFormat("EEE MMM d, ''yy h:mm aaa").format(revealDateTime);
+          DateFormat("EEE MMM d, ''yy @ h:mm aaa").format(revealDateTime);
       return dateString;
     }
     return dateString =
         DateFormat("EEE MMM d @ h:mm aaa").format(revealDateTime);
+  }
+
+  String get durationDateFormatter {
+    DateTime createdDay = creationDateTime.copyWith(
+        hour: 0, minute: 0, second: 0, millisecond: 0, microsecond: 0);
+    DateTime revealDay = revealDateTime.copyWith(
+        hour: 0, minute: 0, second: 0, millisecond: 0, microsecond: 0);
+
+    if (revealDay == createdDay) {
+      String dateString;
+      dateString = DateFormat("MMM d, yyyy").format(revealDateTime);
+      return dateString;
+    } else {
+      String creationString;
+      String revealString;
+      creationString = DateFormat("MMM d, yyyy").format(creationDateTime);
+      revealString = DateFormat("MMM d, yyyy").format(revealDateTime);
+      return "$creationString - $revealString";
+    }
   }
 
   @override
