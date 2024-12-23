@@ -47,7 +47,7 @@ class EventElement extends StatelessWidget {
                       album.coverReq,
                       headers: context.read<AppBloc>().state.user.headers,
                     ),
-                    fit: BoxFit.fitWidth,
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),

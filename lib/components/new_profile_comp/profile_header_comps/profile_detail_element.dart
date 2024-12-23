@@ -51,7 +51,7 @@ class ProfileDetailElement extends StatelessWidget {
               ),
               Icon(
                 Icons.arrow_forward,
-                color: Colors.white,
+                color: onTap != null ? Colors.white : Colors.transparent,
                 size: 16,
               )
             ],

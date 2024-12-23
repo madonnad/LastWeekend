@@ -62,11 +62,12 @@ extension AlbumDataRepo on DataRepository {
   }
 
   Map<String, Album> activeAlbums() {
-    return albumMap.values
+    Map<String, Album> test = albumMap.values
         .where((album) =>
             album.guests.any((guest) => guest.uid == user.id) &&
             album.phase != AlbumPhases.reveal)
         .fold({}, (map, album) => map..[album.albumId] = album);
+    return test;
   }
 
   Map<String, Album> unlockedAlbums() {
@@ -78,11 +79,14 @@ extension AlbumDataRepo on DataRepository {
   }
 
   Map<String, Album> profileAlbums() {
-    return albumMap.values
+    Map<String, Album> test = albumMap.values
         .where((album) =>
             album.guests.any((guest) => guest.uid == user.id) &&
-            album.phase == AlbumPhases.reveal)
+            (album.phase == AlbumPhases.reveal ||
+                album.phase == AlbumPhases.open))
         .fold({}, (map, album) => map..[album.albumId] = album);
+    // print(test);
+    return test;
   }
 
   // Create New Album

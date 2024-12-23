@@ -52,7 +52,7 @@ class Album extends Equatable {
 
   @override
   String toString() {
-    return 'Album(albumId: $albumId, albumName: $albumName, albumOwner: $albumOwner,visibility: $visibility, images: $images, creationDateTime: $creationDateTime)';
+    return 'Album(albumId: $albumId, albumName: $albumName, albumOwner: $albumOwner,visibility: $visibility, images: $images, creationDateTime: $creationDateTime, guests: $guests)';
   }
 
   static final empty = Album(
@@ -183,6 +183,18 @@ class Album extends Equatable {
 
   String get coverReq {
     String requestUrl = "${dotenv.env['URL']}/image?id=$albumCoverId";
+
+    return requestUrl;
+  }
+
+  String get coverReq1080 {
+    String requestUrl = "${dotenv.env['URL']}/image?id=${albumCoverId}_1080";
+
+    return requestUrl;
+  }
+
+  String get coverReq540 {
+    String requestUrl = "${dotenv.env['URL']}/image?id=${albumCoverId}_540";
 
     return requestUrl;
   }
