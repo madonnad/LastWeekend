@@ -59,7 +59,6 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
             add(AddAlbumsToFeed(albums: albums));
           case StreamOperation.delete:
           case StreamOperation.update:
-          default:
         }
       },
     );

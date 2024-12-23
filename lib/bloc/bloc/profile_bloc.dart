@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/friend.dart';
 import 'package:shared_photo/models/photo.dart';
@@ -31,6 +32,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             myAlbumsMap: dataRepository.profileAlbums(),
           ),
         );
+
         add(UpdateEventByDatetime());
       },
     );
@@ -72,6 +74,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
       albumMap.update(key, (value) => album, ifAbsent: () => album);
       emit(state.copyWith(myAlbumsMap: albumMap));
+      print(state.myAlbumsMap.keys);
       add(UpdateEventByDatetime());
     });
 
@@ -94,24 +97,22 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     });
 
     on<UpdateEventByDatetime>((event, emit) {
-      Map<DateTime, List<Album>> eventDateMap = {};
+      Map<String, List<Album>> eventDateMap = {};
       for (Album album in state.myAlbums) {
+        String text = '';
         DateTime tempDT = album.creationDateTime;
-        DateTime yearMonth = tempDT.copyWith(
-            year: tempDT.year,
-            month: tempDT.month,
-            day: 1,
-            hour: 0,
-            minute: 0,
-            second: 0,
-            millisecond: 0,
-            microsecond: 0);
 
-        if (eventDateMap[yearMonth] != null) {
-          List<Album> tempAlbumList = eventDateMap[yearMonth]!;
+        if (tempDT.year == DateTime.now().year) {
+          text = DateFormat("MMMM").format(tempDT);
+        } else {
+          text = DateFormat("MMM yyyy").format(tempDT);
+        }
+
+        if (eventDateMap[text] != null) {
+          List<Album> tempAlbumList = eventDateMap[text]!;
           tempAlbumList.add(album);
         } else {
-          eventDateMap[yearMonth] = [album];
+          eventDateMap[text] = [album];
         }
       }
       emit(state.copyWith(myEventsByDatetime: eventDateMap));
@@ -154,8 +155,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
       // Check if user is in the album that was passed
       bool userIsGuest = album.guests.any((guest) => guest.uid == user.id);
+      bool userIsOwner = album.albumOwner == user.id;
 
-      if (userIsGuest && album.phase == AlbumPhases.reveal) {
+      if ((userIsGuest || userIsOwner) &&
+          (album.phase == AlbumPhases.reveal ||
+              album.phase == AlbumPhases.open)) {
         switch (type) {
           case StreamOperation.add:
             add(AddAlbumToMap(album: album));
@@ -176,30 +180,5 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     });
 
     add(InitializeProfile());
-  }
-
-  Map<DateTime, List<Album>> sortAlbumsByDatetime() {
-    Map<DateTime, List<Album>> eventDateMap = {};
-    for (Album album in state.myAlbums) {
-      DateTime tempDT = album.creationDateTime;
-      DateTime yearMonth = tempDT.copyWith(
-          year: tempDT.year,
-          month: tempDT.month,
-          day: 1,
-          hour: 0,
-          minute: 0,
-          second: 0,
-          millisecond: 0,
-          microsecond: 0);
-
-      if (eventDateMap[yearMonth] != null) {
-        List<Album> tempAlbumList = eventDateMap[yearMonth]!;
-        tempAlbumList.add(album);
-      } else {
-        eventDateMap[yearMonth] = [album];
-      }
-    }
-
-    return eventDateMap;
   }
 }

@@ -55,7 +55,9 @@ class ProfileUploadSlide extends StatelessWidget {
                   picker.pickImage(source: ImageSource.gallery).then(
                     (value) {
                       if (value != null) {
-                        context.read<WelcomeCubit>().addProfileImage(value);
+                        if (context.mounted) {
+                          context.read<WelcomeCubit>().addProfileImage(value);
+                        }
                       }
                     },
                   ).catchError(

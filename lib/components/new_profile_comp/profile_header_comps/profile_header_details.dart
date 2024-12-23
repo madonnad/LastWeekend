@@ -19,7 +19,7 @@ class ProfileHeaderDetail extends StatelessWidget {
             ),
             const SizedBox(width: 10),
             ProfileDetailElement(
-              title: "albums",
+              title: "events",
               value: state.myAlbumsMap.length.toString(),
             ),
           ],

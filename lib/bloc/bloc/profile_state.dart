@@ -3,7 +3,7 @@ part of 'profile_bloc.dart';
 class ProfileState extends Equatable {
   final User user;
   final Map<String, Album> myAlbumsMap;
-  final Map<DateTime, List<Album>> myEventsByDatetime;
+  final Map<String, List<Album>> myEventsByDatetime;
   final List<Photo> myImages;
   final Map<String, Friend> myFriendsMap;
   final List<Notification> myNotifications;
@@ -52,7 +52,7 @@ class ProfileState extends Equatable {
   ProfileState copyWith({
     User? user,
     Map<String, Album>? myAlbumsMap,
-    Map<DateTime, List<Album>>? myEventsByDatetime,
+    Map<String, List<Album>>? myEventsByDatetime,
     List<Photo>? myImages,
     Map<String, Friend>? myFriendsMap,
     List<Notification>? myNotifications,
