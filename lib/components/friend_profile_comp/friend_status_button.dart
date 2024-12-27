@@ -23,18 +23,18 @@ class FriendStatusButton extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: backgroundColor,
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(5),
           border: Border.all(
             color: borderColor,
           ),
         ),
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
         child: Text(
           text.toUpperCase(),
-          style: GoogleFonts.josefinSans(
+          style: GoogleFonts.montserrat(
             color: textColor,
-            fontSize: 16,
-            fontWeight: FontWeight.w700,
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
           ),
         ),
       ),

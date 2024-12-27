@@ -74,7 +74,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
       albumMap.update(key, (value) => album, ifAbsent: () => album);
       emit(state.copyWith(myAlbumsMap: albumMap));
-      print(state.myAlbumsMap.keys);
       add(UpdateEventByDatetime());
     });
 

@@ -16,7 +16,7 @@ class ProfileHeader extends StatelessWidget {
         return Column(
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
@@ -40,31 +40,26 @@ class ProfileHeader extends StatelessWidget {
                 Spacer(),
                 SizedBox(
                   height: 56,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Map<String, dynamic> argMap = {
-                            'profileBloc': context.read<ProfileBloc>(),
-                          };
-                          Navigator.of(context)
-                              .pushNamed('/settings', arguments: argMap);
-                        },
-                        child: const Icon(
-                          Icons.more_vert,
-                          color: Colors.white70,
-                          size: 24,
-                        ),
-                      ),
-                    ],
+                  child: GestureDetector(
+                    onTap: () {
+                      Map<String, dynamic> argMap = {
+                        'profileBloc': context.read<ProfileBloc>(),
+                      };
+                      Navigator.of(context)
+                          .pushNamed('/settings', arguments: argMap);
+                    },
+                    child: const Icon(
+                      Icons.more_vert,
+                      color: Colors.white70,
+                      size: 24,
+                    ),
                   ),
                 ),
               ],
             ),
             Padding(
               padding: const EdgeInsets.only(
-                  top: 15.0, right: 35, left: 35, bottom: 15),
+                  top: 10.0, right: 35, left: 35, bottom: 10),
               child: FittedBox(
                 child: Text(
                   state.user.fullName,

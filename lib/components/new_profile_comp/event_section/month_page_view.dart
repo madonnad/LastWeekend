@@ -4,10 +4,14 @@ import 'package:google_fonts/google_fonts.dart';
 class MonthPageView extends StatefulWidget {
   final List<String> monthList;
   final ValueNotifier<String> selectedPageNotifier;
+  final String? minusOnePageSection;
+  final IconData? minusOneIcon;
   const MonthPageView({
     super.key,
     required this.selectedPageNotifier,
     required this.monthList,
+    this.minusOnePageSection,
+    this.minusOneIcon,
   });
 
   @override
@@ -18,11 +22,19 @@ class _MonthPageViewState extends State<MonthPageView>
     with SingleTickerProviderStateMixin {
   late PageController _pageController;
   double opacity = 1;
+  double initialPage = 0;
 
   @override
   void initState() {
+    if (widget.minusOnePageSection != null) {
+      widget.monthList.insert(0, widget.minusOnePageSection!);
+      if (widget.monthList.isNotEmpty) {
+        initialPage = 1;
+      }
+    }
+
     _pageController = PageController(
-      initialPage: 0,
+      initialPage: initialPage.toInt(),
       viewportFraction: 0.4,
     );
 
@@ -50,9 +62,9 @@ class _MonthPageViewState extends State<MonthPageView>
         controller: _pageController,
         itemCount: widget.monthList.length,
         itemBuilder: (context, index) {
-          // if (index == 0) {
+          // if (widget.minusOneIcon != null && index == 0) {
           //   return Icon(
-          //     Icons.favorite_outline,
+          //     widget.minusOneIcon,
           //     color: Colors.white,
           //   );
           // }
@@ -67,8 +79,8 @@ class _MonthPageViewState extends State<MonthPageView>
                   builder: (context, child) {
                     // Calculate the distance of the page from the current index
                     double pagePosition = _pageController.hasClients
-                        ? _pageController.page ?? 0
-                        : 0;
+                        ? _pageController.page ?? initialPage
+                        : initialPage;
                     double distance = (pagePosition - index).abs();
 
                     // Scale the selected item's opacity or background dynamically
@@ -111,15 +123,21 @@ class _MonthPageViewState extends State<MonthPageView>
                             ),
                             borderRadius: BorderRadius.circular(25),
                           ),
-                          child: Text(
-                            text,
-                            style: GoogleFonts.montserrat(
-                              color: fontColor,
-                              fontSize: 18,
-                              fontWeight: fontWeight,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
+                          child: (widget.minusOneIcon != null && index == 0)
+                              ? Icon(
+                                  widget.minusOneIcon,
+                                  color: fontColor,
+                                )
+                              : Text(
+                                  text,
+                                  style: GoogleFonts.montserrat(
+                                    color: fontColor,
+                                    fontSize: 18,
+                                    fontWeight: fontWeight,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                         ),
                       ),
                     );

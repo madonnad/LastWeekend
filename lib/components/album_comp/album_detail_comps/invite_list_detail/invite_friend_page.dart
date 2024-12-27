@@ -60,7 +60,7 @@ class InviteFriendPage extends StatelessWidget {
                                   backgroundColor:
                                       const Color.fromRGBO(16, 16, 16, 1),
                                   foregroundImage: CachedNetworkImageProvider(
-                                    friendList[index].imageReqSmall,
+                                    friendList[index].imageReq540,
                                     headers: context
                                         .read<AppBloc>()
                                         .state
