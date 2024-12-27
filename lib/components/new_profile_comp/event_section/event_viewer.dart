@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
 import 'package:shared_photo/components/new_profile_comp/event_section/profile_event_item.dart';
 import 'package:shared_photo/models/album.dart';
 
 class EventViewer extends StatefulWidget {
   final Map<String, List<Album>> eventMap;
   final ValueNotifier<String> selectedPageNotifier;
+  final List<Album>? minusOneList;
+  final String? minusOneName;
+  final Map<String, String> headers;
   const EventViewer({
     super.key,
     required this.eventMap,
     required this.selectedPageNotifier,
+    this.minusOneList,
+    this.minusOneName,
+    required this.headers,
   });
 
   @override
@@ -22,6 +26,10 @@ class _EventViewerState extends State<EventViewer> {
 
   @override
   void initState() {
+    if (widget.minusOneList != null && widget.minusOneName != null) {
+      widget.eventMap[widget.minusOneName!] = widget.minusOneList!;
+    }
+
     if (widget.eventMap.isNotEmpty) {
       selectedMonth = widget.eventMap.keys.toList()[0];
     }
@@ -49,7 +57,7 @@ class _EventViewerState extends State<EventViewer> {
                     index: index,
                     child: ProfileEventItem(
                       event: widget.eventMap[selectedMonth]![index],
-                      headers: context.read<ProfileBloc>().user.headers,
+                      headers: widget.headers,
                     ),
                   );
                 } else {
