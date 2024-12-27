@@ -34,8 +34,8 @@ class BaseFriend extends Equatable {
     return "${dotenv.env['URL']}/image?id=$uid";
   }
 
-  String get imageReqSmall {
-    return "${dotenv.env['URL']}/image?id=$uid&height=150";
+  String get imageReq540 {
+    return "${dotenv.env['URL']}/image?id=${uid}_540";
   }
 
   String get fullName {

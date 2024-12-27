@@ -52,7 +52,7 @@ class Album extends Equatable {
 
   @override
   String toString() {
-    return 'Album(albumId: $albumId, albumName: $albumName, albumOwner: $albumOwner,visibility: $visibility, images: $images, creationDateTime: $creationDateTime)';
+    return 'Album(albumId: $albumId, albumName: $albumName, albumOwner: $albumOwner,visibility: $visibility, images: $images, creationDateTime: $creationDateTime, guests: $guests)';
   }
 
   static final empty = Album(
@@ -183,6 +183,18 @@ class Album extends Equatable {
 
   String get coverReq {
     String requestUrl = "${dotenv.env['URL']}/image?id=$albumCoverId";
+
+    return requestUrl;
+  }
+
+  String get coverReq1080 {
+    String requestUrl = "${dotenv.env['URL']}/image?id=${albumCoverId}_1080";
+
+    return requestUrl;
+  }
+
+  String get coverReq540 {
+    String requestUrl = "${dotenv.env['URL']}/image?id=${albumCoverId}_540";
 
     return requestUrl;
   }
@@ -357,11 +369,30 @@ class Album extends Equatable {
     String dateString;
     if (revealDateTime.year != DateTime.now().year) {
       dateString =
-          DateFormat("EEE MMM d, ''yy h:mm aaa").format(revealDateTime);
+          DateFormat("EEE MMM d, ''yy @ h:mm aaa").format(revealDateTime);
       return dateString;
     }
     return dateString =
         DateFormat("EEE MMM d @ h:mm aaa").format(revealDateTime);
+  }
+
+  String get durationDateFormatter {
+    DateTime createdDay = creationDateTime.copyWith(
+        hour: 0, minute: 0, second: 0, millisecond: 0, microsecond: 0);
+    DateTime revealDay = revealDateTime.copyWith(
+        hour: 0, minute: 0, second: 0, millisecond: 0, microsecond: 0);
+
+    if (revealDay == createdDay) {
+      String dateString;
+      dateString = DateFormat("MMM d, yyyy").format(revealDateTime);
+      return dateString;
+    } else {
+      String creationString;
+      String revealString;
+      creationString = DateFormat("MMM d, yyyy").format(creationDateTime);
+      revealString = DateFormat("MMM d, yyyy").format(revealDateTime);
+      return "$creationString - $revealString";
+    }
   }
 
   @override

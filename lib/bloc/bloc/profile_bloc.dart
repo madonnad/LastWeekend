@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/friend.dart';
 import 'package:shared_photo/models/photo.dart';
@@ -31,6 +32,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             myAlbumsMap: dataRepository.profileAlbums(),
           ),
         );
+
+        add(UpdateEventByDatetime());
       },
     );
 
@@ -59,6 +62,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           albumMap[key] = album;
           emit(state.copyWith(myAlbumsMap: albumMap));
         }
+        add(UpdateEventByDatetime());
       },
     );
 
@@ -70,6 +74,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
       albumMap.update(key, (value) => album, ifAbsent: () => album);
       emit(state.copyWith(myAlbumsMap: albumMap));
+      add(UpdateEventByDatetime());
     });
 
     on<UpdateImageInAlbum>((event, emit) {
@@ -88,6 +93,28 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       profileAlbumMap[albumID] = newAlbum;
 
       emit(state.copyWith(myAlbumsMap: profileAlbumMap));
+    });
+
+    on<UpdateEventByDatetime>((event, emit) {
+      Map<String, List<Album>> eventDateMap = {};
+      for (Album album in state.myAlbums) {
+        String text = '';
+        DateTime tempDT = album.creationDateTime;
+
+        if (tempDT.year == DateTime.now().year) {
+          text = DateFormat("MMMM").format(tempDT);
+        } else {
+          text = DateFormat("MMM yyyy").format(tempDT);
+        }
+
+        if (eventDateMap[text] != null) {
+          List<Album> tempAlbumList = eventDateMap[text]!;
+          tempAlbumList.add(album);
+        } else {
+          eventDateMap[text] = [album];
+        }
+      }
+      emit(state.copyWith(myEventsByDatetime: eventDateMap));
     });
 
     on<UpdateUser>((event, emit) {
@@ -127,8 +154,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
       // Check if user is in the album that was passed
       bool userIsGuest = album.guests.any((guest) => guest.uid == user.id);
+      bool userIsOwner = album.albumOwner == user.id;
 
-      if (userIsGuest && album.phase == AlbumPhases.reveal) {
+      if ((userIsGuest || userIsOwner) &&
+          (album.phase == AlbumPhases.reveal ||
+              album.phase == AlbumPhases.open)) {
         switch (type) {
           case StreamOperation.add:
             add(AddAlbumToMap(album: album));

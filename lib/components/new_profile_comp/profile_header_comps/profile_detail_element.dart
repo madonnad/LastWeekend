@@ -1,35 +1,63 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ProfileDetailElement extends StatelessWidget {
   final String title;
   final String value;
-  const ProfileDetailElement(
-      {super.key, required this.title, required this.value});
+  final VoidCallback? onTap;
+  const ProfileDetailElement({
+    super.key,
+    required this.title,
+    required this.value,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          title.toUpperCase(),
-          style: GoogleFonts.josefinSans(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            color: Colors.white54,
+    return Expanded(
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          color: Color.fromRGBO(16, 16, 16, 1),
+          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    value,
+                    style: GoogleFonts.montserrat(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                      height: 1,
+                    ),
+                  ),
+                  Gap(3),
+                  Text(
+                    title.toUpperCase(),
+                    style: GoogleFonts.montserrat(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white54,
+                      height: 1,
+                    ),
+                  ),
+                ],
+              ),
+              Icon(
+                Icons.arrow_forward,
+                color: onTap != null ? Colors.white : Colors.transparent,
+                size: 16,
+              )
+            ],
           ),
         ),
-        FittedBox(
-          child: Text(
-            value,
-            style: GoogleFonts.josefinSans(
-              fontSize: 30,
-              fontWeight: FontWeight.w500,
-              color: Colors.white,
-            ),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }

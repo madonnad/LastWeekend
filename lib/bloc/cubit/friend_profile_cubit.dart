@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/custom_exception.dart';
 import 'package:shared_photo/models/friend.dart';
@@ -19,10 +20,10 @@ class FriendProfileCubit extends Cubit<FriendProfileState> {
     required this.user,
     required this.dataRepository,
   }) : super(FriendProfileState.empty(user)) {
-    initalizeCubit();
+    initializeCubit();
   }
 
-  void initalizeCubit() async {
+  void initializeCubit() async {
     emit(state.copyWith(loading: true));
 
     AnonymousFriend result =
@@ -31,8 +32,12 @@ class FriendProfileCubit extends Cubit<FriendProfileState> {
     List<Album> revealedAlbums =
         await dataRepository.getRevealedAlbumsByAlbumID(result.albumIDs);
 
+    revealedAlbums
+        .sort((a, b) => b.creationDateTime.compareTo(a.creationDateTime));
+
     emit(state.copyWith(
         anonymousFriend: result, albumList: revealedAlbums, loading: false));
+    updateEventByDatetime();
   }
 
   void sendFriendRequest() async {
@@ -56,5 +61,49 @@ class FriendProfileCubit extends Cubit<FriendProfileState> {
         emit(state.copyWith(exception: null));
       }
     });
+  }
+
+  void updateEventByDatetime() {
+    Map<String, List<Album>> eventDateMap = {};
+    FriendStatus currentStatus = state.anonymousFriend.friendStatus;
+
+    for (Album album in state.albumList) {
+      AlbumVisibility visibility = album.visibility;
+      bool userInAlbum = album.guests.any((guest) => guest.uid == user.id);
+
+      switch (visibility) {
+        case AlbumVisibility.public:
+          _addEventToMap(eventDateMap, album);
+        case AlbumVisibility.friends:
+          if (currentStatus == FriendStatus.friends || userInAlbum) {
+            _addEventToMap(eventDateMap, album);
+          }
+        case AlbumVisibility.private:
+          if (userInAlbum) {
+            _addEventToMap(eventDateMap, album);
+          }
+      }
+    }
+    emit(state.copyWith(eventsByDatetime: eventDateMap));
+  }
+
+  Map<String, List<Album>> _addEventToMap(
+      Map<String, List<Album>> eventDateMap, Album album) {
+    String text = '';
+    DateTime tempDT = album.creationDateTime;
+
+    if (tempDT.year == DateTime.now().year) {
+      text = DateFormat("MMMM").format(tempDT);
+    } else {
+      text = DateFormat("MMM yyyy").format(tempDT);
+    }
+
+    if (eventDateMap[text] != null) {
+      List<Album> tempAlbumList = eventDateMap[text]!;
+      tempAlbumList.add(album);
+    } else {
+      eventDateMap[text] = [album];
+    }
+    return eventDateMap;
   }
 }

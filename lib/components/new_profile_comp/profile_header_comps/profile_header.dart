@@ -12,15 +12,35 @@ class ProfileHeader extends StatelessWidget {
     return BlocBuilder<ProfileBloc, ProfileState>(
       builder: (context, state) {
         double devWidth = MediaQuery.of(context).size.width;
-        double circleDiameter = devWidth * .25;
+        double circleDiameter = devWidth * .11;
         return Column(
           children: [
-            SizedBox(
-              height: 56,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  GestureDetector(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 56,
+                  width: 24,
+                ),
+                Spacer(),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: CircleAvatar(
+                    radius: circleDiameter,
+                    backgroundColor: Colors.grey,
+                    backgroundImage: const AssetImage("lib/assets/default.png"),
+                    foregroundImage: NetworkImage(
+                      state.user.avatarUrl,
+                      headers: state.user.headers,
+                    ),
+                    onForegroundImageError: (_, __) {},
+                  ),
+                ),
+                Spacer(),
+                SizedBox(
+                  height: 56,
+                  child: GestureDetector(
                     onTap: () {
                       Map<String, dynamic> argMap = {
                         'profileBloc': context.read<ProfileBloc>(),
@@ -29,32 +49,23 @@ class ProfileHeader extends StatelessWidget {
                           .pushNamed('/settings', arguments: argMap);
                     },
                     child: const Icon(
-                      Icons.settings,
+                      Icons.more_vert,
                       color: Colors.white70,
+                      size: 24,
                     ),
                   ),
-                ],
-              ),
-            ),
-            CircleAvatar(
-              radius: circleDiameter,
-              backgroundColor: Colors.grey,
-              backgroundImage: const AssetImage("lib/assets/default.png"),
-              foregroundImage: NetworkImage(
-                state.user.avatarUrl,
-                headers: state.user.headers,
-              ),
-              onForegroundImageError: (_, __) {},
+                ),
+              ],
             ),
             Padding(
               padding: const EdgeInsets.only(
-                  top: 20.0, right: 35, left: 35, bottom: 5),
+                  top: 10.0, right: 35, left: 35, bottom: 10),
               child: FittedBox(
                 child: Text(
                   state.user.fullName,
-                  style: GoogleFonts.josefinSans(
-                    fontSize: 32,
-                    fontWeight: FontWeight.w500,
+                  style: GoogleFonts.montserrat(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
                     color: Colors.white,
                   ),
                 ),
