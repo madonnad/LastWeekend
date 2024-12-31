@@ -132,7 +132,7 @@ class _MonthPageViewState extends State<MonthPageView>
                                   text,
                                   style: GoogleFonts.montserrat(
                                     color: fontColor,
-                                    fontSize: 18,
+                                    fontSize: 15,
                                     fontWeight: fontWeight,
                                   ),
                                   textAlign: TextAlign.center,

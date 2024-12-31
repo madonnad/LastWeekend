@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/cubit/auth_cubit.dart';
 import 'package:shared_photo/components/new_auth/confirm_button.dart';
@@ -27,13 +28,18 @@ class LoginCreateButton extends StatelessWidget {
                             state.confirmPassValid == true &&
                             state.firstNameValid == true &&
                             state.lastNameValid == true)
-                        ? () => context
-                            .read<AuthCubit>()
-                            .createAccountWithCredentials(
-                                email: state.emailController!.text,
-                                password: state.passwordController!.text,
-                                firstName: state.firstNameController!.text,
-                                lastName: state.lastNameController!.text)
+                        ? () {
+                            TextInput.finishAutofillContext(
+                              shouldSave: true,
+                            );
+                            context
+                                .read<AuthCubit>()
+                                .createAccountWithCredentials(
+                                    email: state.emailController!.text,
+                                    password: state.passwordController!.text,
+                                    firstName: state.firstNameController!.text,
+                                    lastName: state.lastNameController!.text);
+                          }
                         : null
                     : null,
               ),
@@ -44,9 +50,11 @@ class LoginCreateButton extends StatelessWidget {
                 buttonText: "Login",
                 onTap: state.isLoading == false
                     ? (state.emailValid == true && state.passwordValid == true)
-                        ? () => context.read<AuthCubit>().loginWithCredentials(
-                            email: state.emailController!.text,
-                            password: state.passwordController!.text)
+                        ? () {
+                            context.read<AuthCubit>().loginWithCredentials(
+                                email: state.emailController!.text,
+                                password: state.passwordController!.text);
+                          }
                         : null
                     : null,
               ),
