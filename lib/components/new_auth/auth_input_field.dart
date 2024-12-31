@@ -5,10 +5,12 @@ class AuthInputField extends StatelessWidget {
   final String hintText;
   final TextEditingController? nameController;
   final String? Function(String?)? validator;
+  final Iterable<String>? autofillHints;
   const AuthInputField(
       {super.key,
       required this.hintText,
       required this.nameController,
+      this.autofillHints,
       this.validator});
 
   @override
@@ -18,6 +20,7 @@ class AuthInputField extends StatelessWidget {
       child: TextFormField(
         controller: nameController,
         autovalidateMode: AutovalidateMode.always,
+        autofillHints: autofillHints,
         validator: validator,
         keyboardType: TextInputType.emailAddress,
         onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),

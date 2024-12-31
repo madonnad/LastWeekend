@@ -26,23 +26,30 @@ class LoginForm extends StatelessWidget {
       builder: (context, state) {
         return Center(
           child: SingleChildScrollView(
-            child: Column(
-              children: [
-                AuthInput(
-                  label: 'Enter Email',
-                  nameController: state.emailController,
-                  validator: (value) =>
-                      checkEmailField(value, context: context),
-                ),
-                AuthInput(
-                  label: 'Enter Password',
-                  nameController: state.passwordController,
-                  validator: (value) =>
-                      checkPasswordField(context: context, value),
-                ),
-                const LoginButton(),
-                const JoinTextSpan()
-              ],
+            child: AutofillGroup(
+              child: Column(
+                children: [
+                  AuthInput(
+                    label: 'Enter Email',
+                    nameController: state.emailController,
+                    validator: (value) =>
+                        checkEmailField(value, context: context),
+                    autofillHint: [AutofillHints.email],
+                  ),
+                  AuthInput(
+                    label: 'Enter Password',
+                    nameController: state.passwordController,
+                    validator: (value) =>
+                        checkPasswordField(context: context, value),
+                    autofillHint: [
+                      AutofillHints.password,
+                      AutofillHints.newPassword
+                    ],
+                  ),
+                  const LoginButton(),
+                  const JoinTextSpan()
+                ],
+              ),
             ),
           ),
         );

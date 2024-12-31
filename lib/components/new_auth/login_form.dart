@@ -17,6 +17,7 @@ class LoginForm extends StatelessWidget {
           children: [
             AuthInputField(
               hintText: "Email",
+              autofillHints: [AutofillHints.email],
               validator: (value) {
                 String? result = checkEmailField(value, context: context);
 
@@ -31,6 +32,7 @@ class LoginForm extends StatelessWidget {
             AuthInputField(
               hintText: "Password",
               nameController: state.passwordController,
+              autofillHints: [AutofillHints.password],
               validator: (value) {
                 String? result = checkPasswordField(value, context: context);
 
