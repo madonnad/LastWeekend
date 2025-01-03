@@ -41,6 +41,7 @@ class LoginForm extends StatelessWidget {
                 }
                 return result;
               },
+              showTextVisToggle: true,
             ),
             const SizedBox(height: 15),
             GestureDetector(
