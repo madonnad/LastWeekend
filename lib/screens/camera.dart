@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 import 'package:shared_photo/bloc/cubit/camera_cubit.dart';
 import 'package:shared_photo/components/camera_comp/active_album_dropdown.dart';
-import 'package:shared_photo/components/camera_comp/camera_image_stack.dart';
 import 'package:shared_photo/components/camera_comp/camera_utils/camera_controls.dart';
 import 'package:shared_photo/components/camera_comp/camera_utils/no_albums_overlay.dart';
 import 'package:shared_photo/components/camera_comp/custom_cam_preview.dart';
@@ -38,7 +38,7 @@ class _CameraScreenState extends State<CameraScreen> {
           );
     controller = CameraController(
       camera,
-      ResolutionPreset.ultraHigh,
+      ResolutionPreset.max,
       imageFormatGroup: ImageFormatGroup.yuv420,
     );
 
@@ -56,7 +56,7 @@ class _CameraScreenState extends State<CameraScreen> {
   }
 
   Future<void> lockOrientation() async {
-    await controller.lockCaptureOrientation();
+    await controller.lockCaptureOrientation(DeviceOrientation.portraitUp);
   }
 
   Future<void> setZoomValues() async {
@@ -92,7 +92,7 @@ class _CameraScreenState extends State<CameraScreen> {
 
     controller = CameraController(
       widget.cameras[cameraSelect],
-      ResolutionPreset.ultraHigh,
+      ResolutionPreset.max,
       imageFormatGroup: ImageFormatGroup.yuv420,
     );
 
@@ -105,22 +105,26 @@ class _CameraScreenState extends State<CameraScreen> {
 
   @override
   Widget build(BuildContext context) {
-    bool minMaxSame =
-        maxZoom < minZoom || currentZoom < minZoom || currentZoom > maxZoom;
     return BlocBuilder<CameraCubit, CameraState>(
       builder: (context, state) {
-        final size = MediaQuery.of(context).size;
+        // final size = MediaQuery.of(context).size;
         return Stack(
           children: [
-            (controller.value.isInitialized)
-                ? SizedBox(
-                    height: size.height,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: MediaQuery.of(context).viewPadding.top,
-                        ),
-                        Expanded(
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  height: MediaQuery.of(context).viewPadding.top,
+                ),
+                ActiveAlbumDropdown(
+                  opacity: .25,
+                ),
+                Gap(10),
+                (controller.value.isInitialized)
+                    ? Expanded(
+                        //width: size.width,
+                        child: AspectRatio(
+                          aspectRatio: 4 / 3,
                           child: GestureDetector(
                             onDoubleTap: () => changeCameraDirection(),
                             child: CustomCamPreview(
@@ -130,40 +134,25 @@ class _CameraScreenState extends State<CameraScreen> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 110),
-                      ],
-                    ),
-                  )
-                : Container(
-                    color: Colors.black,
-                    child: const Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  ),
-            const Positioned(
-              top: 100, // Adjust as needed
-              left: 0, // Adjust as needed
-              right: 0, // Adjust as needed
-              child: Center(
-                child: ActiveAlbumDropdown(
-                  opacity: .25,
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: 110 + 25, //MediaQuery.of(context).size.height * .75,
-              left: MediaQuery.of(context).size.width * .75,
-              right: 0,
-              child: const CameraImageStack(),
-            ),
-            Positioned(
-                bottom: 110 + 25, //MediaQuery.of(context).size.height * .75,
-                left: 0,
-                right: 0,
-                child: CameraControls(
+                      )
+                    : Expanded(
+                        child: Container(
+                          color: Colors.black,
+                          child: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
+                      ),
+                Gap(10),
+                CameraControls(
                   controller: controller,
                   flipCamera: changeCameraDirection,
-                )),
+                ),
+                SizedBox(
+                  height: 120,
+                ),
+              ],
+            ),
             const NoAlbumsOverlay(),
           ],
         );

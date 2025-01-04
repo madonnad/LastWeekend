@@ -71,8 +71,8 @@ Widget imageCountIdentifier({required int count}) {
   }
   return count != 0
       ? Container(
-          height: 30,
-          width: 30,
+          height: 25,
+          width: 25,
           decoration: BoxDecoration(
             color: Colors.red, //const Color.fromRGBO(181, 141, 131, 1),
             borderRadius: BorderRadius.circular(20),
@@ -83,12 +83,15 @@ Widget imageCountIdentifier({required int count}) {
               style: GoogleFonts.montserrat(
                 color: Colors.white,
                 fontWeight: FontWeight.w600,
-                fontSize: 16,
+                fontSize: 13,
               ),
             ),
           ),
         )
-      : const SizedBox.shrink();
+      : const SizedBox(
+          width: 75,
+          height: 75,
+        );
 }
 
 Widget previewWidget({required String filePath, required int angle}) {
@@ -97,7 +100,7 @@ Widget previewWidget({required String filePath, required int angle}) {
     child: Container(
       decoration: BoxDecoration(
         color: Colors.black,
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(4),
         image: DecorationImage(
           fit: BoxFit.cover,
           image: FileImage(
@@ -105,9 +108,9 @@ Widget previewWidget({required String filePath, required int angle}) {
           ),
         ),
       ),
-      margin: const EdgeInsets.all(8.0),
-      height: 100,
-      width: 100,
+      //margin: const EdgeInsets.all(8.0),
+      height: 75,
+      width: 75,
     ),
   );
 }

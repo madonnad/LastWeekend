@@ -42,10 +42,17 @@ class CapturedImageListScreen extends StatelessWidget {
                   : const Icon(Icons.close),
               color: Colors.white,
             ),
+            leadingWidth: 56,
             title: const EditAlbumDropdown(
               opacity: .75,
             ),
             centerTitle: true,
+            actions: [
+              Icon(
+                Icons.train,
+                color: Colors.transparent,
+              )
+            ],
           ),
           body: SizedBox(
             height: MediaQuery.of(context).size.height,
@@ -145,8 +152,11 @@ class CapturedImageListScreen extends StatelessWidget {
                         contentColor: Colors.white,
                         borderRadius: 5,
                         onTap: () async {
-                          List<XFile>? selectedImages = await imagePicker
-                              .pickMultiImage(maxHeight: 2160, maxWidth: 2160);
+                          List<XFile>? selectedImages =
+                              await imagePicker.pickMultiImage(
+                                  maxHeight: 2160,
+                                  maxWidth: 2160,
+                                  imageQuality: 85);
 
                           addListPhotos(selectedImages);
                         },

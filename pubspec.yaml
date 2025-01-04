@@ -44,6 +44,8 @@ dependencies:
   omni_datetime_picker: ^2.0.5
   pinch_zoom_release_unzoom: ^1.0.3
   flutter_keychain: ^2.5.0
+  sensors_plus: ^6.1.1
+
 
 dev_dependencies:
   flutter_lints: ^5.0.0

@@ -61,8 +61,10 @@ class _CustomCamPreviewState extends State<CustomCamPreview> {
   @override
   Widget build(BuildContext context) {
     //final size = MediaQuery.of(context).size;
+
     return AspectRatio(
       aspectRatio: 1 / widget.controller.value.aspectRatio,
+      //aspectRatio: 3 / 4,
       child: Container(
         //width: size.width,
         //height: size.height,
