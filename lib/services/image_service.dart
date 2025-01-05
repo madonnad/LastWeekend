@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:image/image.dart' as img;
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_photo/models/captured_image.dart';
@@ -118,7 +119,8 @@ class ImageService {
       "Content-Type": "application/octet-stream"
     };
 
-    Uint8List imageBytes = await File(imagePath).readAsBytes();
+    //Uint8List imageBytes = await File(imagePath).readAsBytes();
+    Uint8List imageBytes = await resizeImageByPath(2160, imagePath);
 
     if (statusController.isClosed) {
       return (false, "controller is closed");
@@ -266,5 +268,29 @@ class ImageService {
       developer.log(e.toString());
       return false;
     }
+  }
+
+  static Future<Uint8List> resizeImageByPath(int maxSize, String path) async {
+    final bytes = await File(path).readAsBytes();
+    img.Image image = img.decodeImage(bytes)!;
+
+    int width = image.width;
+    int height = image.height;
+
+    if (width > maxSize || height > maxSize) {
+      if (image.width > image.height) {
+        width = maxSize;
+        height = (image.height / image.width * maxSize).round();
+      } else {
+        height = maxSize;
+        width = (image.width / image.height * maxSize).round();
+      }
+
+      image = img.copyResize(image, width: width, height: height);
+    }
+
+    File(path).writeAsBytesSync(img.encodeJpg(image, quality: 85));
+
+    return await File(path).readAsBytes();
   }
 }

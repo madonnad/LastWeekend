@@ -16,10 +16,9 @@ class EditAlbumDropdown extends StatelessWidget {
         int index = state.selectedAlbumIndex;
 
         return Container(
+          margin: EdgeInsets.symmetric(horizontal: 20),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Colors.white.withOpacity(opacity),
-          ),
+              borderRadius: BorderRadius.circular(5), color: Colors.white),
           height: 40,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 4.0),
@@ -27,12 +26,13 @@ class EditAlbumDropdown extends StatelessWidget {
               child: DropdownButton2<Album>(
                 value: state.unlockedAlbums[index],
                 style: GoogleFonts.josefinSans(
-                  fontSize: 18,
+                  fontSize: 16,
                   fontWeight: FontWeight.w700,
                   color: Colors.black,
                 ),
                 iconStyleData: const IconStyleData(iconSize: 0),
                 alignment: Alignment.center,
+                isExpanded: true,
                 items: state.unlockedAlbums
                     .map(
                       (e) => DropdownMenuItem<Album>(
@@ -40,6 +40,8 @@ class EditAlbumDropdown extends StatelessWidget {
                         alignment: Alignment.center,
                         child: Text(
                           e.albumName,
+                          textAlign: TextAlign.center,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     )

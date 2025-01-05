@@ -18,44 +18,44 @@ class ActiveAlbumDropdown extends StatelessWidget {
       builder: (context, state) {
         int index = state.selectedAlbumIndex;
         return Container(
+          margin: EdgeInsets.symmetric(horizontal: 60),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Colors.white.withOpacity(opacity),
+            borderRadius: BorderRadius.circular(5),
+            color: Colors.white,
           ),
+          //constraints: BoxConstraints(minWidth: 225, maxWidth: 300),
           height: 40,
           clipBehavior: Clip.hardEdge,
-          child: ClipRect(
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 15.0, sigmaY: 15.0),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4.0),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton2<Album>(
-                    value: state.unlockedAlbums.isNotEmpty
-                        ? state.unlockedAlbums[index]
-                        : null,
-                    style: GoogleFonts.josefinSans(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black,
-                    ),
-                    iconStyleData: const IconStyleData(iconSize: 0),
-                    alignment: Alignment.center,
-                    items: state.unlockedAlbums
-                        .map(
-                          (e) => DropdownMenuItem<Album>(
-                            value: e,
-                            alignment: Alignment.center,
-                            child: Text(
-                              e.albumName,
-                            ),
-                          ),
-                        )
-                        .toList(),
-                    onChanged: (album) =>
-                        context.read<CameraCubit>().changeSelectedAlbum(album),
-                  ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton2<Album>(
+                value: state.unlockedAlbums.isNotEmpty
+                    ? state.unlockedAlbums[index]
+                    : null,
+                style: GoogleFonts.josefinSans(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.black,
                 ),
+                isExpanded: true,
+                iconStyleData: const IconStyleData(iconSize: 0),
+                alignment: Alignment.center,
+                items: state.unlockedAlbums
+                    .map(
+                      (e) => DropdownMenuItem<Album>(
+                        value: e,
+                        alignment: Alignment.center,
+                        child: Text(
+                          e.albumName,
+                          textAlign: TextAlign.center,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (album) =>
+                    context.read<CameraCubit>().changeSelectedAlbum(album),
               ),
             ),
           ),
