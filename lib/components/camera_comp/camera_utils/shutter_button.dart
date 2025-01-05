@@ -79,11 +79,16 @@ class _ShutterButtonState extends State<ShutterButton> {
           if (selectedAlbum != null) {
             capImage = CapturedImage(
                 imageXFile: picture,
+                capturedAt: DateTime.now(),
                 albumID: selectedAlbum.albumId,
                 type: UploadType.snap);
           } else {
             capImage = CapturedImage(
-                imageXFile: picture, addToRecap: true, type: UploadType.snap);
+              imageXFile: picture,
+              capturedAt: DateTime.now(),
+              addToRecap: true,
+              type: UploadType.snap,
+            );
           }
           context.read<CameraCubit>().addPhotoToList(capImage);
         }

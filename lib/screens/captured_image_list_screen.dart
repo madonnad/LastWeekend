@@ -20,9 +20,7 @@ class CapturedImageListScreen extends StatelessWidget {
     void addListPhotos(List<XFile>? selectedImages) {
       if (selectedImages == null) return;
 
-      context
-          .read<CameraCubit>()
-          .addListOfPhotosToList(selectedImages, UploadType.forgotShot);
+      context.read<CameraCubit>().addListOfPhotosToList(selectedImages);
     }
 
     return BlocBuilder<CameraCubit, CameraState>(

@@ -15,7 +15,7 @@ class Photo {
   String firstName;
   String lastName;
   String imageCaption;
-  DateTime uploadDateTime;
+  DateTime capturedDatetime;
   int likes;
   int upvotes;
   bool userLiked;
@@ -30,7 +30,7 @@ class Photo {
     required this.owner,
     required this.firstName,
     required this.lastName,
-    required this.uploadDateTime,
+    required this.capturedDatetime,
     required this.imageCaption,
     required this.likes,
     required this.upvotes,
@@ -44,7 +44,7 @@ class Photo {
 
   @override
   String toString() {
-    return 'Image(imageId: $imageId, owner: $owner, imageCaption: $imageCaption, uploadDateTime: $uploadDateTime)';
+    return 'Image(imageId: $imageId, owner: $owner, imageCaption: $imageCaption, uploadDateTime: $capturedDatetime)';
   }
 
   Map<String, dynamic> toMap() {
@@ -71,7 +71,7 @@ class Photo {
       firstName: map['first_name'],
       lastName: map['last_name'],
       imageCaption: caption,
-      uploadDateTime: DateTime.parse(map['created_at']).toLocal(),
+      capturedDatetime: DateTime.parse(map['captured_at']).toLocal(),
       likes: map['likes'],
       upvotes: map['upvotes'],
       userLiked: map['user_liked'],
@@ -89,7 +89,7 @@ class Photo {
       owner: image.owner,
       firstName: image.firstName,
       lastName: image.lastName,
-      uploadDateTime: image.uploadDateTime,
+      capturedDatetime: image.capturedDatetime,
       imageCaption: image.imageCaption,
       likes: image.likes,
       upvotes: image.upvotes,
@@ -144,13 +144,13 @@ class Photo {
 
   String get dateString {
     var newFormat = DateFormat.yMMMMd('en_US');
-    String updatedDt = newFormat.format(uploadDateTime);
+    String updatedDt = newFormat.format(capturedDatetime);
     return updatedDt; // 20-04-03
   }
 
   String get timeString {
     var newFormat = DateFormat("jm");
-    String updatedDt = newFormat.format(uploadDateTime);
+    String updatedDt = newFormat.format(capturedDatetime);
     return updatedDt; // 20-04-03
   }
 

@@ -68,7 +68,7 @@ class FeedSlideshowCubit extends Cubit<FeedSlideshowState> {
     // Set Ranked
     rankedImages.sort((a, b) {
       if (a.upvotes == b.upvotes) {
-        return a.uploadDateTime.compareTo(b.uploadDateTime);
+        return a.capturedDatetime.compareTo(b.capturedDatetime);
       } else {
         return b.upvotes.compareTo(a.upvotes);
       }

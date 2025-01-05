@@ -225,7 +225,7 @@ class Album extends Equatable {
     List<Photo> rankedImages = List.from(images);
     rankedImages.sort((a, b) {
       if (a.upvotes == b.upvotes) {
-        return a.uploadDateTime.compareTo(b.uploadDateTime);
+        return a.capturedDatetime.compareTo(b.capturedDatetime);
       } else {
         return b.upvotes.compareTo(a.upvotes);
       }
@@ -311,7 +311,8 @@ class Album extends Equatable {
 
     mapImages.forEach((userID, dateMap) {
       dateMap.forEach((dateString, imageList) {
-        imageList.sort((a, b) => a.uploadDateTime.compareTo(b.uploadDateTime));
+        imageList
+            .sort((a, b) => a.capturedDatetime.compareTo(b.capturedDatetime));
       });
       dateSortedMap[userID] = List.from(dateMap.values);
     });
@@ -333,7 +334,7 @@ class Album extends Equatable {
     }
 
     mapImages.forEach((key, value) {
-      value.sort((a, b) => b.uploadDateTime.compareTo(a.uploadDateTime));
+      value.sort((a, b) => b.capturedDatetime.compareTo(a.capturedDatetime));
     });
 
     mapImages.forEach((key, value) {
@@ -341,7 +342,7 @@ class Album extends Equatable {
     });
 
     listImages
-        .sort((a, b) => b[0].uploadDateTime.compareTo(a[0].uploadDateTime));
+        .sort((a, b) => b[0].capturedDatetime.compareTo(a[0].capturedDatetime));
 
     return listImages;
   }

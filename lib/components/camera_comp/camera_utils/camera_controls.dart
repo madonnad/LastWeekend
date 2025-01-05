@@ -54,7 +54,7 @@ class _CameraControlsState extends State<CameraControls> {
 
       context
           .read<CameraCubit>()
-          .addListOfPhotosToList(selectedImages, UploadType.forgotShot);
+          .addListOfPhotosToList(selectedImages);
     }
 
     void pushCapturedPage() {
