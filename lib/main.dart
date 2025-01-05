@@ -123,6 +123,8 @@ class MainApp extends StatelessWidget {
                       lazy: false,
                       create: (context) => UserRepository(
                         user: context.read<AppBloc>().state.user,
+                        notificationRepository:
+                            context.read<NotificationRepository>(),
                       ),
                     ),
                   ],
