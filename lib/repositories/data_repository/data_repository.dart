@@ -65,7 +65,7 @@ class DataRepository {
       Notification notification = event.$2;
 
       switch (notification.runtimeType) {
-        case AlbumInviteNotification _:
+        case AlbumInviteNotification:
           _handleInviteResponse(notification as AlbumInviteNotification);
       }
     });
