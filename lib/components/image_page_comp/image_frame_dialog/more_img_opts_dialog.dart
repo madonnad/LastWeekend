@@ -33,7 +33,9 @@ class MoreImageOptsDialog extends StatelessWidget {
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
-              backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
+              backgroundColor: const Color.fromRGBO(19, 19, 19, 1),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5)),
               children: [
                 SimpleDialogOption(
                   onPressed: () => saveAvail
