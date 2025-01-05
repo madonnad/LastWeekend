@@ -161,10 +161,11 @@ class AlbumFrameState extends Equatable {
     dateSortedImages.removeWhere((test) => test.type == UploadType.forgotShot);
     forgotImages.removeWhere((test) => test.type == UploadType.snap);
 
-    forgotImages.sort((a, b) => a.uploadDateTime.compareTo(b.uploadDateTime));
+    forgotImages
+        .sort((a, b) => a.capturedDatetime.compareTo(b.capturedDatetime));
 
     dateSortedImages
-        .sort((a, b) => a.uploadDateTime.compareTo(b.uploadDateTime));
+        .sort((a, b) => a.capturedDatetime.compareTo(b.capturedDatetime));
 
     for (var item in dateSortedImages) {
       if (!mapImages.containsKey(item.dateString)) {
@@ -176,7 +177,7 @@ class AlbumFrameState extends Equatable {
     }
 
     mapImages.forEach((key, value) {
-      value.sort((a, b) => a.uploadDateTime.compareTo(b.uploadDateTime));
+      value.sort((a, b) => a.capturedDatetime.compareTo(b.capturedDatetime));
     });
 
     mapImages.forEach((key, value) {

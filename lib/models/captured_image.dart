@@ -7,6 +7,7 @@ import 'package:uuid/uuid.dart';
 class CapturedImage {
   XFile imageXFile;
   String uuid;
+  DateTime capturedAt;
   String? albumID;
   String? caption;
   bool addToRecap;
@@ -17,6 +18,7 @@ class CapturedImage {
   CapturedImage({
     required this.imageXFile,
     required this.type,
+    required this.capturedAt,
     String? uuid,
     this.albumID,
     this.addToRecap = false,
@@ -29,6 +31,7 @@ class CapturedImage {
     return CapturedImage(
       imageXFile: imageXFile,
       type: type,
+      capturedAt: capturedAt,
       albumID: albumID,
       caption: caption,
       addToRecap: newValue,
@@ -45,6 +48,7 @@ class CapturedImage {
     return {
       "uuid": uuid,
       "image_xfile": imageXFile.path,
+      "captured_at": capturedAt.toUtc().toIso8601String(),
       "album_id": albumID ?? '',
       "caption": caption,
       "upload_type": typeString,
@@ -60,6 +64,7 @@ class CapturedImage {
     return CapturedImage(
       uuid: json['uuid'],
       imageXFile: XFile(json['image_xfile']),
+      capturedAt: DateTime.parse(json['captured_at']),
       albumID: json['album_id'],
       caption: json['caption'],
       type: type,
@@ -75,6 +80,7 @@ class CapturedImage {
 
     return {
       "uuid": uuid,
+      "captured_at": capturedAt.toUtc().toIso8601String(),
       "album_id": albumID ?? '',
       "caption": caption,
       "upload_type": typeString,

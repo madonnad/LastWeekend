@@ -300,16 +300,21 @@ class CameraCubit extends HydratedCubit<CameraState> {
     emit(state.copyWith(photosTaken: photosTaken));
   }
 
-  void addListOfPhotosToList(List<XFile> imageList, UploadType type) {
+  void addListOfPhotosToList(List<XFile> imageList) {
     List<CapturedImage> images = List.from(state.photosTaken);
 
     if (state.selectedAlbum == null && album == null) return;
-    Album newAlbum = album == null ? state.selectedAlbum! : album!;
+    Album activeAlbum = album == null ? state.selectedAlbum! : album!;
+
+    UploadType type = activeAlbum.revealDateTime.isBefore(DateTime.now())
+        ? UploadType.forgotShot
+        : UploadType.snap;
 
     for (XFile file in imageList) {
       CapturedImage image = CapturedImage(
         imageXFile: file,
-        albumID: newAlbum.albumId,
+        capturedAt: DateTime.now(),
+        albumID: activeAlbum.albumId,
         type: type,
       );
       images.add(image);
