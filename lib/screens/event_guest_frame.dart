@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/components/album_comp/guests_page.dart';
-import 'package:shared_photo/components/album_comp/util_comps/album_appbar_title.dart';
 
 class EventGuestFrame extends StatelessWidget {
   const EventGuestFrame({super.key});

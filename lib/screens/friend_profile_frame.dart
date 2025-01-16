@@ -4,12 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/friend_profile_cubit.dart';
 import 'package:shared_photo/components/friend_profile_comp/friend_profile_header.dart';
-import 'package:shared_photo/components/friend_profile_comp/friend_status_logic.dart';
-import 'package:shared_photo/components/friend_profile_comp/friends_album_section.dart';
-import 'package:shared_photo/components/friend_profile_comp/joint_album_section.dart';
-import 'package:shared_photo/components/friend_profile_comp/not_friends_comp.dart';
-import 'package:shared_photo/components/new_profile_comp/event_section/event_viewer.dart';
-import 'package:shared_photo/components/new_profile_comp/event_section/month_page_view.dart';
+import 'package:shared_photo/components/profile_comp/event_section/event_viewer.dart';
+import 'package:shared_photo/components/profile_comp/event_section/month_page_view.dart';
 
 class FriendProfileFrame extends StatelessWidget {
   const FriendProfileFrame({super.key});

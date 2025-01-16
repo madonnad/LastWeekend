@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/cubit/auth_cubit.dart';
 import 'package:shared_photo/components/app_comp/standard_logo.dart';
-import 'package:shared_photo/components/new_auth/auth_linked_text.dart';
-import 'package:shared_photo/components/new_auth/auth_logic_widgets/login_create_button.dart';
-import 'package:shared_photo/components/new_auth/create_account_form.dart';
-import 'package:shared_photo/components/new_auth/login_form.dart';
+import 'package:shared_photo/components/auth/auth_linked_text.dart';
+import 'package:shared_photo/components/auth/auth_logic_widgets/login_create_button.dart';
+import 'package:shared_photo/components/auth/create_account_form.dart';
+import 'package:shared_photo/components/auth/login_form.dart';
 import 'package:shared_photo/repositories/auth0_repository.dart';
 
 class AuthFrame extends StatelessWidget {

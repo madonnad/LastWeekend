@@ -4,9 +4,9 @@ import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
-import 'package:shared_photo/components/new_profile_comp/event_section/event_viewer.dart';
-import 'package:shared_photo/components/new_profile_comp/event_section/month_page_view.dart';
-import 'package:shared_photo/components/new_profile_comp/profile_header_comps/profile_header.dart';
+import 'package:shared_photo/components/profile_comp/event_section/event_viewer.dart';
+import 'package:shared_photo/components/profile_comp/event_section/month_page_view.dart';
+import 'package:shared_photo/components/profile_comp/profile_header_comps/profile_header.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});

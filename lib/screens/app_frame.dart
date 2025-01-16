@@ -8,7 +8,7 @@ import 'package:shared_photo/bloc/cubit/camera_cubit.dart';
 import 'package:shared_photo/bloc/cubit/app_frame_cubit.dart';
 import 'package:shared_photo/bloc/cubit/notification_cubit.dart';
 import 'package:shared_photo/bloc/cubit/search_cubit.dart';
-import 'package:shared_photo/components/new_app_frame/new_bottom_app_bar.dart';
+import 'package:shared_photo/components/app_frame/new_bottom_app_bar.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 import 'package:shared_photo/repositories/notification_repository/notification_repository.dart';
 import 'package:shared_photo/repositories/realtime_repository.dart';
