@@ -93,9 +93,9 @@ class _NewImageFrameState extends State<NewImageFrame> {
                         mainController: mainController, headers: headers),
                   ),
                 ),
-                Gap(10),
-                UserEngagementRow(headers: headers),
                 Spacer(),
+                UserEngagementRow(headers: headers),
+                Gap(20),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * .09,
                   child: GestureDetector(

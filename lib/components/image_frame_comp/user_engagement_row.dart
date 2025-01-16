@@ -24,8 +24,9 @@ class UserEngagementRow extends StatelessWidget {
 
         return BlocBuilder<ImageFrameCubit, ImageFrameState>(
           builder: (context, state) {
-            //bool userLiked = state.image.userLiked;
             bool userUpvoted = state.image.userUpvoted;
+            bool captionExists = state.image.imageCaption != '';
+            bool isOwner = state.image.owner == userID;
 
             return Container(
               padding: EdgeInsets.symmetric(horizontal: 10),
@@ -49,7 +50,8 @@ class UserEngagementRow extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              state.image.imageCaption != ''
+                              (captionExists && isReveal ||
+                                      captionExists && isOwner)
                                   ? Text(
                                       state.image.imageCaption,
                                       style: GoogleFonts.montserrat(

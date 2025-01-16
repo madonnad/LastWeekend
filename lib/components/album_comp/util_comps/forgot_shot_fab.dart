@@ -40,8 +40,8 @@ class ForgotShotFab extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: Color.fromRGBO(44, 44, 44, .5),
-              blurRadius: 15,
-              spreadRadius: 15,
+              blurRadius: 10,
+              spreadRadius: 5,
             )
           ],
         ),

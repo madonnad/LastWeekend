@@ -21,7 +21,7 @@ class RevealEventLanding extends StatelessWidget {
         return state.images.isNotEmpty
             ? Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 2.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 5.0),
                   child: CustomScrollView(
                     slivers: [
                       SliverToBoxAdapter(child: Gap(6)),
@@ -36,25 +36,6 @@ class RevealEventLanding extends StatelessWidget {
                           child: EventGuestRow(
                               guestList: state.mostImagesUploaded)),
                       SliverToBoxAdapter(child: Gap(15)),
-
-                      // SliverGrid(
-                      //   delegate: SliverChildBuilderDelegate(
-                      //     (BuildContext context, int index) {
-                      //       return TopItemComponent(
-                      //         image: state.rankedImages[index],
-                      //         showCount: false,
-                      //         headers:
-                      //             context.read<AppBloc>().state.user.headers,
-                      //       );
-                      //     },
-                      //     childCount: state.rankedImages.length,
-                      //   ),
-                      //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      //     crossAxisCount: 3, // Number of columns
-                      //     crossAxisSpacing: 4,
-                      //     mainAxisSpacing: 4,
-                      //   ),
-                      // ),
                       SliverList.separated(
                         itemCount: state.imagesGroupedSortedByDate.length,
                         itemBuilder: (context, index) {
