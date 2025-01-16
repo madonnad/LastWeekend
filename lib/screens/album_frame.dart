@@ -11,7 +11,7 @@ import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/arguments.dart';
 import 'package:shared_photo/models/photo.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
-import 'package:shared_photo/screens/image_frame.dart';
+import 'package:shared_photo/screens/new_image_frame.dart';
 
 final List<String> filterList = ["Popular", "Guests", "Timeline"];
 
@@ -52,11 +52,8 @@ class EventFrame extends StatelessWidget {
                   switch (state.album.phase) {
                     case AlbumPhases.reveal:
                       return RevealEventLanding();
-                    //return AlbumRevealTabView(arguments: arguments);
                     case AlbumPhases.open:
                       return const AlbumUnlockTabView();
-                    default:
-                      return const Placeholder();
                   }
                 },
               ),
@@ -82,6 +79,15 @@ void pushImageFrameIfPassed(BuildContext context, Arguments arguments) {
         .read<AlbumFrameCubit>()
         .initalizeImageFrameWithSelectedImage(selectedImage);
 
+    Photo? photo = context.read<AlbumFrameCubit>().state.selectedImage;
+    int index = photo != null
+        ? context
+            .read<AlbumFrameCubit>()
+            .state
+            .imageFrameTimelineList
+            .indexOf(photo)
+        : 0;
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -102,7 +108,9 @@ void pushImageFrameIfPassed(BuildContext context, Arguments arguments) {
             ),
           ),
         ],
-        child: const ImageFrame(),
+        child: NewImageFrame(
+          index: index,
+        ),
       ),
     );
   }

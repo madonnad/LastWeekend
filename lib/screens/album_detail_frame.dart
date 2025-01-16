@@ -37,17 +37,6 @@ class AlbumDetailFrame extends StatelessWidget {
                 fontSize: 24,
               ),
             ),
-            // actions: [
-            //   isOwner
-            //       ? GestureDetector(
-            //           onTap: () {},
-            //           child: const Icon(
-            //             Icons.edit,
-            //             color: Colors.white,
-            //           ),
-            //         )
-            //       : const SizedBox.shrink(),
-            // ],
           ),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),

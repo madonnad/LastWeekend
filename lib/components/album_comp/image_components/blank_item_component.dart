@@ -6,7 +6,7 @@ import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
 import 'package:shared_photo/bloc/cubit/image_frame_cubit.dart';
 import 'package:shared_photo/models/photo.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
-import 'package:shared_photo/screens/image_frame.dart';
+import 'package:shared_photo/screens/new_image_frame.dart';
 
 class BlankItemComponent extends StatelessWidget {
   final String avatarUrl;
@@ -37,6 +37,7 @@ class BlankItemComponent extends StatelessWidget {
               context
                   .read<AlbumFrameCubit>()
                   .initalizeImageFrameWithSelectedImage(image);
+
               showModalBottomSheet(
                 context: context,
                 isScrollControlled: true,
@@ -57,7 +58,7 @@ class BlankItemComponent extends StatelessWidget {
                       value: context.read<AlbumFrameCubit>(),
                     ),
                   ],
-                  child: const ImageFrame(),
+                  child: NewImageFrame(index: selectedIndex),
                 ),
               );
             },

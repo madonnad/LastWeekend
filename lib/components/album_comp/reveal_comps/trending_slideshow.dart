@@ -2,13 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
 import 'package:shared_photo/bloc/cubit/image_frame_cubit.dart';
 import 'package:shared_photo/models/photo.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
-import 'package:shared_photo/screens/image_frame.dart';
+import 'package:shared_photo/screens/new_image_frame.dart';
 
 class TrendingSlideshow extends StatefulWidget {
   final List<Photo> slideshowPhotos;
@@ -115,14 +114,6 @@ class _TrendingSlideshowState extends State<TrendingSlideshow>
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Text(
-              //   "Trending",
-              //   style: GoogleFonts.montserrat(
-              //       color: Colors.white,
-              //       fontSize: 18,
-              //       fontWeight: FontWeight.bold),
-              // ),
-              // Gap(5),
               Stack(
                 children: [
                   AspectRatio(
@@ -142,37 +133,10 @@ class _TrendingSlideshowState extends State<TrendingSlideshow>
                           onLongPressUp: () => _resumeController(),
                           onLongPressDown: (_) => _pauseController(),
                           onLongPressCancel: () => _resumeController(),
-                          onTap: () {
-                            context
-                                .read<AlbumFrameCubit>()
-                                .initalizeImageFrameWithSelectedImage(
-                                    widget.slideshowPhotos[currentIndex]);
-                            showModalBottomSheet(
-                              context: context,
-                              isScrollControlled: true,
-                              useRootNavigator: true,
-                              useSafeArea: true,
-                              enableDrag: false,
-                              builder: (ctx) => MultiBlocProvider(
-                                providers: [
-                                  BlocProvider(
-                                    create: (context) => ImageFrameCubit(
-                                      dataRepository:
-                                          context.read<DataRepository>(),
-                                      user: context.read<AppBloc>().state.user,
-                                      image:
-                                          widget.slideshowPhotos[currentIndex],
-                                      albumID: widget.albumID,
-                                    ),
-                                  ),
-                                  BlocProvider.value(
-                                    value: context.read<AlbumFrameCubit>(),
-                                  ),
-                                ],
-                                child: const ImageFrame(),
-                              ),
-                            );
-                          },
+                          onTap: () => pushImageFrameModal(
+                              context,
+                              widget.slideshowPhotos[currentIndex],
+                              widget.albumID),
                           child: Container(
                             color: Colors.transparent,
                           ),
@@ -271,4 +235,42 @@ class _TrendingSlideshowState extends State<TrendingSlideshow>
           )
         : SizedBox.shrink();
   }
+}
+
+void pushImageFrameModal(BuildContext context, Photo image, String albumID) {
+  context.read<AlbumFrameCubit>().initalizeImageFrameWithSelectedImage(image);
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    useRootNavigator: true,
+    useSafeArea: true,
+    enableDrag: true,
+    builder: (ctx) {
+      Photo? photo = context.read<AlbumFrameCubit>().state.selectedImage;
+      int index = photo != null
+          ? context
+              .read<AlbumFrameCubit>()
+              .state
+              .imageFrameTimelineList
+              .indexOf(photo)
+          : 0;
+
+      return MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => ImageFrameCubit(
+              dataRepository: context.read<DataRepository>(),
+              user: context.read<AppBloc>().state.user,
+              image: image,
+              albumID: albumID,
+            ),
+          ),
+          BlocProvider.value(
+            value: context.read<AlbumFrameCubit>(),
+          ),
+        ],
+        child: NewImageFrame(index: index),
+      );
+    },
+  );
 }

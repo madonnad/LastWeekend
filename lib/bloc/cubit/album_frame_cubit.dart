@@ -167,17 +167,17 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
     Photo image = state.imageFrameTimelineList[selectedIndex];
     emit(state.copyWith(selectedImage: image));
 
-    if (changeMainPage) {
-      state.pageController.jumpToPage(selectedIndex);
-    }
+    // if (changeMainPage) {
+    //   state.pageController.jumpToPage(selectedIndex);
+    // }
 
-    if (changeMiniMap) {
-      state.miniMapController.animateToPage(
-        selectedIndex,
-        duration: const Duration(milliseconds: 250),
-        curve: Curves.decelerate,
-      );
-    }
+    // if (changeMiniMap) {
+    //   state.miniMapController.animateToPage(
+    //     selectedIndex,
+    //     duration: const Duration(milliseconds: 250),
+    //     curve: Curves.decelerate,
+    //   );
+    // }
   }
 
   void nextImage() {

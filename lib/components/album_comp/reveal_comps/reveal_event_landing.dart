@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
 import 'package:shared_photo/components/album_comp/empty_album_unlock.dart';
 import 'package:shared_photo/components/album_comp/image_components/top_item_component.dart';
 import 'package:shared_photo/components/album_comp/reveal_comps/event_guest_row.dart';
-import 'package:shared_photo/components/album_comp/reveal_comps/timeline_popular_section.dart';
 import 'package:shared_photo/components/album_comp/reveal_comps/trending_slideshow.dart';
 import 'package:shared_photo/components/app_comp/section_header_small.dart';
 

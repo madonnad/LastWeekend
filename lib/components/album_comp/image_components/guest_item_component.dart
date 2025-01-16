@@ -6,7 +6,7 @@ import 'package:shared_photo/bloc/cubit/image_frame_cubit.dart';
 import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
 import 'package:shared_photo/models/photo.dart' as img;
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
-import 'package:shared_photo/screens/image_frame.dart';
+import 'package:shared_photo/screens/new_image_frame.dart';
 
 class GuestItemComponent extends StatelessWidget {
   final img.Photo image;
@@ -37,7 +37,7 @@ class GuestItemComponent extends StatelessWidget {
           isScrollControlled: true,
           useRootNavigator: true,
           useSafeArea: true,
-          enableDrag: false,
+          enableDrag: true,
           builder: (ctx) => MultiBlocProvider(
             providers: [
               BlocProvider(
@@ -52,7 +52,7 @@ class GuestItemComponent extends StatelessWidget {
                 value: context.read<AlbumFrameCubit>(),
               ),
             ],
-            child: const ImageFrame(),
+            child: NewImageFrame(index: selectedIndex),
           ),
         );
       },
