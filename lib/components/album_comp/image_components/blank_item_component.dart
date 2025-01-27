@@ -83,9 +83,11 @@ class BlankItemComponent extends StatelessWidget {
                 elevation: 2,
                 child: CircleAvatar(
                   backgroundColor: const Color.fromRGBO(16, 16, 16, 1),
+                  backgroundImage: AssetImage("lib/assets/placeholder.png"),
                   foregroundImage: CachedNetworkImageProvider(
                     avatarUrl,
                     headers: headers,
+                    errorListener: (_) {},
                   ),
                   radius: 10,
                 ),

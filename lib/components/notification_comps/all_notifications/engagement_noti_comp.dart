@@ -28,6 +28,7 @@ class EngagementNotiComp extends StatelessWidget {
             foregroundImage: CachedNetworkImageProvider(
               notification.notifierURL,
               headers: context.read<AppBloc>().state.user.headers,
+              errorListener: (_) {},
             ),
             onForegroundImageError: (_, __) {},
           ),

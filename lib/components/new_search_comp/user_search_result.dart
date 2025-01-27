@@ -34,10 +34,11 @@ class UserSearchResult extends StatelessWidget {
           CircleAvatar(
             radius: 25,
             backgroundColor: const Color.fromRGBO(19, 19, 19, 1),
-            backgroundImage: const AssetImage("lib/assets/default.png"),
+            backgroundImage: const AssetImage("lib/assets/placeholder.png"),
             foregroundImage: CachedNetworkImageProvider(
               result.imageReq,
               headers: context.read<AppBloc>().state.user.headers,
+              errorListener: (_) {},
             ),
             onForegroundImageError: (_, __) {},
           ),

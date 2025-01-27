@@ -57,6 +57,7 @@ class AlbumDetailFrame extends StatelessWidget {
                               state.album.coverReq,
                               headers:
                                   context.read<AppBloc>().state.user.headers,
+                              errorListener: (_) {},
                             ),
                             fit: BoxFit.cover,
                           ),

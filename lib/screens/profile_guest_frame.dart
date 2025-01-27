@@ -102,7 +102,7 @@ class ProfileGuestFrame extends StatelessWidget {
                                 children: [
                                   CircleAvatar(
                                     backgroundImage: const AssetImage(
-                                        "lib/assets/default.png"),
+                                        "lib/assets/placeholder.png"),
                                     foregroundImage: CachedNetworkImageProvider(
                                       guestProfURL,
                                       headers: context
@@ -110,6 +110,7 @@ class ProfileGuestFrame extends StatelessWidget {
                                           .state
                                           .user
                                           .headers,
+                                      errorListener: (_) {},
                                     ),
                                     onForegroundImageError: (_, __) {},
                                   ),

@@ -9,7 +9,7 @@ import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 import 'package:shared_photo/repositories/realtime_repository.dart';
 import 'package:shared_photo/repositories/user_repository.dart';
 import 'package:shared_photo/screens/album_detail_frame.dart';
-import 'package:shared_photo/screens/album_frame.dart';
+import 'package:shared_photo/screens/event_frame.dart';
 import 'package:shared_photo/screens/auth_frame.dart';
 import 'package:shared_photo/screens/event_create/event_create_modal.dart';
 import 'package:shared_photo/screens/event_guest_frame.dart';

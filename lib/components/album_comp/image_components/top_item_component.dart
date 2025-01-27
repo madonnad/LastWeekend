@@ -71,6 +71,7 @@ class TopItemComponent extends StatelessWidget {
                   image: CachedNetworkImageProvider(
                     image.imageReq540,
                     headers: headers,
+                    errorListener: (_) {},
                   ),
                   onError: (_, __) {},
                   fit: BoxFit.cover,

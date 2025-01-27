@@ -46,6 +46,7 @@ class ProfPhotoFrame extends StatelessWidget {
                   : CachedNetworkImageProvider(
                       state.user.avatarUrl,
                       headers: state.user.headers,
+                      errorListener: (_) {},
                     );
               return Stack(
                 children: [
@@ -60,7 +61,7 @@ class ProfPhotoFrame extends StatelessWidget {
                         radius: circleDiameter,
                         backgroundColor: Colors.grey,
                         backgroundImage:
-                            const AssetImage("lib/assets/default.png"),
+                            const AssetImage("lib/assets/placeholder.png"),
                         foregroundImage: image,
                         onForegroundImageError: (_, __) {},
                       ),

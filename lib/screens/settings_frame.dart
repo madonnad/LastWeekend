@@ -61,7 +61,7 @@ class SettingsFrame extends StatelessWidget {
                             radius: 165 / 2,
                             backgroundColor: Colors.white54,
                             backgroundImage:
-                                const AssetImage("lib/assets/default.png"),
+                                const AssetImage("lib/assets/placeholder.png"),
                             foregroundImage: NetworkImage(
                               state.user.avatarUrl,
                               headers: state.user.headers,

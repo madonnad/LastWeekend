@@ -64,10 +64,13 @@ class GuestsPage extends StatelessWidget {
                                       Row(
                                         children: [
                                           CircleAvatar(
+                                            backgroundImage: AssetImage(
+                                                "lib/assets/placeholder.png"),
                                             foregroundImage:
                                                 CachedNetworkImageProvider(
                                               guest.avatarReq540,
                                               headers: headers,
+                                              errorListener: (_) {},
                                             ),
                                             radius: 20,
                                           ),

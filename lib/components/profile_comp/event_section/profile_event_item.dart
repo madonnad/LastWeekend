@@ -16,8 +16,8 @@ class ProfileEventItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String backgroundImage = event.topThreeImages.isNotEmpty
-        ? event.topThreeImages[0].imageReq540
+    String backgroundImage = event.rankedImages.isNotEmpty
+        ? event.rankedImages[0].imageReq540
         : event.coverReq540;
 
     Arguments arguments = Arguments(albumID: event.albumId);
@@ -33,6 +33,7 @@ class ProfileEventItem extends StatelessWidget {
             image: CachedNetworkImageProvider(
               backgroundImage,
               headers: headers,
+              errorListener: (_) {},
             ),
             fit: BoxFit.cover,
           ),

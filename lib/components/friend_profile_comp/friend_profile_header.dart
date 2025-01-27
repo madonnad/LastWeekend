@@ -42,10 +42,12 @@ class FriendProfileHeader extends StatelessWidget {
                   child: CircleAvatar(
                     radius: circleDiameter,
                     backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
-                    backgroundImage: const AssetImage("lib/assets/default.png"),
+                    backgroundImage:
+                        const AssetImage("lib/assets/placeholder.png"),
                     foregroundImage: CachedNetworkImageProvider(
                       state.anonymousFriend.imageReq540,
                       headers: context.read<AppBloc>().state.user.headers,
+                      errorListener: (_) {},
                     ),
                     onForegroundImageError: (_, __) {},
                   ),
