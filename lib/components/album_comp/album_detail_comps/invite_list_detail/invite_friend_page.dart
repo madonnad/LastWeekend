@@ -59,6 +59,8 @@ class InviteFriendPage extends StatelessWidget {
                                 CircleAvatar(
                                   backgroundColor:
                                       const Color.fromRGBO(16, 16, 16, 1),
+                                  backgroundImage:
+                                      AssetImage("lib/assets/placeholder.png"),
                                   foregroundImage: CachedNetworkImageProvider(
                                     friendList[index].imageReq540,
                                     headers: context
@@ -66,6 +68,7 @@ class InviteFriendPage extends StatelessWidget {
                                         .state
                                         .user
                                         .headers,
+                                    errorListener: (_) {},
                                   ),
                                   radius: 18,
                                   onForegroundImageError: (_, __) {},

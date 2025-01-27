@@ -31,7 +31,7 @@ class ImageFrameCubit extends Cubit<ImageFrameState> {
     changeImageFrameState(image);
     //initializeComments(image);
 
-    dataRepository.imageStream.listen((event) {});
+    //dataRepository.imageStream.listen((event) {});
   }
 
   void changeImageFrameState(Photo image) {

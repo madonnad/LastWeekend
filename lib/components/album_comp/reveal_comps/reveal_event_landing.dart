@@ -26,9 +26,14 @@ class RevealEventLanding extends StatelessWidget {
                     slivers: [
                       SliverToBoxAdapter(child: Gap(6)),
                       SliverToBoxAdapter(
-                        child: TrendingSlideshow(
-                          slideshowPhotos: state.popularPhotoSlider,
-                          albumID: state.album.albumId,
+                        child: BlocBuilder<AlbumFrameCubit, AlbumFrameState>(
+                          builder: (context, state) {
+                            return TrendingSlideshow(
+                              slideshowPhotos:
+                                  state.rankedImages.take(10).toList(),
+                              albumID: state.album.albumId,
+                            );
+                          },
                         ),
                       ),
                       SliverToBoxAdapter(child: Gap(15)),

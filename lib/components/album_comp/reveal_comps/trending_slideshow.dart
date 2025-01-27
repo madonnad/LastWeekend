@@ -95,6 +95,14 @@ class _TrendingSlideshowState extends State<TrendingSlideshow>
   }
 
   @override
+  void didUpdateWidget(covariant TrendingSlideshow oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.slideshowPhotos.length != widget.slideshowPhotos.length) {
+      length = widget.slideshowPhotos.length;
+    }
+  }
+
+  @override
   void dispose() {
     _controller.dispose();
     super.dispose();
@@ -127,6 +135,7 @@ class _TrendingSlideshowState extends State<TrendingSlideshow>
                             httpHeaders:
                                 context.read<AppBloc>().state.user.headers,
                             fit: BoxFit.cover,
+                            errorListener: (_) {},
                           ),
                         ),
                         GestureDetector(

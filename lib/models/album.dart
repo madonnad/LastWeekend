@@ -400,7 +400,7 @@ class Album extends Equatable {
   List<Object?> get props => [
         albumId,
         guestMap,
-        imageMap,
+        imageMap.hashCode,
         albumOwner,
         visibility,
       ];

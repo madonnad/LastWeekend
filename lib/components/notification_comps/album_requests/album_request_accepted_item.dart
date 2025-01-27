@@ -45,6 +45,7 @@ class AlbumRequestAcceptedItem extends StatelessWidget {
                 foregroundImage: CachedNetworkImageProvider(
                   profileImage,
                   headers: context.read<AppBloc>().state.user.headers,
+                  errorListener: (_) {},
                 ),
                 onForegroundImageError: (_, __) {},
               ),
@@ -122,6 +123,7 @@ class AlbumRequestAcceptedItem extends StatelessWidget {
                     image: CachedNetworkImageProvider(
                       albumCover,
                       headers: context.read<AppBloc>().state.user.headers,
+                      errorListener: (_) {},
                     ),
                     fit: BoxFit.cover,
                     onError: (_, __) {},

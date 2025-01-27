@@ -45,6 +45,7 @@ class ImageFrameCaption extends StatelessWidget {
                 foregroundImage: CachedNetworkImageProvider(
                   state.image.avatarReq540,
                   headers: headers,
+                  errorListener: (_) {},
                 ),
                 radius: 20,
               );

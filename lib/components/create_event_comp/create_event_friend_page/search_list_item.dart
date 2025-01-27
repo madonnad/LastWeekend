@@ -22,10 +22,11 @@ class SearchListItem extends StatelessWidget {
         CircleAvatar(
           radius: 25,
           backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
-          backgroundImage: const AssetImage("lib/assets/default.png"),
+          backgroundImage: const AssetImage("lib/assets/placeholder.png"),
           foregroundImage: CachedNetworkImageProvider(
             friend.imageReq,
             headers: context.read<AppBloc>().state.user.headers,
+            errorListener: (_) {},
           ),
           onForegroundImageError: (_, __) {},
         ),

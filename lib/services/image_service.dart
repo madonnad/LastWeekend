@@ -100,6 +100,31 @@ class ImageService {
     }
   }
 
+  static Future<(bool, String?)> deletePhoto(
+    String token,
+    String imageId,
+  ) async {
+    final Map<String, String> headers = {
+      "Content-Type": "application/json",
+      'Authorization': 'Bearer $token'
+    };
+
+    String urlString = "${dotenv.env['URL']}/user/image?image_id=$imageId";
+    Uri url = Uri.parse(urlString);
+
+    try {
+      final response = await http.delete(url, headers: headers);
+
+      if (response.statusCode == 200) {
+        return (true, null);
+      }
+
+      return (false, response.body);
+    } catch (e) {
+      return (false, e.toString());
+    }
+  }
+
   static Future<(bool, String?)> uploadPhoto(
     String token,
     String imagePath,

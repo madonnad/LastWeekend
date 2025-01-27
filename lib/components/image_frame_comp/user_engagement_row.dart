@@ -41,6 +41,7 @@ class UserEngagementRow extends StatelessWidget {
                           foregroundImage: CachedNetworkImageProvider(
                             state.image.avatarReq540,
                             headers: headers,
+                            errorListener: (_) {},
                           ),
                           radius: 16,
                         ),
@@ -106,7 +107,7 @@ class UserEngagementRow extends StatelessWidget {
                         primaryColor: Colors.white,
                         text: state.image.comments.length.toString(),
                       ),
-                      Gap(20),
+                      Gap(isInEvent ? 20 : 0),
                       isInEvent
                           ? ImageEngagementIcon(
                               onTap: () => state.upvoteLoading

@@ -46,6 +46,7 @@ class EventElement extends StatelessWidget {
                     image: CachedNetworkImageProvider(
                       album.coverReq,
                       headers: context.read<AppBloc>().state.user.headers,
+                      errorListener: (_) {},
                     ),
                     fit: BoxFit.cover,
                   ),

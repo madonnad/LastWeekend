@@ -61,12 +61,46 @@ class _NewImageFrameState extends State<NewImageFrame> {
     double height = (width * 4) / 3;
     return BlocListener<AlbumFrameCubit, AlbumFrameState>(
       listenWhen: (previous, current) {
+        // TRIGGERING TOO MANY HERE RUNS THE LISTENER THAT MANY TIMES
+        // if (current.exception.errorString != null) {
+        //   return previous.exception.errorString !=
+        //       current.exception.errorString;
+        // }
+        // if (current.selectedImage == null) {
+        //   return current.selectedImage == null;
+        // }
         return previous.selectedImage != current.selectedImage;
       },
       listener: (context, state) {
+        if (state.exception.errorString != null) {
+          String errorString = "${state.exception.errorString} ";
+          SnackBar snackBar = SnackBar(
+            backgroundColor: const Color.fromRGBO(19, 19, 19, 1),
+            content: Text(errorString),
+          );
+
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        }
+
+        if (state.selectedImage == null) {
+          Navigator.of(context).pop();
+          return;
+        }
+
         context
             .read<ImageFrameCubit>()
             .changeImageFrameState(state.selectedImage!);
+
+        if (state.selectedImage != null) {
+          int index =
+              state.imageFrameTimelineList.indexOf(state.selectedImage!);
+
+          () => miniMapController.animateToPage(
+                index - 1,
+                duration: Duration(milliseconds: 500),
+                curve: Curves.easeOut,
+              );
+        }
       },
       child: BlocBuilder<ImageFrameCubit, ImageFrameState>(
         builder: (context, state) {

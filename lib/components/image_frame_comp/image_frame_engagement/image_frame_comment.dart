@@ -24,6 +24,7 @@ class ImageFrameComment extends StatelessWidget {
             foregroundImage: CachedNetworkImageProvider(
               comment.avatarReq540,
               headers: headers,
+              errorListener: (_) {},
             ),
             radius: 14,
           ),

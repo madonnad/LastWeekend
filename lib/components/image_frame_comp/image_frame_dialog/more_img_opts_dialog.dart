@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
 import 'package:shared_photo/bloc/cubit/image_frame_cubit.dart';
+import 'package:shared_photo/components/image_frame_comp/image_frame_dialog/delete_image_dialog.dart';
 import 'package:shared_photo/components/image_frame_comp/image_frame_dialog/move_album_from_image_modal.dart';
 import 'package:shared_photo/models/album.dart';
 
@@ -14,12 +15,13 @@ class MoreImageOptsDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String userID = context.read<AppBloc>().state.user.id;
     return BlocBuilder<AlbumFrameCubit, AlbumFrameState>(
       builder: (context, albumState) {
         return BlocBuilder<ImageFrameCubit, ImageFrameState>(
           builder: (context, state) {
             bool saveAvail = canSave && !state.loading;
-
+            bool imageOwner = state.image.owner == userID;
             bool showSwap = albumState.album.phase != AlbumPhases.reveal &&
                 state.image.owner == context.read<AppBloc>().state.user.id;
 
@@ -35,37 +37,20 @@ class MoreImageOptsDialog extends StatelessWidget {
               ),
               backgroundColor: const Color.fromRGBO(19, 19, 19, 1),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5)),
+                borderRadius: BorderRadius.circular(5),
+              ),
               children: [
-                SimpleDialogOption(
+                DialogOptionItem(
                   onPressed: () => saveAvail
                       ? context.read<ImageFrameCubit>().downloadImageToDevice()
                       : null,
-                  child: Row(
-                    children: [
-                      Text(
-                        "Save Image",
-                        style: GoogleFonts.montserrat(
-                          color: saveAvail
-                              ? Colors.white
-                              : Colors.white.withOpacity(.35),
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16,
-                        ),
-                      ),
-                      const Spacer(),
-                      state.loading
-                          ? const SizedBox(
-                              height: 16,
-                              width: 16,
-                              child: CircularProgressIndicator(strokeWidth: 2),
-                            )
-                          : const SizedBox.shrink(),
-                    ],
-                  ),
+                  text: "Save Image",
+                  textColor:
+                      saveAvail ? Colors.white : Colors.white.withOpacity(.35),
+                  showLoading: state.loading,
                 ),
                 showSwap
-                    ? SimpleDialogOption(
+                    ? DialogOptionItem(
                         onPressed: () {
                           Navigator.of(context).pop();
                           showDialog(
@@ -76,21 +61,82 @@ class MoreImageOptsDialog extends StatelessWidget {
                             ),
                           );
                         },
-                        child: Text(
-                          "Move Album",
-                          style: GoogleFonts.montserrat(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16,
-                          ),
-                        ),
+                        text: "Move Album",
+                        textColor: Colors.white,
                       )
                     : const SizedBox.shrink(),
+                imageOwner
+                    ? DialogOptionItem(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          showDialog(
+                            context: context,
+                            builder: (ctx) {
+                              return BlocProvider.value(
+                                value: context.read<AlbumFrameCubit>(),
+                                child: DeleteImageDialog(),
+                              );
+                            },
+                          );
+                        },
+                        text: "Delete Image",
+                        textColor: Colors.white,
+                      )
+                    : const SizedBox.shrink()
               ],
             );
           },
         );
       },
+    );
+  }
+}
+
+class DialogOptionItem extends StatelessWidget {
+  final VoidCallback onPressed;
+  final String text;
+  final Color textColor;
+  final bool? showLoading;
+  const DialogOptionItem({
+    super.key,
+    required this.onPressed,
+    required this.text,
+    required this.textColor,
+    this.showLoading,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleDialogOption(
+      onPressed: onPressed,
+      child: Row(
+        children: [
+          Text(
+            text,
+            style: GoogleFonts.montserrat(
+              color: textColor,
+              fontWeight: FontWeight.w500,
+              fontSize: 16,
+            ),
+          ),
+          showLoading != null
+              ? Expanded(
+                  child: Row(
+                    children: [
+                      const Spacer(),
+                      showLoading!
+                          ? const SizedBox(
+                              height: 16,
+                              width: 16,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : const SizedBox.shrink(),
+                    ],
+                  ),
+                )
+              : const SizedBox.shrink(),
+        ],
+      ),
     );
   }
 }

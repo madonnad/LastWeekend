@@ -41,7 +41,7 @@ class ProfileNavElement extends StatelessWidget {
               ),
             ),
             child: CircleAvatar(
-              backgroundImage: const AssetImage("lib/assets/default.png"),
+              backgroundImage: const AssetImage("lib/assets/placeholder.png"),
               foregroundImage: NetworkImage(
                 url,
                 headers: headers,

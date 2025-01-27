@@ -66,6 +66,7 @@ class GuestItemComponent extends StatelessWidget {
               image: CachedNetworkImageProvider(
                 image.imageReq540,
                 headers: headers,
+                errorListener: (_) {},
               ),
               fit: BoxFit.cover,
             ),

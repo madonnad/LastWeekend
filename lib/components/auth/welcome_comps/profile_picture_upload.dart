@@ -37,7 +37,7 @@ class ProfilePictureUpload extends StatelessWidget {
               CircleAvatar(
                 radius: circleDiameter,
                 backgroundColor: Colors.transparent,
-                backgroundImage: const AssetImage("lib/assets/default.png"),
+                backgroundImage: const AssetImage("lib/assets/placeholder.png"),
                 foregroundImage: FileImage(File(filePath)),
               ),
             ],

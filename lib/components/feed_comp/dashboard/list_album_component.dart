@@ -48,6 +48,7 @@ class ListAlbumComponent extends StatelessWidget {
                   imageUrl: displayImageUrl,
                   httpHeaders: headers,
                   fit: BoxFit.cover,
+                  errorListener: (_) {},
                 ),
               ),
             ),
