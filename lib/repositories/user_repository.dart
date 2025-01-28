@@ -29,7 +29,7 @@ class UserRepository {
   }) {
     _setFriendsList();
     notificationRepository.notificationStream.listen((event) {
-      StreamOperation operation = event.$1;
+      //StreamOperation operation = event.$1;
       Notification notification = event.$2;
 
       switch (notification.runtimeType) {

@@ -6,7 +6,6 @@ import 'package:shared_photo/components/camera_comp/captured_image_list_comp/cap
 import 'package:shared_photo/components/camera_comp/captured_image_list_comp/captured_list_fab.dart';
 import 'package:shared_photo/components/camera_comp/edit_album_dropdown.dart';
 import 'package:shared_photo/components/camera_comp/edit_screen_comp/empty_edit_view.dart';
-import 'package:shared_photo/models/photo.dart';
 
 import '../bloc/cubit/camera_cubit.dart';
 

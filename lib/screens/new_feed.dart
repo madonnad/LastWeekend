@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/feed_bloc.dart';
 import 'package:shared_photo/bloc/cubit/app_frame_cubit.dart';
 import 'package:shared_photo/components/app_comp/standard_logo.dart';
-import 'package:shared_photo/components/feed_comp/dashboard/dashboard.dart';
 import 'package:shared_photo/components/feed_comp/feed/empty_feed.dart';
 import 'package:shared_photo/components/feed_comp/feed/feed_list.dart';
 import 'package:shared_photo/components/feed_comp/header/events_header.dart';

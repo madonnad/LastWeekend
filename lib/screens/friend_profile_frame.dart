@@ -14,8 +14,8 @@ class FriendProfileFrame extends StatelessWidget {
   Widget build(BuildContext context) {
     ValueNotifier<String> selectedPageNotifier = ValueNotifier<String>('');
 
-    double paddingHeight =
-        MediaQuery.of(context).viewPadding.top + kToolbarHeight;
+    // double paddingHeight =
+    //     MediaQuery.of(context).viewPadding.top + kToolbarHeight;
 
     return Scaffold(
       backgroundColor: Colors.black,

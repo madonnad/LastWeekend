@@ -1,9 +1,6 @@
 import 'dart:async';
-import 'dart:io';
-import 'package:image/image.dart' as img;
 
 import 'package:camera/camera.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -157,7 +154,7 @@ class _ShutterButtonState extends State<ShutterButton> {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.25),
+                    color: Colors.black.withValues(alpha: 0.25),
                     offset: const Offset(0, 4),
                     blurRadius: 10,
                     spreadRadius: 1,

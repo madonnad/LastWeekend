@@ -96,13 +96,7 @@ class CreateFriendAddPage extends StatelessWidget {
                     return const SearchResultsListView();
                   case FriendState.empty:
                     return const EmptyFriendsListView();
-                  default:
-                    return const Text(
-                      "Something broke :(",
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    );
+                  
                 }
               },
             ),
