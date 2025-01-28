@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 // import 'package:image_picker/image_picker.dart';
 // import 'package:shared_photo/bloc/cubit/camera_cubit.dart';

@@ -8,7 +8,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
-import 'package:shared_photo/bloc/cubit/firebase_notifications_cubit.dart';
 import 'package:shared_photo/firebase_options.dart';
 import 'package:shared_photo/repositories/auth0_repository.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';

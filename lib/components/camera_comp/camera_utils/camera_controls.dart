@@ -5,7 +5,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_photo/bloc/cubit/camera_cubit.dart';
 import 'package:shared_photo/components/camera_comp/camera_image_stack.dart';
 import 'package:shared_photo/components/camera_comp/camera_utils/shutter_button.dart';
-import 'package:shared_photo/models/photo.dart';
 import 'package:shared_photo/screens/captured_image_list_screen.dart';
 
 class CameraControls extends StatefulWidget {
