@@ -89,6 +89,7 @@ extension ImageDataRepo on DataRepository {
       image: uploadedImage,
     );
 
+    _albumController.add((StreamOperation.update, albumMap[albumID]!));
     _imageController.add(change);
     return (true, null);
   }
@@ -152,6 +153,31 @@ extension ImageDataRepo on DataRepository {
       albumMap[newAlbum]!.imageMap[foundImage.imageId] = foundImage;
       _albumController.add((StreamOperation.update, albumMap[oldAlbum]!));
       _albumController.add((StreamOperation.update, albumMap[newAlbum]!));
+      return (true, null);
+    } else {
+      return (false, error);
+    }
+  }
+
+  Future<(bool, String?)> deleteImageFromAlbum(
+      String imageID, String albumID) async {
+    if (albumMap[albumID] == null) {
+      return (false, "Could not find album");
+    }
+
+    if (!albumMap[albumID]!.imageMap.containsKey(imageID)) {
+      albumMap[albumID]!.imageMap.remove(imageID);
+      _albumController.add((StreamOperation.update, albumMap[albumID]!));
+      return (true, null);
+    }
+
+    bool success;
+    String? error;
+
+    (success, error) = await ImageService.deletePhoto(user.token, imageID);
+    if (success) {
+      albumMap[albumID]!.imageMap.remove(imageID);
+      _albumController.add((StreamOperation.update, albumMap[albumID]!));
       return (true, null);
     } else {
       return (false, error);

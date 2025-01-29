@@ -382,6 +382,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.2.1"
+  flutter_keychain:
+    dependency: "direct main"
+    description:
+      name: flutter_keychain
+      sha256: "0d000c0e9b3c16fdec016df406b4e89e7195bf719ed0882157400f1e16323cf8"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.5.0"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -736,6 +744,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.2"
+  pinch_to_zoom_scrollable:
+    dependency: "direct main"
+    description:
+      name: pinch_to_zoom_scrollable
+      sha256: "39248f5895289d350e4f2a4c580150e603fb9213c771356a607e69ea101d965c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.2"
   pinch_zoom_release_unzoom:
     dependency: "direct main"
     description:

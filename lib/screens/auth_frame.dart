@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/cubit/auth_cubit.dart';
 import 'package:shared_photo/components/app_comp/standard_logo.dart';
-import 'package:shared_photo/components/new_auth/auth_linked_text.dart';
-import 'package:shared_photo/components/new_auth/auth_logic_widgets/login_create_button.dart';
-import 'package:shared_photo/components/new_auth/create_account_form.dart';
-import 'package:shared_photo/components/new_auth/login_form.dart';
+import 'package:shared_photo/components/auth/auth_linked_text.dart';
+import 'package:shared_photo/components/auth/auth_logic_widgets/login_create_button.dart';
+import 'package:shared_photo/components/auth/create_account_form.dart';
+import 'package:shared_photo/components/auth/login_form.dart';
 import 'package:shared_photo/repositories/auth0_repository.dart';
 
 class AuthFrame extends StatelessWidget {
@@ -23,7 +23,7 @@ class AuthFrame extends StatelessWidget {
         listener: (context, state) {
           String errorString = "${state.exception.errorString} ";
           SnackBar snackBar = SnackBar(
-            backgroundColor:  const Color.fromRGBO(19, 19, 19, 1),
+            backgroundColor: const Color.fromRGBO(19, 19, 19, 1),
             content: Text(errorString),
           );
 
@@ -61,29 +61,33 @@ class AuthFrame extends StatelessWidget {
                           const Spacer(
                             flex: 2,
                           ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              //Conditionally Show the First Name Field
-                              state.accountCreateMode
-                                  ? const CreateAccountForm()
-                                  : const LoginForm(),
-                              // Conditionally Switch Confirm Buttons
-                              const LoginCreateButton(),
-                              // Conditonally Switch Linked Text
-                              state.accountCreateMode
-                                  ? AuthLinkedText(
-                                      linkText: "Have an account? Login",
-                                      onTap: () =>
-                                          context.read<AuthCubit>().swapModes(),
-                                    )
-                                  : AuthLinkedText(
-                                      linkText: "Create account",
-                                      onTap: () =>
-                                          context.read<AuthCubit>().swapModes(),
-                                    )
-                            ],
+                          AutofillGroup(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                //Conditionally Show the First Name Field
+                                state.accountCreateMode
+                                    ? const CreateAccountForm()
+                                    : const LoginForm(),
+                                // Conditionally Switch Confirm Buttons
+                                const LoginCreateButton(),
+                                // Conditonally Switch Linked Text
+                                state.accountCreateMode
+                                    ? AuthLinkedText(
+                                        linkText: "Have an account? Login",
+                                        onTap: () => context
+                                            .read<AuthCubit>()
+                                            .swapModes(),
+                                      )
+                                    : AuthLinkedText(
+                                        linkText: "Create account",
+                                        onTap: () => context
+                                            .read<AuthCubit>()
+                                            .swapModes(),
+                                      )
+                              ],
+                            ),
                           ),
                           const Spacer()
                         ],

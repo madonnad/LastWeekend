@@ -39,6 +39,7 @@ class CommentNotiItem extends StatelessWidget {
                     image: CachedNetworkImageProvider(
                       notification.imageURL,
                       headers: context.read<AppBloc>().state.user.headers,
+                      errorListener: (_) {},
                     ),
                     fit: BoxFit.cover,
                     onError: (_, __) {},

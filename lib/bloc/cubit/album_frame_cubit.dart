@@ -1,10 +1,8 @@
 import 'dart:async';
 import 'dart:collection';
-import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/custom_exception.dart';
 import 'package:shared_photo/models/guest.dart';
@@ -27,9 +25,6 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
   }) : super(
           AlbumFrameState(
             album: Album.empty,
-            viewMode: AlbumViewMode.popular,
-            pageController: PageController(),
-            miniMapController: PageController(viewportFraction: 1 / 6),
           ),
         ) {
     // Fetch Album to Initalize
@@ -54,9 +49,10 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
         switch (operation) {
           case StreamOperation.add:
           case StreamOperation.update:
-            emit(state.copyWith(album: album));
+            emit(state.copyWith(
+                album: album, images: List.from(album.imageMap.values)));
             setRankedImages();
-            if (state.images.isNotEmpty) {
+            if (state.images.isNotEmpty && state.selectedImage == null) {
               emit(state.copyWith(selectedImage: state.images[0]));
             }
           case StreamOperation.delete:
@@ -70,13 +66,49 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
 
     Album updatedAlbum = await dataRepository.getAlbumByID(albumID);
 
-    emit(state.copyWith(album: updatedAlbum, loading: false));
+    emit(state.copyWith(
+      album: updatedAlbum,
+      images: List.from(updatedAlbum.images),
+      loading: false,
+    ));
 
     // Set Internal Ranked Images
     setRankedImages();
     if (state.images.isNotEmpty) {
       emit(state.copyWith(selectedImage: state.images[0]));
     }
+  }
+
+  void setRankedImages() {
+    List<Photo> rankedImages = List.from(state.images);
+
+    // Set Ranked
+    rankedImages.sort((a, b) {
+      if (a.upvotes == b.upvotes) {
+        return a.capturedDatetime.compareTo(b.capturedDatetime);
+      } else {
+        return b.upvotes.compareTo(a.upvotes);
+      }
+    });
+
+    // Emit Ranked Images
+    emit(state.copyWith(
+      rankedImages: rankedImages,
+    ));
+  }
+
+  void initalizeImageFrameWithSelectedImage(Photo selectedImage) {
+    int selectedIndex = state.imageFrameTimelineList.indexOf(selectedImage);
+    Photo image = state.imageFrameTimelineList[selectedIndex];
+    emit(state.copyWith(
+      selectedImage: image,
+    ));
+  }
+
+  void updateImageFrameWithSelectedImage(int selectedIndex,
+      {required bool changeMainPage, required bool changeMiniMap}) {
+    Photo image = state.imageFrameTimelineList[selectedIndex];
+    emit(state.copyWith(selectedImage: image));
   }
 
   void updateImageInAlbum(String imageID, Photo image) {
@@ -89,105 +121,45 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
     setRankedImages();
   }
 
-  void setRankedImages() {
-    List<Photo> rankedImages = List.from(state.album.images);
-    List<Photo> topThreeImages = [];
+  void deleteImageInAlbum() async {
+    if (state.selectedImage != null) {
+      String? error;
 
-    // Set Ranked
-    rankedImages.sort((a, b) {
-      if (a.upvotes == b.upvotes) {
-        return a.uploadDateTime.compareTo(b.uploadDateTime);
+      emit(state.copyWith(loading: true));
+
+      List<Photo> timelineImages = state.imageFrameTimelineList;
+      int index = timelineImages.indexOf(state.selectedImage!);
+
+      Photo? newSelected;
+
+      if (index == 0) {
+        if (timelineImages.length == 1) {
+          newSelected = null;
+        } else {
+          newSelected = timelineImages.elementAt(index + 1);
+        }
+      } else if (index == timelineImages.length - 1) {
+        newSelected = timelineImages.elementAt(index - 1);
       } else {
-        return b.upvotes.compareTo(a.upvotes);
+        newSelected = timelineImages.elementAt(index + 1);
       }
-    });
 
-    List<Photo> remainingRankedImages = List.from(rankedImages);
+      (_, error) = await dataRepository.deleteImageFromAlbum(
+          state.selectedImage!.imageId, albumID);
 
-    // Set Top Three Images
-    if (rankedImages.length > 3) {
-      topThreeImages.addAll(rankedImages.getRange(0, 3).toList());
-    } else if (rankedImages.isNotEmpty) {
-      topThreeImages
-          .addAll(rankedImages.getRange(0, rankedImages.length).toList());
-    } else {
-      topThreeImages = [];
+      if (error != null) {
+        CustomException exception = CustomException(errorString: error);
+        emit(state.copyWith(loading: false, exception: exception));
+        emit(state.copyWith(exception: CustomException.empty));
+        return;
+      }
+
+      if (newSelected == null) {
+        emit(state.copyWith(clearSelectedImage: true, loading: false));
+        return;
+      }
+      emit(state.copyWith(selectedImage: newSelected, loading: false));
     }
-
-    // Set Remaining Ranked Images
-    if (remainingRankedImages.length > 3) {
-      remainingRankedImages.removeRange(0, 3);
-    } else {
-      remainingRankedImages = [];
-    }
-
-    // Emit Ranked Images
-    emit(state.copyWith(
-      rankedImages: rankedImages,
-      topThreeImages: topThreeImages,
-      remainingRankedImages: remainingRankedImages,
-    ));
-  }
-
-  void changePage(index) {
-    String listString = state.filterList[index];
-    AlbumViewMode viewMode = AlbumViewMode.popular;
-
-    switch (listString) {
-      case "Popular":
-        viewMode = AlbumViewMode.popular;
-      case "Guests":
-        viewMode = AlbumViewMode.guests;
-      case "Timeline":
-        viewMode = AlbumViewMode.timeline;
-    }
-
-    emit(state.copyWith(viewMode: viewMode));
-  }
-
-  void changeViewMode(AlbumViewMode viewMode) {
-    emit(state.copyWith(viewMode: viewMode));
-  }
-
-  void initalizeImageFrameWithSelectedImage(Photo selectedImage) {
-    int selectedIndex = state.imageFrameTimelineList.indexOf(selectedImage);
-    PageController pageController = PageController(initialPage: selectedIndex);
-    PageController miniMapController =
-        PageController(initialPage: selectedIndex, viewportFraction: 1 / 6);
-    Photo image = state.imageFrameTimelineList[selectedIndex];
-    emit(state.copyWith(
-      selectedImage: image,
-      pageController: pageController,
-      miniMapController: miniMapController,
-    ));
-  }
-
-  void updateImageFrameWithSelectedImage(int selectedIndex,
-      {required bool changeMainPage, required bool changeMiniMap}) {
-    Photo image = state.imageFrameTimelineList[selectedIndex];
-    emit(state.copyWith(selectedImage: image));
-
-    if (changeMainPage) {
-      state.pageController.jumpToPage(selectedIndex);
-    }
-
-    if (changeMiniMap) {
-      state.miniMapController.animateToPage(
-        selectedIndex,
-        duration: const Duration(milliseconds: 250),
-        curve: Curves.decelerate,
-      );
-    }
-  }
-
-  void nextImage() {
-    state.pageController.nextPage(
-        duration: const Duration(milliseconds: 250), curve: Curves.easeIn);
-  }
-
-  void previousImage() {
-    state.pageController.previousPage(
-        duration: const Duration(milliseconds: 250), curve: Curves.easeIn);
   }
 
   void sendInviteToFriends(

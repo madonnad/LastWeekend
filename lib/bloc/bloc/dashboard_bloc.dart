@@ -62,7 +62,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
       bool userIsOwner = album.albumOwner == user.id;
 
-      if ((userIsGuest || userIsOwner) && album.phase != AlbumPhases.reveal) {
+      if ((userIsGuest || userIsOwner) && album.phase == AlbumPhases.open) {
         switch (type) {
           case StreamOperation.add:
             add(AddAlbumToMap(album: album));

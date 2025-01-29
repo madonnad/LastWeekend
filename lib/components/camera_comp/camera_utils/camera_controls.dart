@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_photo/bloc/cubit/camera_cubit.dart';
+import 'package:shared_photo/components/camera_comp/camera_image_stack.dart';
 import 'package:shared_photo/components/camera_comp/camera_utils/shutter_button.dart';
-import 'package:shared_photo/models/photo.dart';
 import 'package:shared_photo/screens/captured_image_list_screen.dart';
 
 class CameraControls extends StatefulWidget {
@@ -53,7 +53,7 @@ class _CameraControlsState extends State<CameraControls> {
 
       context
           .read<CameraCubit>()
-          .addListOfPhotosToList(selectedImages, UploadType.forgotShot);
+          .addListOfPhotosToList(selectedImages);
     }
 
     void pushCapturedPage() {
@@ -68,49 +68,59 @@ class _CameraControlsState extends State<CameraControls> {
       );
     }
 
-    return Column(
-      children: [
-        Row(
-          children: [
-            const Spacer(),
-            GestureDetector(
-              onTap: widget.flipCamera,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          GestureDetector(
+            onTap: () async {
+              List<XFile>? selectedImages;
+              selectedImages = await imagePicker
+                  .pickMultiImage(
+                      maxHeight: 2160, maxWidth: 2160, imageQuality: 85)
+                  .whenComplete(() {
+                if (selectedImages != null) {
+                  pushCapturedPage();
+                }
+              });
+              addListPhotos(selectedImages);
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(left: 15, right: ((75 - 24 - 15))),
               child: const Icon(
-                Icons.flip_camera_ios_sharp,
+                Icons.library_add,
                 color: Colors.white,
+                size: 24,
               ),
             ),
-            ShutterButton(controller: widget.controller),
-            GestureDetector(
-              onTap: () {
-                changeFlashMode();
-              },
-              child: Icon(
-                icon,
-                color: Colors.white,
-              ),
-            ),
-            const Spacer(),
-          ],
-        ),
-        GestureDetector(
-          onTap: () async {
-            List<XFile>? selectedImages;
-            selectedImages = await imagePicker
-                .pickMultiImage(maxHeight: 2160, maxWidth: 2160)
-                .whenComplete(() {
-              if (selectedImages != null) {
-                pushCapturedPage();
-              }
-            });
-            addListPhotos(selectedImages);
-          },
-          child: const Icon(
-            Icons.library_add,
-            color: Colors.white,
           ),
-        )
-      ],
+          //const Spacer(),
+          Row(
+            children: [
+              GestureDetector(
+                onTap: widget.flipCamera,
+                child: const Icon(
+                  Icons.flip_camera_ios_sharp,
+                  color: Colors.white,
+                ),
+              ),
+              ShutterButton(controller: widget.controller),
+              GestureDetector(
+                onTap: () {
+                  changeFlashMode();
+                },
+                child: Icon(
+                  icon,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+          //const Spacer(),
+          const CameraImageStack(),
+        ],
+      ),
     );
   }
 }

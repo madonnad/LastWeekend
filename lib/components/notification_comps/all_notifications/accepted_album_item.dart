@@ -42,6 +42,7 @@ class AcceptedAlbumItem extends StatelessWidget {
               foregroundImage: CachedNetworkImageProvider(
                 profileImage,
                 headers: context.read<AppBloc>().state.user.headers,
+                errorListener: (_) {},
               ),
               onForegroundImageError: (_, __) {},
             ),

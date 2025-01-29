@@ -1,12 +1,15 @@
 import 'dart:async';
 
 import 'package:shared_photo/models/friend.dart';
+import 'package:shared_photo/models/notification.dart';
 import 'package:shared_photo/models/user.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
+import 'package:shared_photo/repositories/notification_repository/notification_repository.dart';
 import 'package:shared_photo/services/user_service.dart';
 
 class UserRepository {
   User user;
+  NotificationRepository notificationRepository;
   Map<String, Friend> friendMap = {};
 
   // Controllers
@@ -20,8 +23,20 @@ class UserRepository {
   Stream<(StreamOperation, User)> get userStream => _userController.stream;
 
   // Initializer
-  UserRepository({required this.user}) {
+  UserRepository({
+    required this.user,
+    required this.notificationRepository,
+  }) {
     _setFriendsList();
+    notificationRepository.notificationStream.listen((event) {
+      //StreamOperation operation = event.$1;
+      Notification notification = event.$2;
+
+      switch (notification.runtimeType) {
+        case FriendRequestNotification:
+          _setFriendsList();
+      }
+    });
   }
 
   // Functions

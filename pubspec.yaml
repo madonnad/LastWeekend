@@ -1,7 +1,7 @@
 name: shared_photo
 description: Create memories that last with the people that matter!
 publish_to: 'none'
-version: 1.0.8
+version: 1.0.9
 
 environment:
   sdk: '>=3.0.5 <4.0.0'
@@ -43,6 +43,9 @@ dependencies:
   flutter_datetime_picker_plus: ^2.2.0
   omni_datetime_picker: ^2.0.5
   pinch_zoom_release_unzoom: ^1.0.3
+  flutter_keychain: ^2.5.0
+  pinch_to_zoom_scrollable: ^0.1.2
+
 
 dev_dependencies:
   flutter_lints: ^5.0.0
@@ -53,5 +56,6 @@ flutter:
   uses-material-design: true
   assets:
   - lib/assets/default.png
+  - lib/assets/placeholder.png
   - .env
 

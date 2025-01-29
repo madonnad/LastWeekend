@@ -5,16 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:icon_decoration/icon_decoration.dart';
 import 'package:shared_photo/bloc/cubit/camera_cubit.dart';
 import 'package:shared_photo/components/camera_comp/captured_image_modal/captured_image_modal.dart';
 import 'package:shared_photo/models/captured_image.dart';
 
 class CapturedImageItem extends StatefulWidget {
   final CapturedImage image;
-  final Key key;
-  const CapturedImageItem({required this.key, required this.image})
-      : super(key: key);
+  const CapturedImageItem({super.key, required this.image});
 
   @override
   State<CapturedImageItem> createState() => _CapturedImageItemState();

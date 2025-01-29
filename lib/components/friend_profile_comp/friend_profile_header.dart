@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/friend_profile_cubit.dart';
 import 'package:shared_photo/components/friend_profile_comp/friend_status_logic.dart';
-import 'package:shared_photo/components/new_profile_comp/profile_header_comps/profile_detail_element.dart';
+import 'package:shared_photo/components/profile_comp/profile_header_comps/profile_detail_element.dart';
 
 class FriendProfileHeader extends StatelessWidget {
   const FriendProfileHeader({super.key});
@@ -42,10 +42,12 @@ class FriendProfileHeader extends StatelessWidget {
                   child: CircleAvatar(
                     radius: circleDiameter,
                     backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
-                    backgroundImage: const AssetImage("lib/assets/default.png"),
+                    backgroundImage:
+                        const AssetImage("lib/assets/placeholder.png"),
                     foregroundImage: CachedNetworkImageProvider(
                       state.anonymousFriend.imageReq540,
                       headers: context.read<AppBloc>().state.user.headers,
+                      errorListener: (_) {},
                     ),
                     onForegroundImageError: (_, __) {},
                   ),

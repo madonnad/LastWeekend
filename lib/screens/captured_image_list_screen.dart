@@ -6,7 +6,6 @@ import 'package:shared_photo/components/camera_comp/captured_image_list_comp/cap
 import 'package:shared_photo/components/camera_comp/captured_image_list_comp/captured_list_fab.dart';
 import 'package:shared_photo/components/camera_comp/edit_album_dropdown.dart';
 import 'package:shared_photo/components/camera_comp/edit_screen_comp/empty_edit_view.dart';
-import 'package:shared_photo/models/photo.dart';
 
 import '../bloc/cubit/camera_cubit.dart';
 
@@ -20,9 +19,7 @@ class CapturedImageListScreen extends StatelessWidget {
     void addListPhotos(List<XFile>? selectedImages) {
       if (selectedImages == null) return;
 
-      context
-          .read<CameraCubit>()
-          .addListOfPhotosToList(selectedImages, UploadType.forgotShot);
+      context.read<CameraCubit>().addListOfPhotosToList(selectedImages);
     }
 
     return BlocBuilder<CameraCubit, CameraState>(
@@ -42,10 +39,17 @@ class CapturedImageListScreen extends StatelessWidget {
                   : const Icon(Icons.close),
               color: Colors.white,
             ),
+            leadingWidth: 56,
             title: const EditAlbumDropdown(
               opacity: .75,
             ),
             centerTitle: true,
+            actions: [
+              Icon(
+                Icons.train,
+                color: Colors.transparent,
+              )
+            ],
           ),
           body: SizedBox(
             height: MediaQuery.of(context).size.height,
@@ -145,8 +149,11 @@ class CapturedImageListScreen extends StatelessWidget {
                         contentColor: Colors.white,
                         borderRadius: 5,
                         onTap: () async {
-                          List<XFile>? selectedImages = await imagePicker
-                              .pickMultiImage(maxHeight: 2160, maxWidth: 2160);
+                          List<XFile>? selectedImages =
+                              await imagePicker.pickMultiImage(
+                                  maxHeight: 2160,
+                                  maxWidth: 2160,
+                                  imageQuality: 85);
 
                           addListPhotos(selectedImages);
                         },

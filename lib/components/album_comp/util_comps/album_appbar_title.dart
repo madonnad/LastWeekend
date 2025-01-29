@@ -13,7 +13,7 @@ class AlbumAppBarTitle extends StatelessWidget implements PreferredSizeWidget {
         return AppBar(
           centerTitle: true,
           titleSpacing: 0,
-          leadingWidth: 25,
+          //leadingWidth: 25,
           leading: GestureDetector(
             onTap: () => Navigator.of(context).pop(),
             child: const Icon(

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_udid/flutter_udid.dart';
-import 'package:shared_photo/models/notification.dart';
 import 'package:shared_photo/models/user.dart';
 import 'package:shared_photo/repositories/notification_repository/notification_repository.dart';
 import 'dart:developer' as developer;

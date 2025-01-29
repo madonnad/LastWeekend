@@ -101,9 +101,11 @@ class AvatarListItem extends StatelessWidget {
             Expanded(
               child: CircleAvatar(
                 backgroundColor: Color.fromRGBO(44, 44, 44, 1),
+                backgroundImage: AssetImage("lib/assets/placeholder.png"),
                 foregroundImage: CachedNetworkImageProvider(
                   avatarURL,
                   headers: context.read<AppBloc>().state.user.headers,
+                  errorListener: (_) {},
                 ),
                 radius: 50,
               ),

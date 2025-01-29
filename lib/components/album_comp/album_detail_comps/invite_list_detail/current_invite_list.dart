@@ -32,6 +32,8 @@ class CurrentInviteList extends StatelessWidget {
                               CircleAvatar(
                                 backgroundColor:
                                     const Color.fromRGBO(16, 16, 16, 1),
+                                backgroundImage:
+                                    AssetImage("lib/assets/placeholder.png"),
                                 foregroundImage: CachedNetworkImageProvider(
                                   state.album.sortedGuestsByInvite[index]
                                       .avatarReq540,
@@ -40,6 +42,7 @@ class CurrentInviteList extends StatelessWidget {
                                       .state
                                       .user
                                       .headers,
+                                  errorListener: (_) {},
                                 ),
                                 radius: 18,
                                 onForegroundImageError: (_, __) {},

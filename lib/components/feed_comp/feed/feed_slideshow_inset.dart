@@ -51,6 +51,7 @@ class FeedSlideshowInset extends StatelessWidget {
                                       image: CachedNetworkImageProvider(
                                         state.topThreeImages[index].imageReq540,
                                         headers: headers,
+                                        errorListener: (_) {},
                                       ),
                                       fit: BoxFit.cover,
                                     ),
@@ -64,6 +65,7 @@ class FeedSlideshowInset extends StatelessWidget {
                                   image: CachedNetworkImageProvider(
                                     state.album.coverReq,
                                     headers: headers,
+                                    errorListener: (_) {},
                                   ),
                                   fit: BoxFit.cover,
                                 ),
@@ -132,10 +134,11 @@ class FeedSlideshowInset extends StatelessWidget {
                           padding: const EdgeInsets.only(right: 8.0),
                           child: CircleAvatar(
                             backgroundImage:
-                                const AssetImage("lib/assets/default.png"),
+                                const AssetImage("lib/assets/placeholder.png"),
                             foregroundImage: CachedNetworkImageProvider(
                               state.avatarUrl,
                               headers: headers,
+                              errorListener: (_) {},
                             ),
                             onForegroundImageError: (_, __) {},
                             radius: 15,

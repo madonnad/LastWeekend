@@ -86,8 +86,8 @@ class ProfileState extends Equatable {
   @override
   List<Object?> get props => [
         user,
-        myAlbumsMap,
-        myEventsByDatetime,
+        myAlbumsMap.hashCode,
+        myEventsByDatetime.hashCode,
         myImages,
         myAlbumsMap,
         myNotifications,
