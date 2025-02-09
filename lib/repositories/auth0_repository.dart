@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:auth0_flutter/auth0_flutter.dart';
@@ -14,6 +15,8 @@ class Auth0Repository {
     dotenv.env['AUTH0_DOMAIN'] ?? '',
     dotenv.env['AUTH0_ID'] ?? '',
   );
+  FirebaseAnalytics instance = FirebaseAnalytics.instance;
+
   final String connection = "Username-Password-Authentication";
   bool newAccount = false;
 
@@ -60,6 +63,8 @@ class Auth0Repository {
       User user = await getInternalUserInformation(
           creds.accessToken, email, newAccount);
 
+      instance.setUserProperty(name: "user_uid", value: user.id);
+
       newAccount = false;
 
       _userController.sink.add((user, CustomException.empty));
@@ -104,6 +109,10 @@ class Auth0Repository {
         audience: audience,
       );
 
+      instance.setUserProperty(
+          name: "auth_zero_id", value: credentials.user.sub);
+      instance.logLogin();
+
       bool didStore =
           await auth0.credentialsManager.storeCredentials(credentials);
 
@@ -122,6 +131,7 @@ class Auth0Repository {
 
   Future<void> logout() async {
     await auth0.credentialsManager.clearCredentials();
+    await instance.logEvent(name: "logout");
     userStream();
   }
 

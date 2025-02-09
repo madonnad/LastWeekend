@@ -92,13 +92,9 @@ class InviteFriendPage extends StatelessWidget {
                           ),
                           InvitedButton(
                             isInvited: isInvited,
-                            onTap: () => context
-                                .read<AlbumFrameCubit>()
-                                .sendInviteToFriends(
-                                  guestUID,
-                                  friendList[index].firstName,
-                                  friendList[index].lastName,
-                                ),
+                            inviteID: guestUID,
+                            firstName: friendList[index].firstName,
+                            lastName: friendList[index].lastName,
                           ),
                         ],
                       ),

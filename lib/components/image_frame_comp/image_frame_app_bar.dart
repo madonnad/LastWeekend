@@ -29,6 +29,7 @@ class ImageFrameAppBar extends StatelessWidget implements PreferredSizeWidget {
               color: Colors.white,
             ),
           ),
+          centerTitle: true,
           title: Column(
             children: [
               Text(

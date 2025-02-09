@@ -152,7 +152,7 @@ Route onGenerateRoute(RouteSettings settings) {
             user: context.read<AppBloc>().state.user,
             dataRepository: context.read<DataRepository>(),
           ),
-          child: const FriendProfileFrame(),
+          child: FriendProfileFrame(userID: lookupUid),
         ),
         transitionsBuilder: (context, a, b, c) {
           var begin = const Offset(1.0, 0.0);

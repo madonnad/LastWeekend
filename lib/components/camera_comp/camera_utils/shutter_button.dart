@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:camera/camera.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,32 +24,6 @@ class _ShutterButtonState extends State<ShutterButton> {
   double scale = 1;
   // final _streamSubscriptions = <StreamSubscription<dynamic>>[];
   // late DeviceOrientation orientation = DeviceOrientation.portraitUp;
-
-  @override
-  void initState() {
-    // double g = 9.81;
-    // _streamSubscriptions.add(accelerometerEventStream().listen((event) {
-    //   if (event.y > g / 2) {
-    //     setState(() {
-    //       orientation = DeviceOrientation.portraitUp;
-    //     });
-    //   } else if (event.y < -g / 2) {
-    //     setState(() {
-    //       orientation = DeviceOrientation.portraitDown;
-    //     });
-    //   } else if (event.x > g / 2) {
-    //     setState(() {
-    //       orientation = DeviceOrientation.landscapeLeft;
-    //     });
-    //   } else if (event.x < -g / 2) {
-    //     setState(() {
-    //       orientation = DeviceOrientation.landscapeRight;
-    //     });
-    //   }
-    // }));
-
-    super.initState();
-  }
 
   void shutterPressDown(TapDownDetails details) {
     setState(() {
@@ -99,42 +74,6 @@ class _ShutterButtonState extends State<ShutterButton> {
                 ? () async {
                     HapticFeedback.selectionClick();
                     XFile picture = await widget.controller.takePicture();
-
-                    // final bytes = await File(picture.path).readAsBytes();
-                    // img.Image? image = img.decodeImage(bytes);
-
-                    // if (image == null ||
-                    //     orientation == DeviceOrientation.portraitUp) {
-                    //   addPhotoToCubit(picture);
-                    //   return;
-                    // }
-                    // // Determine rotation based on orientation
-                    // img.Image rotatedImage;
-                    // switch (orientation) {
-                    //   case DeviceOrientation.portraitUp:
-                    //     // No rotation needed
-                    //     rotatedImage = image;
-                    //     break;
-                    //   case DeviceOrientation.portraitDown:
-                    //     // Rotate 180 degrees
-                    //     rotatedImage = img.copyRotate(image, angle: 180);
-                    //     break;
-                    //   case DeviceOrientation.landscapeLeft:
-                    //     // Rotate 90 degrees counterclockwise
-                    //     rotatedImage = img.copyRotate(image, angle: -90);
-                    //     break;
-                    //   case DeviceOrientation.landscapeRight:
-                    //     // Rotate 90 degrees clockwise
-                    //     rotatedImage = img.copyRotate(image, angle: 90);
-                    //     break;
-                    // }
-
-                    // // Encode the rotated image back to file
-                    // File(picture.path)
-                    //     .writeAsBytesSync(img.encodeJpg(rotatedImage));
-
-                    // // Reassign the rotated image back to an XFile
-                    // XFile rotatedPicture = XFile(picture.path);
 
                     addPhotoToCubit(picture);
                   }

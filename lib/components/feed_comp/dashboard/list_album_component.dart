@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,15 +24,20 @@ class ListAlbumComponent extends StatelessWidget {
             : album.coverReq;
 
     return GestureDetector(
-      onTap: () =>
-          Navigator.of(context).pushNamed('/album', arguments: arguments).then(
-        (value) {
-          switch (value) {
-            case "showCamera":
-              context.read<AppFrameCubit>().changePage(2);
-          }
-        },
-      ),
+      onTap: () {
+        FirebaseAnalytics.instance.logEvent(
+            name: "event_clicked", parameters: {"event_id": album.albumId});
+        Navigator.of(context).pushNamed('/album', arguments: arguments).then(
+          (value) {
+            switch (value) {
+              case "showCamera":
+                if (context.mounted) {
+                  context.read<AppFrameCubit>().changePage(2);
+                }
+            }
+          },
+        );
+      },
       child: AspectRatio(
         aspectRatio: 8 / 11,
         child: Column(

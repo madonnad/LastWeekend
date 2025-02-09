@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -81,17 +82,27 @@ class _SearchFrameState extends State<SearchFrame>
                                           result: state.searchResult[index],
                                         ),
                                       );
-                                    }
-                                    return GestureDetector(
-                                      onTap: () =>
+                                    } else {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          FirebaseAnalytics.instance.logEvent(
+                                            name: "clicked_friend_page",
+                                            parameters: {
+                                              "user_id":
+                                                  state.searchResult[index].id
+                                            },
+                                          );
                                           Navigator.of(context).pushNamed(
-                                        '/friend',
-                                        arguments: state.searchResult[index].id,
-                                      ),
-                                      child: UserSearchResult(
-                                        result: state.searchResult[index],
-                                      ),
-                                    );
+                                            '/friend',
+                                            arguments:
+                                                state.searchResult[index].id,
+                                          );
+                                        },
+                                        child: UserSearchResult(
+                                          result: state.searchResult[index],
+                                        ),
+                                      );
+                                    }
                                   } else {
                                     return const SizedBox(height: 0);
                                   }

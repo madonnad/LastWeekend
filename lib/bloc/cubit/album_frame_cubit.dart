@@ -3,6 +3,7 @@ import 'dart:collection';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/custom_exception.dart';
 import 'package:shared_photo/models/guest.dart';
@@ -154,6 +155,10 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
         return;
       }
 
+      FirebaseAnalytics.instance.logEvent(
+          name: "image_deleted",
+          parameters: {"image_id": state.selectedImage?.imageId ?? ''});
+
       if (newSelected == null) {
         emit(state.copyWith(clearSelectedImage: true, loading: false));
         return;
@@ -162,20 +167,33 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
     }
   }
 
-  void sendInviteToFriends(
+  Future<(bool, String?)> sendInviteToFriends(
       String guestID, String guestFirst, String guestLast) async {
+    bool success;
     String? error;
+
     emit(state.copyWith(loading: true));
-    (_, error) = await dataRepository.inviteUserToAlbum(
+
+    (success, error) = await dataRepository.inviteUserToAlbum(
         state.album.albumId, guestID, guestFirst, guestLast);
+
     if (error != null) {
       CustomException exception = CustomException(errorString: error);
       emit(state.copyWith(loading: false, exception: exception));
       emit(state.copyWith(exception: CustomException.empty));
-      return;
+      return (success, exception.errorString);
     }
 
+    FirebaseAnalytics.instance.logEvent(
+      name: "event_updated",
+      parameters: {
+        "type": "friend_invite",
+        "value": guestID,
+      },
+    );
+
     emit(state.copyWith(loading: false));
+    return (success, error);
   }
 
   Future<bool> updateAlbumVisibility(
@@ -192,6 +210,14 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
       emit(state.copyWith(exception: CustomException.empty));
       return false;
     }
+
+    FirebaseAnalytics.instance.logEvent(
+      name: "event_updated",
+      parameters: {
+        "type": "visiblity",
+        "value": visibility.description,
+      },
+    );
 
     emit(state.copyWith(loading: false));
     return true;
