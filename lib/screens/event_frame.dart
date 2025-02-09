@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
@@ -15,10 +16,28 @@ import 'package:shared_photo/screens/new_image_frame.dart';
 
 final List<String> filterList = ["Popular", "Guests", "Timeline"];
 
-class EventFrame extends StatelessWidget {
+class EventFrame extends StatefulWidget {
   final Arguments arguments;
 
   const EventFrame({super.key, required this.arguments});
+
+  @override
+  State<EventFrame> createState() => _EventFrameState();
+}
+
+class _EventFrameState extends State<EventFrame> {
+  FirebaseAnalytics instance = FirebaseAnalytics.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    logEventView(instance);
+  }
+
+  void logEventView(FirebaseAnalytics instance) {
+    String eventID = widget.arguments.albumID;
+    instance.logEvent(name: "event_viewed", parameters: {"event_id": eventID});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +49,7 @@ class EventFrame extends StatelessWidget {
             previous.album.albumId != current.album.albumId ||
             previous.album.images != current.album.images,
         listener: (context, state) {
-          pushImageFrameIfPassed(context, arguments);
+          pushImageFrameIfPassed(context, widget.arguments);
         },
         child: GestureDetector(
           onHorizontalDragUpdate: (details) {

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_photo/models/album.dart';
@@ -110,6 +111,14 @@ class CreateEventCubit extends Cubit<CreateEventState> {
 
     if (success) {
       emit(state.copyWith(loading: false));
+
+      // FirebaseAnalytics.instance.logEvent(
+      //   name: "event_created",
+      //   parameters: {
+      //     "invite_count": state.invitedUIDList.length,
+      //   },
+      // );
+
       return success;
     } else {
       CustomException exception = CustomException(errorString: error);

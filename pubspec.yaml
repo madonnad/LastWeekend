@@ -45,6 +45,7 @@ dependencies:
   pinch_zoom_release_unzoom: ^1.0.3
   flutter_keychain: ^2.5.0
   pinch_to_zoom_scrollable: ^0.1.2
+  firebase_analytics: ^11.4.1
 
 
 dev_dependencies:

@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,8 +24,11 @@ class ProfileEventItem extends StatelessWidget {
     Arguments arguments = Arguments(albumID: event.albumId);
 
     return GestureDetector(
-      onTap: () =>
-          Navigator.of(context).pushNamed('/album', arguments: arguments),
+      onTap: () {
+        FirebaseAnalytics.instance.logEvent(
+            name: "event_clicked", parameters: {"event_id": event.albumId});
+        Navigator.of(context).pushNamed('/album', arguments: arguments);
+      },
       child: Container(
         height: 250,
         width: double.infinity,
