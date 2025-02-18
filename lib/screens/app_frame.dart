@@ -124,7 +124,7 @@ class _AppFrameState extends State<AppFrame> with WidgetsBindingObserver {
             child: Scaffold(
               extendBody: state.index == 2 ? true : false,
               resizeToAvoidBottomInset: false,
-              backgroundColor: Colors.black,
+              backgroundColor: Color.fromRGBO(19, 19, 20, 1),
               body: PageView(
                 physics: const NeverScrollableScrollPhysics(),
                 controller: state.pageController,

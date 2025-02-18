@@ -33,11 +33,12 @@ class _NewFeedState extends State<NewFeed> with AutomaticKeepAliveClientMixin {
             slivers: [
               SliverAppBar(
                 floating: true,
-                backgroundColor: Colors.black,
+                backgroundColor: Color.fromRGBO(19, 19, 20, 1),
                 surfaceTintColor: Colors.transparent,
-                title: Center(
-                  child: StandardLogo(fontSize: 30),
-                ),
+                // title: Center(
+                //   child: StandardLogo(fontSize: 30),
+                // ),
+                title: Image.asset("lib/assets/logo.png", height: 40),
               ),
               SliverToBoxAdapter(
                 child: EventsHeader(),

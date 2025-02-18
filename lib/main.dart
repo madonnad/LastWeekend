@@ -16,9 +16,9 @@ import 'package:shared_photo/repositories/notification_repository/notification_r
 import 'package:shared_photo/repositories/realtime_repository.dart';
 import 'package:shared_photo/repositories/user_repository.dart';
 import 'package:shared_photo/router/generate_route.dart';
-import 'package:shared_photo/screens/auth_frame.dart';
 import 'package:shared_photo/screens/loading.dart';
 import 'package:shared_photo/screens/app_frame.dart';
+import 'package:shared_photo/screens/auth/new_auth.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
@@ -153,7 +153,7 @@ class MainAppView extends StatelessWidget {
           } else if (state is LoadingState) {
             return const LoadingScreen();
           } else {
-            return const AuthFrame();
+            return const NewAuth();
           }
         },
       ),

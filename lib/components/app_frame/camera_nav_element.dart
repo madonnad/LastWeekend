@@ -19,7 +19,7 @@ class CameraNavElement extends StatelessWidget {
             child: const Icon(
               Icons.camera_alt,
               size: 30,
-              color: Colors.black,
+              color: Color.fromRGBO(34, 34, 38, 1),
             ),
           );
         } else {

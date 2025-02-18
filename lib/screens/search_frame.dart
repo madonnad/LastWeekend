@@ -35,19 +35,19 @@ class _SearchFrameState extends State<SearchFrame>
                   onChanged: (value) =>
                       context.read<SearchCubit>().querySearch(),
                   controller: state.searchController,
-                  style: GoogleFonts.josefinSans(
+                  style: GoogleFonts.lato(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
                     color: Colors.white,
                   ),
                   decoration: InputDecoration(
                     hintText: "Search",
-                    hintStyle: GoogleFonts.josefinSans(
+                    hintStyle: GoogleFonts.lato(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
                       color: Colors.white54,
                     ),
-                    fillColor: const Color.fromRGBO(19, 19, 19, 1),
+                    fillColor: Color.fromRGBO(34, 34, 38, 1),
                     filled: true,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),

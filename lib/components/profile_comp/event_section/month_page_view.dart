@@ -51,7 +51,7 @@ class _MonthPageViewState extends State<MonthPageView>
   Widget build(BuildContext context) {
     return Container(
       height: 45,
-      color: Colors.black,
+      color: Color.fromRGBO(19, 19, 20, 1),
       child: PageView.builder(
         onPageChanged: (index) {
           String month = widget.monthList[index];
@@ -62,13 +62,6 @@ class _MonthPageViewState extends State<MonthPageView>
         controller: _pageController,
         itemCount: widget.monthList.length,
         itemBuilder: (context, index) {
-          // if (widget.minusOneIcon != null && index == 0) {
-          //   return Icon(
-          //     widget.minusOneIcon,
-          //     color: Colors.white,
-          //   );
-          // }
-
           String text = widget.monthList[index];
 
           return Column(
@@ -88,7 +81,7 @@ class _MonthPageViewState extends State<MonthPageView>
 
                     // Interpolating font weight and color
                     FontWeight fontWeight =
-                        distance < 0.5 ? FontWeight.w800 : FontWeight.w500;
+                        distance < 0.5 ? FontWeight.w800 : FontWeight.w400;
                     Color fontColor = Color.lerp(
                       Colors.black,
                       Colors.white,
@@ -111,16 +104,17 @@ class _MonthPageViewState extends State<MonthPageView>
                             minWidth: 125,
                           ),
                           decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                Color.fromRGBO(229, 152, 155, opacity),
-                                Color.fromRGBO(181, 131, 141, opacity),
-                                Color.fromRGBO(109, 104, 117, opacity),
-                              ],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              stops: [.5, .75, 1],
-                            ),
+                            color: Color.fromRGBO(255, 98, 96, opacity),
+                            // gradient: LinearGradient(
+                            //   colors: [
+                            //     Color.fromRGBO(229, 152, 155, opacity),
+                            //     Color.fromRGBO(181, 131, 141, opacity),
+                            //     Color.fromRGBO(109, 104, 117, opacity),
+                            //   ],
+                            //   begin: Alignment.topLeft,
+                            //   end: Alignment.bottomRight,
+                            //   stops: [.5, .75, 1],
+                            // ),
                             borderRadius: BorderRadius.circular(25),
                           ),
                           child: (widget.minusOneIcon != null && index == 0)
@@ -130,7 +124,7 @@ class _MonthPageViewState extends State<MonthPageView>
                                 )
                               : Text(
                                   text,
-                                  style: GoogleFonts.montserrat(
+                                  style: GoogleFonts.lato(
                                     color: fontColor,
                                     fontSize: 15,
                                     fontWeight: fontWeight,

@@ -10,7 +10,7 @@ class ProfilePictureUpload extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double devWidth = MediaQuery.of(context).size.width;
-    double circleDiameter = devWidth * .5;
+    double circleDiameter = devWidth * .35;
 
     return BlocBuilder<WelcomeCubit, WelcomeState>(
       builder: (context, state) {
@@ -20,17 +20,6 @@ class ProfilePictureUpload extends StatelessWidget {
           height: circleDiameter,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(circleDiameter / 2),
-            gradient: const LinearGradient(
-              colors: [
-                Color.fromRGBO(255, 205, 178, 1),
-                Color.fromRGBO(255, 180, 162, 1),
-                Color.fromRGBO(229, 152, 155, 1),
-                Color.fromRGBO(181, 131, 141, 1),
-                Color.fromRGBO(109, 104, 117, 1),
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
           ),
           child: Stack(
             children: <Widget>[
@@ -39,6 +28,7 @@ class ProfilePictureUpload extends StatelessWidget {
                 backgroundColor: Colors.transparent,
                 backgroundImage: const AssetImage("lib/assets/placeholder.png"),
                 foregroundImage: FileImage(File(filePath)),
+                onForegroundImageError: (exception, stackTrace) {},
               ),
             ],
           ),

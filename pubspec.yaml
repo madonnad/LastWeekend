@@ -58,5 +58,6 @@ flutter:
   assets:
   - lib/assets/default.png
   - lib/assets/placeholder.png
+  - lib/assets/logo.png
   - .env
 

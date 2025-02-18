@@ -19,7 +19,7 @@ class CreateFriendAddPage extends StatelessWidget {
         bottom: MediaQuery.of(context).padding.bottom,
       ),
       width: MediaQuery.of(context).size.width,
-      color: Colors.black,
+      color: Color.fromRGBO(19, 19, 20, 1),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -48,7 +48,7 @@ class CreateFriendAddPage extends StatelessWidget {
                     FocusManager.instance.primaryFocus?.unfocus(),
                 onChanged: (_) =>
                     context.read<CreateEventCubit>().searchFriendByName(),
-                style: GoogleFonts.josefinSans(
+                style: GoogleFonts.lato(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
                   color: Colors.white,
@@ -60,7 +60,7 @@ class CreateFriendAddPage extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                     color: Colors.white54,
                   ),
-                  fillColor: const Color.fromRGBO(19, 19, 19, 1),
+                  fillColor: const Color.fromRGBO(34, 34, 38, 1),
                   filled: true,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
@@ -96,7 +96,6 @@ class CreateFriendAddPage extends StatelessWidget {
                     return const SearchResultsListView();
                   case FriendState.empty:
                     return const EmptyFriendsListView();
-                  
                 }
               },
             ),
