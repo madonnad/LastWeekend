@@ -19,7 +19,10 @@ class ProfileDetailElement extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          color: Color.fromRGBO(16, 16, 16, 1),
+          decoration: BoxDecoration(
+            color: Color.fromRGBO(34, 34, 38, 1),
+            borderRadius: BorderRadius.circular(5),
+          ),
           padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -30,7 +33,7 @@ class ProfileDetailElement extends StatelessWidget {
                 children: [
                   Text(
                     value,
-                    style: GoogleFonts.montserrat(
+                    style: GoogleFonts.lato(
                       fontSize: 20,
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
@@ -40,7 +43,7 @@ class ProfileDetailElement extends StatelessWidget {
                   Gap(3),
                   Text(
                     title.toUpperCase(),
-                    style: GoogleFonts.montserrat(
+                    style: GoogleFonts.lato(
                       fontSize: 13,
                       fontWeight: FontWeight.w500,
                       color: Colors.white54,

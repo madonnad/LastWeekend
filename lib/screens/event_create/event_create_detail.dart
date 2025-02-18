@@ -28,7 +28,7 @@ class EventCreateDetail extends StatelessWidget {
               children: [
                 Text(
                   "Create Event".toUpperCase(),
-                  style: GoogleFonts.montserrat(
+                  style: GoogleFonts.lato(
                     color: Colors.white,
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -116,33 +116,57 @@ class EventCreateDetail extends StatelessWidget {
                 children: [
                   const Spacer(),
                   Container(
-                    color: Colors.black,
+                    color: Color.fromRGBO(19, 19, 20, 1),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Expanded(
-                          child: EventModalButton(
-                            onTap: () => Navigator.pop(context),
-                            enabled: true,
-                            buttonText: "Cancel",
-                            backgroundColor: Color.fromRGBO(19, 19, 19, 1),
+                        OutlinedButton(
+                          onPressed: () => Navigator.pop(context),
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide(
+                              width: 2.0,
+                              color: Color.fromRGBO(242, 243, 247, 1),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 25),
+                          ),
+                          child: Text(
+                            "Cancel",
+                            style: GoogleFonts.lato(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: Color.fromRGBO(242, 243, 247, 1),
+                            ),
                           ),
                         ),
                         const Gap(20),
-                        Expanded(
-                          child: EventModalButton(
-                            onTap: () async {
-                              bool success = await context
-                                  .read<CreateEventCubit>()
-                                  .createEvent();
+                        ElevatedButton(
+                          onPressed: state.canCreate
+                              ? () async {
+                                  bool success = await context
+                                      .read<CreateEventCubit>()
+                                      .createEvent();
 
-                              if (context.mounted && success) {
-                                Navigator.of(context).pop();
-                              }
-                            },
-                            enabled: state.canCreate,
-                            buttonText: "Create Event",
-                            backgroundColor:
-                                const Color.fromRGBO(181, 131, 141, 1),
+                                  if (context.mounted && success) {
+                                    Navigator.of(context).pop();
+                                  }
+                                }
+                              : null,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color.fromRGBO(255, 98, 96, 1),
+                            disabledBackgroundColor:
+                                Color.fromRGBO(255, 98, 96, .5),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 25),
+                          ),
+                          child: Text(
+                            "Create event",
+                            style: GoogleFonts.lato(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: Color.fromRGBO(
+                                  242, 243, 247, state.canCreate ? 1 : .5),
+                            ),
                           ),
                         ),
                       ],

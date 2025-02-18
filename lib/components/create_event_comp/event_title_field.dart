@@ -18,7 +18,7 @@ class EventTitleField extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
               color: Colors.transparent,
               border: Border.all(
-                color: Colors.white54,
+                color: Color.fromRGBO(242, 243, 247, .5),
               ),
             ),
             child: TextField(
@@ -32,24 +32,25 @@ class EventTitleField extends StatelessWidget {
               maxLines: null,
               minLines: 6,
               maxLength: 50,
-              style: GoogleFonts.josefinSans(
-                color: Colors.white,
+              style: GoogleFonts.lato(
+                color: Color.fromRGBO(242, 243, 247, 1),
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
               ),
               decoration: InputDecoration(
                 hintText: "Event Name",
-                hintStyle: GoogleFonts.josefinSans(
-                  color: Colors.white30,
+                hintStyle: GoogleFonts.lato(
+                  color: Color.fromRGBO(242, 243, 247, .3),
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
                 ),
                 focusedBorder: InputBorder.none,
                 counterStyle: GoogleFonts.montserrat(
-                  color: Colors.white,
+                  color: Color.fromRGBO(242, 243, 247, 1),
                   fontSize: 11,
                   fontWeight: FontWeight.w400,
                 ),
+                enabledBorder: InputBorder.none,
               ),
             ),
           ),

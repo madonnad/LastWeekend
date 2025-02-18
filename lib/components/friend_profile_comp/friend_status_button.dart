@@ -31,10 +31,10 @@ class FriendStatusButton extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
         child: Text(
           text.toUpperCase(),
-          style: GoogleFonts.montserrat(
+          style: GoogleFonts.lato(
             color: textColor,
             fontSize: 12,
-            fontWeight: FontWeight.w500,
+            fontWeight: FontWeight.w600,
           ),
         ),
       ),

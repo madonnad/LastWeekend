@@ -16,23 +16,35 @@ class ForgotPassword extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       children: [
         SimpleDialog(
-          backgroundColor: const Color.fromRGBO(19, 19, 19, 1),
+          backgroundColor: const Color.fromRGBO(19, 19, 20, 1),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          title: const Text(
-            "Forgot Password?",
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                "Forgot Password?",
+              ),
+              GestureDetector(
+                onTap: () => Navigator.of(context).pop(),
+                child: Icon(
+                  Icons.close,
+                  color: Color.fromRGBO(242, 243, 247, 1),
+                ),
+              ),
+            ],
           ),
-          titleTextStyle: GoogleFonts.montserrat(
-            color: Colors.white,
+          titleTextStyle: GoogleFonts.lato(
+            color: Color.fromRGBO(242, 243, 247, 1),
             fontWeight: FontWeight.w600,
           ),
           children: [
             SimpleDialogOption(
               child: Text(
                 "To recover your password enter your email below and if it exists a link will be sent to recover your password.",
-                style: GoogleFonts.montserrat(
-                  color: Colors.white.withOpacity(.85),
+                style: GoogleFonts.lato(
+                  color: Color.fromRGBO(242, 243, 247, .85),
                 ),
               ),
             ),
@@ -51,10 +63,10 @@ class ForgotPassword extends StatelessWidget {
                       return result;
                     },
                     decoration: InputDecoration(
-                      fillColor: const Color.fromRGBO(44, 44, 44, 1),
+                      fillColor: const Color.fromRGBO(34, 34, 38, 1),
                       filled: true,
                       hintText: "Enter email",
-                      hintStyle: GoogleFonts.montserrat(
+                      hintStyle: GoogleFonts.lato(
                         color: Colors.white54,
                         fontWeight: FontWeight.w600,
                         fontSize: 14,
@@ -63,8 +75,8 @@ class ForgotPassword extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    style: GoogleFonts.montserrat(
-                      color: Colors.white,
+                    style: GoogleFonts.lato(
+                      color: Color.fromRGBO(242, 243, 247, 1),
                       fontWeight: FontWeight.w500,
                       fontSize: 14,
                     ),
@@ -97,8 +109,10 @@ class ForgotPassword extends StatelessWidget {
                     ),
                     child: Text(
                       "Submit",
-                      style: GoogleFonts.montserrat(
-                        color: state.emailValid ? Colors.white : Colors.white54,
+                      style: GoogleFonts.lato(
+                        color: state.emailValid
+                            ? Color.fromRGBO(242, 243, 247, 1)
+                            : Color.fromRGBO(242, 243, 247, .5),
                         fontWeight: FontWeight.w600,
                         fontSize: 14,
                       ),
@@ -110,23 +124,23 @@ class ForgotPassword extends StatelessWidget {
           ],
         ),
         SimpleDialog(
-          backgroundColor: const Color.fromRGBO(19, 19, 19, 1),
+          backgroundColor: const Color.fromRGBO(19, 19, 20, 1),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
           title: const Text(
             "Forgot Password?",
           ),
-          titleTextStyle: GoogleFonts.montserrat(
-            color: Colors.white,
+          titleTextStyle: GoogleFonts.lato(
+            color: Color.fromRGBO(242, 243, 247, 1),
             fontWeight: FontWeight.w600,
           ),
           children: [
             SimpleDialogOption(
               child: Text(
                 "If an account with that email exists an email will be sent.",
-                style: GoogleFonts.montserrat(
-                  color: Colors.white.withOpacity(.85),
+                style: GoogleFonts.lato(
+                  color: Color.fromRGBO(242, 243, 247, .85),
                 ),
               ),
             ),
@@ -144,8 +158,8 @@ class ForgotPassword extends StatelessWidget {
                 ),
                 child: Text(
                   "Close",
-                  style: GoogleFonts.montserrat(
-                    color: Colors.white,
+                  style: GoogleFonts.lato(
+                    color: Color.fromRGBO(242, 243, 247, 1),
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
                   ),
@@ -161,7 +175,7 @@ class ForgotPassword extends StatelessWidget {
 
 Color getButtonColor(Set<WidgetState> state) {
   if (state.contains(WidgetState.disabled)) {
-    return const Color.fromRGBO(44, 44, 44, 0.25);
+    return const Color.fromRGBO(255, 98, 96, .5);
   }
-  return const Color.fromRGBO(181, 131, 141, 1);
+  return const Color.fromRGBO(255, 98, 96, 1);
 }

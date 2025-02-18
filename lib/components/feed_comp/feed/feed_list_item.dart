@@ -25,7 +25,7 @@ class FeedListItem extends StatelessWidget {
           margin: EdgeInsets.zero,
           height: devHeight * .65,
           child: Card(
-            color: const Color.fromRGBO(19, 19, 19, 1),
+            color: const Color.fromRGBO(19, 19, 20, 1),
             clipBehavior: Clip.hardEdge,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),

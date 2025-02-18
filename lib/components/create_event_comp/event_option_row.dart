@@ -31,14 +31,14 @@ class EventOptionRow extends StatelessWidget {
               children: [
                 Icon(
                   icon,
-                  color: Colors.white,
+                  color: Color.fromRGBO(242, 243, 247, 1),
                   size: 20,
                 ),
                 const Gap(8),
                 Text(
                   rowTitle,
-                  style: GoogleFonts.montserrat(
-                    color: Colors.white,
+                  style: GoogleFonts.lato(
+                    color: Color.fromRGBO(242, 243, 247, 1),
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
                   ),
@@ -47,7 +47,7 @@ class EventOptionRow extends StatelessWidget {
                 rowOnTap != null
                     ? const Icon(
                         Icons.arrow_forward_ios,
-                        color: Colors.white,
+                        color: Color.fromRGBO(242, 243, 247, 1),
                         size: 20,
                       )
                     : SizedBox.shrink(),

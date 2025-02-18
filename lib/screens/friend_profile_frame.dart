@@ -29,7 +29,7 @@ class _FriendProfileFrameState extends State<FriendProfileFrame> {
     ValueNotifier<String> selectedPageNotifier = ValueNotifier<String>('');
 
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Color.fromRGBO(19, 19, 20, 1),
       extendBodyBehindAppBar: true,
       body: BlocConsumer<FriendProfileCubit, FriendProfileState>(
         listenWhen: (previous, current) =>

@@ -24,8 +24,8 @@ class UserSearchResult extends StatelessWidget {
             padding: const EdgeInsets.only(left: 20.0),
             child: Text(
               "${result.firstName} ${result.lastName}",
-              style: GoogleFonts.josefinSans(
-                fontSize: 20,
+              style: GoogleFonts.lato(
+                fontSize: 16,
                 fontWeight: FontWeight.w500,
                 color: Colors.white,
               ),

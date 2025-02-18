@@ -11,8 +11,8 @@ class EmptyListComponent extends StatelessWidget {
       child: FittedBox(
         child: Text(
           "No ${listName}s",
-          style: GoogleFonts.josefinSans(
-            fontSize: 32,
+          style: GoogleFonts.lato(
+            fontSize: 24,
             fontWeight: FontWeight.w400,
             color: Colors.white30,
           ),
