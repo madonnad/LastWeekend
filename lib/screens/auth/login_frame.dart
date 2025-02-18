@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/cubit/auth_cubit.dart';
-import 'package:shared_photo/components/auth/forgot_password.dart';
+import 'package:shared_photo/components/new_auth/login/forgot_password.dart';
 import 'package:shared_photo/components/new_auth/auth_text_field.dart';
 import 'package:shared_photo/utils/text_validators.dart';
 
