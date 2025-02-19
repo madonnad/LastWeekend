@@ -16,6 +16,7 @@ class ProfPhotoFrame extends StatelessWidget {
     double devWidth = MediaQuery.of(context).size.width;
     double circleDiameter = devWidth * .25;
     ImagePicker picker = ImagePicker();
+
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -74,9 +75,11 @@ class ProfPhotoFrame extends StatelessWidget {
                           picker.pickImage(source: ImageSource.gallery).then(
                             (value) {
                               if (value != null) {
-                                context
-                                    .read<SettingsCubit>()
-                                    .addProfileImage(value);
+                                if (context.mounted) {
+                                  context
+                                      .read<SettingsCubit>()
+                                      .addProfileImage(value);
+                                }
                               }
                             },
                           ).catchError(
@@ -99,19 +102,29 @@ class ProfPhotoFrame extends StatelessWidget {
                       ),
                       const Spacer(),
                       InkWell(
-                        onTap: () {
+                        onTap: () async {
                           if (settingsState.profileImageToUpload != null) {
-                            context
+                            await context
                                 .read<SettingsCubit>()
                                 .uploadProfilePicture()
-                                .then((value) {
-                              if (value) {
-                                context
-                                    .read<SettingsCubit>()
-                                    .clearNewImageFile();
-                                Navigator.of(context).pop();
-                              }
-                            });
+                                .then(
+                              (value) async {
+                                if (value) {
+                                  if (context.mounted) {
+                                    context
+                                        .read<SettingsCubit>()
+                                        .clearNewImageFile();
+
+                                    await CachedNetworkImage.evictFromCache(
+                                        state.user.avatarUrl);
+
+                                    if (context.mounted) {
+                                      Navigator.of(context).pop();
+                                    }
+                                  }
+                                }
+                              },
+                            );
                           }
                         },
                         child: Container(
