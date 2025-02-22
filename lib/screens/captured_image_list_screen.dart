@@ -29,9 +29,9 @@ class CapturedImageListScreen extends StatelessWidget {
         return Scaffold(
           resizeToAvoidBottomInset: false,
           extendBodyBehindAppBar: true,
-          backgroundColor: Colors.black,
+          //backgroundColor: Colors.black,
           appBar: AppBar(
-            backgroundColor: Colors.black,
+            //backgroundColor: Colors.black,
             leading: IconButton(
               onPressed: () => Navigator.of(context).pop(),
               icon: state.mode == UploadMode.unlockedAlbums
@@ -40,9 +40,7 @@ class CapturedImageListScreen extends StatelessWidget {
               color: Colors.white,
             ),
             leadingWidth: 56,
-            title: const EditAlbumDropdown(
-              opacity: .75,
-            ),
+            title: const EditAlbumDropdown(),
             centerTitle: true,
             actions: [
               Icon(
@@ -116,7 +114,7 @@ class CapturedImageListScreen extends StatelessWidget {
                           ? CapturedListFab(
                               count: state.selectedAlbumToggleImageList.length,
                               backgroundColor:
-                                  const Color.fromRGBO(136, 98, 106, 1),
+                                  const Color.fromRGBO(255, 98, 96, .75),
                               horizontalPadding: 15,
                               icon: Icons.upload_rounded,
                               contentColor: Colors.white.withOpacity(.75),
@@ -131,7 +129,7 @@ class CapturedImageListScreen extends StatelessWidget {
                           ? CapturedListFab(
                               count: state.selectedAlbumImageList.length,
                               backgroundColor:
-                                  const Color.fromRGBO(181, 131, 141, 1),
+                                  const Color.fromRGBO(255, 98, 96, 1),
                               horizontalPadding: 25,
                               icon: Icons.upload_rounded,
                               contentColor: Colors.white,

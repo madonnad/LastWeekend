@@ -13,10 +13,10 @@ class EventTitleField extends StatelessWidget {
         return Expanded(
           child: Container(
             height: 220,
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              color: Colors.transparent,
+              //color: Colors.transparent,
               border: Border.all(
                 color: Color.fromRGBO(242, 243, 247, .5),
               ),
@@ -29,6 +29,7 @@ class EventTitleField extends StatelessWidget {
                   context.read<CreateEventCubit>().setEventTitle(text),
               controller: state.albumName,
               textAlignVertical: TextAlignVertical.center,
+              textAlign: TextAlign.left,
               maxLines: null,
               minLines: 6,
               maxLength: 50,
@@ -38,6 +39,7 @@ class EventTitleField extends StatelessWidget {
                 fontWeight: FontWeight.w700,
               ),
               decoration: InputDecoration(
+                fillColor: Colors.transparent,
                 hintText: "Event Name",
                 hintStyle: GoogleFonts.lato(
                   color: Color.fromRGBO(242, 243, 247, .3),

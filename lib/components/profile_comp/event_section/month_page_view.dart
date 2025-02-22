@@ -68,74 +68,75 @@ class _MonthPageViewState extends State<MonthPageView>
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               AnimatedBuilder(
-                  animation: _pageController,
-                  builder: (context, child) {
-                    // Calculate the distance of the page from the current index
-                    double pagePosition = _pageController.hasClients
-                        ? _pageController.page ?? initialPage
-                        : initialPage;
-                    double distance = (pagePosition - index).abs();
+                animation: _pageController,
+                builder: (context, child) {
+                  // Calculate the distance of the page from the current index
+                  double pagePosition = _pageController.hasClients
+                      ? _pageController.page ?? initialPage
+                      : initialPage;
+                  double distance = (pagePosition - index).abs();
 
-                    // Scale the selected item's opacity or background dynamically
-                    double opacity = (1 - distance).clamp(0.0, 1.0);
+                  // Scale the selected item's opacity or background dynamically
+                  double opacity = (1 - distance).clamp(0.0, 1.0);
 
-                    // Interpolating font weight and color
-                    FontWeight fontWeight =
-                        distance < 0.5 ? FontWeight.w800 : FontWeight.w400;
-                    Color fontColor = Color.lerp(
-                      Colors.black,
-                      Colors.white,
-                      distance,
-                    )!;
+                  // Interpolating font weight and color
+                  FontWeight fontWeight =
+                      distance < 0.5 ? FontWeight.w800 : FontWeight.w400;
+                  Color fontColor = Color.lerp(
+                    Colors.black,
+                    Colors.white,
+                    distance,
+                  )!;
 
-                    return GestureDetector(
-                      onTap: () {
-                        _pageController.animateToPage(
-                          index,
-                          duration: Duration(milliseconds: 500),
-                          curve: Curves.decelerate,
-                        );
-                      },
-                      child: Center(
-                        child: Container(
-                          padding:
-                              EdgeInsets.symmetric(vertical: 5, horizontal: 25),
-                          constraints: BoxConstraints(
-                            minWidth: 125,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Color.fromRGBO(255, 98, 96, opacity),
-                            // gradient: LinearGradient(
-                            //   colors: [
-                            //     Color.fromRGBO(229, 152, 155, opacity),
-                            //     Color.fromRGBO(181, 131, 141, opacity),
-                            //     Color.fromRGBO(109, 104, 117, opacity),
-                            //   ],
-                            //   begin: Alignment.topLeft,
-                            //   end: Alignment.bottomRight,
-                            //   stops: [.5, .75, 1],
-                            // ),
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                          child: (widget.minusOneIcon != null && index == 0)
-                              ? Icon(
-                                  widget.minusOneIcon,
-                                  color: fontColor,
-                                )
-                              : Text(
-                                  text,
-                                  style: GoogleFonts.lato(
-                                    color: fontColor,
-                                    fontSize: 15,
-                                    fontWeight: fontWeight,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
+                  return GestureDetector(
+                    onTap: () {
+                      _pageController.animateToPage(
+                        index,
+                        duration: Duration(milliseconds: 500),
+                        curve: Curves.decelerate,
+                      );
+                    },
+                    child: Center(
+                      child: Container(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 5, horizontal: 25),
+                        constraints: BoxConstraints(
+                          minWidth: 125,
                         ),
+                        decoration: BoxDecoration(
+                          color: Color.fromRGBO(255, 98, 96, opacity),
+                          // gradient: LinearGradient(
+                          //   colors: [
+                          //     Color.fromRGBO(229, 152, 155, opacity),
+                          //     Color.fromRGBO(181, 131, 141, opacity),
+                          //     Color.fromRGBO(109, 104, 117, opacity),
+                          //   ],
+                          //   begin: Alignment.topLeft,
+                          //   end: Alignment.bottomRight,
+                          //   stops: [.5, .75, 1],
+                          // ),
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                        child: (widget.minusOneIcon != null && index == 0)
+                            ? Icon(
+                                widget.minusOneIcon,
+                                color: fontColor,
+                              )
+                            : Text(
+                                text,
+                                style: GoogleFonts.lato(
+                                  color: fontColor,
+                                  fontSize: 15,
+                                  fontWeight: fontWeight,
+                                ),
+                                textAlign: TextAlign.center,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                       ),
-                    );
-                  }),
+                    ),
+                  );
+                },
+              ),
             ],
           );
         },

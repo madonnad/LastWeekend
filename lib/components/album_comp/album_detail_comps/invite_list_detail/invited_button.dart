@@ -73,14 +73,14 @@ class _InvitedButtonState extends State<InvitedButton> {
               color: const Color.fromRGBO(19, 19, 19, 1),
               borderRadius: BorderRadius.circular(5),
               border: Border.all(
-                color: const Color.fromRGBO(181, 131, 141, 1),
+                color: const Color.fromRGBO(255, 98, 96, 1),
                 width: 2,
               ),
             ),
             child: Text(
               'INVITED',
               style: GoogleFonts.montserrat(
-                color: const Color.fromRGBO(181, 131, 141, 1),
+                color: const Color.fromRGBO(255, 98, 96, 1),
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
               ),
@@ -94,10 +94,10 @@ class _InvitedButtonState extends State<InvitedButton> {
               height: 30,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: Color.fromRGBO(181, 131, 141, isLoading ? 0.5 : 1),
+                color: Color.fromRGBO(255, 98, 96, isLoading ? 0.5 : 1),
                 borderRadius: BorderRadius.circular(5),
                 border: Border.all(
-                  color: Color.fromRGBO(181, 131, 141, isLoading ? 0.5 : 1),
+                  color: Color.fromRGBO(255, 98, 96, isLoading ? 0.5 : 1),
                   width: 2,
                 ),
               ),

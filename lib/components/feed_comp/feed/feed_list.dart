@@ -15,7 +15,7 @@ class FeedList extends StatelessWidget {
           itemBuilder: (context, index) {
             if (index == 0) {
               return Padding(
-                padding: const EdgeInsets.only(top: 10.0),
+                padding: const EdgeInsets.only(top: 0.0),
                 child: FeedListItem(
                   album: state.revealedFeedAlbumList[index],
                 ),
@@ -26,7 +26,7 @@ class FeedList extends StatelessWidget {
             );
           },
           separatorBuilder: (context, index) {
-            return const SizedBox(height: 25);
+            return const SizedBox(height: 20);
           },
         );
       },

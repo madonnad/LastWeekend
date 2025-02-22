@@ -68,6 +68,7 @@ class _LoginFrameState extends State<LoginFrame> {
                   ),
                 ),
                 title: Image.asset("lib/assets/logo.png", height: 40),
+                centerTitle: true,
               ),
               body: SafeArea(
                 child: Padding(

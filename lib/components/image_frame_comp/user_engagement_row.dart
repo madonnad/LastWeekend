@@ -89,6 +89,7 @@ class UserEngagementRow extends StatelessWidget {
                         onTap: () => showModalBottomSheet(
                           context: context,
                           isScrollControlled: true,
+                          backgroundColor: Color.fromRGBO(19, 19, 20, 1),
                           builder: (ctx) => MultiBlocProvider(
                             providers: [
                               BlocProvider.value(

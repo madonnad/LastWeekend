@@ -17,7 +17,10 @@ class LoadingScreen extends StatelessWidget {
             StandardLogo(
               fontSize: 40,
             ),
-            CircularProgressIndicator.adaptive()
+            Padding(
+              padding: EdgeInsets.all(10.0),
+              child: CircularProgressIndicator.adaptive(),
+            )
           ],
         ),
       ),

@@ -15,9 +15,9 @@ class EmptyEditView extends StatelessWidget {
         "No photos 😅",
         overflow: TextOverflow.visible,
         textAlign: TextAlign.center,
-        style: GoogleFonts.josefinSans(
+        style: GoogleFonts.lato(
           color: Colors.white,
-          fontSize: 25,
+          fontSize: 20,
           fontWeight: FontWeight.w600,
         ),
       ),

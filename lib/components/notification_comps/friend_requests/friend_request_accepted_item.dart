@@ -18,11 +18,11 @@ class FriendRequestAcceptedItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8),
+      margin: const EdgeInsets.symmetric(vertical: 5),
       padding: const EdgeInsets.only(left: 10, right: 15),
       height: 50,
       decoration: BoxDecoration(
-        color: const Color.fromRGBO(44, 44, 44, 1),
+        color: const Color.fromRGBO(44, 44, 44, 0),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(

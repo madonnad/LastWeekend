@@ -21,7 +21,7 @@ class ActiveAlbumDropdown extends StatelessWidget {
           margin: EdgeInsets.symmetric(horizontal: 60),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
-            color: Colors.white,
+            color: Color.fromRGBO(242, 243, 247, 1),
           ),
           //constraints: BoxConstraints(minWidth: 225, maxWidth: 300),
           height: 40,
@@ -33,7 +33,16 @@ class ActiveAlbumDropdown extends StatelessWidget {
                 value: state.unlockedAlbums.isNotEmpty
                     ? state.unlockedAlbums[index]
                     : null,
-                style: GoogleFonts.josefinSans(
+                dropdownStyleData: DropdownStyleData(
+                  decoration: BoxDecoration(
+                    color: Color.fromRGBO(242, 243, 247, .75),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(5),
+                      bottomRight: Radius.circular(5),
+                    ),
+                  ),
+                ),
+                style: GoogleFonts.lato(
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
                   color: Colors.black,

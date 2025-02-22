@@ -31,12 +31,12 @@ class AcceptedAlbumItem extends StatelessWidget {
         Navigator.of(context).pushNamed('/album', arguments: arguments);
       },
       child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 8),
+        margin: const EdgeInsets.symmetric(vertical: 5),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 14),
         height: 75,
         decoration: BoxDecoration(
-          color: const Color.fromRGBO(19, 19, 19, 1),
-          borderRadius: BorderRadius.circular(10),
+          color: const Color.fromRGBO(34, 34, 38, 0),
+          borderRadius: BorderRadius.circular(5),
         ),
         child: Row(
           children: [

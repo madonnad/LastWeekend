@@ -20,6 +20,7 @@ class _CapturedImageModalState extends State<CapturedImageModal> {
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
     return BlocConsumer<CameraCubit, CameraState>(
       listenWhen: (previous, current) =>
           previous.selectedAlbumImageList != current.selectedAlbumImageList,
@@ -31,9 +32,9 @@ class _CapturedImageModalState extends State<CapturedImageModal> {
       builder: (context, state) {
         return Scaffold(
           resizeToAvoidBottomInset: false,
-          backgroundColor: Colors.transparent,
+          //backgroundColor: Colors.transparent,
           appBar: AppBar(
-            backgroundColor: Colors.transparent,
+            //backgroundColor: Colors.transparent,
             leading: IconButton(
               onPressed: () => Navigator.of(context).pop(),
               icon: state.mode == UploadMode.unlockedAlbums
@@ -46,65 +47,72 @@ class _CapturedImageModalState extends State<CapturedImageModal> {
             // ),
             centerTitle: true,
           ),
-          body: SizedBox(
-            width: double.infinity,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                state.selectedImage != null
-                    ? Flexible(
-                        fit: FlexFit.tight,
-                        child: CapturedModalPageView(
-                          selectedAlbumImageList: state.selectedAlbumImageList,
-                          selectedImage: state.selectedImage!,
-                        ))
-                    : const SizedBox(
-                        height: 100,
+          body: SafeArea(
+            child: SizedBox(
+              width: double.infinity,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  state.selectedImage != null
+                      ? SizedBox(
+                          height: height * .70,
+                          child: CapturedModalPageView(
+                            selectedAlbumImageList:
+                                state.selectedAlbumImageList,
+                            selectedImage: state.selectedImage!,
+                          ),
+                        )
+                      : const SizedBox(
+                          height: 100,
+                        ),
+                  Spacer(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CapturedListFab(
+                        backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
+                        horizontalPadding: 12,
+                        icon: Icons.delete_forever,
+                        contentColor: Colors.white,
+                        borderRadius: 5,
+                        onTap: () =>
+                            context.read<CameraCubit>().deleteSelectedImage(),
                       ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CapturedListFab(
-                      backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
-                      horizontalPadding: 12,
-                      icon: Icons.delete_forever,
-                      contentColor: Colors.white,
-                      borderRadius: 5,
-                      onTap: () =>
-                          context.read<CameraCubit>().deleteSelectedImage(),
-                    ),
-                    const Gap(10),
-                    CapturedListFab(
-                      backgroundColor: const Color.fromRGBO(181, 131, 141, 1),
-                      horizontalPadding: 12,
-                      icon: Icons.upload_rounded,
-                      contentColor: Colors.white,
-                      borderRadius: 5,
-                      onTap: () =>
-                          context.read<CameraCubit>().uploadSelectedImage(),
-                    ),
-                    const Gap(10),
-                    CapturedListFab(
-                      backgroundColor: const Color.fromRGBO(181, 131, 141, 1),
-                      horizontalPadding: 12,
-                      icon: Icons.swap_horiz,
-                      contentColor: Colors.white,
-                      borderRadius: 5,
-                      onTap: () => showDialog(
+                      const Gap(10),
+                      CapturedListFab(
+                        backgroundColor: const Color.fromRGBO(255, 98, 96, 1),
+                        horizontalPadding: 12,
+                        icon: Icons.upload_rounded,
+                        contentColor: Colors.white,
+                        borderRadius: 5,
+                        onTap: () =>
+                            context.read<CameraCubit>().uploadSelectedImage(),
+                      ),
+                      const Gap(10),
+                      CapturedListFab(
+                        backgroundColor: const Color.fromRGBO(255, 98, 96, 1),
+                        horizontalPadding: 12,
+                        icon: Icons.swap_horiz,
+                        contentColor: Colors.white,
+                        borderRadius: 5,
+                        onTap: () => showDialog(
                           context: context,
                           builder: (ctx) {
                             return BlocProvider.value(
                               value: context.read<CameraCubit>(),
                               child: const MoveAlbumModal(),
                             );
-                          }),
-                    ),
-                    const Gap(10),
-                    const DownloadImageButton()
-                  ],
-                ),
-                Gap(MediaQuery.of(context).viewPadding.bottom + 15),
-              ],
+                          },
+                        ),
+                      ),
+                      const Gap(10),
+                      const DownloadImageButton()
+                    ],
+                  ),
+                  Spacer(),
+                  Gap(MediaQuery.of(context).viewPadding.bottom),
+                ],
+              ),
             ),
           ),
         );

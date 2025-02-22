@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
 
 class AlbumAppBarTitle extends StatelessWidget implements PreferredSizeWidget {
@@ -21,14 +20,7 @@ class AlbumAppBarTitle extends StatelessWidget implements PreferredSizeWidget {
               color: Colors.white,
             ),
           ),
-          title: Text(
-            state.album.albumName,
-            style: GoogleFonts.josefinSans(
-              color: Colors.white,
-              fontWeight: FontWeight.w600,
-              fontSize: 20,
-            ),
-          ),
+          title: Text(state.album.albumName, style: TextStyle(fontSize: 20)),
           actions: [
             GestureDetector(
               onTap: () => Navigator.of(context).pushNamed(

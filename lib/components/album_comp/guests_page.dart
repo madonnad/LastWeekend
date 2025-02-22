@@ -48,9 +48,9 @@ class GuestsPage extends StatelessWidget {
                       ? GestureDetector(
                           onTap: () => Navigator.of(context)
                               .pushNamed('/guest', arguments: argMap),
-                          child: Container(
+                          child: SizedBox(
                             height: guestsImages.isNotEmpty ? 200 : null,
-                            color: Colors.black,
+                            //color: Colors.black,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [

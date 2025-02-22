@@ -6,8 +6,7 @@ import 'package:shared_photo/bloc/cubit/camera_cubit.dart';
 import 'package:shared_photo/models/album.dart';
 
 class EditAlbumDropdown extends StatelessWidget {
-  final double opacity;
-  const EditAlbumDropdown({super.key, required this.opacity});
+  const EditAlbumDropdown({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,17 +17,28 @@ class EditAlbumDropdown extends StatelessWidget {
         return Container(
           margin: EdgeInsets.symmetric(horizontal: 20),
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5), color: Colors.white),
+            borderRadius: BorderRadius.circular(5),
+            color: Color.fromRGBO(242, 243, 247, 1),
+          ),
           height: 40,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 4.0),
             child: DropdownButtonHideUnderline(
               child: DropdownButton2<Album>(
                 value: state.unlockedAlbums[index],
-                style: GoogleFonts.josefinSans(
+                style: GoogleFonts.lato(
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
                   color: Colors.black,
+                ),
+                dropdownStyleData: DropdownStyleData(
+                  decoration: BoxDecoration(
+                    color: Color.fromRGBO(242, 243, 247, .85),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(5),
+                      bottomRight: Radius.circular(5),
+                    ),
+                  ),
                 ),
                 iconStyleData: const IconStyleData(iconSize: 0),
                 alignment: Alignment.center,

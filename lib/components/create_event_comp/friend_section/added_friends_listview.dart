@@ -19,7 +19,7 @@ class AddedFriendsListView extends StatelessWidget {
               if (index == 0) {
                 return Container(
                   decoration: BoxDecoration(
-                    color: Color.fromRGBO(181, 131, 141, .85),
+                    color: Color.fromRGBO(255, 98, 96, 1),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   margin: EdgeInsets.only(right: 5),
@@ -29,10 +29,10 @@ class AddedFriendsListView extends StatelessWidget {
                     child: FittedBox(
                       child: Text(
                         (state.invitedFriends.length).toString(),
-                        style: GoogleFonts.montserrat(
-                          color: Colors.white,
+                        style: GoogleFonts.lato(
+                          color: Color.fromRGBO(242, 243, 247, 1),
                           fontSize: 16,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
                     ),

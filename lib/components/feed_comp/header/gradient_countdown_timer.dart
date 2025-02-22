@@ -67,28 +67,38 @@ class _GradientCountdownTimerState extends State<GradientCountdownTimer> {
   @override
   Widget build(BuildContext context) {
     calculateTimeUntilReveal();
-    return ShaderMask(
-      shaderCallback: (bounds) {
-        return const LinearGradient(
-          begin: Alignment.centerRight,
-          end: Alignment.centerLeft,
-          colors: [
-            Color.fromRGBO(255, 205, 178, 1),
-            Color.fromRGBO(255, 180, 162, 1),
-            Color.fromRGBO(229, 152, 155, 1),
-            Color.fromRGBO(181, 131, 141, 1),
-            Color.fromRGBO(109, 104, 117, 1),
-          ],
-        ).createShader(bounds);
-      },
-      child: Text(
-        revealsInString(),
-        style: GoogleFonts.dmMono(
-          color: Colors.white,
-          fontWeight: FontWeight.w400,
-          fontSize: 15,
-        ),
+    return Text(
+      revealsInString(),
+      style: GoogleFonts.dmMono(
+        color: Color.fromRGBO(255, 98, 96, 1),
+        fontWeight: FontWeight.w400,
+        fontSize: 15,
       ),
     );
   }
 }
+
+
+// ShaderMask(
+//       shaderCallback: (bounds) {
+//         return const LinearGradient(
+//           begin: Alignment.centerRight,
+//           end: Alignment.centerLeft,
+//           colors: [
+//             Color.fromRGBO(255, 205, 178, 1),
+//             Color.fromRGBO(255, 180, 162, 1),
+//             Color.fromRGBO(229, 152, 155, 1),
+//             Color.fromRGBO(181, 131, 141, 1),
+//             Color.fromRGBO(109, 104, 117, 1),
+//           ],
+//         ).createShader(bounds);
+//       },
+//       child: Text(
+//         revealsInString(),
+//         style: GoogleFonts.dmMono(
+//           color: Colors.white,
+//           fontWeight: FontWeight.w400,
+//           fontSize: 15,
+//         ),
+//       ),
+//     );

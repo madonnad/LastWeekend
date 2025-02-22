@@ -23,7 +23,7 @@ class EventCreateModal extends StatelessWidget {
         padding: EdgeInsets.only(
           left: 8.0,
           right: 8.0,
-          top: 25, //kToolbarHeight,
+          top: kToolbarHeight,
           bottom: MediaQuery.of(context).viewPadding.bottom,
         ),
         child: PageView(
