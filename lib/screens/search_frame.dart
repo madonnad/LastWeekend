@@ -117,9 +117,9 @@ class _SearchFrameState extends State<SearchFrame>
                             fit: BoxFit.scaleDown,
                             child: Text(
                               "Find your friends here!",
-                              style: GoogleFonts.josefinSans(
+                              style: GoogleFonts.lato(
                                   color: Colors.white.withOpacity(.8),
-                                  fontSize: 24,
+                                  fontSize: 20,
                                   fontWeight: FontWeight.w600),
                             ),
                           ),
@@ -127,9 +127,9 @@ class _SearchFrameState extends State<SearchFrame>
                             fit: BoxFit.scaleDown,
                             child: Text(
                               "🕵️",
-                              style: GoogleFonts.josefinSans(
+                              style: GoogleFonts.lato(
                                 color: Colors.white,
-                                fontSize: 60,
+                                fontSize: 40,
                               ),
                             ),
                           ),

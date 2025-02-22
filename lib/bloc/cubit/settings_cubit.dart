@@ -47,10 +47,11 @@ class SettingsCubit extends Cubit<SettingsState> {
     String? first = state.user.firstName;
     String? last = state.user.lastName;
     String? error;
-    if (state.firstName != null) {
+
+    if (state.firstName != null && state.firstName != "") {
       first = state.firstName!;
     }
-    if (state.lastName != null) {
+    if (state.lastName != null && state.lastName != "") {
       last = state.lastName!;
     }
 

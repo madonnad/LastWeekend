@@ -19,7 +19,7 @@ class AlbumDetailFrame extends StatelessWidget {
         bool isOwner =
             context.read<AppBloc>().state.user.id == state.album.albumOwner;
         return Scaffold(
-          backgroundColor: Colors.black,
+          //backgroundColor: Colors.black,
           appBar: AppBar(
             centerTitle: true,
             leading: GestureDetector(
@@ -29,56 +29,42 @@ class AlbumDetailFrame extends StatelessWidget {
                 color: Colors.white,
               ),
             ),
-            title: Text(
-              state.album.albumName,
-              style: GoogleFonts.josefinSans(
-                color: Colors.white,
-                fontWeight: FontWeight.w600,
-                fontSize: 24,
-              ),
-            ),
+            title: Text(state.album.albumName, style: TextStyle(fontSize: 20)),
           ),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Center(
-              child: Column(
-                children: [
-                  const Gap(45),
-                  SizedBox(
-                    height: height * .25,
-                    child: AspectRatio(
-                      aspectRatio: 4 / 5,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: const Color.fromRGBO(19, 19, 19, 1),
-                          image: DecorationImage(
-                            image: CachedNetworkImageProvider(
-                              state.album.coverReq,
-                              headers:
-                                  context.read<AppBloc>().state.user.headers,
-                              errorListener: (_) {},
-                            ),
-                            fit: BoxFit.cover,
+            child: Column(
+              children: [
+                const Gap(45),
+                SizedBox(
+                  height: height * .25,
+                  child: AspectRatio(
+                    aspectRatio: 4 / 5,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: const Color.fromRGBO(19, 19, 19, 1),
+                        image: DecorationImage(
+                          image: CachedNetworkImageProvider(
+                            state.album.coverReq,
+                            headers: context.read<AppBloc>().state.user.headers,
+                            errorListener: (_) {},
                           ),
+                          fit: BoxFit.cover,
                         ),
                       ),
                     ),
                   ),
-                  const Gap(60),
-                  // DetailItem(
-                  //   itemTitle: "Edit Timeline",
-                  //   backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
-                  //   onTap: () => print('Edit Timeline'),
-                  // ),
-                  DetailItem(
-                    itemTitle: "Invite List",
-                    backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
-                    onTap: () => showModalBottomSheet(
+                ),
+                const Gap(60),
+                SizedBox(
+                  width: double.infinity,
+                  child: TextButton(
+                    onPressed: () => showModalBottomSheet(
                       context: context,
                       isScrollControlled: true,
                       useSafeArea: true,
-                      backgroundColor: Colors.black,
+                      //backgroundColor: Colors.black,
                       builder: (ctx) {
                         return BlocProvider.value(
                           value: context.read<AlbumFrameCubit>(),
@@ -86,23 +72,32 @@ class AlbumDetailFrame extends StatelessWidget {
                         );
                       },
                     ),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text("Invite List"),
+                    ),
                   ),
-                  const Gap(10),
-                  isOwner
-                      ? DetailItem(
-                          itemTitle: "Edit Visibility",
-                          backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
-                          onTap: () => showDialog(
+                ),
+                const Gap(10),
+                isOwner
+                    ? SizedBox(
+                        width: double.infinity,
+                        child: TextButton(
+                          onPressed: () => showDialog(
                             context: context,
                             builder: (ctx) => BlocProvider.value(
                               value: context.read<AlbumFrameCubit>(),
                               child: const VisibilitySelectModal(),
                             ),
                           ),
-                        )
-                      : const SizedBox.shrink(),
-                ],
-              ),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text("Edit Visibility"),
+                          ),
+                        ),
+                      )
+                    : const SizedBox.shrink(),
+              ],
             ),
           ),
         );

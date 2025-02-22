@@ -42,7 +42,7 @@ class _EventFrameState extends State<EventFrame> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      //backgroundColor: Colors.black,
       appBar: const AlbumAppBarTitle(),
       body: BlocListener<AlbumFrameCubit, AlbumFrameState>(
         listenWhen: (previous, current) =>

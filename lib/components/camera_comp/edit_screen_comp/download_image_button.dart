@@ -55,7 +55,7 @@ class _DownloadImageButtonState extends State<DownloadImageButton>
         alignment: Alignment.center,
         padding: const EdgeInsets.symmetric(horizontal: 12),
         decoration: BoxDecoration(
-          color: const Color.fromRGBO(181, 131, 141, 1),
+          color: const Color.fromRGBO(255, 98, 96, 1),
           borderRadius: BorderRadius.circular(5),
           boxShadow: const [
             BoxShadow(

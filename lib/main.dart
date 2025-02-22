@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -145,7 +146,7 @@ class MainAppView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: lwCustomTheme(),
+      theme: darkMode(),
       home: BlocBuilder<AppBloc, AppState>(
         builder: (context, state) {
           if (state is AuthenticatedState) {
@@ -172,9 +173,81 @@ ThemeData lwCustomTheme() {
       backgroundColor: Colors.black,
     ),
     bottomSheetTheme: const BottomSheetThemeData(
-        backgroundColor: Colors.black, surfaceTintColor: Colors.black),
-    appBarTheme: const AppBarTheme(
-      backgroundColor: Colors.black,
+        backgroundColor: Color.fromRGBO(19, 19, 20, 1),
+        surfaceTintColor: Colors.black),
+    // appBarTheme: const AppBarTheme(
+    //   backgroundColor: Colors.black,
+    // ),
+  );
+}
+
+ThemeData darkMode() {
+  return ThemeData(
+    useMaterial3: true,
+    brightness: Brightness.dark,
+    scaffoldBackgroundColor: Color.fromRGBO(19, 19, 20, 1),
+    appBarTheme: AppBarTheme(
+      color: Color.fromRGBO(19, 19, 20, 1),
+      titleTextStyle: GoogleFonts.lato(
+        color: Color.fromRGBO(242, 243, 247, 1),
+        fontSize: 24,
+        fontWeight: FontWeight.w500,
+      ),
+      surfaceTintColor: Colors.transparent,
+    ),
+    bottomSheetTheme: const BottomSheetThemeData(
+        backgroundColor: Color.fromRGBO(19, 19, 20, 1)),
+    inputDecorationTheme: InputDecorationTheme(
+      fillColor: Color.fromRGBO(34, 34, 38, 1),
+      filled: true,
+      hintStyle: GoogleFonts.lato(
+        color: Color.fromRGBO(242, 243, 247, .75),
+        fontSize: 16,
+        fontWeight: FontWeight.w400,
+      ),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      //contentPadding: const EdgeInsets.all(20),
+      prefixIconColor: Color.fromRGBO(242, 243, 247, .55),
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Color.fromRGBO(255, 98, 96, 1),
+        disabledBackgroundColor: Color.fromRGBO(255, 98, 96, .5),
+        foregroundColor: Color.fromRGBO(242, 243, 247, 1),
+        disabledForegroundColor: Color.fromRGBO(242, 243, 247, .5),
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+        textStyle: GoogleFonts.lato(
+          fontSize: 14,
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+    ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        side: BorderSide(
+          width: 2.0,
+          color: Color.fromRGBO(242, 243, 247, 1),
+        ),
+        foregroundColor: Color.fromRGBO(242, 243, 247, 1),
+        disabledForegroundColor: Color.fromRGBO(242, 243, 247, .5),
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+        textStyle: GoogleFonts.lato(
+          fontSize: 14,
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        foregroundColor: Color.fromRGBO(242, 243, 247, 1),
+        disabledForegroundColor: Color.fromRGBO(242, 243, 247, .5),
+        textStyle: GoogleFonts.lato(
+          fontSize: 16,
+          fontWeight: FontWeight.w700,
+        ),
+      ),
     ),
   );
 }

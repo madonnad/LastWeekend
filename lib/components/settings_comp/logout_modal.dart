@@ -15,7 +15,7 @@ class LogoutModal extends StatelessWidget {
         width: 325,
         padding: const EdgeInsets.symmetric(horizontal: 25),
         decoration: BoxDecoration(
-          color: const Color.fromRGBO(19, 19, 19, 1),
+          color: const Color.fromRGBO(34, 34, 38, 1),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(
@@ -29,60 +29,24 @@ class LogoutModal extends StatelessWidget {
                 color: Colors.white,
               ),
             ),
-            const SizedBox(height: 25),
-            GestureDetector(
-              onTap: () => Navigator.of(context).pop(),
-              child: Container(
-                height: 40,
-                width: double.infinity,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  gradient: const LinearGradient(
-                    colors: [
-                      Color.fromRGBO(255, 205, 178, 1),
-                      Color.fromRGBO(255, 180, 162, 1),
-                      Color.fromRGBO(229, 152, 155, 1),
-                      Color.fromRGBO(181, 131, 141, 1),
-                      Color.fromRGBO(109, 104, 117, 1),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                ),
-                child: Text(
-                  "Take me back",
-                  style: GoogleFonts.josefinSans(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 18,
-                    color: Colors.white,
-                  ),
+            const SizedBox(height: 15),
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(
+                "Take me back",
+                style: GoogleFonts.lato(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ),
-            const SizedBox(height: 15),
-            GestureDetector(
-              onTap: () {
+            TextButton(
+              onPressed: () {
                 context.read<RealtimeRepository>().closeWebSocket();
                 context.read<AppBloc>().add(const AppLogoutRequested());
               },
-              child: Container(
-                height: 40,
-                width: double.infinity,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: const Color.fromRGBO(44, 44, 44, 1)),
-                child: Text(
-                  "Logout",
-                  style: GoogleFonts.josefinSans(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 18,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            )
+              child: Text("Logout"),
+            ),
           ],
         ),
       ),

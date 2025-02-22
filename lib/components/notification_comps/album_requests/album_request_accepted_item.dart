@@ -27,11 +27,11 @@ class AlbumRequestAcceptedItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8),
+      margin: const EdgeInsets.symmetric(vertical: 5),
       padding: const EdgeInsets.symmetric(horizontal: 10),
       height: 100,
       decoration: BoxDecoration(
-        color: const Color.fromRGBO(19, 19, 19, 1),
+        color: const Color.fromRGBO(19, 19, 19, 0),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
@@ -86,7 +86,7 @@ class AlbumRequestAcceptedItem extends StatelessWidget {
                     NotificationButton(
                       buttonText: "Accepted",
                       backgroundColor: const Color.fromRGBO(19, 19, 19, 1),
-                      borderColor: const Color.fromRGBO(181, 131, 141, 1),
+                      borderColor: const Color.fromRGBO(255, 98, 96, 1),
                       onTap: () => context
                           .read<NotificationCubit>()
                           .acceptAlbumInvite(requestID: requestID),
@@ -97,8 +97,8 @@ class AlbumRequestAcceptedItem extends StatelessWidget {
                         fit: BoxFit.fitWidth,
                         child: Text(
                           "Reveals in $timeUntil",
-                          style: GoogleFonts.josefinSans(
-                            color: const Color.fromRGBO(181, 131, 141, 1),
+                          style: GoogleFonts.lato(
+                            color: const Color.fromRGBO(255, 98, 96, 1),
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
                           ),

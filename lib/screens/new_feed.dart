@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/feed_bloc.dart';
 import 'package:shared_photo/bloc/cubit/app_frame_cubit.dart';
-import 'package:shared_photo/components/app_comp/standard_logo.dart';
 import 'package:shared_photo/components/feed_comp/feed/empty_feed.dart';
 import 'package:shared_photo/components/feed_comp/feed/feed_list.dart';
 import 'package:shared_photo/components/feed_comp/header/events_header.dart';
@@ -38,7 +37,15 @@ class _NewFeedState extends State<NewFeed> with AutomaticKeepAliveClientMixin {
                 // title: Center(
                 //   child: StandardLogo(fontSize: 30),
                 // ),
-                title: Image.asset("lib/assets/logo.png", height: 40),
+                title: GestureDetector(
+                  child: Image.asset("lib/assets/logo.png", height: 40),
+                  onTap: () => state.feedScrollController.animateTo(
+                    0,
+                    duration: Duration(milliseconds: 350),
+                    curve: Curves.linear,
+                  ),
+                ),
+                centerTitle: true,
               ),
               SliverToBoxAdapter(
                 child: EventsHeader(),

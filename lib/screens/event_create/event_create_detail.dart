@@ -1,4 +1,3 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -122,22 +121,7 @@ class EventCreateDetail extends StatelessWidget {
                       children: [
                         OutlinedButton(
                           onPressed: () => Navigator.pop(context),
-                          style: OutlinedButton.styleFrom(
-                            side: BorderSide(
-                              width: 2.0,
-                              color: Color.fromRGBO(242, 243, 247, 1),
-                            ),
-                            padding: EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 25),
-                          ),
-                          child: Text(
-                            "Cancel",
-                            style: GoogleFonts.lato(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700,
-                              color: Color.fromRGBO(242, 243, 247, 1),
-                            ),
-                          ),
+                          child: Text("Cancel"),
                         ),
                         const Gap(20),
                         ElevatedButton(
@@ -152,26 +136,12 @@ class EventCreateDetail extends StatelessWidget {
                                   }
                                 }
                               : null,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Color.fromRGBO(255, 98, 96, 1),
-                            disabledBackgroundColor:
-                                Color.fromRGBO(255, 98, 96, .5),
-                            padding: EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 25),
-                          ),
-                          child: Text(
-                            "Create event",
-                            style: GoogleFonts.lato(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700,
-                              color: Color.fromRGBO(
-                                  242, 243, 247, state.canCreate ? 1 : .5),
-                            ),
-                          ),
+                          child: Text("Create event"),
                         ),
                       ],
                     ),
                   ),
+                  Gap(10),
                 ],
               ),
             ),

@@ -41,7 +41,7 @@ class EventElement extends StatelessWidget {
         child: Row(
           children: [
             AspectRatio(
-              aspectRatio: 2 / 3,
+              aspectRatio: 2 / 2,
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.black87,
