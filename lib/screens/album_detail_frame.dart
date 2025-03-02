@@ -1,23 +1,29 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
+import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
 import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
-import 'package:shared_photo/components/album_comp/album_detail_comps/invite_list_detail/invite_list_main.dart';
-import 'package:shared_photo/components/album_comp/album_detail_comps/visibility_comps/visibility_select_modal.dart';
+import 'package:shared_photo/components/album_comp/album_detail_comps/cover_photo_detail.dart';
+import 'package:shared_photo/components/album_comp/album_detail_comps/leave_delete_comps/delete_leave_event_button.dart';
+import 'package:shared_photo/components/album_comp/album_detail_comps/visibility_comps/edit_visibility_button.dart';
+import 'package:shared_photo/components/album_comp/album_detail_comps/invite_list_detail/invite_list_button.dart';
+import 'package:shared_photo/models/notification.dart';
 
 class AlbumDetailFrame extends StatelessWidget {
   const AlbumDetailFrame({super.key});
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
     return BlocBuilder<AlbumFrameCubit, AlbumFrameState>(
       builder: (context, state) {
         bool isOwner =
             context.read<AppBloc>().state.user.id == state.album.albumOwner;
+        bool hasImages = state.album.images.isNotEmpty;
+        bool hasGuests = state.album.guests
+                .where((element) => element.status == RequestStatus.accepted)
+                .length >
+            1;
         return Scaffold(
           //backgroundColor: Colors.black,
           appBar: AppBar(
@@ -36,115 +42,22 @@ class AlbumDetailFrame extends StatelessWidget {
             child: Column(
               children: [
                 const Gap(45),
-                SizedBox(
-                  height: height * .25,
-                  child: AspectRatio(
-                    aspectRatio: 4 / 5,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: const Color.fromRGBO(19, 19, 19, 1),
-                        image: DecorationImage(
-                          image: CachedNetworkImageProvider(
-                            state.album.coverReq,
-                            headers: context.read<AppBloc>().state.user.headers,
-                            errorListener: (_) {},
-                          ),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                CoverPhotoDetail(),
                 const Gap(60),
-                SizedBox(
-                  width: double.infinity,
-                  child: TextButton(
-                    onPressed: () => showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      useSafeArea: true,
-                      //backgroundColor: Colors.black,
-                      builder: (ctx) {
-                        return BlocProvider.value(
-                          value: context.read<AlbumFrameCubit>(),
-                          child: const InviteListMain(),
-                        );
-                      },
-                    ),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text("Invite List"),
-                    ),
-                  ),
-                ),
+                InviteListButton(),
                 const Gap(10),
-                isOwner
-                    ? SizedBox(
-                        width: double.infinity,
-                        child: TextButton(
-                          onPressed: () => showDialog(
-                            context: context,
-                            builder: (ctx) => BlocProvider.value(
-                              value: context.read<AlbumFrameCubit>(),
-                              child: const VisibilitySelectModal(),
-                            ),
-                          ),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text("Edit Visibility"),
-                          ),
-                        ),
-                      )
-                    : const SizedBox.shrink(),
+                EditVisibilityButton(isOwner: isOwner),
+                const Gap(10),
+                DeleteLeaveEventButton(
+                  isOwner: isOwner,
+                  hasImages: hasImages,
+                  hasGuests: hasGuests,
+                ),
               ],
             ),
           ),
         );
       },
-    );
-  }
-}
-
-class DetailItem extends StatelessWidget {
-  final String itemTitle;
-  final Color backgroundColor;
-  final VoidCallback onTap;
-  const DetailItem({
-    super.key,
-    required this.itemTitle,
-    required this.backgroundColor,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: 50,
-        //margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 4),
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        decoration: BoxDecoration(
-          color: backgroundColor,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Row(
-          children: [
-            Text(
-              itemTitle,
-              style: GoogleFonts.montserrat(
-                color: Colors.white,
-                fontWeight: FontWeight.w500,
-                fontSize: 16,
-              ),
-            ),
-            // const Flex(
-            //   direction: Axis.horizontal,
-            // ),
-          ],
-        ),
-      ),
     );
   }
 }
