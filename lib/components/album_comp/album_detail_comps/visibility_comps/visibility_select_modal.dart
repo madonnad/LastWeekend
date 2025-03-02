@@ -53,8 +53,8 @@ class _VisibilitySelectModalState extends State<VisibilitySelectModal> {
             "Select visibility:",
             textAlign: TextAlign.center,
           ),
-          titleTextStyle: GoogleFonts.montserrat(
-            color: Colors.white.withOpacity(.75),
+          titleTextStyle: GoogleFonts.lato(
+            color: Color.fromRGBO(242, 243, 247, .75),
             fontSize: 16,
             fontWeight: FontWeight.w600,
           ),

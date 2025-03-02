@@ -89,14 +89,11 @@ class _FriendProfileFrameState extends State<FriendProfileFrame> {
                       ),
                       Align(
                         alignment: Alignment.bottomCenter,
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 12.0),
-                          child: MonthPageView(
-                            selectedPageNotifier: selectedPageNotifier,
-                            monthList: state.eventsByDatetime.keys.toList(),
-                            minusOnePageSection: "Together",
-                            minusOneIcon: Icons.group,
-                          ),
+                        child: MonthPageView(
+                          selectedPageNotifier: selectedPageNotifier,
+                          monthList: state.eventsByDatetime.keys.toList(),
+                          minusOnePageSection: "Together",
+                          minusOneIcon: Icons.group,
                         ),
                       ),
                     ],

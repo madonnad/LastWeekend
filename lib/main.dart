@@ -196,12 +196,13 @@ ThemeData darkMode() {
       surfaceTintColor: Colors.transparent,
     ),
     bottomSheetTheme: const BottomSheetThemeData(
-        backgroundColor: Color.fromRGBO(19, 19, 20, 1)),
+      backgroundColor: Color.fromRGBO(19, 19, 20, 1),
+    ),
     inputDecorationTheme: InputDecorationTheme(
       fillColor: Color.fromRGBO(34, 34, 38, 1),
       filled: true,
       hintStyle: GoogleFonts.lato(
-        color: Color.fromRGBO(242, 243, 247, .75),
+        color: Color.fromRGBO(242, 243, 247, .55),
         fontSize: 16,
         fontWeight: FontWeight.w400,
       ),

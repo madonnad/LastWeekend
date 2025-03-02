@@ -122,7 +122,7 @@ class _LoginFrameState extends State<LoginFrame> {
                         child: TextButton(
                           onPressed: () => showDialog(
                             context: context,
-                            barrierDismissible: true,
+                            barrierDismissible: false,
                             builder: (ctx) => BlocProvider.value(
                               value: context.read<AuthCubit>(),
                               child: const ForgotPassword(),
