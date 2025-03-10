@@ -256,6 +256,8 @@ class NotificationCubit extends Cubit<NotificationState> {
           unseenFriendRequests: false,
         ));
         return;
+      case RequestStatus.abandoned:
+        break;
     }
   }
 
@@ -316,6 +318,17 @@ class NotificationCubit extends Cubit<NotificationState> {
             unseenAlbumInvites: false,
           ),
         );
+      case RequestStatus.abandoned:
+        Map<String, AlbumInviteNotification> albumInviteCopy =
+            Map.from(state.albumInviteMap);
+        albumInviteCopy
+            .removeWhere((key, value) => key == invite.notificationID);
+        emit(
+          state.copyWith(
+            albumInviteMap: albumInviteCopy,
+            unseenAlbumInvites: false,
+          ),
+        );
     }
   }
 
@@ -339,9 +352,9 @@ class NotificationCubit extends Cubit<NotificationState> {
         ));
 
       case StreamOperation.update:
-      // TODO: Handle this case.
+        break;
       case StreamOperation.delete:
-      // TODO: Handle this case.
+        break;
     }
   }
 
@@ -364,9 +377,9 @@ class NotificationCubit extends Cubit<NotificationState> {
         ));
 
       case StreamOperation.update:
-      // TODO: Handle this case.
+        break;
       case StreamOperation.delete:
-      // TODO: Handle this case.
+        break;
     }
   }
 }

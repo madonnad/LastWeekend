@@ -72,7 +72,10 @@ class CurrentInviteList extends StatelessWidget {
                                 Icons.help_outline_outlined,
                                 color: Color.fromRGBO(125, 125, 125, 1)),
                             RequestStatus.denied =>
-                              const Icon(Icons.cancel, color: Colors.red)
+                              const Icon(Icons.cancel, color: Colors.red),
+                            RequestStatus.abandoned => Icon(
+                                Icons.do_disturb_alt_rounded,
+                                color: Colors.white12)
                           }
                         ],
                       ),

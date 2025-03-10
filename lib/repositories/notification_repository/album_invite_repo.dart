@@ -20,6 +20,8 @@ extension AlbumInviteRepo on NotificationRepository {
         // Communicates to the notification cubit to remove
         // Also goes to the data repo to update the album if present
         _notificationController.add((StreamOperation.update, invite));
+      case RequestStatus.abandoned:
+        break;
     }
   }
 

@@ -176,7 +176,7 @@ extension AlbumDataRepo on DataRepository {
     bool success = false;
     String? error;
 
-    if (albumMap[albumID] == null) return (false, "Album Does Not Exist");
+    if (albumMap[albumID] == null) return (false, "Event Does Not Exist");
 
     (success, error) = await AlbumService.updateAlbumVisibility(
         user.token, albumID, visibilityString);
@@ -188,6 +188,47 @@ extension AlbumDataRepo on DataRepository {
     albumMap[albumID] = album;
 
     _albumController.add((StreamOperation.update, album));
+    return (true, null);
+  }
+
+  Future<(bool, String?)> updateEventOwnership(
+      String albumID, Guest guest) async {
+    bool success = false;
+    String? error;
+
+    if (albumMap[albumID] == null) return (false, "Event Does Not Exist");
+
+    (success, error) =
+        await AlbumService.updateEventOwnership(user.token, guest.uid, albumID);
+
+    if (!success) return (success, error);
+
+    Album album = albumMap[albumID]!.copyWith(
+      albumOwner: guest.uid,
+      ownerFirst: guest.firstName,
+      ownerLast: guest.lastName,
+    );
+
+    albumMap[albumID] = album;
+
+    _albumController.add((StreamOperation.update, album));
+    return (true, null);
+  }
+
+  Future<(bool, String?)> deleteLeaveEvent(String albumID) async {
+    bool success = false;
+    String? error;
+    Album? album;
+    album = albumMap[albumID];
+    if (album == null) return (false, "Event Does Not Exist");
+
+    (success, error) = await AlbumService.deleteLeaveEvent(user.token, albumID);
+
+    if (!success) return (success, error);
+
+    albumMap.remove(albumID);
+
+    _albumController.add((StreamOperation.delete, album));
     return (true, null);
   }
 
@@ -208,7 +249,7 @@ extension AlbumDataRepo on DataRepository {
 
     switch (notification.status) {
       case RequestStatus.pending:
-        return;
+        break;
       case RequestStatus.accepted:
         if (notification.guestID != user.id &&
             albumMap[albumID]?.guestMap[guestID] != null &&
@@ -231,6 +272,8 @@ extension AlbumDataRepo on DataRepository {
           _albumController.add((StreamOperation.update, albumMap[albumID]!));
           return;
         }
+      case RequestStatus.abandoned:
+        break;
     }
   }
 }

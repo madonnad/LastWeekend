@@ -67,7 +67,7 @@ class FeedSlideshowInset extends StatelessWidget {
                               decoration: BoxDecoration(
                                 image: DecorationImage(
                                   image: CachedNetworkImageProvider(
-                                    state.album.coverReq,
+                                    state.album.coverReq540,
                                     headers: headers,
                                     errorListener: (_) {},
                                   ),

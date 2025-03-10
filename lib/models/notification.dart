@@ -15,7 +15,8 @@ enum NotificationType { generic, friendRequest, albumInvite }
 enum RequestStatus {
   pending(1),
   accepted(2),
-  denied(3);
+  denied(3),
+  abandoned(4);
 
   const RequestStatus(this.val);
   final int val;

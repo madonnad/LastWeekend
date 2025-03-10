@@ -40,7 +40,8 @@ class AlbumFrameState extends Equatable {
   List<Guest> get mostImagesUploaded {
     Map<Guest, List<Photo>> mapImages = {};
 
-    for (var guest in album.guests) {
+    for (var guest in album.guests
+        .where((guest) => guest.status == RequestStatus.accepted)) {
       mapImages[guest] = [];
     }
 
@@ -64,7 +65,8 @@ class AlbumFrameState extends Equatable {
   Map<String, List<Photo>> get imagesGroupedByGuest {
     Map<String, List<Photo>> mapImages = {};
 
-    for (var guest in album.guests) {
+    for (var guest in album.guests
+        .where((guest) => guest.status == RequestStatus.accepted)) {
       mapImages[guest.uid] = [];
     }
 

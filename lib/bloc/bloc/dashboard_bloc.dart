@@ -46,6 +46,18 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       emit(state.copyWith(activeAlbumMap: albumMap));
     });
 
+    on<RemoveAlbumInMap>(
+      (event, emit) {
+        Map<String, Album> albumMap = Map.from(state.activeAlbumMap);
+
+        Album album = event.album;
+        String key = album.albumId;
+
+        albumMap.remove(key);
+        emit(state.copyWith(activeAlbumMap: albumMap));
+      },
+    );
+
     // Stream Listeners
     dataRepository.albumStream.listen((event) {
       StreamOperation type = event.$1;
@@ -62,13 +74,15 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
       bool userIsOwner = album.albumOwner == user.id;
 
-      if ((userIsGuest || userIsOwner) && album.phase == AlbumPhases.open) {
+      if (((userIsGuest || userIsOwner) && album.phase == AlbumPhases.open) ||
+          type == StreamOperation.delete) {
         switch (type) {
           case StreamOperation.add:
             add(AddAlbumToMap(album: album));
           case StreamOperation.update:
             add(UpdateAlbumInMap(album: album));
           case StreamOperation.delete:
+            add(RemoveAlbumInMap(album: album));
         }
       }
     });

@@ -30,6 +30,7 @@ class FeedListItem extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
+            elevation: 0,
             child: Padding(
               padding: const EdgeInsets.all(20.0),
               child: Column(
@@ -95,6 +96,7 @@ class FeedListItem extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(top: 12),
                       child: BlocProvider(
+                        key: ValueKey(album.albumId),
                         lazy: false,
                         create: (context) => FeedSlideshowCubit(
                           album: album,

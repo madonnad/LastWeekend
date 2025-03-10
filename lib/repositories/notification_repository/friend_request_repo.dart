@@ -12,6 +12,9 @@ extension FriendRequestRepo on NotificationRepository {
         _notificationController.add((StreamOperation.update, request));
 
       case RequestStatus.denied:
+        break;
+      case RequestStatus.abandoned:
+        break;
     }
   }
 

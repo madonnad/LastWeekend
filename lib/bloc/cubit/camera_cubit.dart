@@ -58,6 +58,7 @@ class CameraCubit extends HydratedCubit<CameraState> {
               addUnlockedAlbums(album);
             case StreamOperation.update:
             case StreamOperation.delete:
+              removeEventFromList(album);
           }
         }
       });
@@ -127,6 +128,14 @@ class CameraCubit extends HydratedCubit<CameraState> {
       }
       emit(state.copyWith(albumMap: albumMap));
     }
+  }
+
+  void removeEventFromList(Album album) {
+    Map<String, Album> albumMap = Map.from(state.albumMap);
+
+    albumMap.remove(album.albumId);
+
+    emit(state.copyWith(albumMap: albumMap));
   }
 
   void toggleImageInUploadList(CapturedImage image) {

@@ -23,6 +23,8 @@ class Guest {
         status = RequestStatus.pending;
       case 'denied':
         status = RequestStatus.denied;
+      case 'abandoned':
+        status = RequestStatus.abandoned;
       default:
         status = RequestStatus.pending;
     }

@@ -43,6 +43,8 @@ class AlbumRequestsList extends StatelessWidget {
                       );
                     case RequestStatus.denied:
                       return const SizedBox(height: 0);
+                    case RequestStatus.abandoned:
+                      return const SizedBox(height: 0);
                   }
                 },
               ),
