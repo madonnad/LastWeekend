@@ -7,6 +7,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/custom_exception.dart';
 import 'package:shared_photo/models/guest.dart';
+import 'package:shared_photo/models/notification.dart';
 import 'package:shared_photo/models/photo.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 import 'package:shared_photo/repositories/realtime_repository.dart';
@@ -221,6 +222,31 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
 
     emit(state.copyWith(loading: false));
     return true;
+  }
+
+  Future<bool> transferAndLeaveEvent(Guest guest) async {
+    String? error;
+    bool success = false;
+    emit(state.copyWith(loading: true));
+    (success, error) =
+        await dataRepository.updateEventOwnership(albumID, guest);
+
+    if (error != null) {
+      CustomException exception = CustomException(errorString: error);
+      emit(state.copyWith(loading: false, exception: exception));
+      emit(state.copyWith(exception: CustomException.empty));
+      return success;
+    }
+
+    (success, error) = await dataRepository.deleteLeaveEvent(albumID);
+    if (error != null) {
+      CustomException exception = CustomException(errorString: error);
+      emit(state.copyWith(loading: false, exception: exception));
+      emit(state.copyWith(exception: CustomException.empty));
+      return success;
+    }
+    emit(state.copyWith(loading: false));
+    return success;
   }
 
   @override

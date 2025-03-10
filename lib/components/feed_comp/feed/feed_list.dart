@@ -13,15 +13,8 @@ class FeedList extends StatelessWidget {
         return SliverList.separated(
           itemCount: state.revealedFeedAlbumList.length,
           itemBuilder: (context, index) {
-            if (index == 0) {
-              return Padding(
-                padding: const EdgeInsets.only(top: 0.0),
-                child: FeedListItem(
-                  album: state.revealedFeedAlbumList[index],
-                ),
-              );
-            }
             return FeedListItem(
+              key: ValueKey(state.revealedFeedAlbumList[index].albumId),
               album: state.revealedFeedAlbumList[index],
             );
           },

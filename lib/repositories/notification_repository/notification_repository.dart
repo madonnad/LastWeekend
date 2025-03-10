@@ -92,6 +92,8 @@ class NotificationRepository {
                     .removeWhere((key, value) => key == noti.notificationID);
               }
               _notificationController.add((StreamOperation.delete, noti));
+            case RequestStatus.abandoned:
+              break;
           }
         case EngagementNotification:
           EngagementNotification noti = notification as EngagementNotification;

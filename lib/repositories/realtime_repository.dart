@@ -84,6 +84,9 @@ class RealtimeRepository {
       return;
     }
 
+    // Currently the only web socket messages that are being sent are
+    // user engagement related - no event/album updates such as delete, new owner,
+    // Timeline changes, etc are being propogated through this channel.
     String type = jsonData["type"];
 
     switch (type) {

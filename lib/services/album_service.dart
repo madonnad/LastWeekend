@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_photo/bloc/cubit/create_album_cubit.dart';
 import 'package:shared_photo/models/album.dart';
-import 'package:shared_photo/models/guest.dart';
 import 'package:http/http.dart' as http;
 import 'dart:developer' as developer;
 
@@ -174,32 +173,32 @@ class AlbumService {
     }
   }
 
-  static Future<List<Guest>> updateGuestList(
-      String token, String albumID) async {
-    List<Guest> guests = [];
+  // static Future<List<Guest>> updateGuestList(
+  //     String token, String albumID) async {
+  //   List<Guest> guests = [];
 
-    String urlString = "${dotenv.env['URL']}/album/guests?album_id=$albumID";
-    Uri url = Uri.parse(urlString);
+  //   String urlString = "${dotenv.env['URL']}/album/guests?album_id=$albumID";
+  //   Uri url = Uri.parse(urlString);
 
-    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
+  //   final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
-    try {
-      final response = await http.get(url, headers: headers);
+  //   try {
+  //     final response = await http.get(url, headers: headers);
 
-      if (response.statusCode == 200) {
-        final responseBody = response.body;
-        final jsonData = json.decode(responseBody);
+  //     if (response.statusCode == 200) {
+  //       final responseBody = response.body;
+  //       final jsonData = json.decode(responseBody);
 
-        for (var item in jsonData) {
-          guests.add(Guest.fromMap(item));
-        }
-      }
-      return guests;
-    } catch (e) {
-      developer.log(e.toString());
-      return guests;
-    }
-  }
+  //       for (var item in jsonData) {
+  //         guests.add(Guest.fromMap(item));
+  //       }
+  //     }
+  //     return guests;
+  //   } catch (e) {
+  //     developer.log(e.toString());
+  //     return guests;
+  //   }
+  // }
 
   static Future<(bool, String?)> updateAlbumVisibility(
       String token, String albumID, String visibility) async {
@@ -211,6 +210,51 @@ class AlbumService {
 
     try {
       final response = await http.patch(url, headers: headers);
+
+      if (response.statusCode == 200) {
+        return (true, null);
+      }
+      String code = response.statusCode.toString();
+      String body = response.body;
+      return (false, "$code: $body");
+    } catch (e) {
+      developer.log(e.toString());
+      return (false, e.toString());
+    }
+  }
+
+  static Future<(bool, String?)> updateEventOwnership(
+      String token, String userID, String albumID) async {
+    String urlString =
+        "${dotenv.env['URL']}/user/album?user_id=$userID&album_id=$albumID";
+    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
+
+    Uri url = Uri.parse(urlString);
+
+    try {
+      final response = await http.patch(url, headers: headers);
+
+      if (response.statusCode == 200) {
+        return (true, null);
+      }
+      String code = response.statusCode.toString();
+      String body = response.body;
+      return (false, "$code: $body");
+    } catch (e) {
+      developer.log(e.toString());
+      return (false, e.toString());
+    }
+  }
+
+  static Future<(bool, String?)> deleteLeaveEvent(
+      String token, String albumID) async {
+    String urlString = "${dotenv.env['URL']}/user/album?album_id=$albumID";
+    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
+
+    Uri url = Uri.parse(urlString);
+
+    try {
+      final response = await http.delete(url, headers: headers);
 
       if (response.statusCode == 200) {
         return (true, null);

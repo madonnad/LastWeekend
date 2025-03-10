@@ -25,6 +25,12 @@ class FeedDataRequested extends FeedEvent {
   });
 }
 
+class RemoveEventFromList extends FeedEvent {
+  final Album album;
+
+  const RemoveEventFromList({required this.album});
+}
+
 class FeedDataFetched extends FeedEvent {}
 
 class FeedDataFailed extends FeedEvent {}

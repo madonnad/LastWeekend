@@ -77,6 +77,20 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       add(UpdateEventByDatetime());
     });
 
+    on<RemoveAlbumInMap>(
+      //TODO: Confirm why this isn't working - need to ensure this gets updated
+      (event, emit) {
+        Map<String, Album> albumMap = Map.from(state.myAlbumsMap);
+
+        Album album = event.album;
+        String key = album.albumId;
+
+        albumMap.remove(key);
+        emit(state.copyWith(myAlbumsMap: albumMap));
+        add(UpdateEventByDatetime());
+      },
+    );
+
     on<UpdateImageInAlbum>((event, emit) {
       Map<String, Album> profileAlbumMap = Map.from(state.myAlbumsMap);
 
@@ -142,9 +156,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
       switch (type) {
         case StreamOperation.add:
+          break;
         case StreamOperation.update:
           add(UpdateUser(user: user));
         case StreamOperation.delete:
+          break;
       }
     });
 
@@ -165,6 +181,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           case StreamOperation.update:
             add(UpdateAlbumInMap(album: album));
           case StreamOperation.delete:
+            add(RemoveAlbumInMap(album: album));
         }
       }
     });

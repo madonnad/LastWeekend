@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
-import 'package:shared_photo/bloc/bloc/profile_bloc.dart';
 import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
 import 'package:shared_photo/components/album_comp/album_detail_comps/cover_photo_detail.dart';
 import 'package:shared_photo/components/album_comp/album_detail_comps/leave_delete_comps/delete_leave_event_button.dart';
@@ -15,15 +14,17 @@ class AlbumDetailFrame extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String userID = context.read<AppBloc>().state.user.id;
     return BlocBuilder<AlbumFrameCubit, AlbumFrameState>(
       builder: (context, state) {
-        bool isOwner =
-            context.read<AppBloc>().state.user.id == state.album.albumOwner;
-        bool hasImages = state.album.images.isNotEmpty;
+        bool isOwner = userID == state.album.albumOwner;
+        bool hasImages = state.album.imageMap.isNotEmpty;
         bool hasGuests = state.album.guests
                 .where((element) => element.status == RequestStatus.accepted)
                 .length >
             1;
+        bool activeInAlbum = state.album.guests.any((element) =>
+            element.uid == userID && element.status == RequestStatus.accepted);
         return Scaffold(
           //backgroundColor: Colors.black,
           appBar: AppBar(
@@ -43,16 +44,30 @@ class AlbumDetailFrame extends StatelessWidget {
               children: [
                 const Gap(45),
                 CoverPhotoDetail(),
-                const Gap(60),
-                InviteListButton(),
-                const Gap(10),
-                EditVisibilityButton(isOwner: isOwner),
-                const Gap(10),
-                DeleteLeaveEventButton(
-                  isOwner: isOwner,
-                  hasImages: hasImages,
-                  hasGuests: hasGuests,
-                ),
+                Builder(
+                  builder: (context) {
+                    if (activeInAlbum) {
+                      return Column(
+                        children: [
+                          const Gap(60),
+                          InviteListButton(),
+                          const Gap(10),
+                          EditVisibilityButton(isOwner: isOwner),
+                          const Gap(10),
+                          DeleteLeaveEventButton(
+                            isOwner: isOwner,
+                            hasImages: hasImages,
+                            hasGuests: hasGuests,
+                          ),
+                        ],
+                      );
+                    } else {
+                      return SizedBox(
+                        width: double.infinity,
+                      );
+                    }
+                  },
+                )
               ],
             ),
           ),

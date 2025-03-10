@@ -97,13 +97,16 @@ class Album extends Equatable {
   Album copyWith({
     Map<String, Photo>? imageMap,
     AlbumVisibility? visibility,
+    String? albumOwner,
+    String? ownerFirst,
+    String? ownerLast,
   }) {
     return Album(
       albumId: albumId,
       albumName: albumName,
-      albumOwner: albumOwner,
-      ownerFirst: ownerFirst,
-      ownerLast: ownerLast,
+      albumOwner: albumOwner ?? this.albumOwner,
+      ownerFirst: ownerFirst ?? this.ownerFirst,
+      ownerLast: ownerLast ?? this.ownerLast,
       creationDateTime: creationDateTime,
       revealDateTime: revealDateTime,
       visibility: visibility ?? this.visibility,

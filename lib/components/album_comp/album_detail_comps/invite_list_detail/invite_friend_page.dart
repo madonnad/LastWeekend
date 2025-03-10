@@ -70,16 +70,16 @@ class InviteFriendPage extends StatelessWidget {
                                         .headers,
                                     errorListener: (_) {},
                                   ),
-                                  radius: 18,
+                                  radius: 14,
                                   onForegroundImageError: (_, __) {},
                                 ),
                                 const Gap(15),
                                 Expanded(
                                   child: Text(
                                     friendList[index].fullName,
-                                    style: GoogleFonts.josefinSans(
+                                    style: GoogleFonts.lato(
                                       color: Colors.white,
-                                      fontSize: 18,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.w600,
                                     ),
                                     overflow: TextOverflow.fade,

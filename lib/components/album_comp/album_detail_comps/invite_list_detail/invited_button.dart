@@ -47,14 +47,13 @@ class _InvitedButtonState extends State<InvitedButton> {
   Widget build(BuildContext context) {
     Future<void> onTapCaller() async {
       bool success;
-      String? error;
+      //String? error;
       loading();
-      (success, error) =
-          await context.read<AlbumFrameCubit>().sendInviteToFriends(
-                widget.inviteID,
-                widget.firstName,
-                widget.lastName,
-              );
+      (success, _) = await context.read<AlbumFrameCubit>().sendInviteToFriends(
+            widget.inviteID,
+            widget.firstName,
+            widget.lastName,
+          );
       //print(success);
       if (success) {
         updateButton();

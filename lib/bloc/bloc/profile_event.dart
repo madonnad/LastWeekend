@@ -40,6 +40,15 @@ class UpdateAlbumInMap extends ProfileEvent {
   List<Object?> get props => [album];
 }
 
+class RemoveAlbumInMap extends ProfileEvent {
+  final Album album;
+
+  const RemoveAlbumInMap({required this.album});
+
+  @override
+  List<Object?> get props => [album];
+}
+
 class UpdateImageInAlbum extends ProfileEvent {
   final ImageChange imageChange;
 

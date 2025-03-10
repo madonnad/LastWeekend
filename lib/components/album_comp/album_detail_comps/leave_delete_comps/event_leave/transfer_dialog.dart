@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
 import 'package:shared_photo/models/guest.dart';
+import 'package:shared_photo/models/notification.dart';
 
 class TransferDialog extends StatefulWidget {
   const TransferDialog({super.key});
@@ -18,6 +19,7 @@ class _TransferDialogState extends State<TransferDialog> {
   double twoHeight = 350;
   late double height;
   bool canLeave = false;
+  Guest? guest;
 
   @override
   void initState() {
@@ -80,15 +82,20 @@ class _TransferDialogState extends State<TransferDialog> {
                           setState(() {
                             canLeave = false;
                             height = oneHeight;
+                            guest = null;
                           });
                         } else {
                           setState(() {
                             canLeave = true;
                             height = twoHeight;
+                            guest = value;
                           });
                         }
                       },
-                      dropdownMenuEntries: state.album.guests.map(
+                      dropdownMenuEntries: state.album.guests
+                          .where(
+                              (guest) => guest.status == RequestStatus.accepted)
+                          .map(
                         (Guest guest) {
                           bool isOwner = guest.uid == userID;
                           return DropdownMenuEntry(
@@ -118,7 +125,16 @@ class _TransferDialogState extends State<TransferDialog> {
                     Center(
                       child: SimpleDialogOption(
                         child: ElevatedButton(
-                          onPressed: canLeave ? () {} : null,
+                          onPressed: (canLeave && guest != null)
+                              ? () => context
+                                      .read<AlbumFrameCubit>()
+                                      .transferAndLeaveEvent(guest!)
+                                      .then((success) {
+                                    if (success && context.mounted) {
+                                      Navigator.of(context).pop();
+                                    }
+                                  })
+                              : null,
                           child: Text("Leave event"),
                         ),
                       ),
