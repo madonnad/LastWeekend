@@ -18,7 +18,6 @@ class FeedSlideshowCubit extends Cubit<FeedSlideshowState> {
   FeedSlideshowCubit({required this.album, required this.dataRepository})
       : super(
           FeedSlideshowState(
-            pageController: PageController(),
             album: album,
             avatarUrl: album.rankedImages.isNotEmpty
                 ? album.rankedImages[0].avatarReq

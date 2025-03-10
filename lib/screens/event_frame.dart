@@ -113,6 +113,7 @@ void pushImageFrameIfPassed(BuildContext context, Arguments arguments) {
       useRootNavigator: true,
       useSafeArea: true,
       enableDrag: false,
+      barrierColor: Color.fromRGBO(19, 19, 20, 1),
       builder: (ctx) => MultiBlocProvider(
         providers: [
           BlocProvider.value(

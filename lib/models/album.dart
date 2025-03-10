@@ -242,7 +242,7 @@ class Album extends Equatable {
     if (rankedImages.length > 3) {
       return images.getRange(0, 3).toList();
     } else if (rankedImages.isNotEmpty) {
-      return rankedImages.getRange(0, images.length - 1).toList();
+      return rankedImages.getRange(0, images.length).toList();
     } else {
       return [];
     }

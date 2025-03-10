@@ -105,7 +105,6 @@ class _NewImageFrameState extends State<NewImageFrame> {
       child: BlocBuilder<ImageFrameCubit, ImageFrameState>(
         builder: (context, state) {
           return Scaffold(
-            //xbackgroundColor: Colors.black,
             appBar: ImageFrameAppBar(
               timeString: state.image.timeString,
               dateString: state.image.dateString,

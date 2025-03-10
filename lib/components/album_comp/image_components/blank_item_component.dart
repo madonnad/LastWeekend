@@ -44,6 +44,7 @@ class BlankItemComponent extends StatelessWidget {
                 useRootNavigator: true,
                 useSafeArea: true,
                 enableDrag: false,
+                barrierColor: Color.fromRGBO(19, 19, 20, 1),
                 builder: (ctx) => MultiBlocProvider(
                   providers: [
                     BlocProvider(

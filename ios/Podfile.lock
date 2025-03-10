@@ -1,67 +1,67 @@
 PODS:
-  - Auth0 (2.7.2):
-    - JWTDecode (~> 3.1)
-    - SimpleKeychain (~> 1.1)
-  - auth0_flutter (1.7.2):
-    - Auth0 (= 2.7.2)
+  - Auth0 (2.10.0):
+    - JWTDecode (= 3.2.0)
+    - SimpleKeychain (= 1.2.0)
+  - auth0_flutter (1.9.0):
+    - Auth0 (= 2.10.0)
     - Flutter
     - FlutterMacOS
-    - JWTDecode (= 3.1.0)
-    - SimpleKeychain (= 1.1.0)
+    - JWTDecode (= 3.2.0)
+    - SimpleKeychain (= 1.2.0)
   - camera_avfoundation (0.0.1):
     - Flutter
-  - Firebase/Analytics (11.6.0):
+  - Firebase/Analytics (11.8.0):
     - Firebase/Core
-  - Firebase/Core (11.6.0):
+  - Firebase/Core (11.8.0):
     - Firebase/CoreOnly
-    - FirebaseAnalytics (~> 11.6.0)
-  - Firebase/CoreOnly (11.6.0):
-    - FirebaseCore (~> 11.6.0)
-  - Firebase/Messaging (11.6.0):
+    - FirebaseAnalytics (~> 11.8.0)
+  - Firebase/CoreOnly (11.8.0):
+    - FirebaseCore (~> 11.8.0)
+  - Firebase/Messaging (11.8.0):
     - Firebase/CoreOnly
-    - FirebaseMessaging (~> 11.6.0)
-  - firebase_analytics (11.4.1):
-    - Firebase/Analytics (= 11.6.0)
+    - FirebaseMessaging (~> 11.8.0)
+  - firebase_analytics (11.4.4):
+    - Firebase/Analytics (= 11.8.0)
     - firebase_core
     - Flutter
-  - firebase_core (3.10.1):
-    - Firebase/CoreOnly (= 11.6.0)
+  - firebase_core (3.12.1):
+    - Firebase/CoreOnly (= 11.8.0)
     - Flutter
-  - firebase_messaging (15.1.6):
-    - Firebase/Messaging (= 11.6.0)
+  - firebase_messaging (15.2.4):
+    - Firebase/Messaging (= 11.8.0)
     - firebase_core
     - Flutter
-  - FirebaseAnalytics (11.6.0):
-    - FirebaseAnalytics/AdIdSupport (= 11.6.0)
-    - FirebaseCore (~> 11.6.0)
+  - FirebaseAnalytics (11.8.0):
+    - FirebaseAnalytics/AdIdSupport (= 11.8.0)
+    - FirebaseCore (~> 11.8.0)
     - FirebaseInstallations (~> 11.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 8.0)
     - GoogleUtilities/MethodSwizzler (~> 8.0)
     - GoogleUtilities/Network (~> 8.0)
     - "GoogleUtilities/NSData+zlib (~> 8.0)"
     - nanopb (~> 3.30910.0)
-  - FirebaseAnalytics/AdIdSupport (11.6.0):
-    - FirebaseCore (~> 11.6.0)
+  - FirebaseAnalytics/AdIdSupport (11.8.0):
+    - FirebaseCore (~> 11.8.0)
     - FirebaseInstallations (~> 11.0)
-    - GoogleAppMeasurement (= 11.6.0)
+    - GoogleAppMeasurement (= 11.8.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 8.0)
     - GoogleUtilities/MethodSwizzler (~> 8.0)
     - GoogleUtilities/Network (~> 8.0)
     - "GoogleUtilities/NSData+zlib (~> 8.0)"
     - nanopb (~> 3.30910.0)
-  - FirebaseCore (11.6.0):
-    - FirebaseCoreInternal (~> 11.6.0)
+  - FirebaseCore (11.8.1):
+    - FirebaseCoreInternal (~> 11.8.0)
     - GoogleUtilities/Environment (~> 8.0)
     - GoogleUtilities/Logger (~> 8.0)
-  - FirebaseCoreInternal (11.6.0):
+  - FirebaseCoreInternal (11.8.0):
     - "GoogleUtilities/NSData+zlib (~> 8.0)"
-  - FirebaseInstallations (11.6.0):
-    - FirebaseCore (~> 11.6.0)
+  - FirebaseInstallations (11.8.0):
+    - FirebaseCore (~> 11.8.0)
     - GoogleUtilities/Environment (~> 8.0)
     - GoogleUtilities/UserDefaults (~> 8.0)
     - PromisesObjC (~> 2.4)
-  - FirebaseMessaging (11.6.0):
-    - FirebaseCore (~> 11.6.0)
+  - FirebaseMessaging (11.8.0):
+    - FirebaseCore (~> 11.8.0)
     - FirebaseInstallations (~> 11.0)
     - GoogleDataTransport (~> 10.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 8.0)
@@ -75,21 +75,21 @@ PODS:
   - flutter_udid (0.0.1):
     - Flutter
     - SAMKeychain
-  - GoogleAppMeasurement (11.6.0):
-    - GoogleAppMeasurement/AdIdSupport (= 11.6.0)
+  - GoogleAppMeasurement (11.8.0):
+    - GoogleAppMeasurement/AdIdSupport (= 11.8.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 8.0)
     - GoogleUtilities/MethodSwizzler (~> 8.0)
     - GoogleUtilities/Network (~> 8.0)
     - "GoogleUtilities/NSData+zlib (~> 8.0)"
     - nanopb (~> 3.30910.0)
-  - GoogleAppMeasurement/AdIdSupport (11.6.0):
-    - GoogleAppMeasurement/WithoutAdIdSupport (= 11.6.0)
+  - GoogleAppMeasurement/AdIdSupport (11.8.0):
+    - GoogleAppMeasurement/WithoutAdIdSupport (= 11.8.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 8.0)
     - GoogleUtilities/MethodSwizzler (~> 8.0)
     - GoogleUtilities/Network (~> 8.0)
     - "GoogleUtilities/NSData+zlib (~> 8.0)"
     - nanopb (~> 3.30910.0)
-  - GoogleAppMeasurement/WithoutAdIdSupport (11.6.0):
+  - GoogleAppMeasurement/WithoutAdIdSupport (11.8.0):
     - GoogleUtilities/AppDelegateSwizzler (~> 8.0)
     - GoogleUtilities/MethodSwizzler (~> 8.0)
     - GoogleUtilities/Network (~> 8.0)
@@ -129,7 +129,7 @@ PODS:
     - Flutter
   - image_picker_ios (0.0.1):
     - Flutter
-  - JWTDecode (3.1.0)
+  - JWTDecode (3.2.0)
   - nanopb (3.30910.0):
     - nanopb/decode (= 3.30910.0)
     - nanopb/encode (= 3.30910.0)
@@ -140,7 +140,7 @@ PODS:
     - FlutterMacOS
   - PromisesObjC (2.4.0)
   - SAMKeychain (1.5.3)
-  - SimpleKeychain (1.1.0)
+  - SimpleKeychain (1.2.0)
   - sqflite_darwin (0.0.4):
     - Flutter
     - FlutterMacOS
@@ -204,34 +204,34 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/sqflite_darwin/darwin"
 
 SPEC CHECKSUMS:
-  Auth0: 28cb24cb19ebd51f0b07751f16d83b59f4019532
-  auth0_flutter: f085572268059bc194c7b023d7f432f5ebb72413
+  Auth0: 2876d0c36857422eda9cb580a6cc896c7d14cb36
+  auth0_flutter: f07bdadbe380d8d257af41bd84096d3f69e2a460
   camera_avfoundation: dd002b0330f4981e1bbcb46ae9b62829237459a4
-  Firebase: 374a441a91ead896215703a674d58cdb3e9d772b
-  firebase_analytics: 13ea4ad8a42c5060bad7e6694304dabb8b02fe7e
-  firebase_core: e2aa06dbd854d961f8ce46c2e20933bee1bf2d2b
-  firebase_messaging: 423f0b488a40be4e897213224f228929197e0d9f
-  FirebaseAnalytics: 7114c698cac995602e3b1b96663473e50d54d6e7
-  FirebaseCore: 48b0dd707581cf9c1a1220da68223fb0a562afaa
-  FirebaseCoreInternal: d98ab91e2d80a56d7b246856a8885443b302c0c2
-  FirebaseInstallations: efc0946fc756e4d22d8113f7c761948120322e8c
-  FirebaseMessaging: e1aca1fcc23e8b9eddb0e33f375ff90944623021
+  Firebase: d80354ed7f6df5f9aca55e9eb47cc4b634735eaf
+  firebase_analytics: e3b6782e70e32b7fa18f7cd233e3201975dd86aa
+  firebase_core: ac395f994af4e28f6a38b59e05a88ca57abeb874
+  firebase_messaging: 7e223f4ee7ca053bf4ce43748e84a6d774ec9728
+  FirebaseAnalytics: 4fd42def128146e24e480e89f310e3d8534ea42b
+  FirebaseCore: 99fe0c4b44a39f37d99e6404e02009d2db5d718d
+  FirebaseCoreInternal: df24ce5af28864660ecbd13596fc8dd3a8c34629
+  FirebaseInstallations: 6c963bd2a86aca0481eef4f48f5a4df783ae5917
+  FirebaseMessaging: 487b634ccdf6f7b7ff180fdcb2a9935490f764e8
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_keychain: 01aabf894ffe8b01adfda1d9df21c210c1b4b452
-  flutter_udid: a2482c67a61b9c806ef59dd82ed8d007f1b7ac04
-  GoogleAppMeasurement: 6a9e6317b6a6d810ad03d4a66564ca6c4c5818a3
+  flutter_udid: b2417673f287ee62817a1de3d1643f47b9f508ab
+  GoogleAppMeasurement: fc0817122bd4d4189164f85374e06773b9561896
   GoogleDataTransport: aae35b7ea0c09004c3797d53c8c41f66f219d6a7
   GoogleUtilities: 26a3abef001b6533cf678d3eb38fd3f614b7872d
   image_gallery_saver_plus: 782ade975fe6a4600b53e7c1983e3a2979d1e9e5
   image_picker_ios: c560581cceedb403a6ff17f2f816d7fea1421fc1
-  JWTDecode: 3eaab1e06b6f4dcbdd6716aff09ba4c2104ca8b7
+  JWTDecode: 7dae24cb9bf9b608eae61e5081029ec169bb5527
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   SAMKeychain: 483e1c9f32984d50ca961e26818a534283b4cd5c
-  SimpleKeychain: f8707c8e97b38c6a6e687b17732afc9bcef06439
+  SimpleKeychain: 768cf43ae778b1c21816e94dddf01bb8ee96a075
   sqflite_darwin: 5a7236e3b501866c1c9befc6771dfd73ffb8702d
 
-PODFILE CHECKSUM: 819463e6a0290f5a72f145ba7cde16e8b6ef0796
+PODFILE CHECKSUM: 4305caec6b40dde0ae97be1573c53de1882a07e5
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2

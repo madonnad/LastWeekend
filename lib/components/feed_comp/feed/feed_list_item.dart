@@ -1,12 +1,9 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_photo/bloc/cubit/feed_slideshow_cubit.dart';
 import 'package:shared_photo/components/feed_comp/feed/feed_slideshow_inset.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/arguments.dart';
-import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 
 class FeedListItem extends StatelessWidget {
   final Album album;
@@ -17,12 +14,16 @@ class FeedListItem extends StatelessWidget {
     final double devHeight = MediaQuery.of(context).size.height;
     Arguments arguments = Arguments(albumID: album.albumId);
 
-    return Padding(
-      padding: const EdgeInsets.only(top: 0, left: 0, right: 0),
+    return GestureDetector(
+      onTap: () {
+        FirebaseAnalytics.instance.logEvent(
+            name: "event_clicked", parameters: {"event_id": album.albumId});
+        Navigator.of(context).pushNamed('/album', arguments: arguments);
+      },
       child: AspectRatio(
         aspectRatio: 2 / 3,
         child: Container(
-          margin: EdgeInsets.zero,
+          color: Colors.transparent,
           height: devHeight * .65,
           child: Card(
             color: const Color.fromRGBO(19, 19, 20, 1),
@@ -95,15 +96,7 @@ class FeedListItem extends StatelessWidget {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(top: 12),
-                      child: BlocProvider(
-                        key: ValueKey(album.albumId),
-                        lazy: false,
-                        create: (context) => FeedSlideshowCubit(
-                          album: album,
-                          dataRepository: context.read<DataRepository>(),
-                        ),
-                        child: const FeedSlideshowInset(),
-                      ),
+                      child: FeedSlideshowInset(album: album),
                     ),
                   ),
                 ],

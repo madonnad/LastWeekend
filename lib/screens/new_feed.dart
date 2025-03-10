@@ -39,11 +39,7 @@ class _NewFeedState extends State<NewFeed> with AutomaticKeepAliveClientMixin {
                 // ),
                 title: GestureDetector(
                   child: Image.asset("lib/assets/logo.png", height: 40),
-                  onTap: () => state.feedScrollController.animateTo(
-                    0,
-                    duration: Duration(milliseconds: 350),
-                    curve: Curves.linear,
-                  ),
+                  onTap: () => context.read<AppFrameCubit>().jumpToTopOfFeed(),
                 ),
                 centerTitle: true,
               ),
@@ -53,7 +49,9 @@ class _NewFeedState extends State<NewFeed> with AutomaticKeepAliveClientMixin {
               BlocBuilder<FeedBloc, FeedState>(
                 builder: (context, state) {
                   if (state.revealedFeedAlbumList.isNotEmpty) {
-                    return const FeedList();
+                    return FeedList(
+                      feedAlbums: state.revealedFeedAlbumList,
+                    );
                   } else {
                     return const EmptyFeed();
                   }

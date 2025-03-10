@@ -254,6 +254,7 @@ void pushImageFrameModal(BuildContext context, Photo image, String albumID) {
     useRootNavigator: true,
     useSafeArea: true,
     enableDrag: true,
+    barrierColor: Color.fromRGBO(19, 19, 20, 1),
     builder: (ctx) {
       Photo? photo = context.read<AlbumFrameCubit>().state.selectedImage;
       int index = photo != null
