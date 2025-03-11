@@ -44,13 +44,13 @@ class AlbumDetailFrame extends StatelessWidget {
               children: [
                 const Gap(45),
                 CoverPhotoDetail(),
+                const Gap(60),
+                InviteListButton(activeInAlbum: activeInAlbum),
                 Builder(
                   builder: (context) {
                     if (activeInAlbum) {
                       return Column(
                         children: [
-                          const Gap(60),
-                          InviteListButton(),
                           const Gap(10),
                           EditVisibilityButton(isOwner: isOwner),
                           const Gap(10),

@@ -131,7 +131,8 @@ class _TransferDialogState extends State<TransferDialog> {
                                       .transferAndLeaveEvent(guest!)
                                       .then((success) {
                                     if (success && context.mounted) {
-                                      Navigator.of(context).pop();
+                                      Navigator.of(context)
+                                          .popUntil(ModalRoute.withName('/'));
                                     }
                                   })
                               : null,

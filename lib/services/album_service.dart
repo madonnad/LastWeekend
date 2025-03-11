@@ -70,7 +70,7 @@ class AlbumService {
       String token, List<String> albumIds) async {
     final List<Album> albums = [];
 
-    String urlString = "${dotenv.env['URL']}/album/revealed'";
+    String urlString = "${dotenv.env['URL']}/album/revealed";
     Uri url = Uri.parse(urlString);
 
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
@@ -83,10 +83,15 @@ class AlbumService {
       if (response.statusCode == 200) {
         final responseBody = response.body;
         final jsonData = json.decode(responseBody);
+
         for (var item in jsonData) {
           Album album = Album.fromMap(item);
+          if (album.albumId == "4ae4216a-5305-4d74-ba45-3af385a5d630") {
+            print(album.guests.length);
+          }
           albums.add(album);
         }
+
         return albums;
       }
       return albums;

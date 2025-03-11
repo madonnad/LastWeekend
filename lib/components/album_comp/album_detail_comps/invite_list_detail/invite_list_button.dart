@@ -4,7 +4,8 @@ import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
 import 'package:shared_photo/components/album_comp/album_detail_comps/invite_list_detail/invite_list_main.dart';
 
 class InviteListButton extends StatelessWidget {
-  const InviteListButton({super.key});
+  final bool activeInAlbum;
+  const InviteListButton({super.key, required this.activeInAlbum});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class InviteListButton extends StatelessWidget {
           builder: (ctx) {
             return BlocProvider.value(
               value: context.read<AlbumFrameCubit>(),
-              child: const InviteListMain(),
+              child: InviteListMain(activeInAlbum: activeInAlbum),
             );
           },
         ),

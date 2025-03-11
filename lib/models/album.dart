@@ -361,12 +361,35 @@ class Album extends Equatable {
     List<Guest> deniedGuests = unsortedGuests
         .where((element) => element.status == RequestStatus.denied)
         .toList();
+    List<Guest> abandonedGuests = unsortedGuests
+        .where((element) => element.status == RequestStatus.abandoned)
+        .toList();
 
     List<Guest> sortedGuests = [];
     sortedGuests.addAll(acceptedGuests);
     sortedGuests.addAll(pendingGuests);
     sortedGuests.addAll(deniedGuests);
+    sortedGuests.addAll(abandonedGuests);
     return sortedGuests;
+  }
+
+  String get visibleGuestCount {
+    Set<String> guestSet = {};
+
+    for (String guestID in imageCountByGuestMap.keys) {
+      if (imageCountByGuestMap[guestID] != null &&
+          imageCountByGuestMap[guestID]! > 0) {
+        guestSet.add(guestID);
+      }
+    }
+
+    for (Guest guest in guests) {
+      if (guest.status == RequestStatus.accepted) {
+        guestSet.add(guest.uid);
+      }
+    }
+
+    return guestSet.length.toString();
   }
 
   String get revealDateTimeFormatter {

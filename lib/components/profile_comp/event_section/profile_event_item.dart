@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/arguments.dart';
+import 'package:shared_photo/models/notification.dart';
 
 class ProfileEventItem extends StatelessWidget {
   final Album event;
@@ -104,7 +105,7 @@ class ProfileEventItem extends StatelessWidget {
                   Row(
                     children: [
                       EventSmallIconText(
-                        text: event.guests.length.toString(),
+                        text: event.visibleGuestCount,
                         icon: Icons.people,
                       ),
                       Gap(30),

@@ -4,7 +4,9 @@ import 'package:shared_photo/components/album_comp/album_detail_comps/invite_lis
 
 class CurrentInvitePage extends StatelessWidget {
   final PageController controller;
-  const CurrentInvitePage({super.key, required this.controller});
+  final bool activeInAlbum;
+  const CurrentInvitePage(
+      {super.key, required this.controller, required this.activeInAlbum});
 
   @override
   Widget build(BuildContext context) {
@@ -23,14 +25,16 @@ class CurrentInvitePage extends StatelessWidget {
             onTap: () => Navigator.of(context).pop(),
           ),
           const CurrentInviteList(),
-          ElevatedButton(
-            onPressed: () => controller.animateToPage(
-              1,
-              duration: const Duration(milliseconds: 150),
-              curve: Curves.linear,
-            ),
-            child: Text("Invite More Friends"),
-          ),
+          activeInAlbum
+              ? ElevatedButton(
+                  onPressed: () => controller.animateToPage(
+                    1,
+                    duration: const Duration(milliseconds: 150),
+                    curve: Curves.linear,
+                  ),
+                  child: Text("Invite More Friends"),
+                )
+              : SizedBox.shrink(),
         ],
       ),
     );

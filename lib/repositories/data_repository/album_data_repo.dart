@@ -128,10 +128,10 @@ extension AlbumDataRepo on DataRepository {
     }
 
     List<Album> albums =
-        await AlbumService.getRevealedAlbumsByAlbumID(user.token, newAlbumIds);
+        await AlbumService.getRevealedAlbumsByAlbumID(user.token, albumIDs);
 
     for (Album album in albums) {
-      albumMap.putIfAbsent(album.albumId, () => album);
+      albumMap.update(album.albumId, (value) => album, ifAbsent: () => album);
     }
 
     albums = albumMap.entries
