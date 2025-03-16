@@ -13,7 +13,7 @@ class AlbumService {
     Map<String, dynamic> albumInformation = state.toJson();
     String encodedBody = json.encode(albumInformation);
 
-    String urlString = "${dotenv.env['URL']}/user/album";
+    String urlString = "${dotenv.env['URL']}/album";
     Uri url = Uri.parse(urlString);
 
     final Map<String, String> headers = {
@@ -130,7 +130,8 @@ class AlbumService {
     return albums;
   }
 
-  static Future<Album> getAlbumByID(String token, String albumID) async {
+  static Future<(bool, Album?)> getAlbumByID(
+      String token, String albumID) async {
     Album album = Album.empty;
 
     String urlString = "${dotenv.env['URL']}/album?album_id=$albumID";
@@ -138,22 +139,25 @@ class AlbumService {
 
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
-    final response = await http.get(url, headers: headers);
+    try {
+      final response = await http.get(url, headers: headers);
 
-    if (response.statusCode == 200) {
-      final responseBody = response.body;
+      if (response.statusCode == 200) {
+        final responseBody = response.body;
 
-      final jsonData = json.decode(responseBody);
-      if (jsonData == null) {
-        return album;
+        final jsonData = json.decode(responseBody);
+        if (jsonData == null) {
+          return (false, null);
+        }
+
+        album = Album.fromMap(jsonData);
+
+        return (true, album);
       }
-
-      album = Album.fromMap(jsonData);
-
-      return album;
+      return (false, null);
+    } catch (e) {
+      return (false, null);
     }
-    throw HttpException(
-        "Failed to get album by ID with status: ${response.statusCode}");
   }
 
   static Future<(bool, String?)> postSingleAlbumRequest(
@@ -254,6 +258,28 @@ class AlbumService {
   static Future<(bool, String?)> deleteLeaveEvent(
       String token, String albumID) async {
     String urlString = "${dotenv.env['URL']}/user/album?album_id=$albumID";
+    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
+
+    Uri url = Uri.parse(urlString);
+
+    try {
+      final response = await http.delete(url, headers: headers);
+
+      if (response.statusCode == 200) {
+        return (true, null);
+      }
+      String code = response.statusCode.toString();
+      String body = response.body;
+      return (false, "$code: $body");
+    } catch (e) {
+      developer.log(e.toString());
+      return (false, e.toString());
+    }
+  }
+
+  static Future<(bool, String?)> deleteEvent(
+      String token, String albumID) async {
+    String urlString = "${dotenv.env['URL']}/album?album_id=$albumID";
     final Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     Uri url = Uri.parse(urlString);
