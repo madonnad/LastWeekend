@@ -29,7 +29,7 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
             album: Album.empty,
           ),
         ) {
-    // Fetch Album to Initalize
+    // Fetch Album to Initialize
     initializeAlbum();
 
     realtimeRepository.openAlbumChannelWebSocket(albumID);
@@ -66,11 +66,15 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
   void initializeAlbum() async {
     emit(state.copyWith(loading: true));
 
-    Album updatedAlbum = await dataRepository.getAlbumByID(albumID);
+    Album? updatedAlbum = await dataRepository.getAlbumByID(albumID);
+
+    if (updatedAlbum == null) {
+      return;
+    }
 
     emit(state.copyWith(
       album: updatedAlbum,
-      images: List.from(updatedAlbum.images),
+      images: List.from(updatedAlbum!.images),
       loading: false,
     ));
 
@@ -239,6 +243,22 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
     }
 
     (success, error) = await dataRepository.deleteLeaveEvent(albumID);
+    if (error != null) {
+      CustomException exception = CustomException(errorString: error);
+      emit(state.copyWith(loading: false, exception: exception));
+      emit(state.copyWith(exception: CustomException.empty));
+      return success;
+    }
+    emit(state.copyWith(loading: false));
+    return success;
+  }
+
+  Future<bool> deleteEvent() async {
+    String? error;
+    bool success = false;
+    emit(state.copyWith(loading: true));
+
+    (success, error) = await dataRepository.deleteEvent(albumID);
     if (error != null) {
       CustomException exception = CustomException(errorString: error);
       emit(state.copyWith(loading: false, exception: exception));

@@ -27,8 +27,14 @@ extension AlbumDataRepo on DataRepository {
     return albumMap;
   }
 
-  Future<Album> getAlbumByID(String albumID) async {
-    Album album = await AlbumService.getAlbumByID(user.token, albumID);
+  Future<Album?> getAlbumByID(String albumID) async {
+    Album? album;
+    bool? success;
+
+    (_, album) = await AlbumService.getAlbumByID(user.token, albumID);
+    if (album == null) {
+      return album;
+    }
 
     albumMap[album.albumId] = album;
     _albumController.add((StreamOperation.add, album));
@@ -218,14 +224,34 @@ extension AlbumDataRepo on DataRepository {
   Future<(bool, String?)> deleteLeaveEvent(String albumID) async {
     bool success = false;
     String? error;
-    Album? album;
-    album = albumMap[albumID];
+    Album? album = albumMap[albumID];
     if (album == null) return (false, "Event Does Not Exist");
 
     (success, error) = await AlbumService.deleteLeaveEvent(user.token, albumID);
 
     if (!success) return (success, error);
 
+    albumMap.remove(albumID);
+
+    if (album.visibility == AlbumVisibility.public) {
+      _albumController.add((StreamOperation.update, album));
+    } else {
+      _albumController.add((StreamOperation.delete, album));
+    }
+
+    return (true, null);
+  }
+
+  Future<(bool, String?)> deleteEvent(String albumID) async {
+    bool success = false;
+    String? error;
+    Album? album = albumMap[albumID];
+
+    if (album == null) return (false, "Event Does Not Exist");
+
+    (success, error) = await AlbumService.deleteEvent(user.token, albumID);
+
+    if (!success) return (success, error);
     albumMap.remove(albumID);
 
     _albumController.add((StreamOperation.delete, album));

@@ -17,63 +17,78 @@ class EmptyAlbumView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text(
-          "There’s nothing here 🙃",
-          style: GoogleFonts.lato(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.w500,
+    return Builder(builder: (context) {
+      if (album.albumId == '') {
+        return Center(
+          child: Text(
+            "There’s nothing here 🙃",
+            style: GoogleFonts.lato(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
+            ),
           ),
-        ),
-        const Gap(25),
-        isUnlockPhase
-            ? Column(
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop("showCamera");
-                    },
-                    child: Text(
-                      "Snap a pic",
-                      style: TextStyle(fontSize: 18),
+        );
+      } else {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "There’s nothing here 🙃",
+              style: GoogleFonts.lato(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const Gap(25),
+            isUnlockPhase
+                ? Column(
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).pop("showCamera");
+                        },
+                        child: Text(
+                          "Snap a pic",
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ),
+                      const Gap(15),
+                      Text(
+                        "or",
+                        style: GoogleFonts.josefinSans(
+                          color: Colors.white54,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  )
+                : const Gap(0),
+            TextButton(
+              onPressed: () => showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                useSafeArea: true,
+                builder: (ctx) {
+                  return BlocProvider(
+                    create: (context) => CameraCubit(
+                      dataRepository: context.read<DataRepository>(),
+                      user: context.read<AppBloc>().state.user,
+                      mode: UploadMode.singleAlbum,
+                      album: album,
                     ),
-                  ),
-                  const Gap(15),
-                  Text(
-                    "or",
-                    style: GoogleFonts.josefinSans(
-                      color: Colors.white54,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              )
-            : const Gap(0),
-        TextButton(
-          onPressed: () => showModalBottomSheet(
-            context: context,
-            isScrollControlled: true,
-            useSafeArea: true,
-            builder: (ctx) {
-              return BlocProvider(
-                create: (context) => CameraCubit(
-                  dataRepository: context.read<DataRepository>(),
-                  user: context.read<AppBloc>().state.user,
-                  mode: UploadMode.singleAlbum,
-                  album: album,
-                ),
-                child: const CapturedImageListScreen(),
-              );
-            },
-          ),
-          child: Text("Add forgot shot"),
-        )
-      ],
-    );
+                    child: const CapturedImageListScreen(),
+                  );
+                },
+              ),
+              child: Text("Add forgot shot"),
+            )
+          ],
+        );
+      }
+    });
   }
 }

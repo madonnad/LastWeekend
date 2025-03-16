@@ -22,8 +22,11 @@ class DeleteLeaveEventButton extends StatelessWidget {
       return ElevatedButton(
         onPressed: () => showDialog(
           context: context,
-          builder: (context) {
-            return DeleteDialog();
+          builder: (ctx) {
+            return BlocProvider.value(
+              value: context.read<AlbumFrameCubit>(),
+              child: DeleteDialog(),
+            );
           },
         ),
         child: Text("Delete Event"),
