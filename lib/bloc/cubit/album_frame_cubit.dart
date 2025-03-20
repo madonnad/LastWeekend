@@ -253,6 +253,24 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
     return success;
   }
 
+  Future<bool> leaveEvent() async {
+    String? error;
+    bool success = false;
+    emit(state.copyWith(loading: true));
+
+    (success, error) = await dataRepository.deleteLeaveEvent(albumID);
+    if (error != null) {
+      CustomException exception = CustomException(errorString: error);
+      emit(state.copyWith(loading: false, exception: exception));
+      emit(state.copyWith(exception: CustomException.empty));
+      print(error);
+      return success;
+    }
+
+    emit(state.copyWith(loading: false));
+    return success;
+  }
+
   Future<bool> deleteEvent() async {
     String? error;
     bool success = false;
