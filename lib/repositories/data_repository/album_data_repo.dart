@@ -221,6 +221,26 @@ extension AlbumDataRepo on DataRepository {
     return (true, null);
   }
 
+  Future<(bool, String?)> updateDatetime(
+      String albumID, DateTime datetime) async {
+    bool success = false;
+    String? error;
+    Album? album = albumMap[albumID];
+    if (album == null) return (false, "Event Does Not Exist");
+
+    (success, error) =
+        await AlbumService.updateEventTimeline(user.token, albumID, datetime);
+
+    if (!success) return (success, error);
+
+    Album updatedAlbum = album.copyWith(revealDateTime: datetime);
+
+    albumMap[albumID] = updatedAlbum;
+
+    _albumController.add((StreamOperation.update, updatedAlbum));
+    return (true, null);
+  }
+
   Future<(bool, String?)> deleteLeaveEvent(String albumID) async {
     bool success = false;
     String? error;

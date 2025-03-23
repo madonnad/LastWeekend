@@ -51,6 +51,7 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
         switch (operation) {
           case StreamOperation.add:
           case StreamOperation.update:
+            print("album pushed${album.revealDateTime}");
             emit(state.copyWith(
                 album: album, images: List.from(album.imageMap.values)));
             setRankedImages();
@@ -221,6 +222,29 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
       parameters: {
         "type": "visiblity",
         "value": visibility.description,
+      },
+    );
+
+    emit(state.copyWith(loading: false));
+    return true;
+  }
+
+  Future<bool> updateDatetime(DateTime datetime) async {
+    String? error;
+    emit(state.copyWith(loading: true));
+
+    (_, error) = await dataRepository.updateDatetime(albumID, datetime);
+    if (error != null) {
+      CustomException exception = CustomException(errorString: error);
+      emit(state.copyWith(loading: false, exception: exception));
+      emit(state.copyWith(exception: CustomException.empty));
+      return false;
+    }
+
+    FirebaseAnalytics.instance.logEvent(
+      name: "event_updated",
+      parameters: {
+        "type": "reveal datetime",
       },
     );
 
