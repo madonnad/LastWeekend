@@ -97,6 +97,7 @@ class Album extends Equatable {
   Album copyWith({
     Map<String, Photo>? imageMap,
     AlbumVisibility? visibility,
+    DateTime? revealDateTime,
     String? albumOwner,
     String? ownerFirst,
     String? ownerLast,
@@ -108,7 +109,7 @@ class Album extends Equatable {
       ownerFirst: ownerFirst ?? this.ownerFirst,
       ownerLast: ownerLast ?? this.ownerLast,
       creationDateTime: creationDateTime,
-      revealDateTime: revealDateTime,
+      revealDateTime: revealDateTime ?? this.revealDateTime,
       visibility: visibility ?? this.visibility,
       phase: phase,
       imageMap: imageMap ?? this.imageMap,
@@ -175,10 +176,10 @@ class Album extends Equatable {
       albumOwner: map['album_owner'] as String,
       ownerFirst: map['owner_first'],
       ownerLast: map['owner_last'],
-      creationDateTime: DateTime.parse(map['created_at']),
+      creationDateTime: DateTime.parse(map['created_at']).toLocal(),
       guestMap: guests,
       imageMap: images,
-      revealDateTime: DateTime.parse(map['revealed_at']),
+      revealDateTime: DateTime.parse(map['revealed_at']).toLocal(),
       visibility: visibility,
       phase: phase,
     );
@@ -429,5 +430,6 @@ class Album extends Equatable {
         imageMap.hashCode,
         albumOwner,
         visibility,
+        revealDateTime,
       ];
 }

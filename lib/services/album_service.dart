@@ -255,6 +255,35 @@ class AlbumService {
     }
   }
 
+  static Future<(bool, String?)> updateEventTimeline(
+      String token, String albumID, DateTime datetime) async {
+    String urlString = "${dotenv.env['URL']}/album/timeline";
+    final Map<String, String> headers = {'Authorization': 'Bearer $token'};
+    final Map<String, dynamic> jsonBody = {
+      "album_id": albumID,
+      "revealed_at": datetime.toUtc().toIso8601String(),
+    };
+
+    String encodedBody = json.encode(jsonBody);
+
+    Uri url = Uri.parse(urlString);
+
+    try {
+      final response =
+          await http.patch(url, headers: headers, body: encodedBody);
+
+      if (response.statusCode == 200) {
+        return (true, null);
+      }
+      String code = response.statusCode.toString();
+      String body = response.body;
+      return (false, "$code: $body");
+    } catch (e) {
+      developer.log(e.toString());
+      return (false, e.toString());
+    }
+  }
+
   static Future<(bool, String?)> deleteLeaveEvent(
       String token, String albumID) async {
     String urlString = "${dotenv.env['URL']}/user/album?album_id=$albumID";
