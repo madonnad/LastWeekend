@@ -57,6 +57,7 @@ class CameraCubit extends HydratedCubit<CameraState> {
             case StreamOperation.add:
               addUnlockedAlbums(album);
             case StreamOperation.update:
+              break;
             case StreamOperation.delete:
               removeEventFromList(album);
           }
@@ -131,6 +132,7 @@ class CameraCubit extends HydratedCubit<CameraState> {
   }
 
   void removeEventFromList(Album album) {
+    print("removed?");
     Map<String, Album> albumMap = Map.from(state.albumMap);
 
     albumMap.remove(album.albumId);
