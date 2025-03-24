@@ -38,7 +38,7 @@ class ProfileGuestFrame extends StatelessWidget {
         bool isLoggedUser = loggedInUser == guestID;
 
         return Scaffold(
-          backgroundColor: Colors.black,
+          //backgroundColor: Colors.black,
           body: SafeArea(
             child: CustomScrollView(
               slivers: [
@@ -67,11 +67,7 @@ class ProfileGuestFrame extends StatelessWidget {
                               child: Center(
                                 child: Text(
                                   state.album.albumName,
-                                  style: GoogleFonts.josefinSans(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 24,
-                                  ),
+                                  style: TextStyle(fontSize: 20),
                                 ),
                               ),
                             ),
@@ -117,7 +113,7 @@ class ProfileGuestFrame extends StatelessWidget {
                                   const Gap(10),
                                   Text(
                                     fullName,
-                                    style: GoogleFonts.josefinSans(
+                                    style: GoogleFonts.lato(
                                       color: Colors.white,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
@@ -130,7 +126,7 @@ class ProfileGuestFrame extends StatelessWidget {
                                 children: [
                                   RichText(
                                     text: TextSpan(
-                                      style: GoogleFonts.josefinSans(
+                                      style: GoogleFonts.lato(
                                         color: Colors.white,
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500,
@@ -200,42 +196,27 @@ class ProfileGuestFrame extends StatelessWidget {
                     ? SliverPadding(
                         padding: const EdgeInsets.only(top: 8),
                         sliver: SliverToBoxAdapter(
-                          child: InkWell(
-                            onTap: () => showModalBottomSheet(
-                              context: context,
-                              isScrollControlled: true,
-                              useSafeArea: true,
-                              builder: (ctx) {
-                                return BlocProvider(
-                                  create: (context) => CameraCubit(
-                                    dataRepository:
-                                        context.read<DataRepository>(),
-                                    user: context.read<AppBloc>().state.user,
-                                    mode: UploadMode.singleAlbum,
-                                    album: state.album,
-                                  ),
-                                  child: const CapturedImageListScreen(),
-                                );
-                              },
-                            ),
-                            child: Container(
-                              height: 40,
-                              alignment: Alignment.center,
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 50),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 25, vertical: 10),
-                              decoration: BoxDecoration(
-                                color: const Color.fromRGBO(44, 44, 44, 1),
-                                borderRadius: BorderRadius.circular(10),
+                          child: Center(
+                            child: OutlinedButton(
+                              onPressed: () => showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                useSafeArea: true,
+                                builder: (ctx) {
+                                  return BlocProvider(
+                                    create: (context) => CameraCubit(
+                                      dataRepository:
+                                          context.read<DataRepository>(),
+                                      user: context.read<AppBloc>().state.user,
+                                      mode: UploadMode.singleAlbum,
+                                      album: state.album,
+                                    ),
+                                    child: const CapturedImageListScreen(),
+                                  );
+                                },
                               ),
                               child: Text(
                                 "Add Forgot Shot",
-                                style: GoogleFonts.josefinSans(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                ),
                               ),
                             ),
                           ),

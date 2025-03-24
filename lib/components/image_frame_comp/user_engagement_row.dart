@@ -55,7 +55,7 @@ class UserEngagementRow extends StatelessWidget {
                                       captionExists && isOwner)
                                   ? Text(
                                       state.image.imageCaption,
-                                      style: GoogleFonts.montserrat(
+                                      style: GoogleFonts.lato(
                                         color: Colors.white,
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500,
@@ -67,7 +67,7 @@ class UserEngagementRow extends StatelessWidget {
                                   : SizedBox.shrink(),
                               Text(
                                 state.image.fullName,
-                                style: GoogleFonts.montserrat(
+                                style: GoogleFonts.lato(
                                   color: Colors.white,
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600,
@@ -89,6 +89,7 @@ class UserEngagementRow extends StatelessWidget {
                         onTap: () => showModalBottomSheet(
                           context: context,
                           isScrollControlled: true,
+                          backgroundColor: Color.fromRGBO(19, 19, 20, 1),
                           builder: (ctx) => MultiBlocProvider(
                             providers: [
                               BlocProvider.value(

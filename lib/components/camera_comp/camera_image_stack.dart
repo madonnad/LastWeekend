@@ -80,7 +80,7 @@ Widget imageCountIdentifier({required int count}) {
           child: Center(
             child: Text(
               countString,
-              style: GoogleFonts.montserrat(
+              style: GoogleFonts.lato(
                 color: Colors.white,
                 fontWeight: FontWeight.w600,
                 fontSize: 13,

@@ -25,11 +25,11 @@ class AlbumRequestItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8),
+      margin: const EdgeInsets.symmetric(vertical: 5),
       padding: const EdgeInsets.symmetric(horizontal: 10),
       height: 100,
       decoration: BoxDecoration(
-        color: const Color.fromRGBO(19, 19, 19, 1),
+        color: const Color.fromRGBO(19, 19, 19, 0),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
@@ -71,7 +71,7 @@ class AlbumRequestItem extends StatelessWidget {
                   fit: BoxFit.scaleDown,
                   child: Text(
                     albumName,
-                    style: GoogleFonts.montserrat(
+                    style: GoogleFonts.lato(
                       color: Colors.white,
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
@@ -91,7 +91,7 @@ class AlbumRequestItem extends StatelessWidget {
                     const SizedBox(width: 15),
                     NotificationButton(
                       buttonText: "Accept",
-                      backgroundColor: const Color.fromRGBO(181, 131, 141, 1),
+                      backgroundColor: const Color.fromRGBO(255, 98, 96, 1),
                       onTap: () => context
                           .read<NotificationCubit>()
                           .acceptAlbumInvite(requestID: requestID),

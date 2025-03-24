@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class NotiTabComp extends StatelessWidget {
   final String tabName;
@@ -57,39 +58,36 @@ class NotiTabComp extends StatelessWidget {
 }
 
 TextStyle selectedTextStyle() {
-  return const TextStyle(
+  return GoogleFonts.lato(
     color: Colors.white,
-    fontWeight: FontWeight.w800,
+    fontWeight: FontWeight.w700,
     fontSize: 12,
   );
 }
 
 TextStyle unselectedTextStyle() {
-  return const TextStyle(
+  return GoogleFonts.lato(
     color: Colors.white54,
-    fontWeight: FontWeight.bold,
+    fontWeight: FontWeight.normal,
     fontSize: 12,
   );
 }
 
 BoxDecoration selectedBoxDecoration() {
-  return const BoxDecoration(
+  return BoxDecoration(
     borderRadius: BorderRadius.all(Radius.circular(10)),
-    gradient: LinearGradient(
-      colors: [
-        Color.fromRGBO(255, 205, 178, 1),
-        Color.fromRGBO(255, 180, 162, 1),
-        Color.fromRGBO(229, 152, 155, 1),
-        Color.fromRGBO(181, 131, 141, 1),
-        Color.fromRGBO(109, 104, 117, 1),
-      ],
+    border: Border.all(
+      color: Color.fromRGBO(255, 98, 96, 1),
+      width: 1,
+      strokeAlign: BorderSide.strokeAlignCenter,
     ),
+    color: Color.fromRGBO(34, 34, 38, 1),
   );
 }
 
 BoxDecoration unselectedBoxDecoration() {
   return const BoxDecoration(
     borderRadius: BorderRadius.all(Radius.circular(10)),
-    color: Color.fromRGBO(44, 44, 44, 1),
+    color: Color.fromRGBO(34, 34, 38, 1),
   );
 }

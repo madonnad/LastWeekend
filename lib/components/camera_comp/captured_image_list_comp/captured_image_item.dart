@@ -50,7 +50,7 @@ class _CapturedImageItemState extends State<CapturedImageItem> {
           padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 7),
           margin: const EdgeInsets.only(top: 5, bottom: 5),
           decoration: BoxDecoration(
-            color: const Color.fromRGBO(19, 19, 19, 1),
+            //color: const Color.fromRGBO(34, 34, 38, 1),
             borderRadius: BorderRadius.circular(5),
           ),
           child: Column(
@@ -67,7 +67,7 @@ class _CapturedImageItemState extends State<CapturedImageItem> {
                         isScrollControlled: true,
                         enableDrag: false,
                         useSafeArea: true,
-                        backgroundColor: const Color.fromRGBO(19, 19, 19, 1),
+                        backgroundColor: const Color.fromRGBO(19, 19, 20, 1),
                         builder: (ctx) => BlocProvider.value(
                           value: context.read<CameraCubit>(),
                           child: const CapturedImageModal(),
@@ -106,7 +106,7 @@ class _CapturedImageItemState extends State<CapturedImageItem> {
                         maxLines: null,
                         expands: true,
                         textAlignVertical: TextAlignVertical.top,
-                        style: GoogleFonts.montserrat(
+                        style: GoogleFonts.lato(
                           color: Colors.white,
                           fontSize: 15,
                           fontWeight: FontWeight.w500,
@@ -117,7 +117,7 @@ class _CapturedImageItemState extends State<CapturedImageItem> {
                             vertical: 8,
                           ),
                           hintText: "Add Caption",
-                          hintStyle: GoogleFonts.montserrat(
+                          hintStyle: GoogleFonts.lato(
                             color: Colors.white54,
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
@@ -134,7 +134,7 @@ class _CapturedImageItemState extends State<CapturedImageItem> {
                               color: Color.fromRGBO(19, 19, 19, 1),
                             ),
                           ),
-                          fillColor: const Color.fromRGBO(44, 44, 44, 1),
+                          //fillColor: const Color.fromRGBO(44, 44, 44, 1),
                           filled: true,
                         ),
                       ),

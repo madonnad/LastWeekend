@@ -172,6 +172,7 @@ class ImageService {
           // },
           onSendProgress: (int sent, int total) {
             double statusPercent = sent / total;
+
             if (statusController.isClosed == false) {
               statusController.add(statusPercent);
             }
@@ -185,6 +186,7 @@ class ImageService {
         }
         response = uploadResponse;
       }
+
       String code = response.statusCode.toString();
       String body = response.body;
 

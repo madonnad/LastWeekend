@@ -105,7 +105,6 @@ class _NewImageFrameState extends State<NewImageFrame> {
       child: BlocBuilder<ImageFrameCubit, ImageFrameState>(
         builder: (context, state) {
           return Scaffold(
-            backgroundColor: Colors.black,
             appBar: ImageFrameAppBar(
               timeString: state.image.timeString,
               dateString: state.image.dateString,
@@ -127,9 +126,10 @@ class _NewImageFrameState extends State<NewImageFrame> {
                         mainController: mainController, headers: headers),
                   ),
                 ),
-                Spacer(),
-                UserEngagementRow(headers: headers),
+                //Spacer(),
                 Gap(20),
+                UserEngagementRow(headers: headers),
+                Spacer(),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * .09,
                   child: GestureDetector(

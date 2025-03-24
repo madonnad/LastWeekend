@@ -47,7 +47,7 @@ class CapturedListFab extends StatelessWidget {
                 count != null
                     ? Text(
                         count.toString(),
-                        style: GoogleFonts.montserrat(
+                        style: GoogleFonts.lato(
                           color: contentColor,
                           fontSize: 18,
                           fontWeight: FontWeight.w600,

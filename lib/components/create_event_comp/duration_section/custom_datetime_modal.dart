@@ -27,7 +27,7 @@ class CustomDatetimeModal extends StatelessWidget {
               data: CupertinoThemeData(
                 brightness: Brightness.dark,
                 textTheme: CupertinoTextThemeData(
-                  textStyle: GoogleFonts.montserrat(),
+                  textStyle: GoogleFonts.lato(),
                 ),
               ),
               child: CupertinoDatePicker(

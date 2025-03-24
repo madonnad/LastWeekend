@@ -17,11 +17,11 @@ class FloatingCommentContainer extends StatelessWidget {
             bottom: MediaQuery.of(context).viewPadding.bottom,
           ),
           decoration: BoxDecoration(
-            color: const Color.fromRGBO(44, 44, 44, 1),
+            color: const Color.fromRGBO(34, 34, 38, 1),
             borderRadius: BorderRadius.circular(10),
             boxShadow: const [
               BoxShadow(
-                color: Colors.black,
+                color: Color.fromRGBO(19, 19, 20, 1),
                 spreadRadius: 20,
                 blurRadius: 10,
                 offset: Offset(0, 10), // changes position of shadow
@@ -33,7 +33,7 @@ class FloatingCommentContainer extends StatelessWidget {
             child: Row(
               children: [
                 const SizedBox(
-                  width: 15,
+                  width: 5,
                 ),
                 Expanded(
                   flex: 2,
@@ -44,7 +44,7 @@ class FloatingCommentContainer extends StatelessWidget {
                     onChanged: (_) =>
                         context.read<ImageFrameCubit>().commentTextChange(),
                     maxLines: null,
-                    style: GoogleFonts.montserrat(
+                    style: GoogleFonts.lato(
                       color: Colors.white,
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
@@ -52,7 +52,7 @@ class FloatingCommentContainer extends StatelessWidget {
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: "Add Comment",
-                      hintStyle: GoogleFonts.montserrat(
+                      hintStyle: GoogleFonts.lato(
                         color: Colors.white70,
                         fontSize: 14,
                         fontWeight: FontWeight.w600,

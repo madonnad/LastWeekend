@@ -38,6 +38,7 @@ class GuestItemComponent extends StatelessWidget {
           useRootNavigator: true,
           useSafeArea: true,
           enableDrag: true,
+          barrierColor: Color.fromRGBO(19, 19, 20, 1),
           builder: (ctx) => MultiBlocProvider(
             providers: [
               BlocProvider(

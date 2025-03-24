@@ -3,7 +3,8 @@ import 'package:shared_photo/components/album_comp/album_detail_comps/invite_lis
 import 'package:shared_photo/components/album_comp/album_detail_comps/invite_list_detail/invite_friend_page.dart';
 
 class InviteListMain extends StatelessWidget {
-  const InviteListMain({super.key});
+  final bool activeInAlbum;
+  const InviteListMain({super.key, required this.activeInAlbum});
 
   @override
   Widget build(BuildContext context) {
@@ -15,8 +16,13 @@ class InviteListMain extends StatelessWidget {
         controller: controller,
         physics: const NeverScrollableScrollPhysics(),
         children: [
-          CurrentInvitePage(controller: controller),
-          InviteFriendPage(controller: controller),
+          CurrentInvitePage(
+            controller: controller,
+            activeInAlbum: activeInAlbum,
+          ),
+          activeInAlbum
+              ? InviteFriendPage(controller: controller)
+              : SizedBox.shrink(),
         ],
       ),
     );

@@ -49,6 +49,25 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
       },
     );
 
+    on<RemoveEventFromList>(
+      (event, emit) {
+        Album album = event.album;
+        Map<String, Album> feedAlbumMap = Map.from(state.feedAlbumMap);
+
+        if (!feedAlbumMap.containsKey(album.albumId)) {
+          return;
+        }
+
+        if (album.visibility == AlbumVisibility.public) {
+          return;
+        }
+
+        feedAlbumMap.remove(album.albumId);
+
+        emit(state.copyWith(feedAlbumMap: feedAlbumMap));
+      },
+    );
+
     dataRepository.feedStream.listen(
       (event) {
         StreamOperation type = event.$1;
@@ -58,7 +77,25 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
           case StreamOperation.add:
             add(AddAlbumsToFeed(albums: albums));
           case StreamOperation.delete:
+            break;
           case StreamOperation.update:
+            break;
+        }
+      },
+    );
+
+    dataRepository.albumStream.listen(
+      (event) {
+        StreamOperation type = event.$1;
+        Album album = event.$2;
+
+        switch (type) {
+          case StreamOperation.add:
+            break;
+          case StreamOperation.delete:
+            add(RemoveEventFromList(album: album));
+          case StreamOperation.update:
+            break;
         }
       },
     );

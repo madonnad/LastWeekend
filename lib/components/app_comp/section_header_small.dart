@@ -9,7 +9,7 @@ class SectionHeaderSmall extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       value.toUpperCase(),
-      style: GoogleFonts.josefinSans(
+      style: GoogleFonts.lato(
         fontSize: 13,
         fontWeight: FontWeight.w700,
         color: const Color.fromRGBO(213, 213, 213, 1),

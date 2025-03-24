@@ -9,11 +9,12 @@ class CreateEventButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double size = 65;
     return GestureDetector(
       onTap: () {
         HapticFeedback.mediumImpact();
         showModalBottomSheet(
-          backgroundColor: Colors.black,
+          //backgroundColor: Colors.black,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           isScrollControlled: true,
@@ -30,27 +31,17 @@ class CreateEventButton extends StatelessWidget {
         children: [
           Container(
             margin: EdgeInsets.only(left: 15, top: 5, bottom: 5, right: 5),
-            width: 45,
-            height: 65,
+            width: size,
+            height: size,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
-              gradient: LinearGradient(
-                begin: Alignment.bottomLeft,
-                end: Alignment.topRight,
-                colors: const [
-                  Color.fromRGBO(255, 205, 178, .75),
-                  Color.fromRGBO(255, 180, 162, .75),
-                  Color.fromRGBO(229, 152, 155, .75),
-                  Color.fromRGBO(181, 131, 141, .75),
-                  Color.fromRGBO(109, 104, 117, .75),
-                ],
-              ),
+              color: Color.fromRGBO(255, 98, 96, 1),
             ),
           ),
           Container(
             margin: EdgeInsets.only(left: 15, top: 5, bottom: 5, right: 5),
-            width: 41,
-            height: 61,
+            width: size - 4,
+            height: size - 4,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
               color: Color.fromRGBO(19, 19, 19, 1),

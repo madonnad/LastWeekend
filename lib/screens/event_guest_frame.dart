@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/components/album_comp/guests_page.dart';
 
 class EventGuestFrame extends StatelessWidget {
@@ -8,7 +7,7 @@ class EventGuestFrame extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      //backgroundColor: Colors.black,
       appBar: AppBar(
         centerTitle: true,
         leading: GestureDetector(
@@ -20,11 +19,7 @@ class EventGuestFrame extends StatelessWidget {
         ),
         title: Text(
           "Guests",
-          style: GoogleFonts.josefinSans(
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
-            fontSize: 24,
-          ),
+          style: TextStyle(fontSize: 20),
         ),
       ),
       body: GuestsPage(),

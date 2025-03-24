@@ -22,3 +22,9 @@ class UpdateAlbumInMap extends DashboardEvent {
 
   const UpdateAlbumInMap({required this.album});
 }
+
+class RemoveAlbumInMap extends DashboardEvent {
+  final Album album;
+
+  const RemoveAlbumInMap({required this.album});
+}

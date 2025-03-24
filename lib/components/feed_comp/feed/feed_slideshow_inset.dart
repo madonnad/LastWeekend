@@ -6,28 +6,29 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/feed_slideshow_cubit.dart';
-import 'package:shared_photo/models/arguments.dart';
+import 'package:shared_photo/models/album.dart';
+import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 
 class FeedSlideshowInset extends StatelessWidget {
-  const FeedSlideshowInset({super.key});
+  final Album album;
+  const FeedSlideshowInset({super.key, required this.album});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FeedSlideshowCubit, FeedSlideshowState>(
-      builder: (context, state) {
-        Map<String, String> headers =
-            context.read<AppBloc>().state.user.headers;
-        Arguments arguments = Arguments(albumID: state.album.albumId);
+    return BlocProvider(
+      create: (context) => FeedSlideshowCubit(
+        album: album,
+        dataRepository: context.read<DataRepository>(),
+      ),
+      child: BlocBuilder<FeedSlideshowCubit, FeedSlideshowState>(
+        builder: (context, state) {
+          Map<String, String> headers =
+              context.read<AppBloc>().state.user.headers;
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: InkWell(
-                onTap: () {
-                  Navigator.of(context)
-                      .pushNamed('/album', arguments: arguments);
-                },
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
                 child: Container(
                   decoration: BoxDecoration(
                     color: const Color.fromRGBO(44, 44, 44, .75),
@@ -36,20 +37,18 @@ class FeedSlideshowInset extends StatelessWidget {
                   clipBehavior: Clip.hardEdge,
                   child: Stack(
                     children: [
-                      state.topThreeImages.isNotEmpty
+                      album.topThreeImages.isNotEmpty
                           ? PageView.builder(
                               onPageChanged: (index) => context
                                   .read<FeedSlideshowCubit>()
                                   .updatePage(index),
-                              controller: state.pageController,
-                              itemCount: state.topThreeImages.length,
-                              allowImplicitScrolling: true,
+                              itemCount: album.topThreeImages.length,
                               itemBuilder: (context, index) {
                                 return Container(
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
                                       image: CachedNetworkImageProvider(
-                                        state.topThreeImages[index].imageReq540,
+                                        album.topThreeImages[index].imageReq540,
                                         headers: headers,
                                         errorListener: (_) {},
                                       ),
@@ -63,7 +62,7 @@ class FeedSlideshowInset extends StatelessWidget {
                               decoration: BoxDecoration(
                                 image: DecorationImage(
                                   image: CachedNetworkImageProvider(
-                                    state.album.coverReq,
+                                    album.coverReq540,
                                     headers: headers,
                                     errorListener: (_) {},
                                   ),
@@ -94,7 +93,7 @@ class FeedSlideshowInset extends StatelessWidget {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceAround,
                                     children: List.generate(
-                                      state.topThreeImages.length,
+                                      album.topThreeImages.length,
                                       (index) {
                                         return Text(
                                           (index + 1).toString(),
@@ -103,8 +102,7 @@ class FeedSlideshowInset extends StatelessWidget {
                                             fontWeight: FontWeight.w700,
                                             color: state.currentPage == index
                                                 ? Colors.white
-                                                : Colors.white
-                                                    .withOpacity(0.25),
+                                                : Colors.white24,
                                           ),
                                         );
                                       },
@@ -120,72 +118,49 @@ class FeedSlideshowInset extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 12.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 8.0),
-                          child: CircleAvatar(
-                            backgroundImage:
-                                const AssetImage("lib/assets/placeholder.png"),
-                            foregroundImage: CachedNetworkImageProvider(
-                              state.avatarUrl,
-                              headers: headers,
-                              errorListener: (_) {},
+              Padding(
+                padding: const EdgeInsets.only(top: 12.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: CircleAvatar(
+                              backgroundImage: const AssetImage(
+                                  "lib/assets/placeholder.png"),
+                              foregroundImage: CachedNetworkImageProvider(
+                                state.avatarUrl,
+                                headers: headers,
+                                errorListener: (_) {},
+                              ),
+                              onForegroundImageError: (_, __) {},
+                              radius: 15,
+                              backgroundColor:
+                                  const Color.fromRGBO(44, 44, 44, .75),
                             ),
-                            onForegroundImageError: (_, __) {},
-                            radius: 15,
-                            backgroundColor:
-                                const Color.fromRGBO(44, 44, 44, .75),
                           ),
-                        ),
-                        Text(
-                          state.imageOwnerName,
-                          style: GoogleFonts.montserrat(
-                            color: Colors.white70,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
+                          Text(
+                            state.imageOwnerName,
+                            style: GoogleFonts.lato(
+                              color: Colors.white70,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  // const Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //   children: [
-                  //     Padding(
-                  //       padding: EdgeInsets.only(right: 15.0),
-                  //       child: Icon(
-                  //         Icons.comment_rounded,
-                  //         color: Colors.white,
-                  //         size: 25,
-                  //       ),
-                  //     ),
-                  //     Icon(
-                  //       Icons.favorite_outline,
-                  //       color: Colors.white54,
-                  //       size: 25,
-                  //     ),
-                  //     // Icon(
-                  //     //   Icons.arrow_circle_up,
-                  //     //   color: Colors.white54,
-                  //     //   size: 25,
-                  //     // ),
-                  //   ],
-                  // )
-                ],
-              ),
-            )
-          ],
-        );
-      },
+                  ],
+                ),
+              )
+            ],
+          );
+        },
+      ),
     );
   }
 }

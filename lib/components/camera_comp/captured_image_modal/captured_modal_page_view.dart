@@ -57,18 +57,6 @@ class _CapturedModalPageViewState extends State<CapturedModalPageView> {
 
           textEditingController = TextEditingController(
               text: state.selectedAlbumImageList[index].caption);
-          // if (controllerMoved) {
-          //   controllerMoved = false;
-          // } else {
-          //   context
-          //       .read<CameraCubit>()
-          //       .updateSelectedImage(state.selectedAlbumImageList[index]);
-          //   textEditingController = TextEditingController(
-          //       text: state.selectedAlbumImageList[index].caption);
-          //   controllerMoved = true;
-          // }
-
-          //setState(() {});
         }
 
         return Column(
@@ -81,10 +69,10 @@ class _CapturedModalPageViewState extends State<CapturedModalPageView> {
                 itemBuilder: (context, index) => Container(
                   margin: const EdgeInsets.symmetric(horizontal: 10),
                   child: AspectRatio(
-                    aspectRatio: 9 / 16,
+                    aspectRatio: 3 / 4,
                     child: FittedBox(
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(25),
                         child: Image(
                           alignment: Alignment.topCenter,
                           fit: BoxFit.contain,
@@ -129,7 +117,7 @@ class _CapturedModalPageViewState extends State<CapturedModalPageView> {
                 expands: true,
                 controller: textEditingController,
                 textAlignVertical: TextAlignVertical.center,
-                style: GoogleFonts.montserrat(
+                style: GoogleFonts.lato(
                   color: Colors.white,
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
@@ -140,7 +128,7 @@ class _CapturedModalPageViewState extends State<CapturedModalPageView> {
                     vertical: 8,
                   ),
                   hintText: "Add Caption",
-                  hintStyle: GoogleFonts.montserrat(
+                  hintStyle: GoogleFonts.lato(
                     color: Colors.white54,
                     fontSize: 15,
                     fontWeight: FontWeight.w600,

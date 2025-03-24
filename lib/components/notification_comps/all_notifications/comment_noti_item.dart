@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,14 +18,18 @@ class CommentNotiItem extends StatelessWidget {
       imageID: notification.notificationMediaID,
     );
     return GestureDetector(
-      onTap: () =>
-          Navigator.of(context).pushNamed('/album', arguments: arguments),
+      onTap: () {
+        FirebaseAnalytics.instance.logEvent(
+            name: "event_clicked",
+            parameters: {"event_id": notification.albumID});
+        Navigator.of(context).pushNamed('/album', arguments: arguments);
+      },
       child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 8),
+        margin: const EdgeInsets.symmetric(vertical: 5),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 14),
         height: 75,
         decoration: BoxDecoration(
-          color: const Color.fromRGBO(19, 19, 19, 1),
+          color: const Color.fromRGBO(34, 34, 38, 0),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Row(
@@ -65,7 +70,7 @@ class CommentNotiItem extends StatelessWidget {
                     child: Text(
                       notification.comment,
                       overflow: TextOverflow.ellipsis,
-                      style: GoogleFonts.montserrat(
+                      style: GoogleFonts.lato(
                         color: Colors.white,
                         fontSize: 14,
                         fontWeight: FontWeight.w500,

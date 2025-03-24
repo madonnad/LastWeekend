@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/album_frame_cubit.dart';
+import 'package:shared_photo/bloc/cubit/auth_cubit.dart';
 import 'package:shared_photo/bloc/cubit/friend_profile_cubit.dart';
 import 'package:shared_photo/bloc/cubit/settings_cubit.dart';
 import 'package:shared_photo/models/arguments.dart';
@@ -9,8 +10,10 @@ import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 import 'package:shared_photo/repositories/realtime_repository.dart';
 import 'package:shared_photo/repositories/user_repository.dart';
 import 'package:shared_photo/screens/album_detail_frame.dart';
+import 'package:shared_photo/screens/auth/login_frame.dart';
+import 'package:shared_photo/screens/auth/new_auth.dart';
+import 'package:shared_photo/screens/auth/sign_up_frame.dart';
 import 'package:shared_photo/screens/event_frame.dart';
-import 'package:shared_photo/screens/auth_frame.dart';
 import 'package:shared_photo/screens/event_create/event_create_modal.dart';
 import 'package:shared_photo/screens/event_guest_frame.dart';
 import 'package:shared_photo/screens/friend_profile_frame.dart';
@@ -20,8 +23,55 @@ import 'package:shared_photo/screens/settings_frame.dart';
 
 Route onGenerateRoute(RouteSettings settings) {
   switch (settings.name) {
-    case '/':
-      return MaterialPageRoute(builder: (context) => const AuthFrame());
+    case '/auth': // was '/'
+      return MaterialPageRoute(builder: (context) => const NewAuth());
+    case '/auth/login':
+      AuthCubit authCubit = settings.arguments as AuthCubit;
+      return PageRouteBuilder(
+        transitionDuration: const Duration(milliseconds: 300),
+        reverseTransitionDuration: const Duration(milliseconds: 150),
+        pageBuilder: (context, _, __) => BlocProvider.value(
+          value: authCubit,
+          child: const LoginFrame(),
+        ),
+        transitionsBuilder: (context, a, b, c) {
+          var begin = const Offset(1.0, 0.0);
+          var end = Offset.zero;
+          var curve = Curves.ease;
+          var tween = Tween(begin: begin, end: end).chain(
+            CurveTween(curve: curve),
+          );
+
+          return SlideTransition(
+            position: a.drive(tween),
+            child: c,
+          );
+        },
+      );
+    case '/auth/sign-up':
+      AuthCubit authCubit = settings.arguments as AuthCubit;
+      return PageRouteBuilder(
+        transitionDuration: const Duration(milliseconds: 300),
+        reverseTransitionDuration: const Duration(milliseconds: 150),
+        pageBuilder: (context, _, __) => BlocProvider.value(
+          value: authCubit,
+          child: const SignUpFrame(),
+        ),
+        transitionsBuilder: (context, a, b, c) {
+          var begin = const Offset(1.0, 0.0);
+          var end = Offset.zero;
+          var curve = Curves.ease;
+          var tween = Tween(begin: begin, end: end).chain(
+            CurveTween(curve: curve),
+          );
+
+          return SlideTransition(
+            position: a.drive(tween),
+            child: c,
+          );
+        },
+      );
+
     case '/create-album':
       return MaterialPageRoute(builder: (context) => const EventCreateModal());
     case '/album':
@@ -32,9 +82,6 @@ Route onGenerateRoute(RouteSettings settings) {
         reverseTransitionDuration: const Duration(milliseconds: 150),
         pageBuilder: (context, _, __) => MultiBlocProvider(
           providers: [
-            // BlocProvider.value(
-            //   value: AppFrameCubit(),
-            // ),
             BlocProvider(
               create: (context) => AlbumFrameCubit(
                 albumID: arguments.albumID,
@@ -152,7 +199,7 @@ Route onGenerateRoute(RouteSettings settings) {
             user: context.read<AppBloc>().state.user,
             dataRepository: context.read<DataRepository>(),
           ),
-          child: const FriendProfileFrame(),
+          child: FriendProfileFrame(userID: lookupUid),
         ),
         transitionsBuilder: (context, a, b, c) {
           var begin = const Offset(1.0, 0.0);
@@ -219,6 +266,6 @@ Route onGenerateRoute(RouteSettings settings) {
       );
 
     default:
-      return MaterialPageRoute(builder: (context) => const AuthFrame());
+      return MaterialPageRoute(builder: (context) => const NewAuth());
   }
 }

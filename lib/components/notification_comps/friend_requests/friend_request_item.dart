@@ -26,11 +26,11 @@ class FriendRequestItem extends StatelessWidget {
   Widget build(BuildContext context) {
     String lastLetter = lastName[0];
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8),
+      margin: const EdgeInsets.symmetric(vertical: 5),
       padding: const EdgeInsets.symmetric(horizontal: 10),
       height: 75,
       decoration: BoxDecoration(
-        color: const Color.fromRGBO(19, 19, 19, 1),
+        color: const Color.fromRGBO(19, 19, 19, 0),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
@@ -55,7 +55,7 @@ class FriendRequestItem extends StatelessWidget {
                   fit: BoxFit.scaleDown,
                   child: Text(
                     '$firstName $lastLetter.',
-                    style: GoogleFonts.montserrat(
+                    style: GoogleFonts.lato(
                       color: Colors.white,
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
@@ -91,7 +91,7 @@ class FriendRequestItem extends StatelessWidget {
               const SizedBox(width: 15),
               NotificationButton(
                 buttonText: "Accept",
-                backgroundColor: const Color.fromRGBO(181, 131, 141, 1),
+                backgroundColor: const Color.fromRGBO(255, 98, 96, 1),
                 onTap: () =>
                     context.read<NotificationCubit>().acceptFriendRequest(
                           requestID: requestID,

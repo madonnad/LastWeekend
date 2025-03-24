@@ -34,7 +34,7 @@ class EventCoverPhotoSelector extends StatelessWidget {
               );
             },
             child: DottedBorder(
-              color: const Color.fromRGBO(181, 131, 141, .75),
+              color: const Color.fromRGBO(255, 98, 96, 1),
               borderType: BorderType.RRect,
               borderPadding: const EdgeInsets.all(4),
               radius: const Radius.circular(20),
@@ -57,7 +57,7 @@ class EventCoverPhotoSelector extends StatelessWidget {
                       ? Text(
                           "Cover\nPhoto".toUpperCase(),
                           textAlign: TextAlign.center,
-                          style: GoogleFonts.montserrat(
+                          style: GoogleFonts.lato(
                             color: Colors.white54,
                             fontSize: 14,
                             fontWeight: FontWeight.bold,

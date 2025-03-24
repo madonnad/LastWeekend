@@ -29,11 +29,12 @@ class ImageFrameAppBar extends StatelessWidget implements PreferredSizeWidget {
               color: Colors.white,
             ),
           ),
+          centerTitle: true,
           title: Column(
             children: [
               Text(
                 dateString,
-                style: GoogleFonts.montserrat(
+                style: GoogleFonts.lato(
                   color: Colors.white70,
                   fontSize: 14,
                   fontWeight: FontWeight.w300,
@@ -41,7 +42,7 @@ class ImageFrameAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
               Text(
                 timeString,
-                style: GoogleFonts.montserrat(
+                style: GoogleFonts.lato(
                   color: Colors.white70,
                   fontSize: 24,
                   fontWeight: FontWeight.w700,

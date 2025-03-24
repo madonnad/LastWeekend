@@ -110,6 +110,14 @@ class CreateEventCubit extends Cubit<CreateEventState> {
 
     if (success) {
       emit(state.copyWith(loading: false));
+
+      // FirebaseAnalytics.instance.logEvent(
+      //   name: "event_created",
+      //   parameters: {
+      //     "invite_count": state.invitedUIDList.length,
+      //   },
+      // );
+
       return success;
     } else {
       CustomException exception = CustomException(errorString: error);

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -5,7 +6,6 @@ import 'package:shared_photo/bloc/bloc/app_bloc.dart';
 import 'package:shared_photo/bloc/cubit/settings_cubit.dart';
 import 'package:shared_photo/components/app_comp/section_header_small.dart';
 import 'package:shared_photo/components/settings_comp/logout_modal.dart';
-import 'package:shared_photo/screens/album_detail_frame.dart';
 import 'package:shared_photo/screens/settings/prof_photo_frame.dart';
 
 class SettingsFrame extends StatelessWidget {
@@ -14,7 +14,7 @@ class SettingsFrame extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      //backgroundColor: Colors.black,
       appBar: AppBar(
         leading: GestureDetector(
           onTap: () => Navigator.of(context).pop(),
@@ -23,13 +23,9 @@ class SettingsFrame extends StatelessWidget {
             color: Colors.white,
           ),
         ),
+        centerTitle: true,
         title: Text(
           "Settings",
-          style: GoogleFonts.josefinSans(
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
-            fontSize: 24,
-          ),
         ),
       ),
       body: Padding(
@@ -40,7 +36,7 @@ class SettingsFrame extends StatelessWidget {
               physics: const ClampingScrollPhysics(),
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 60.0),
+                  padding: const EdgeInsets.symmetric(vertical: 40.0),
                   child: Center(
                     child: GestureDetector(
                       onTap: () => showModalBottomSheet(
@@ -49,6 +45,7 @@ class SettingsFrame extends StatelessWidget {
                         useSafeArea: true,
                         isDismissible: false,
                         enableDrag: false,
+                        barrierColor: Color.fromRGBO(19, 19, 20, .5),
                         builder: (ctx) => BlocProvider.value(
                           value: context.read<SettingsCubit>(),
                           child: const ProfPhotoFrame(),
@@ -58,19 +55,19 @@ class SettingsFrame extends StatelessWidget {
                         alignment: Alignment.center,
                         children: [
                           CircleAvatar(
-                            radius: 165 / 2,
+                            radius: 145 / 2,
                             backgroundColor: Colors.white54,
                             backgroundImage:
                                 const AssetImage("lib/assets/placeholder.png"),
-                            foregroundImage: NetworkImage(
+                            foregroundImage: CachedNetworkImageProvider(
                               state.user.avatarUrl,
                               headers: state.user.headers,
                             ),
                             onForegroundImageError: (_, __) {},
                           ),
                           Container(
-                            height: 165,
-                            width: 165,
+                            height: 145,
+                            width: 145,
                             decoration: BoxDecoration(
                               color: Colors.black54,
                               borderRadius: BorderRadius.circular(165),
@@ -86,27 +83,38 @@ class SettingsFrame extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SectionHeaderSmall("Account Settings"),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child: const SectionHeaderSmall("Account Settings"),
+                ),
                 const SizedBox(height: 10),
-                DetailItem(
-                  itemTitle: "Edit Profile",
-                  backgroundColor: const Color.fromRGBO(19, 19, 19, 1),
-                  onTap: () {
+                TextButton(
+                  onPressed: () {
                     Map<String, dynamic> argMap = {
                       'settingsCubit': context.read<SettingsCubit>(),
                     };
                     Navigator.of(context)
                         .pushNamed('/edit_profile', arguments: argMap);
                   },
+                  child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text("Edit Profile")),
                 ),
                 const SizedBox(height: 10),
-                DetailItem(
-                  itemTitle: "Logout",
-                  backgroundColor: const Color.fromRGBO(44, 44, 44, 1),
-                  onTap: () => showDialog(
-                    barrierColor: Colors.black87,
-                    context: context,
-                    builder: (context) => const LogoutModal(),
+                Center(
+                  child: OutlinedButton(
+                    onPressed: () => showDialog(
+                      barrierColor: Colors.black87,
+                      context: context,
+                      builder: (context) => const LogoutModal(),
+                    ),
+                    child: Text(
+                      "Logout",
+                      style: GoogleFonts.lato(
+                        //fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                   ),
                 ),
               ],

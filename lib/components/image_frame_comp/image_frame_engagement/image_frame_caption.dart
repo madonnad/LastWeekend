@@ -79,7 +79,7 @@ class ImageFrameCaption extends StatelessWidget {
                         ? showCaption
                             ? Text(
                                 state.image.imageCaption,
-                                style: GoogleFonts.montserrat(
+                                style: GoogleFonts.lato(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w700,
                                   fontSize: 14,
@@ -96,7 +96,7 @@ class ImageFrameCaption extends StatelessWidget {
                               )
                         : Text(
                             "   ",
-                            style: GoogleFonts.montserrat(
+                            style: GoogleFonts.lato(
                               color: Colors.white,
                               fontWeight: FontWeight.w700,
                               fontSize: 14,

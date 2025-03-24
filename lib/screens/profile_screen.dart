@@ -40,7 +40,7 @@ class ProfileScreen extends StatelessWidget {
                               child: Center(
                                 child: Text(
                                   "No Events",
-                                  style: GoogleFonts.montserrat(
+                                  style: GoogleFonts.lato(
                                     color: Colors.white54,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,

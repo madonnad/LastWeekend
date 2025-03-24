@@ -17,7 +17,7 @@ class EmptyFeed extends StatelessWidget {
               child: Text(
                 "No Albums in the Feed 😔",
                 textAlign: TextAlign.center,
-                style: GoogleFonts.montserrat(
+                style: GoogleFonts.lato(
                   color: Colors.white.withOpacity(.85),
                   fontSize: 24,
                   fontWeight: FontWeight.w600,
@@ -29,7 +29,7 @@ class EmptyFeed extends StatelessWidget {
               child: Text(
                 "Follow someone or start an album to see them here!",
                 textAlign: TextAlign.center,
-                style: GoogleFonts.montserrat(
+                style: GoogleFonts.lato(
                   color: Colors.white.withOpacity(.5),
                   fontSize: 14,
                   fontWeight: FontWeight.w500,

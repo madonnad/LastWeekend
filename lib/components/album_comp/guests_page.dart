@@ -48,9 +48,9 @@ class GuestsPage extends StatelessWidget {
                       ? GestureDetector(
                           onTap: () => Navigator.of(context)
                               .pushNamed('/guest', arguments: argMap),
-                          child: Container(
+                          child: SizedBox(
                             height: guestsImages.isNotEmpty ? 200 : null,
-                            color: Colors.black,
+                            //color: Colors.black,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -79,8 +79,8 @@ class GuestsPage extends StatelessWidget {
                                                 left: 10.0),
                                             child: Text(
                                               guest.fullName,
-                                              style: GoogleFonts.josefinSans(
-                                                fontWeight: FontWeight.w500,
+                                              style: GoogleFonts.lato(
+                                                fontWeight: FontWeight.w600,
                                                 fontSize: 16,
                                                 color: Colors.white,
                                               ),
@@ -125,7 +125,7 @@ class GuestsPage extends StatelessWidget {
                                     : Center(
                                         child: Text(
                                           "No Photos Added",
-                                          style: GoogleFonts.montserrat(
+                                          style: GoogleFonts.lato(
                                             color: Colors.white70,
                                             fontStyle: FontStyle.italic,
                                           ),

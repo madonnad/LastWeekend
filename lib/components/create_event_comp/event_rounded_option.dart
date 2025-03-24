@@ -19,11 +19,11 @@ class EventRoundedOption extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         decoration: BoxDecoration(
-          color: const Color.fromRGBO(44, 44, 44, 1),
+          color: const Color.fromRGBO(34, 34, 38, 1),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: isSelected
-                ? Color.fromRGBO(181, 131, 141, 1)
+                ? Color.fromRGBO(255, 98, 96, 1)
                 : Colors.transparent,
             width: 2.0,
           ),
@@ -31,8 +31,8 @@ class EventRoundedOption extends StatelessWidget {
         child: Center(
           child: Text(
             text,
-            style: GoogleFonts.montserrat(
-              color: Colors.white,
+            style: GoogleFonts.lato(
+              color: Color.fromRGBO(242, 243, 247, 1),
               fontSize: 13,
               fontWeight: FontWeight.w600,
             ),

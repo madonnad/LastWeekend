@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -34,19 +35,19 @@ class _SearchFrameState extends State<SearchFrame>
                   onChanged: (value) =>
                       context.read<SearchCubit>().querySearch(),
                   controller: state.searchController,
-                  style: GoogleFonts.josefinSans(
+                  style: GoogleFonts.lato(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
                     color: Colors.white,
                   ),
                   decoration: InputDecoration(
                     hintText: "Search",
-                    hintStyle: GoogleFonts.josefinSans(
+                    hintStyle: GoogleFonts.lato(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
                       color: Colors.white54,
                     ),
-                    fillColor: const Color.fromRGBO(19, 19, 19, 1),
+                    fillColor: Color.fromRGBO(34, 34, 38, 1),
                     filled: true,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
@@ -81,17 +82,27 @@ class _SearchFrameState extends State<SearchFrame>
                                           result: state.searchResult[index],
                                         ),
                                       );
-                                    }
-                                    return GestureDetector(
-                                      onTap: () =>
+                                    } else {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          FirebaseAnalytics.instance.logEvent(
+                                            name: "clicked_friend_page",
+                                            parameters: {
+                                              "user_id":
+                                                  state.searchResult[index].id
+                                            },
+                                          );
                                           Navigator.of(context).pushNamed(
-                                        '/friend',
-                                        arguments: state.searchResult[index].id,
-                                      ),
-                                      child: UserSearchResult(
-                                        result: state.searchResult[index],
-                                      ),
-                                    );
+                                            '/friend',
+                                            arguments:
+                                                state.searchResult[index].id,
+                                          );
+                                        },
+                                        child: UserSearchResult(
+                                          result: state.searchResult[index],
+                                        ),
+                                      );
+                                    }
                                   } else {
                                     return const SizedBox(height: 0);
                                   }
@@ -106,9 +117,9 @@ class _SearchFrameState extends State<SearchFrame>
                             fit: BoxFit.scaleDown,
                             child: Text(
                               "Find your friends here!",
-                              style: GoogleFonts.josefinSans(
+                              style: GoogleFonts.lato(
                                   color: Colors.white.withOpacity(.8),
-                                  fontSize: 24,
+                                  fontSize: 20,
                                   fontWeight: FontWeight.w600),
                             ),
                           ),
@@ -116,9 +127,9 @@ class _SearchFrameState extends State<SearchFrame>
                             fit: BoxFit.scaleDown,
                             child: Text(
                               "🕵️",
-                              style: GoogleFonts.josefinSans(
+                              style: GoogleFonts.lato(
                                 color: Colors.white,
-                                fontSize: 60,
+                                fontSize: 40,
                               ),
                             ),
                           ),

@@ -1,0 +1,2 @@
+/Users/dominickmadonna/StudioProjects/shared_album/android/app/.cxx/Debug/6z4p333b/arm64-v8a/CMakeFiles/edit_cache.dir
+/Users/dominickmadonna/StudioProjects/shared_album/android/app/.cxx/Debug/6z4p333b/arm64-v8a/CMakeFiles/rebuild_cache.dir

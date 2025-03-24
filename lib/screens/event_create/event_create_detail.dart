@@ -27,7 +27,7 @@ class EventCreateDetail extends StatelessWidget {
               children: [
                 Text(
                   "Create Event".toUpperCase(),
-                  style: GoogleFonts.montserrat(
+                  style: GoogleFonts.lato(
                     color: Colors.white,
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -115,37 +115,33 @@ class EventCreateDetail extends StatelessWidget {
                 children: [
                   const Spacer(),
                   Container(
-                    color: Colors.black,
+                    color: Color.fromRGBO(19, 19, 20, 1),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Expanded(
-                          child: EventModalButton(
-                            onTap: () => Navigator.pop(context),
-                            enabled: true,
-                            buttonText: "Cancel",
-                            backgroundColor: Color.fromRGBO(19, 19, 19, 1),
-                          ),
+                        OutlinedButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Text("Cancel"),
                         ),
                         const Gap(20),
-                        Expanded(
-                          child: EventModalButton(
-                            onTap: () async {
-                              bool success = await context
-                                  .read<CreateEventCubit>()
-                                  .createEvent();
-                              if (context.mounted && success) {
-                                Navigator.of(context).pop();
-                              }
-                            },
-                            enabled: state.canCreate,
-                            buttonText: "Create Event",
-                            backgroundColor:
-                                const Color.fromRGBO(181, 131, 141, 1),
-                          ),
+                        ElevatedButton(
+                          onPressed: state.canCreate
+                              ? () async {
+                                  bool success = await context
+                                      .read<CreateEventCubit>()
+                                      .createEvent();
+
+                                  if (context.mounted && success) {
+                                    Navigator.of(context).pop();
+                                  }
+                                }
+                              : null,
+                          child: Text("Create event"),
                         ),
                       ],
                     ),
                   ),
+                  Gap(10),
                 ],
               ),
             ),
@@ -190,7 +186,7 @@ class EventModalButton extends StatelessWidget {
         child: Center(
           child: Text(
             buttonText,
-            style: GoogleFonts.montserrat(
+            style: GoogleFonts.lato(
               color: enabled ? Colors.white : Colors.white.withOpacity(0.5),
               fontSize: 16,
               fontWeight: FontWeight.w700,

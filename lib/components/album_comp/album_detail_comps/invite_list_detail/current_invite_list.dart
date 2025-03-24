@@ -51,13 +51,13 @@ class CurrentInviteList extends StatelessWidget {
                               Text(
                                 state
                                     .album.sortedGuestsByInvite[index].fullName,
-                                style: GoogleFonts.josefinSans(
+                                style: GoogleFonts.lato(
                                   color: state.album.sortedGuestsByInvite[index]
                                               .status ==
                                           RequestStatus.accepted
                                       ? Colors.white
                                       : const Color.fromRGBO(125, 125, 125, 1),
-                                  fontSize: 18,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -72,7 +72,15 @@ class CurrentInviteList extends StatelessWidget {
                                 Icons.help_outline_outlined,
                                 color: Color.fromRGBO(125, 125, 125, 1)),
                             RequestStatus.denied =>
-                              const Icon(Icons.cancel, color: Colors.red)
+                              const Icon(Icons.cancel, color: Colors.red),
+                            RequestStatus.abandoned => Text(
+                                "has left",
+                                style: GoogleFonts.lato(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: const Color.fromRGBO(125, 125, 125, 1),
+                                ),
+                              )
                           }
                         ],
                       ),

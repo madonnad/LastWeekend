@@ -65,7 +65,7 @@ class FriendProfileHeader extends StatelessWidget {
               child: FittedBox(
                 child: Text(
                   "${state.anonymousFriend.firstName} ${state.anonymousFriend.lastName}",
-                  style: GoogleFonts.montserrat(
+                  style: GoogleFonts.lato(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
                     color: Colors.white,

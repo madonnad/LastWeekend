@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/arguments.dart';
+import 'package:shared_photo/models/notification.dart';
 
 class ProfileEventItem extends StatelessWidget {
   final Album event;
@@ -23,8 +25,11 @@ class ProfileEventItem extends StatelessWidget {
     Arguments arguments = Arguments(albumID: event.albumId);
 
     return GestureDetector(
-      onTap: () =>
-          Navigator.of(context).pushNamed('/album', arguments: arguments),
+      onTap: () {
+        FirebaseAnalytics.instance.logEvent(
+            name: "event_clicked", parameters: {"event_id": event.albumId});
+        Navigator.of(context).pushNamed('/album', arguments: arguments);
+      },
       child: Container(
         height: 250,
         width: double.infinity,
@@ -68,7 +73,7 @@ class ProfileEventItem extends StatelessWidget {
                           ),
                           child: Text(
                             "In Progress",
-                            style: GoogleFonts.montserrat(
+                            style: GoogleFonts.lato(
                               color: Colors.white,
                               fontSize: 11,
                               fontWeight: FontWeight.w700,
@@ -79,7 +84,7 @@ class ProfileEventItem extends StatelessWidget {
                   Spacer(),
                   Text(
                     event.albumName,
-                    style: GoogleFonts.montserrat(
+                    style: GoogleFonts.lato(
                       color: Colors.white,
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -89,7 +94,7 @@ class ProfileEventItem extends StatelessWidget {
                   Gap(8),
                   Text(
                     event.durationDateFormatter,
-                    style: GoogleFonts.montserrat(
+                    style: GoogleFonts.lato(
                       color: Color.fromRGBO(218, 218, 218, 1),
                       fontSize: 11,
                       fontWeight: FontWeight.w500,
@@ -100,7 +105,7 @@ class ProfileEventItem extends StatelessWidget {
                   Row(
                     children: [
                       EventSmallIconText(
-                        text: event.guests.length.toString(),
+                        text: event.visibleGuestCount,
                         icon: Icons.people,
                       ),
                       Gap(30),
@@ -148,7 +153,7 @@ class EventSmallIconText extends StatelessWidget {
         Gap(4),
         Text(
           text,
-          style: GoogleFonts.montserrat(
+          style: GoogleFonts.lato(
             color: Color.fromRGBO(218, 218, 218, 1),
             fontSize: 14,
             fontWeight: FontWeight.w700,

@@ -67,19 +67,11 @@ class _RevealCountdownState extends State<RevealCountdown> {
     calculateTimeUntilReveal();
     return Container(
       decoration: BoxDecoration(
-          //color: Color.fromRGBO(181, 131, 141, 1),
-          gradient: const LinearGradient(
-            colors: [
-              // Color.fromRGBO(255, 205, 178, 1),
-              // Color.fromRGBO(255, 180, 162, 1),
-              //Color.fromRGBO(229, 152, 155, 1),
-              Color.fromRGBO(181, 131, 141, 1),
-              Color.fromRGBO(109, 104, 117, 1),
-            ],
-            begin: Alignment.bottomLeft,
-            end: Alignment.topRight,
-          ),
-          borderRadius: BorderRadius.circular(2)),
+          color: Color.fromRGBO(255, 98, 96, .5),
+          borderRadius: BorderRadius.circular(5),
+          border: Border.all(
+            color: Color.fromRGBO(255, 98, 96, 1),
+          )),
       padding: const EdgeInsets.symmetric(vertical: 3.0, horizontal: 5.0),
       margin: const EdgeInsets.only(bottom: 4.0, left: 2.0, right: 2.0),
       child: Builder(
@@ -91,7 +83,7 @@ class _RevealCountdownState extends State<RevealCountdown> {
               children: [
                 Text(
                   "Reveals in",
-                  style: GoogleFonts.montserrat(
+                  style: GoogleFonts.lato(
                     color: Colors.white70,
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
@@ -117,7 +109,7 @@ class _RevealCountdownState extends State<RevealCountdown> {
               children: [
                 Text(
                   "Revealed on",
-                  style: GoogleFonts.montserrat(
+                  style: GoogleFonts.lato(
                     color: Colors.white70,
                     fontWeight: FontWeight.w600,
                     fontSize: 14,

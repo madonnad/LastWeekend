@@ -32,7 +32,7 @@ class NoAlbumsOverlay extends StatelessWidget {
                         const SizedBox(height: 25),
                         Text(
                           "No Albums Currently Unlocked!",
-                          style: GoogleFonts.josefinSans(
+                          style: GoogleFonts.lato(
                             fontSize: 26,
                             fontWeight: FontWeight.w700,
                             color: Colors.white,

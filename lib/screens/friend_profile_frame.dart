@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,18 +8,28 @@ import 'package:shared_photo/components/friend_profile_comp/friend_profile_heade
 import 'package:shared_photo/components/profile_comp/event_section/event_viewer.dart';
 import 'package:shared_photo/components/profile_comp/event_section/month_page_view.dart';
 
-class FriendProfileFrame extends StatelessWidget {
-  const FriendProfileFrame({super.key});
+class FriendProfileFrame extends StatefulWidget {
+  final String userID;
+  const FriendProfileFrame({super.key, required this.userID});
+
+  @override
+  State<FriendProfileFrame> createState() => _FriendProfileFrameState();
+}
+
+class _FriendProfileFrameState extends State<FriendProfileFrame> {
+  @override
+  void initState() {
+    FirebaseAnalytics.instance.logEvent(
+        name: "viewed_friend_page", parameters: {"user_id": widget.userID});
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     ValueNotifier<String> selectedPageNotifier = ValueNotifier<String>('');
 
-    // double paddingHeight =
-    //     MediaQuery.of(context).viewPadding.top + kToolbarHeight;
-
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Color.fromRGBO(19, 19, 20, 1),
       extendBodyBehindAppBar: true,
       body: BlocConsumer<FriendProfileCubit, FriendProfileState>(
         listenWhen: (previous, current) =>
@@ -65,7 +76,7 @@ class FriendProfileFrame extends StatelessWidget {
                                     child: Center(
                                       child: Text(
                                         "No events to see here",
-                                        style: GoogleFonts.montserrat(
+                                        style: GoogleFonts.lato(
                                           color: Colors.white54,
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600,

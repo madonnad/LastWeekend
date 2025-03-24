@@ -25,7 +25,7 @@ class NewBottomAppBar extends StatelessWidget {
             decoration: BoxDecoration(
               color: state.index == 2
                   ? Colors.white
-                  : const Color.fromRGBO(19, 19, 19, 1),
+                  : const Color.fromRGBO(34, 34, 38, 1),
               borderRadius: BorderRadius.circular(25),
             ),
             child: Row(

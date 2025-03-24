@@ -70,17 +70,17 @@ class InviteFriendPage extends StatelessWidget {
                                         .headers,
                                     errorListener: (_) {},
                                   ),
-                                  radius: 18,
+                                  radius: 14,
                                   onForegroundImageError: (_, __) {},
                                 ),
                                 const Gap(15),
                                 Expanded(
                                   child: Text(
                                     friendList[index].fullName,
-                                    style: GoogleFonts.josefinSans(
+                                    style: GoogleFonts.lato(
                                       color: Colors.white,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
                                     ),
                                     overflow: TextOverflow.fade,
                                     softWrap: false,
@@ -92,13 +92,9 @@ class InviteFriendPage extends StatelessWidget {
                           ),
                           InvitedButton(
                             isInvited: isInvited,
-                            onTap: () => context
-                                .read<AlbumFrameCubit>()
-                                .sendInviteToFriends(
-                                  guestUID,
-                                  friendList[index].firstName,
-                                  friendList[index].lastName,
-                                ),
+                            inviteID: guestUID,
+                            firstName: friendList[index].firstName,
+                            lastName: friendList[index].lastName,
                           ),
                         ],
                       ),

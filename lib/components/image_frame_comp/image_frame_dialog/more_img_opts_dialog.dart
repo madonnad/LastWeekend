@@ -30,7 +30,7 @@ class MoreImageOptsDialog extends StatelessWidget {
                 "Options",
                 textAlign: TextAlign.center,
               ),
-              titleTextStyle: GoogleFonts.montserrat(
+              titleTextStyle: GoogleFonts.lato(
                 color: Colors.white.withOpacity(.75),
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
@@ -113,7 +113,7 @@ class DialogOptionItem extends StatelessWidget {
         children: [
           Text(
             text,
-            style: GoogleFonts.montserrat(
+            style: GoogleFonts.lato(
               color: textColor,
               fontWeight: FontWeight.w500,
               fontSize: 16,

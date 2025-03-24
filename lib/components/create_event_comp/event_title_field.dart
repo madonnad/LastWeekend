@@ -13,12 +13,12 @@ class EventTitleField extends StatelessWidget {
         return Expanded(
           child: Container(
             height: 220,
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              color: Colors.transparent,
+              //color: Colors.transparent,
               border: Border.all(
-                color: Colors.white54,
+                color: Color.fromRGBO(242, 243, 247, .5),
               ),
             ),
             child: TextField(
@@ -29,27 +29,30 @@ class EventTitleField extends StatelessWidget {
                   context.read<CreateEventCubit>().setEventTitle(text),
               controller: state.albumName,
               textAlignVertical: TextAlignVertical.center,
+              textAlign: TextAlign.left,
               maxLines: null,
               minLines: 6,
               maxLength: 50,
-              style: GoogleFonts.josefinSans(
-                color: Colors.white,
+              style: GoogleFonts.lato(
+                color: Color.fromRGBO(242, 243, 247, 1),
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
               ),
               decoration: InputDecoration(
+                fillColor: Colors.transparent,
                 hintText: "Event Name",
-                hintStyle: GoogleFonts.josefinSans(
-                  color: Colors.white30,
+                hintStyle: GoogleFonts.lato(
+                  color: Color.fromRGBO(242, 243, 247, .3),
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
                 ),
                 focusedBorder: InputBorder.none,
-                counterStyle: GoogleFonts.montserrat(
-                  color: Colors.white,
+                counterStyle: GoogleFonts.lato(
+                  color: Color.fromRGBO(242, 243, 247, 1),
                   fontSize: 11,
                   fontWeight: FontWeight.w400,
                 ),
+                enabledBorder: InputBorder.none,
               ),
             ),
           ),

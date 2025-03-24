@@ -17,7 +17,7 @@ class RevealDurationRow extends StatelessWidget {
             children: [
               Text(
                 "Event reveals at",
-                style: GoogleFonts.montserrat(
+                style: GoogleFonts.lato(
                   color: Colors.white54,
                   fontWeight: FontWeight.w800,
                   fontSize: 14,
@@ -27,10 +27,10 @@ class RevealDurationRow extends StatelessWidget {
                 children: [
                   Text(
                     "${state.revealDateString!} • ${state.revealTimeString} ",
-                    style: GoogleFonts.montserrat(
+                    style: GoogleFonts.lato(
                       color: Colors.white,
                       fontWeight: FontWeight.w500,
-                      fontSize: 24,
+                      fontSize: 20,
                     ),
                   ),
                   Spacer(),

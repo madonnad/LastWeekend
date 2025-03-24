@@ -3,9 +3,11 @@ import 'dart:collection';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:shared_photo/models/album.dart';
 import 'package:shared_photo/models/custom_exception.dart';
 import 'package:shared_photo/models/guest.dart';
+import 'package:shared_photo/models/notification.dart';
 import 'package:shared_photo/models/photo.dart';
 import 'package:shared_photo/repositories/data_repository/data_repository.dart';
 import 'package:shared_photo/repositories/realtime_repository.dart';
@@ -27,7 +29,7 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
             album: Album.empty,
           ),
         ) {
-    // Fetch Album to Initalize
+    // Fetch Album to Initialize
     initializeAlbum();
 
     realtimeRepository.openAlbumChannelWebSocket(albumID);
@@ -64,11 +66,15 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
   void initializeAlbum() async {
     emit(state.copyWith(loading: true));
 
-    Album updatedAlbum = await dataRepository.getAlbumByID(albumID);
+    Album? updatedAlbum = await dataRepository.getAlbumByID(albumID);
+
+    if (updatedAlbum == null) {
+      return;
+    }
 
     emit(state.copyWith(
       album: updatedAlbum,
-      images: List.from(updatedAlbum.images),
+      images: List.from(updatedAlbum!.images),
       loading: false,
     ));
 
@@ -154,6 +160,10 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
         return;
       }
 
+      FirebaseAnalytics.instance.logEvent(
+          name: "image_deleted",
+          parameters: {"image_id": state.selectedImage?.imageId ?? ''});
+
       if (newSelected == null) {
         emit(state.copyWith(clearSelectedImage: true, loading: false));
         return;
@@ -162,20 +172,33 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
     }
   }
 
-  void sendInviteToFriends(
+  Future<(bool, String?)> sendInviteToFriends(
       String guestID, String guestFirst, String guestLast) async {
+    bool success;
     String? error;
+
     emit(state.copyWith(loading: true));
-    (_, error) = await dataRepository.inviteUserToAlbum(
+
+    (success, error) = await dataRepository.inviteUserToAlbum(
         state.album.albumId, guestID, guestFirst, guestLast);
+
     if (error != null) {
       CustomException exception = CustomException(errorString: error);
       emit(state.copyWith(loading: false, exception: exception));
       emit(state.copyWith(exception: CustomException.empty));
-      return;
+      return (success, exception.errorString);
     }
 
+    FirebaseAnalytics.instance.logEvent(
+      name: "event_updated",
+      parameters: {
+        "type": "friend_invite",
+        "value": guestID,
+      },
+    );
+
     emit(state.copyWith(loading: false));
+    return (success, error);
   }
 
   Future<bool> updateAlbumVisibility(
@@ -193,8 +216,98 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
       return false;
     }
 
+    FirebaseAnalytics.instance.logEvent(
+      name: "event_updated",
+      parameters: {
+        "type": "visiblity",
+        "value": visibility.description,
+      },
+    );
+
     emit(state.copyWith(loading: false));
     return true;
+  }
+
+  Future<bool> updateDatetime(DateTime datetime) async {
+    String? error;
+    emit(state.copyWith(loading: true));
+
+    (_, error) = await dataRepository.updateDatetime(albumID, datetime);
+    if (error != null) {
+      CustomException exception = CustomException(errorString: error);
+      emit(state.copyWith(loading: false, exception: exception));
+      emit(state.copyWith(exception: CustomException.empty));
+      return false;
+    }
+
+    FirebaseAnalytics.instance.logEvent(
+      name: "event_updated",
+      parameters: {
+        "type": "reveal datetime",
+      },
+    );
+
+    emit(state.copyWith(loading: false));
+    return true;
+  }
+
+  Future<bool> transferAndLeaveEvent(Guest guest) async {
+    String? error;
+    bool success = false;
+    emit(state.copyWith(loading: true));
+    (success, error) =
+        await dataRepository.updateEventOwnership(albumID, guest);
+
+    if (error != null) {
+      CustomException exception = CustomException(errorString: error);
+      emit(state.copyWith(loading: false, exception: exception));
+      emit(state.copyWith(exception: CustomException.empty));
+      return success;
+    }
+
+    (success, error) = await dataRepository.deleteLeaveEvent(albumID);
+    if (error != null) {
+      CustomException exception = CustomException(errorString: error);
+      emit(state.copyWith(loading: false, exception: exception));
+      emit(state.copyWith(exception: CustomException.empty));
+      return success;
+    }
+    emit(state.copyWith(loading: false));
+    return success;
+  }
+
+  Future<bool> leaveEvent() async {
+    String? error;
+    bool success = false;
+    emit(state.copyWith(loading: true));
+
+    (success, error) = await dataRepository.deleteLeaveEvent(albumID);
+    if (error != null) {
+      CustomException exception = CustomException(errorString: error);
+      emit(state.copyWith(loading: false, exception: exception));
+      emit(state.copyWith(exception: CustomException.empty));
+      print(error);
+      return success;
+    }
+
+    emit(state.copyWith(loading: false));
+    return success;
+  }
+
+  Future<bool> deleteEvent() async {
+    String? error;
+    bool success = false;
+    emit(state.copyWith(loading: true));
+
+    (success, error) = await dataRepository.deleteEvent(albumID);
+    if (error != null) {
+      CustomException exception = CustomException(errorString: error);
+      emit(state.copyWith(loading: false, exception: exception));
+      emit(state.copyWith(exception: CustomException.empty));
+      return success;
+    }
+    emit(state.copyWith(loading: false));
+    return success;
   }
 
   @override

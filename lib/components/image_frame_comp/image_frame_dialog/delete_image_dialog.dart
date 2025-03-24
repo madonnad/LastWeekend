@@ -16,7 +16,7 @@ class DeleteImageDialog extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(5),
           ),
-          titleTextStyle: GoogleFonts.montserrat(
+          titleTextStyle: GoogleFonts.lato(
             color: Colors.white.withOpacity(.75),
             fontSize: 16,
             fontWeight: FontWeight.w600,
@@ -34,6 +34,7 @@ class DeleteImageDialog extends StatelessWidget {
                   child: TextButton(
                     onPressed: () {
                       context.read<AlbumFrameCubit>().deleteImageInAlbum();
+
                       Navigator.of(context).pop();
                     },
                     style: TextButton.styleFrom(
@@ -44,7 +45,7 @@ class DeleteImageDialog extends StatelessWidget {
                     ),
                     child: Text(
                       "Delete",
-                      style: GoogleFonts.montserrat(
+                      style: GoogleFonts.lato(
                         color: Colors.white,
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
@@ -64,7 +65,7 @@ class DeleteImageDialog extends StatelessWidget {
                     ),
                     child: Text(
                       "Cancel",
-                      style: GoogleFonts.montserrat(
+                      style: GoogleFonts.lato(
                         color: Colors.white,
                         fontSize: 16,
                         fontWeight: FontWeight.w500,

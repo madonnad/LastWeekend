@@ -38,6 +38,18 @@ class SettingsState extends Equatable {
     );
   }
 
+  SettingsState clearProfileImage() {
+    return SettingsState(
+      user: user,
+      profileImageToUpload: null,
+      firstName: firstName,
+      lastName: lastName,
+      nameMatches: nameMatches,
+      loading: loading,
+      exception: exception,
+    );
+  }
+
   @override
   List<Object?> get props => [
         user,

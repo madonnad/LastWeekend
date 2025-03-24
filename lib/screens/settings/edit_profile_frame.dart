@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_photo/bloc/cubit/settings_cubit.dart';
 import 'package:shared_photo/components/app_comp/section_header_small.dart';
@@ -14,7 +15,6 @@ class EditProfileFrame extends StatelessWidget {
     TextEditingController lastNameController = TextEditingController();
 
     return Scaffold(
-      backgroundColor: Colors.black,
       appBar: AppBar(
         leading: GestureDetector(
           onTap: () => Navigator.of(context).pop(),
@@ -23,13 +23,9 @@ class EditProfileFrame extends StatelessWidget {
             color: Colors.white,
           ),
         ),
+        centerTitle: true,
         title: Text(
           "Edit Profile",
-          style: GoogleFonts.josefinSans(
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
-            fontSize: 24,
-          ),
         ),
       ),
       body: BlocBuilder<SettingsCubit, SettingsState>(
@@ -53,22 +49,31 @@ class EditProfileFrame extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Gap(10),
                     const SectionHeaderSmall("FIRST NAME"),
-                    EditProfileTextField(
-                      hintText: state.user.firstName,
-                      enabled: true,
+                    Gap(4),
+                    TextField(
                       controller: firstNameController,
                       onChanged: (value) =>
                           context.read<SettingsCubit>().updateFirstName(value),
-                    ),
-                    const SectionHeaderSmall("LAST NAME"),
-                    EditProfileTextField(
-                      hintText: state.user.lastName,
                       enabled: true,
+                      decoration: InputDecoration(
+                        hintText: state.user.firstName,
+                      ),
+                    ),
+                    Gap(10),
+                    const SectionHeaderSmall("LAST NAME"),
+                    Gap(4),
+                    TextField(
                       controller: lastNameController,
                       onChanged: (value) =>
                           context.read<SettingsCubit>().updateLastName(value),
+                      enabled: true,
+                      decoration: InputDecoration(
+                        hintText: state.user.lastName,
+                      ),
                     ),
+                    Gap(10),
                     const SectionHeaderSmall("EMAIL"),
                     EditProfileTextField(
                       hintText: email,
@@ -80,56 +85,34 @@ class EditProfileFrame extends StatelessWidget {
                       child: Container(),
                     ),
                     !state.nameMatches
-                        ? GestureDetector(
-                            onTap: () {
-                              context
-                                  .read<SettingsCubit>()
-                                  .updateFirstLastName();
-                              context
-                                  .read<Auth0Repository>()
-                                  .getInternalUserInformation(
-                                      state.user.token, email, false);
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(
-                                horizontal: 75,
-                                vertical: 10,
-                              ),
-                              decoration: BoxDecoration(
-                                  gradient: const LinearGradient(
-                                    colors: [
-                                      Color.fromRGBO(255, 205, 178, 1),
-                                      Color.fromRGBO(255, 180, 162, 1),
-                                      Color.fromRGBO(229, 152, 155, 1),
-                                      Color.fromRGBO(181, 131, 141, 1),
-                                      Color.fromRGBO(109, 104, 117, 1),
-                                    ],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                  ),
-                                  borderRadius: BorderRadius.circular(10)),
-                              height: 50,
-                              child: Center(
-                                  child: Text(
+                        ? Center(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                context
+                                    .read<SettingsCubit>()
+                                    .updateFirstLastName();
+                                context
+                                    .read<Auth0Repository>()
+                                    .getInternalUserInformation(
+                                        state.user.token, email, false);
+                              },
+                              child: Text(
                                 "Update",
-                                style: GoogleFonts.montserrat(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 16,
-                                ),
-                              )),
+                                style: TextStyle(fontSize: 16),
+                              ),
                             ),
                           )
-                        : const SizedBox.shrink()
+                        : const SizedBox.shrink(),
+                    Gap(15),
                   ],
                 ),
               ),
               state.loading
-                  ? Center(
-                      child: Container(
-                        height: MediaQuery.of(context).size.height,
-                        width: MediaQuery.of(context).size.width,
-                        color: Colors.black54,
+                  ? Container(
+                      height: MediaQuery.of(context).size.height,
+                      width: MediaQuery.of(context).size.width,
+                      color: Colors.black54,
+                      child: Center(
                         child: const CircularProgressIndicator.adaptive(
                           backgroundColor: Colors.white,
                         ),
@@ -164,7 +147,7 @@ class EditProfileTextField extends StatelessWidget {
       child: TextField(
         enabled: enabled,
         controller: controller,
-        style: GoogleFonts.montserrat(
+        style: GoogleFonts.lato(
           fontSize: 16,
           fontWeight: FontWeight.w600,
           color: Colors.white,
@@ -172,7 +155,7 @@ class EditProfileTextField extends StatelessWidget {
         onChanged: onChanged,
         decoration: InputDecoration(
           hintText: hintText,
-          hintStyle: GoogleFonts.montserrat(
+          hintStyle: GoogleFonts.lato(
             fontSize: 16,
             fontWeight: FontWeight.w600,
             color: Color.fromRGBO(108, 108, 108, enabled ? 1 : .5),

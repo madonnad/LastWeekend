@@ -97,15 +97,19 @@ class Album extends Equatable {
   Album copyWith({
     Map<String, Photo>? imageMap,
     AlbumVisibility? visibility,
+    DateTime? revealDateTime,
+    String? albumOwner,
+    String? ownerFirst,
+    String? ownerLast,
   }) {
     return Album(
       albumId: albumId,
       albumName: albumName,
-      albumOwner: albumOwner,
-      ownerFirst: ownerFirst,
-      ownerLast: ownerLast,
+      albumOwner: albumOwner ?? this.albumOwner,
+      ownerFirst: ownerFirst ?? this.ownerFirst,
+      ownerLast: ownerLast ?? this.ownerLast,
       creationDateTime: creationDateTime,
-      revealDateTime: revealDateTime,
+      revealDateTime: revealDateTime ?? this.revealDateTime,
       visibility: visibility ?? this.visibility,
       phase: phase,
       imageMap: imageMap ?? this.imageMap,
@@ -172,10 +176,10 @@ class Album extends Equatable {
       albumOwner: map['album_owner'] as String,
       ownerFirst: map['owner_first'],
       ownerLast: map['owner_last'],
-      creationDateTime: DateTime.parse(map['created_at']),
+      creationDateTime: DateTime.parse(map['created_at']).toLocal(),
       guestMap: guests,
       imageMap: images,
-      revealDateTime: DateTime.parse(map['revealed_at']),
+      revealDateTime: DateTime.parse(map['revealed_at']).toLocal(),
       visibility: visibility,
       phase: phase,
     );
@@ -239,7 +243,7 @@ class Album extends Equatable {
     if (rankedImages.length > 3) {
       return images.getRange(0, 3).toList();
     } else if (rankedImages.isNotEmpty) {
-      return rankedImages.getRange(0, images.length - 1).toList();
+      return rankedImages.getRange(0, images.length).toList();
     } else {
       return [];
     }
@@ -358,12 +362,35 @@ class Album extends Equatable {
     List<Guest> deniedGuests = unsortedGuests
         .where((element) => element.status == RequestStatus.denied)
         .toList();
+    List<Guest> abandonedGuests = unsortedGuests
+        .where((element) => element.status == RequestStatus.abandoned)
+        .toList();
 
     List<Guest> sortedGuests = [];
     sortedGuests.addAll(acceptedGuests);
     sortedGuests.addAll(pendingGuests);
     sortedGuests.addAll(deniedGuests);
+    sortedGuests.addAll(abandonedGuests);
     return sortedGuests;
+  }
+
+  String get visibleGuestCount {
+    Set<String> guestSet = {};
+
+    for (String guestID in imageCountByGuestMap.keys) {
+      if (imageCountByGuestMap[guestID] != null &&
+          imageCountByGuestMap[guestID]! > 0) {
+        guestSet.add(guestID);
+      }
+    }
+
+    for (Guest guest in guests) {
+      if (guest.status == RequestStatus.accepted) {
+        guestSet.add(guest.uid);
+      }
+    }
+
+    return guestSet.length.toString();
   }
 
   String get revealDateTimeFormatter {
@@ -403,5 +430,6 @@ class Album extends Equatable {
         imageMap.hashCode,
         albumOwner,
         visibility,
+        revealDateTime,
       ];
 }

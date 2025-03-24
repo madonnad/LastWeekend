@@ -48,11 +48,6 @@ class AppFrameCubit extends Cubit<AppFrameState> {
     );
   }
 
-  // void changePageFromPassedRoute(BuildContext context, int index) {
-  //   Navigator.of(context).
-  //   state.pageController.jumpToPage(index);
-  // }
-
   @override
   Future<void> close() {
     navigationController.cancel();
