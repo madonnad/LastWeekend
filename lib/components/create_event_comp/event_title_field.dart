@@ -47,7 +47,7 @@ class EventTitleField extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                 ),
                 focusedBorder: InputBorder.none,
-                counterStyle: GoogleFonts.montserrat(
+                counterStyle: GoogleFonts.lato(
                   color: Color.fromRGBO(242, 243, 247, 1),
                   fontSize: 11,
                   fontWeight: FontWeight.w400,

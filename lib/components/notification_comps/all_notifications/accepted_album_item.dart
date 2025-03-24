@@ -66,7 +66,7 @@ class AcceptedAlbumItem extends StatelessWidget {
                   ),
                   Text(
                     albumName,
-                    style: GoogleFonts.montserrat(
+                    style: GoogleFonts.lato(
                       color: Colors.white,
                       fontSize: 14,
                       fontWeight: FontWeight.w500,

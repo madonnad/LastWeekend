@@ -70,7 +70,7 @@ class CommentNotiItem extends StatelessWidget {
                     child: Text(
                       notification.comment,
                       overflow: TextOverflow.ellipsis,
-                      style: GoogleFonts.montserrat(
+                      style: GoogleFonts.lato(
                         color: Colors.white,
                         fontSize: 14,
                         fontWeight: FontWeight.w500,

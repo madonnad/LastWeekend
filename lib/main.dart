@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,22 @@ import 'package:shared_photo/screens/auth/new_auth.dart';
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
 
+  GoogleFonts.config.allowRuntimeFetching = false;
+
+  LicenseRegistry.addLicense(() async* {
+    String license = await rootBundle
+        .loadString('assets/google_fonts/Dancing_Script/static/OFL.txt');
+    yield LicenseEntryWithLineBreaks(['dancing_script'], license);
+    license =
+        await rootBundle.loadString('assets/google_fonts/DM_Mono/OFL.txt');
+    yield LicenseEntryWithLineBreaks(['dm_mono'], license);
+    license =
+        await rootBundle.loadString('assets/google_fonts/Josefin_Sans/OFL.txt');
+    yield LicenseEntryWithLineBreaks(['josefin_sans'], license);
+    license = await rootBundle.loadString('assets/google_fonts/Lato/OFL.txt');
+    yield LicenseEntryWithLineBreaks(['lato'], license);
+  });
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -44,7 +61,9 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   HydratedBloc.storage = await HydratedStorage.build(
-    storageDirectory: await getApplicationDocumentsDirectory(),
+    storageDirectory: kIsWeb
+        ? HydratedStorageDirectory.web
+        : HydratedStorageDirectory((await getTemporaryDirectory()).path),
   );
 
   SystemChrome.setPreferredOrientations([

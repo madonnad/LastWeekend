@@ -34,7 +34,7 @@ class CameraCubit extends HydratedCubit<CameraState> {
       this.album})
       : super(CameraState.empty()) {
     if (mode == UploadMode.unlockedAlbums) {
-      hydrate();
+      //hydrate(); No longer need to call this on the HydratedCubit
       checkFailedUploads();
       albumStreamSubscription = dataRepository.albumStream.listen((event) {
         StreamOperation streamOperation = event.$1;

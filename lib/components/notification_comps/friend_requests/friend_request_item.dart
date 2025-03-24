@@ -55,7 +55,7 @@ class FriendRequestItem extends StatelessWidget {
                   fit: BoxFit.scaleDown,
                   child: Text(
                     '$firstName $lastLetter.',
-                    style: GoogleFonts.montserrat(
+                    style: GoogleFonts.lato(
                       color: Colors.white,
                       fontSize: 14,
                       fontWeight: FontWeight.w500,

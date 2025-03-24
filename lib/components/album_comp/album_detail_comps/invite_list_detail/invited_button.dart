@@ -78,7 +78,7 @@ class _InvitedButtonState extends State<InvitedButton> {
             ),
             child: Text(
               'INVITED',
-              style: GoogleFonts.montserrat(
+              style: GoogleFonts.lato(
                 color: const Color.fromRGBO(255, 98, 96, 1),
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
@@ -102,7 +102,7 @@ class _InvitedButtonState extends State<InvitedButton> {
               ),
               child: Text(
                 'INVITE',
-                style: GoogleFonts.montserrat(
+                style: GoogleFonts.lato(
                   color: const Color.fromRGBO(19, 19, 19, 1),
                   fontSize: 14,
                   fontWeight: FontWeight.w600,

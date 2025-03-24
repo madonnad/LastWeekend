@@ -62,7 +62,7 @@ class ImageFrameComment extends StatelessWidget {
                     Expanded(
                       child: Text(
                         comment.comment,
-                        style: GoogleFonts.montserrat(
+                        style: GoogleFonts.lato(
                           color: Colors.white.withOpacity(.9),
                           fontWeight: FontWeight.w500,
                           fontSize: 14,

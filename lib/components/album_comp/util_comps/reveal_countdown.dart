@@ -83,7 +83,7 @@ class _RevealCountdownState extends State<RevealCountdown> {
               children: [
                 Text(
                   "Reveals in",
-                  style: GoogleFonts.montserrat(
+                  style: GoogleFonts.lato(
                     color: Colors.white70,
                     fontWeight: FontWeight.w600,
                     fontSize: 14,
@@ -109,7 +109,7 @@ class _RevealCountdownState extends State<RevealCountdown> {
               children: [
                 Text(
                   "Revealed on",
-                  style: GoogleFonts.montserrat(
+                  style: GoogleFonts.lato(
                     color: Colors.white70,
                     fontWeight: FontWeight.w600,
                     fontSize: 14,

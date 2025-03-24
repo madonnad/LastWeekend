@@ -147,7 +147,7 @@ class EditProfileTextField extends StatelessWidget {
       child: TextField(
         enabled: enabled,
         controller: controller,
-        style: GoogleFonts.montserrat(
+        style: GoogleFonts.lato(
           fontSize: 16,
           fontWeight: FontWeight.w600,
           color: Colors.white,
@@ -155,7 +155,7 @@ class EditProfileTextField extends StatelessWidget {
         onChanged: onChanged,
         decoration: InputDecoration(
           hintText: hintText,
-          hintStyle: GoogleFonts.montserrat(
+          hintStyle: GoogleFonts.lato(
             fontSize: 16,
             fontWeight: FontWeight.w600,
             color: Color.fromRGBO(108, 108, 108, enabled ? 1 : .5),

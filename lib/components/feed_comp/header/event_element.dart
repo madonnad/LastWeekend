@@ -69,7 +69,7 @@ class EventElement extends StatelessWidget {
                   children: [
                     Text(
                       album.albumName,
-                      style: GoogleFonts.josefinSans(
+                      style: GoogleFonts.lato(
                         color: Colors.white,
                         fontSize: 16,
                         fontWeight: FontWeight.w600,

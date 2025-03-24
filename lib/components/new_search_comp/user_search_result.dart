@@ -42,55 +42,6 @@ class UserSearchResult extends StatelessWidget {
             ),
             onForegroundImageError: (_, __) {},
           ),
-
-          // isFriend
-          //     ? Container(
-          //         decoration: BoxDecoration(
-          //           color: const Color.fromRGBO(19, 19, 19, 1),
-          //           borderRadius: BorderRadius.circular(10),
-          //           border: Border.all(
-          //             color: const Color.fromRGBO(181, 131, 141, 1),
-          //             width: 2,
-          //           ),
-          //         ),
-          //         padding:
-          //             const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
-          //         child: Text(
-          //           "Friends",
-          //           style: GoogleFonts.montserrat(
-          //             color: const Color.fromRGBO(181, 131, 141, 1),
-          //             fontWeight: FontWeight.w700,
-          //             fontSize: 14,
-          //           ),
-          //         ),
-          //       )
-          //     : Container(
-          //         decoration: BoxDecoration(
-          //           gradient: const LinearGradient(
-          //             colors: [
-          //               Color.fromRGBO(255, 205, 178, 1),
-          //               Color.fromRGBO(255, 180, 162, 1),
-          //               Color.fromRGBO(229, 152, 155, 1),
-          //               Color.fromRGBO(181, 131, 141, 1),
-          //               Color.fromRGBO(109, 104, 117, 1),
-          //             ],
-          //             begin: Alignment.topLeft,
-          //             end: Alignment.bottomRight,
-          //           ),
-          //           borderRadius: BorderRadius.circular(10),
-          //           border: Border.all(width: 2),
-          //         ),
-          //         padding:
-          //             const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
-          //         child: Text(
-          //           "Add",
-          //           style: GoogleFonts.montserrat(
-          //             color: const Color.fromRGBO(19, 19, 19, 1),
-          //             fontWeight: FontWeight.w700,
-          //             fontSize: 14,
-          //           ),
-          //         ),
-          //       )
         ],
       ),
     );

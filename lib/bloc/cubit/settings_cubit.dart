@@ -28,7 +28,7 @@ class SettingsCubit extends Cubit<SettingsState> {
   }
 
   void clearNewImageFile() {
-    emit(state.copyWith(profileImageToUpload: null));
+    emit(state.clearProfileImage());
   }
 
   void checkNamesMatch() {

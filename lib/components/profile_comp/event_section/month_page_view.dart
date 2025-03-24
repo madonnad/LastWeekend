@@ -105,16 +105,6 @@ class _MonthPageViewState extends State<MonthPageView>
                         ),
                         decoration: BoxDecoration(
                           color: Color.fromRGBO(255, 98, 96, opacity),
-                          // gradient: LinearGradient(
-                          //   colors: [
-                          //     Color.fromRGBO(229, 152, 155, opacity),
-                          //     Color.fromRGBO(181, 131, 141, opacity),
-                          //     Color.fromRGBO(109, 104, 117, opacity),
-                          //   ],
-                          //   begin: Alignment.topLeft,
-                          //   end: Alignment.bottomRight,
-                          //   stops: [.5, .75, 1],
-                          // ),
                           borderRadius: BorderRadius.circular(25),
                         ),
                         child: (widget.minusOneIcon != null && index == 0)

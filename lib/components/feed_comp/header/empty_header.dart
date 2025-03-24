@@ -49,7 +49,7 @@ class _EmptyHeaderState extends State<EmptyHeader> {
                 fit: BoxFit.fitWidth,
                 child: Text(
                   "$greetingString ${state.user.firstName}",
-                  style: GoogleFonts.josefinSans(
+                  style: GoogleFonts.lato(
                     color: Colors.white,
                     fontWeight: FontWeight.w400,
                     fontSize: 18,
@@ -60,10 +60,10 @@ class _EmptyHeaderState extends State<EmptyHeader> {
               ),
               Text(
                 "You have no open events right now.",
-                style: GoogleFonts.montserrat(
+                style: GoogleFonts.lato(
                   color: Color.fromRGBO(218, 218, 218, .5),
                   fontWeight: FontWeight.w800,
-                  fontSize: 10,
+                  fontSize: 12,
                 ),
               ),
             ],

@@ -14,14 +14,17 @@ class ProfPhotoFrame extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double devWidth = MediaQuery.of(context).size.width;
-    double circleDiameter = devWidth * .25;
+    double circleDiameter = devWidth * .20;
     ImagePicker picker = ImagePicker();
 
     return Scaffold(
-      backgroundColor: Colors.black,
+      //backgroundColor: Colors.black,
       appBar: AppBar(
         leading: GestureDetector(
-          onTap: () => Navigator.of(context).pop(),
+          onTap: () {
+            context.read<SettingsCubit>().clearNewImageFile();
+            Navigator.of(context).pop();
+          },
           child: const Icon(
             Icons.close,
             color: Colors.white,
@@ -33,7 +36,7 @@ class ProfPhotoFrame extends StatelessWidget {
           style: GoogleFonts.josefinSans(
             fontWeight: FontWeight.w600,
             color: Colors.white,
-            fontSize: 24,
+            fontSize: 20,
           ),
         ),
       ),
@@ -55,7 +58,7 @@ class ProfPhotoFrame extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const SizedBox(
-                        height: 60,
+                        height: 25,
                         width: double.infinity,
                       ),
                       CircleAvatar(
@@ -87,8 +90,8 @@ class ProfPhotoFrame extends StatelessWidget {
                           );
                         },
                         child: Container(
-                          width: 100,
-                          height: 60,
+                          width: 75,
+                          height: 50,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             color: const Color.fromRGBO(44, 44, 44, 1),
@@ -96,80 +99,38 @@ class ProfPhotoFrame extends StatelessWidget {
                           child: const Icon(
                             Icons.photo_library_rounded,
                             color: Colors.white70,
-                            size: 35,
+                            size: 25,
                           ),
                         ),
                       ),
                       const Spacer(),
-                      InkWell(
-                        onTap: () async {
-                          if (settingsState.profileImageToUpload != null) {
-                            await context
-                                .read<SettingsCubit>()
-                                .uploadProfilePicture()
-                                .then(
-                              (value) async {
-                                if (value) {
-                                  if (context.mounted) {
-                                    context
-                                        .read<SettingsCubit>()
-                                        .clearNewImageFile();
+                      ElevatedButton(
+                        onPressed: settingsState.profileImageToUpload != null
+                            ? () async {
+                                await context
+                                    .read<SettingsCubit>()
+                                    .uploadProfilePicture()
+                                    .then(
+                                  (value) async {
+                                    if (value) {
+                                      if (context.mounted) {
+                                        context
+                                            .read<SettingsCubit>()
+                                            .clearNewImageFile();
 
-                                    await CachedNetworkImage.evictFromCache(
-                                        state.user.avatarUrl);
+                                        await CachedNetworkImage.evictFromCache(
+                                            state.user.avatarUrl);
 
-                                    if (context.mounted) {
-                                      Navigator.of(context).pop();
+                                        if (context.mounted) {
+                                          Navigator.of(context).pop();
+                                        }
+                                      }
                                     }
-                                  }
-                                }
-                              },
-                            );
-                          }
-                        },
-                        child: Container(
-                          height: 60,
-                          width: 175,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            gradient: settingsState.profileImageToUpload != null
-                                ? const LinearGradient(
-                                    colors: [
-                                      Color.fromRGBO(255, 205, 178, 1),
-                                      Color.fromRGBO(255, 180, 162, 1),
-                                      Color.fromRGBO(229, 152, 155, 1),
-                                      Color.fromRGBO(181, 131, 141, 1),
-                                      Color.fromRGBO(109, 104, 117, 1),
-                                    ],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                  )
-                                : const LinearGradient(
-                                    colors: [
-                                      Color.fromRGBO(255, 205, 178, .5),
-                                      Color.fromRGBO(255, 180, 162, .5),
-                                      Color.fromRGBO(229, 152, 155, .5),
-                                      Color.fromRGBO(181, 131, 141, .5),
-                                      Color.fromRGBO(109, 104, 117, .5),
-                                    ],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                  ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Update Photo",
-                              style: GoogleFonts.montserrat(
-                                color:
-                                    settingsState.profileImageToUpload != null
-                                        ? Colors.white
-                                        : Colors.white54,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ),
-                        ),
+                                  },
+                                );
+                              }
+                            : null,
+                        child: Text("Update Photo"),
                       ),
                       const SizedBox(height: 75),
                     ],

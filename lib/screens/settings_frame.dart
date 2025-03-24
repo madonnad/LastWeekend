@@ -45,6 +45,7 @@ class SettingsFrame extends StatelessWidget {
                         useSafeArea: true,
                         isDismissible: false,
                         enableDrag: false,
+                        barrierColor: Color.fromRGBO(19, 19, 20, .5),
                         builder: (ctx) => BlocProvider.value(
                           value: context.read<SettingsCubit>(),
                           child: const ProfPhotoFrame(),

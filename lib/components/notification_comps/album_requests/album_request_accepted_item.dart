@@ -73,7 +73,7 @@ class AlbumRequestAcceptedItem extends StatelessWidget {
                   fit: BoxFit.scaleDown,
                   child: Text(
                     albumName,
-                    style: GoogleFonts.montserrat(
+                    style: GoogleFonts.lato(
                       color: Colors.white,
                       fontSize: 14,
                       fontWeight: FontWeight.w500,

@@ -76,7 +76,7 @@ class _FriendProfileFrameState extends State<FriendProfileFrame> {
                                     child: Center(
                                       child: Text(
                                         "No events to see here",
-                                        style: GoogleFonts.montserrat(
+                                        style: GoogleFonts.lato(
                                           color: Colors.white54,
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600,

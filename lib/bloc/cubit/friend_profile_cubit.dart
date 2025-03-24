@@ -34,14 +34,6 @@ class FriendProfileCubit extends Cubit<FriendProfileState> {
 
     revealedAlbums
         .sort((a, b) => b.creationDateTime.compareTo(a.creationDateTime));
-    print(revealedAlbums
-        .any((test) => test.albumId == "4ae4216a-5305-4d74-ba45-3af385a5d630"));
-
-    print(revealedAlbums
-        .firstWhere(
-            (test) => test.albumId == "4ae4216a-5305-4d74-ba45-3af385a5d630")
-        .guests
-        .length);
 
     emit(state.copyWith(
         anonymousFriend: result, albumList: revealedAlbums, loading: false));

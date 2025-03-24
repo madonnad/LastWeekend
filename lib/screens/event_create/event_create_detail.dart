@@ -186,7 +186,7 @@ class EventModalButton extends StatelessWidget {
         child: Center(
           child: Text(
             buttonText,
-            style: GoogleFonts.montserrat(
+            style: GoogleFonts.lato(
               color: enabled ? Colors.white : Colors.white.withOpacity(0.5),
               fontSize: 16,
               fontWeight: FontWeight.w700,

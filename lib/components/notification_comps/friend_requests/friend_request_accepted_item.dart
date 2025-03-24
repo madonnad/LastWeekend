@@ -41,7 +41,7 @@ class FriendRequestAcceptedItem extends StatelessWidget {
           Expanded(
             child: Text(
               "$firstName's now your friend! 🥳",
-              style: GoogleFonts.montserrat(
+              style: GoogleFonts.lato(
                 color: Colors.white,
                 fontSize: 14,
                 fontWeight: FontWeight.w500,

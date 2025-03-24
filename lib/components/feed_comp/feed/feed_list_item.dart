@@ -54,7 +54,7 @@ class FeedListItem extends StatelessWidget {
                             },
                             child: Text(
                               album.albumName,
-                              style: GoogleFonts.montserrat(
+                              style: GoogleFonts.lato(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.white,
@@ -76,8 +76,8 @@ class FeedListItem extends StatelessWidget {
                           ),
                           Text(
                             album.timeSince,
-                            style: GoogleFonts.montserrat(
-                              fontSize: 13,
+                            style: GoogleFonts.lato(
+                              fontSize: 14,
                               fontWeight: FontWeight.w300,
                               color: Colors.white,
                             ),
@@ -88,7 +88,7 @@ class FeedListItem extends StatelessWidget {
                   ),
                   Text(
                     album.fullName,
-                    style: GoogleFonts.montserrat(
+                    style: GoogleFonts.lato(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                         color: Colors.white54),

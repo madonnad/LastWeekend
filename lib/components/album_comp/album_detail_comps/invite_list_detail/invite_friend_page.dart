@@ -79,8 +79,8 @@ class InviteFriendPage extends StatelessWidget {
                                     friendList[index].fullName,
                                     style: GoogleFonts.lato(
                                       color: Colors.white,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
                                     ),
                                     overflow: TextOverflow.fade,
                                     softWrap: false,

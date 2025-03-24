@@ -51,13 +51,13 @@ class CurrentInviteList extends StatelessWidget {
                               Text(
                                 state
                                     .album.sortedGuestsByInvite[index].fullName,
-                                style: GoogleFonts.josefinSans(
+                                style: GoogleFonts.lato(
                                   color: state.album.sortedGuestsByInvite[index]
                                               .status ==
                                           RequestStatus.accepted
                                       ? Colors.white
                                       : const Color.fromRGBO(125, 125, 125, 1),
-                                  fontSize: 18,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),

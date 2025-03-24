@@ -145,7 +145,7 @@ class FeedSlideshowInset extends StatelessWidget {
                           ),
                           Text(
                             state.imageOwnerName,
-                            style: GoogleFonts.montserrat(
+                            style: GoogleFonts.lato(
                               color: Colors.white70,
                               fontWeight: FontWeight.w500,
                               fontSize: 14,

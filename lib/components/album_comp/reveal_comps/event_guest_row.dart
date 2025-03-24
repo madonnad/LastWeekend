@@ -29,7 +29,7 @@ class EventGuestRow extends StatelessWidget {
               children: [
                 Text(
                   "Guests",
-                  style: GoogleFonts.montserrat(
+                  style: GoogleFonts.lato(
                       color: Colors.white,
                       fontSize: 16,
                       fontWeight: FontWeight.bold),
@@ -112,7 +112,7 @@ class AvatarListItem extends StatelessWidget {
             ),
             // Text(
             //   name,
-            //   style: GoogleFonts.montserrat(
+            //   style: GoogleFonts.lato(
             //     color: Colors.white,
             //     fontSize: 14,
             //     fontWeight: FontWeight.w500,

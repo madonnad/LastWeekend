@@ -58,10 +58,10 @@ class EmptyAlbumView extends StatelessWidget {
                       const Gap(15),
                       Text(
                         "or",
-                        style: GoogleFonts.josefinSans(
+                        style: GoogleFonts.lato(
                           color: Colors.white54,
-                          fontSize: 24,
-                          fontWeight: FontWeight.w500,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ],

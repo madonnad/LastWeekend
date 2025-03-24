@@ -51,7 +51,6 @@ class AlbumFrameCubit extends Cubit<AlbumFrameState> {
         switch (operation) {
           case StreamOperation.add:
           case StreamOperation.update:
-            print("album pushed${album.revealDateTime}");
             emit(state.copyWith(
                 album: album, images: List.from(album.imageMap.values)));
             setRankedImages();

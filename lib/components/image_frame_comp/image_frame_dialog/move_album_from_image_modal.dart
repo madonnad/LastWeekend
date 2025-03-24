@@ -40,7 +40,7 @@ class _MoveAlbumFromImageModalState extends State<MoveAlbumFromImageModal> {
         "Select new album:",
         textAlign: TextAlign.center,
       ),
-      titleTextStyle: GoogleFonts.montserrat(
+      titleTextStyle: GoogleFonts.lato(
         color: Colors.white.withOpacity(.75),
         fontSize: 16,
         fontWeight: FontWeight.w600,
@@ -90,7 +90,7 @@ class _MoveAlbumFromImageModalState extends State<MoveAlbumFromImageModal> {
                   height: 35,
                   child: Text(
                     "Move",
-                    style: GoogleFonts.montserrat(
+                    style: GoogleFonts.lato(
                       color: Colors.white.withOpacity(canMove ? 1 : .25),
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
@@ -124,7 +124,7 @@ class _MoveAlbumFromImageModalState extends State<MoveAlbumFromImageModal> {
                   Flexible(
                     child: Text(
                       activeAlbums[index].albumName,
-                      style: GoogleFonts.montserrat(
+                      style: GoogleFonts.lato(
                         color: Colors.white.withOpacity(1),
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
@@ -136,7 +136,7 @@ class _MoveAlbumFromImageModalState extends State<MoveAlbumFromImageModal> {
                   isCurrent
                       ? Text(
                           "Current",
-                          style: GoogleFonts.montserrat(
+                          style: GoogleFonts.lato(
                             color: Colors.white54,
                             fontWeight: FontWeight.w500,
                             fontSize: 14,

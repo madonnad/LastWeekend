@@ -57,7 +57,7 @@ class EventCoverPhotoSelector extends StatelessWidget {
                       ? Text(
                           "Cover\nPhoto".toUpperCase(),
                           textAlign: TextAlign.center,
-                          style: GoogleFonts.montserrat(
+                          style: GoogleFonts.lato(
                             color: Colors.white54,
                             fontSize: 14,
                             fontWeight: FontWeight.bold,

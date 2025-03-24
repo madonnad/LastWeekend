@@ -31,7 +31,7 @@ class EventRoundedOption extends StatelessWidget {
         child: Center(
           child: Text(
             text,
-            style: GoogleFonts.montserrat(
+            style: GoogleFonts.lato(
               color: Color.fromRGBO(242, 243, 247, 1),
               fontSize: 13,
               fontWeight: FontWeight.w600,

@@ -73,7 +73,7 @@ class ProfileEventItem extends StatelessWidget {
                           ),
                           child: Text(
                             "In Progress",
-                            style: GoogleFonts.montserrat(
+                            style: GoogleFonts.lato(
                               color: Colors.white,
                               fontSize: 11,
                               fontWeight: FontWeight.w700,
@@ -84,7 +84,7 @@ class ProfileEventItem extends StatelessWidget {
                   Spacer(),
                   Text(
                     event.albumName,
-                    style: GoogleFonts.montserrat(
+                    style: GoogleFonts.lato(
                       color: Colors.white,
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -94,7 +94,7 @@ class ProfileEventItem extends StatelessWidget {
                   Gap(8),
                   Text(
                     event.durationDateFormatter,
-                    style: GoogleFonts.montserrat(
+                    style: GoogleFonts.lato(
                       color: Color.fromRGBO(218, 218, 218, 1),
                       fontSize: 11,
                       fontWeight: FontWeight.w500,
@@ -153,7 +153,7 @@ class EventSmallIconText extends StatelessWidget {
         Gap(4),
         Text(
           text,
-          style: GoogleFonts.montserrat(
+          style: GoogleFonts.lato(
             color: Color.fromRGBO(218, 218, 218, 1),
             fontSize: 14,
             fontWeight: FontWeight.w700,

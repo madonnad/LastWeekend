@@ -79,8 +79,8 @@ class GuestsPage extends StatelessWidget {
                                                 left: 10.0),
                                             child: Text(
                                               guest.fullName,
-                                              style: GoogleFonts.josefinSans(
-                                                fontWeight: FontWeight.w500,
+                                              style: GoogleFonts.lato(
+                                                fontWeight: FontWeight.w600,
                                                 fontSize: 16,
                                                 color: Colors.white,
                                               ),
@@ -125,7 +125,7 @@ class GuestsPage extends StatelessWidget {
                                     : Center(
                                         child: Text(
                                           "No Photos Added",
-                                          style: GoogleFonts.montserrat(
+                                          style: GoogleFonts.lato(
                                             color: Colors.white70,
                                             fontStyle: FontStyle.italic,
                                           ),

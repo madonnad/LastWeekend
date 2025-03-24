@@ -106,7 +106,7 @@ class _CapturedImageItemState extends State<CapturedImageItem> {
                         maxLines: null,
                         expands: true,
                         textAlignVertical: TextAlignVertical.top,
-                        style: GoogleFonts.montserrat(
+                        style: GoogleFonts.lato(
                           color: Colors.white,
                           fontSize: 15,
                           fontWeight: FontWeight.w500,
@@ -117,7 +117,7 @@ class _CapturedImageItemState extends State<CapturedImageItem> {
                             vertical: 8,
                           ),
                           hintText: "Add Caption",
-                          hintStyle: GoogleFonts.montserrat(
+                          hintStyle: GoogleFonts.lato(
                             color: Colors.white54,
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
